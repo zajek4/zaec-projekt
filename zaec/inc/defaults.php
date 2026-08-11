@@ -14,7 +14,7 @@ function zaec_front_defaults() {
 	return array(
 		'hero_kicker'            => '[ Web studio · Osijek · Hrvatska ]',
 		'hero_title'             => 'Gradimo web stranice za ljude koji grade sve ostalo.',
-		'hero_lead'              => 'Web treba napraviti više od dobrog prvog dojma: u nekoliko sekundi objasniti što radite, pokazati zašto vam vjerovati i dovesti čovjeka do poziva, upita ili rezervacije. Po predlošku ili po nacrtu — opseg i cijena prije početka.',
+		'hero_lead'              => 'Web treba napraviti više od dobrog prvog dojma: jasno objasniti što radite, pokazati zašto vam vjerovati i dovesti čovjeka do poziva, upita ili rezervacije. Po predlošku ili po nacrtu — opseg i cijena prije početka.',
 		'hero_primary_text'      => 'Javite nam se',
 		'hero_primary_url'       => '#upit',
 		'hero_secondary_text'    => 'Za koga radimo',
@@ -69,7 +69,7 @@ function zaec_front_defaults() {
 
 function zaec_front_repeater_defaults() {
 	return array(
-		'hero_stats' => array(), // namjerno prazno — hero ne treba brojke; trust strip niže nosi dokaz
+		'hero_stats' => array(), // namjerno prazno — hero ne treba brojke; trust strip niže nosi stvarne podatke
 		'services' => array(
 			array( 'number' => '01', 'title' => 'Poslovne web stranice', 'text' => 'Da vas ljudi razumiju, zapamte i jave vam se.', 'layer' => '1' ),
 			array( 'number' => '02', 'title' => 'Dizajn i UX', 'text' => 'Pravi redoslijed informacija prije ukrasa.', 'layer' => '2' ),
@@ -79,8 +79,8 @@ function zaec_front_repeater_defaults() {
 			array( 'number' => '06', 'title' => 'Postavljanje i primopredaja', 'text' => 'Uredan završetak i pristupi koji ostaju vama.', 'layer' => '0' ),
 		),
 		'occupations' => array(
-			array( 'tab' => 'Klima', 'title' => 'Za klimatizaciju', 'sub' => 'Servis, montaža i čišćenje. Klijent mora odmah pronaći što radite, gdje dolazite i kako do termina.', 'q' => 'Na webu: usluge · područje rada · poziv/WhatsApp · upit za termin' ),
-			array( 'tab' => 'Voda', 'title' => 'Za vodoinstalatere', 'sub' => 'Kod curenja se ne čita roman. Hitni kontakt, područje rada i vrsta intervencije moraju biti jasni u nekoliko sekundi.', 'q' => 'Na webu: hitni poziv · intervencije · fotografija problema · lokalne stranice' ),
+			array( 'tab' => 'Klima', 'title' => 'Za klimatizaciju', 'sub' => 'Servis, montaža i čišćenje. Klijent treba lako vidjeti što radite, gdje dolazite i kako dogovoriti termin.', 'q' => 'Na webu: usluge · područje rada · poziv/WhatsApp · upit za termin' ),
+			array( 'tab' => 'Voda', 'title' => 'Za vodoinstalatere', 'sub' => 'Kod curenja nema vremena za navigaciju. Hitni kontakt, područje rada i vrsta intervencije moraju biti jasni odmah.', 'q' => 'Na webu: hitni poziv · intervencije · fotografija problema · lokalne stranice' ),
 			array( 'tab' => 'Struja', 'title' => 'Za električare', 'sub' => 'Od sitnog kvara do instalacija i atesta — jasno odvojimo usluge, reference i područje na koje izlazite.', 'q' => 'Na webu: usluge · reference/certifikati · područje rada · brzi upit' ),
 			array( 'tab' => 'Krov', 'title' => 'Za krovopokrivače i limare', 'sub' => 'Krov se prodaje povjerenjem: izvedeni radovi, materijali, područje rada i jednostavan put do procjene.', 'q' => 'Na webu: prije/poslije · vrste krova · reference · zahtjev za ponudu' ),
 			array( 'tab' => 'Građevina', 'title' => 'Za građevinu i adaptacije', 'sub' => 'Kupac želi vidjeti što preuzimate, kako izgleda proces i možete li pokazati stvarne projekte prije prvog poziva.', 'q' => 'Na webu: projekti · usluge · proces · upit prema opsegu projekta' ),
@@ -89,7 +89,7 @@ function zaec_front_repeater_defaults() {
 			array( 'tab' => '+', 'title' => 'Za ostale usluge i struke', 'sub' => 'Odvjetnik, računovođa, ordinacija, studio, škola… Ako klijenti prije odluke uvijek pitaju isto, stranica može dati jasan odgovor i uputiti na poziv ili upit.', 'q' => 'Na webu: usluge · cijene/okvir · FAQ · jasan CTA — bez generičkog paketa' ),
 		),
 		'pain_points' => array(
-			array( 'code' => 'F.01', 'title' => 'Imate dobar posao, ali to se online ne vidi.', 'text' => 'Posjetitelj ne zna koliko ste dobri ako mu web u nekoliko sekundi ne pokaže što radite i kako mu možete pomoći.' ),
+			array( 'code' => 'F.01', 'title' => 'Imate dobar posao, ali to se online ne vidi.', 'text' => 'Posjetitelj ne zna koliko ste dobri ako mu web ne pokaže što radite i kako mu možete pomoći.' ),
 			array( 'code' => 'F.02', 'title' => 'Preporuka otvori vrata. Web treba otvoriti razgovor.', 'text' => 'Kada vas netko potraži, stranica treba potvrditi da ste pravi izbor — bez velikih riječi i bez traženja po društvenim mrežama.' ),
 			array( 'code' => 'F.03', 'title' => 'Ista pitanja ponavljate svaki dan.', 'text' => 'Usluge, područje rada, cijena, termin, proces — dobar web dio tih odgovora daje prije prvog poziva.' ),
 			array( 'code' => 'F.04', 'title' => 'Oprezni ste — s razlogom.', 'text' => 'Web nije mala odluka. Zato prije početka razgovaramo o opsegu, cijeni i onome što vam se stvarno isplati — i slobodno možete reći ne.' ),
@@ -127,12 +127,12 @@ function zaec_front_repeater_defaults() {
 		),
 		'trust_stats' => array(
 			array( 'value' => '3', 'label' => 'objavljena projekta' ),
-			array( 'value' => '4.9', 'label' => 'Google ocjena' ),
-			array( 'value' => 'JASNO', 'label' => 'što web treba postići' ),
+			array( 'value' => '14 d', 'label' => 'tehničkog jamstva' ),
+			array( 'value' => 'JASNO', 'label' => 'opseg prije početka' ),
 			array( 'value' => 'DIREKTNO', 'label' => 'do poziva ili upita' ),
 		),
 		'stack_items' => array(
-			array( 'code' => 'G.01', 'title' => 'Google Business Profile', 'text' => 'Profil, kategorije, usluge, fotografije i put do recenzija — da vas lokalni upit stvarno nađe.' ),
+			array( 'code' => 'G.01', 'title' => 'Google Business Profile', 'text' => 'Profil, kategorije, usluge i fotografije — da ljudi koji vas traže dobiju točne informacije i put do kontakta.' ),
 			array( 'code' => 'G.02', 'title' => 'Analytics i Search Console', 'text' => 'Mjerenje prometa i tehnički uvid u pretragu. Bez magle, s pristupima na vama.' ),
 			array( 'code' => 'G.03', 'title' => 'Tehnički SEO temelj', 'text' => 'Brzina, struktura, meta sloj i schema u okviru izrade stranice — ne kao prazno obećanje pozicija.' ),
 			array( 'code' => 'S.01', 'title' => 'WooCommerce', 'text' => 'Katalog, košarica i narudžbe kada shop ima smisla i jasan opseg.' ),

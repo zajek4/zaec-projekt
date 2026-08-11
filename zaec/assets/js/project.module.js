@@ -68,9 +68,15 @@
 			webkitClipPath: canClip ? 'inset(0 0 0% 0)' : undefined,
 			duration: .42,
 			delay: Math.min(index * .07, .28),
-			ease: 'power3.out',
-			overwrite: 'auto'
-		});
+				ease: 'power3.out',
+				overwrite: 'auto',
+				onComplete: function () {
+					item.style.opacity = '1';
+					item.style.transform = 'none';
+					item.style.clipPath = 'none';
+					item.style.webkitClipPath = 'none';
+				}
+			});
 	});
 
 	if (code && codeText) {

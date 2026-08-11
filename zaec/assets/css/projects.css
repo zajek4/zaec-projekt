@@ -314,3 +314,67 @@
   .zaec-project-device--phone { width: 112px; }
   .zaec-project-bento article { padding: 18px 14px; }
 }
+
+/* 1.7.1 — safe title box: dijakritika i duga imena nikad se ne režu. */
+.zaec-project-showroom-intro { min-width: 0; overflow: visible; }
+.zaec-project-showroom-intro h1 {
+  max-width: 100%;
+  padding: .12em 0 .18em;
+  font-size: clamp(2.75rem, 7vw, 8.2rem);
+  line-height: .96;
+  letter-spacing: -.055em;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+@media (max-width: 767px) {
+  .zaec-project-showroom-intro h1 { max-width: 100%; font-size: clamp(2.55rem, 13vw, 5rem); line-height: .98; }
+}
+
+/* 1.7.1 — završni kadar: tamniji showroom outro, ne još jedan panel. */
+.zaec-project-showroom-outro {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #05070b;
+  border-top: 1px solid rgba(125, 211, 255, .12);
+}
+.zaec-project-showroom-outro::before {
+  content: "";
+  position: absolute;
+  top: -35%;
+  right: 8%;
+  width: min(760px, 75vw);
+  height: min(760px, 75vw);
+  z-index: -2;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30, 94, 255, .22) 0%, rgba(125, 211, 255, .08) 34%, transparent 70%);
+  opacity: .5;
+  transform: scale(.94);
+  animation: zaecOutroGlow 9s ease-in-out infinite alternate;
+}
+.zaec-project-showroom-outro::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  opacity: .13;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(244,244,241,.055) 0 1px, transparent 1px 5px), radial-gradient(rgba(244,244,241,.4) .5px, transparent .5px);
+  background-size: auto, 4px 4px;
+}
+@keyframes zaecOutroGlow { from { opacity: .34; transform: scale(.94) translate3d(-2%, 0, 0); } to { opacity: .68; transform: scale(1.06) translate3d(2%, 2%, 0); } }
+.zaec-project-showroom-outro > .wrap { position: relative; z-index: 1; }
+.zaec-project-showroom .zaec-project-live--large { box-shadow: 0 22px 55px -24px rgba(30, 94, 255, .72); }
+.zaec-project-next { border-color: rgba(125,211,255,.32); box-shadow: 0 34px 90px -48px rgba(0,0,0,.95); }
+.zaec-project-next__media::after { opacity: .82; transition: opacity .42s ease; }
+.zaec-project-next:hover .zaec-project-next__media::after,
+.zaec-project-next:focus-visible .zaec-project-next__media::after { opacity: .52; }
+.zaec-project-next__copy strong { text-wrap: balance; overflow-wrap: anywhere; }
+.zaec-project-single + .site-footer { border-top-color: rgba(125,211,255,.16); background: #05070b; }
+@media (prefers-reduced-motion: reduce) {
+  .zaec-project-showroom-outro::before { animation: none; opacity: .5; transform: none; }
+}

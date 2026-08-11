@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.7.0
+# ZAEC WordPress Theme — v1.7.1
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -124,3 +124,13 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Sadržaj i meta paneli pojavljuju se samo kada stvarni podaci postoje; nema praznih scena ni izmišljenih rezultata.
 - Single projekt dobiva uvjetni GSAP + ScrollTrigger modul, a fallback ostaje statičan i potpun bez JS-a ili uz reduced motion.
 - Theme version: `1.7.0`.
+
+## v1.7.1
+
+- Single projekt Showroom naslovi dobili su sigurniji fluidni box: ascender/descender padding, puni završetak clip reveala i wrapping za duga hrvatska imena.
+- Završna scena je zatamnjeniji kino-kadar s jeftinim CSS glow/grain efektom, jačim LIVE CTA-om i velikom klikabilnom karticom sljedećeg projekta. Ako sljedeći projekt ne postoji, kartica se ne renderira.
+- Truth audit je uklonio nepotvrđenu Google ocjenu iz zadane trust trake; vraćeni su samo postojeći podaci: 3 projekta, 14 dana tehničkog jamstva, jasan opseg i direktan put do kontakta.
+- Hero copy i opisi koji su zvučali kao neprovjerena vremenska obećanja ublaženi su bez gubitka prodajne jasnoće.
+- `COPY-BASELINE-front-page.md` nije bio dostupan u repozitoriju; za audit je korišten postojeći odobreni v1.2/v1.6 sadržaj i pravilo da nepotvrđena tvrdnja ne ide na stranicu.
+- Vlasnik prije objave treba dostaviti samo podatke koji nedostaju: potvrđene Google recenzije, dodatne mobilne screenshotove i mjerene rezultate projekata ako ih želi javno navesti.
+- Theme version: `1.7.1`.

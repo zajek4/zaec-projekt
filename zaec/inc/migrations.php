@@ -525,5 +525,29 @@ function zaec_migrate_theme_data() {
 		update_option( 'zaec_theme_data_version', '1.6.0', false );
 	}
 
+
+	/* v1.7.1 — truth audit: uklanjanje nepotvrđene Google ocjene iz trust trake. */
+	if ( version_compare( $version, '1.7.1', '<' ) ) {
+		if ( $front_id ) {
+			$repeaters = zaec_front_repeater_defaults();
+			$trust     = get_post_meta( $front_id, '_zaec_trust_stats', true );
+			$old_trust = array(
+				array( 'value' => '3', 'label' => 'objavljena projekta' ),
+				array( 'value' => '4.9', 'label' => 'Google ocjena' ),
+				array( 'value' => 'JASNO', 'label' => 'što web treba postići' ),
+				array( 'value' => 'DIREKTNO', 'label' => 'do poziva ili upita' ),
+			);
+			if ( is_array( $trust ) && $old_trust === $trust ) {
+				update_post_meta( $front_id, '_zaec_trust_stats', $repeaters['trust_stats'] );
+			}
+
+			$old_hero_lead = 'Web treba napraviti više od dobrog prvog dojma: u nekoliko sekundi objasniti što radite, pokazati zašto vam vjerovati i dovesti čovjeka do poziva, upita ili rezervacije. Po predlošku ili po nacrtu — opseg i cijena prije početka.';
+			if ( $old_hero_lead === get_post_meta( $front_id, '_zaec_hero_lead', true ) ) {
+				update_post_meta( $front_id, '_zaec_hero_lead', zaec_front_defaults()['hero_lead'] );
+			}
+		}
+		update_option( 'zaec_theme_data_version', '1.7.1', false );
+	}
+
 }
 add_action( 'admin_init', 'zaec_migrate_theme_data' );
