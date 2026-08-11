@@ -468,5 +468,62 @@ function zaec_migrate_theme_data() {
 		update_option( 'zaec_theme_data_version', '1.5.0', false );
 	}
 
+
+	/* v1.6.0 — projekti, mobile prikaz i dugoročni odnos s klijentom. */
+	if ( version_compare( $version, '1.6.0', '<' ) ) {
+		if ( $front_id ) {
+			$repeaters = zaec_front_repeater_defaults();
+
+			$faqs = get_post_meta( $front_id, '_zaec_faqs', true );
+			if ( is_array( $faqs ) ) {
+				$has_long_term = false;
+				foreach ( $faqs as $faq ) {
+					if ( isset( $faq['question'] ) && 'Možemo li dugoročno surađivati?' === $faq['question'] ) {
+						$has_long_term = true;
+						break;
+					}
+				}
+				if ( ! $has_long_term ) {
+					foreach ( $repeaters['faqs'] as $faq ) {
+						if ( isset( $faq['question'] ) && 'Možemo li dugoročno surađivati?' === $faq['question'] ) {
+							$faqs[] = $faq;
+							break;
+						}
+					}
+					update_post_meta( $front_id, '_zaec_faqs', $faqs );
+				}
+			}
+
+			$quotes = get_post_meta( $front_id, '_zaec_testimonials', true );
+			$old_quote = 'Nova stranica je moderna i privlačna, ali najvažnije je da radi svoj posao. Povećala je promet restoranu i pokazala da se ulaganje u dobar web isplati.';
+			if ( is_array( $quotes ) ) {
+				foreach ( $quotes as $index => $quote ) {
+					if ( isset( $quote['quote'] ) && $old_quote === $quote['quote'] && isset( $repeaters['testimonials'][0] ) ) {
+						$quotes[ $index ]['quote'] = $repeaters['testimonials'][0]['quote'];
+						update_post_meta( $front_id, '_zaec_testimonials', $quotes );
+						break;
+					}
+				}
+			}
+
+			$pricing = get_post_meta( $front_id, '_zaec_pricing', true );
+			if ( is_array( $pricing ) ) {
+				foreach ( $pricing as $index => $plan ) {
+					if ( ! isset( $plan['features'] ) ) {
+						continue;
+					}
+					$pricing[ $index ]['features'] = str_replace(
+						array( 'Provjeren ZAEC layout prilagođen vašem brandu', 'Custom dizajn sustav u ZAEC kvaliteti izvedbe' ),
+						array( 'Provjeren layout prilagođen vašem brandu', 'Dosljedan dizajn sustav prilagođen vašem poslu' ),
+						$plan['features']
+					);
+				}
+				update_post_meta( $front_id, '_zaec_pricing', $pricing );
+			}
+		}
+
+		update_option( 'zaec_theme_data_version', '1.6.0', false );
+	}
+
 }
 add_action( 'admin_init', 'zaec_migrate_theme_data' );

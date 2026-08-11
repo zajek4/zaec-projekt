@@ -1818,3 +1818,23 @@ body.on-light #nav.scrolled .nav-call-m:focus-visible { color: var(--signal); }
 .proj-link--live { color: var(--signal-hi); }
 
 .quote-proof { margin-bottom: 26px; font-family: var(--font-m); font-size: .62rem; letter-spacing: .18em; color: var(--signal); }
+
+/* Footer legalni red slijedi isti max-width i ritam kao glavni footer grid. */
+.site-footer > .wrap { width: 100%; }
+.foot-legal-bar {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  padding-top: 20px;
+  padding-bottom: 18px;
+}
+.foot-legal-name,
+.foot-legal-meta { line-height: 1.45; }
+.foot-giant-wrap { padding-top: clamp(10px, 2vw, 24px); }
+@media (max-width: 700px) {
+  .foot-legal-bar { grid-template-columns: 1fr; gap: 6px; }
+}
+
+.proj-mock--image { aspect-ratio: 3 / 2; overflow: hidden; }
+.proj-mock--image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.proj:hover .proj-mock--image img { transform: scale(1.025); }
+.hero-copy, .svc-panel { will-change: opacity, transform, filter; }

@@ -7,7 +7,11 @@
 			<h1><?php the_title(); ?></h1>
 			<?php if ( has_excerpt() ) : ?><p class="zaec-lead"><?php echo esc_html( get_the_excerpt() ); ?></p><?php endif; ?>
 		</div></header>
-		<?php if ( has_post_thumbnail() ) : ?><figure class="single-hero-image"><?php the_post_thumbnail( 'zaec-hero', array( 'sizes' => '(max-width: 1440px) 100vw, 1440px', 'loading' => 'eager', 'fetchpriority' => 'high' ) ); ?></figure><?php endif; ?>
+		<?php if ( has_post_thumbnail() ) : ?>
+			<figure class="single-hero-image"><?php the_post_thumbnail( 'zaec-hero', array( 'sizes' => '(max-width: 1440px) 100vw, 1440px', 'loading' => 'eager', 'fetchpriority' => 'high' ) ); ?></figure>
+		<?php elseif ( ! empty( $project['image'] ) ) : ?>
+			<figure class="single-hero-image"><img src="<?php echo esc_url( get_theme_file_uri( $project['image'] ) ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" loading="eager" fetchpriority="high" decoding="async"></figure>
+		<?php endif; ?>
 		<div class="zaec-content zaec-project-content">
 			<?php if ( $project['result'] || $project['technologies'] || $project['website_url'] ) : ?>
 			<aside class="project-dossier">

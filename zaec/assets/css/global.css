@@ -15,3 +15,10 @@ svg{shape-rendering:geometricPrecision;text-rendering:geometricPrecision}
 .foot-giant{width:100%;margin:0}
 @media(max-width:900px){.nav-call-m{display:inline-flex!important}.nav-right{gap:4px}}
 @media(min-width:901px){.nav-call-m{display:none!important}}
+
+/* Footer legalni red slijedi isti max-width i ritam kao glavni footer grid. */
+.site-footer > .wrap{width:100%}
+.foot-legal-bar{grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);align-items:start;padding-top:20px;padding-bottom:18px}
+.foot-legal-name,.foot-legal-meta{line-height:1.45}
+.foot-giant-wrap{padding-top:clamp(10px,2vw,24px)}
+@media(max-width:700px){.foot-legal-bar{grid-template-columns:1fr;gap:6px}}

@@ -164,6 +164,7 @@ function zaec_get_project_data( $post_id ) {
 		'result'       => (string) get_post_meta( $post_id, '_zaec_project_result', true ),
 		'technologies' => (string) get_post_meta( $post_id, '_zaec_project_technologies', true ),
 		'website_url'  => (string) get_post_meta( $post_id, '_zaec_project_website_url', true ),
+		'image'       => (string) get_post_meta( $post_id, '_zaec_project_image', true ),
 		'permalink'    => get_permalink( $post_id ),
 	);
 }
@@ -222,6 +223,8 @@ function zaec_default_project_seed_data() {
 			'year'         => '',
 			'technologies' => 'UX · sadržajna struktura · responsive web',
 			'website_url'  => 'https://cza-os.hr/',
+			'image'       => 'assets/images/projects/cza-osijek.png',
+			'result'      => 'Lakši i bolji način prikazivanja objava, programa i pomoći za djecu.',
 			'excerpt'      => 'Jasna digitalna prezentacija Centra, njegovih programa, projekata, novosti i načina kontakta.',
 			'content'      => "Web stranica Centra za autizam Osijek okuplja ono što roditelji, učenici i lokalna zajednica trebaju pronaći: informacije o Centru, programe, terapijske postupke, projekte, novosti, galeriju i kontakt.\n\nSadržaj je organiziran tako da važna informacija ne ostane skrivena iza općenite priče.",
 		),
@@ -233,6 +236,8 @@ function zaec_default_project_seed_data() {
 			'year'         => '',
 			'technologies' => 'UX · usluge · sadržajna struktura',
 			'website_url'  => 'https://eurokontrola.hr/',
+			'image'       => 'assets/images/projects/eurokontrola.png',
+			'result'      => 'Ozbiljan identitet i jasnije objašnjeno što Eurokontrola radi.',
 			'excerpt'      => 'Stručna kontrola kvalitete i laboratorijske analize hrane, sirovina i poljoprivrednih proizvoda.',
 			'content'      => "Web stranica Eurokontrole razdvaja usluge kontrole kvalitete i laboratorijskih analiza u razumljive cjeline.\n\nPosjetitelj može brzo doći do relevantne usluge, saznati što Eurokontrola radi i nastaviti prema kontaktu bez prolaska kroz nevažan sadržaj.",
 		),
@@ -244,6 +249,8 @@ function zaec_default_project_seed_data() {
 			'year'         => '',
 			'technologies' => 'UX · meni · narudžbe · catering',
 			'website_url'  => 'https://dajgric.com/',
+			'image'       => 'assets/images/projects/daj-gric.jpg',
+			'result'      => 'Veći promet i prepoznatljivost hrane u lokalnom mjestu.',
 			'excerpt'      => 'Web mjesto restorana brze hrane i cateringa s menijem, narudžbama, lokacijom i galerijom.',
 			'content'      => "Daj Gric treba biti brz i konkretan: što je na meniju, gdje se restoran nalazi, kako naručiti i što catering nudi za veće događaje.\n\nStranica te informacije stavlja ispred ukrasa i vodi posjetitelja prema narudžbi ili kontaktu.",
 		),
@@ -286,7 +293,7 @@ function zaec_seed_default_projects() {
 			continue;
 		}
 
-		foreach ( array( 'code', 'service', 'location', 'year', 'technologies', 'website_url' ) as $key ) {
+		foreach ( array( 'code', 'service', 'location', 'year', 'result', 'technologies', 'website_url', 'image' ) as $key ) {
 			$value = isset( $project[ $key ] ) ? $project[ $key ] : '';
 			if ( '' !== $value ) {
 				update_post_meta( $post_id, '_zaec_project_' . $key, $value );
@@ -301,3 +308,36 @@ function zaec_seed_default_projects() {
 	}
 }
 add_action( 'admin_init', 'zaec_seed_default_projects', 30 );
+
+/**
+ * Nadopuni preview slike za već ranije seedane projekte, ali samo ako slika
+ * još nije postavljena. Ručno odabrane featured slike nikad se ne prepisuju.
+ */
+function zaec_backfill_project_previews() {
+	foreach ( zaec_default_project_seed_data() as $project ) {
+		$posts = get_posts(
+			array(
+				'post_type'      => 'projekti',
+				'post_status'    => 'any',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'meta_query'     => array(
+					array(
+						'key'   => '_zaec_project_website_url',
+						'value' => $project['website_url'],
+					),
+				),
+			)
+		);
+		if ( ! empty( $posts ) ) {
+			$project_id = $posts[0];
+			if ( ! get_post_meta( $project_id, '_zaec_project_image', true ) ) {
+				update_post_meta( $project_id, '_zaec_project_image', $project['image'] );
+			}
+			if ( get_post_meta( $project_id, '_zaec_project_code', true ) === $project['code'] && ! get_post_meta( $project_id, '_zaec_project_result', true ) ) {
+				update_post_meta( $project_id, '_zaec_project_result', $project['result'] );
+			}
+		}
+	}
+}
+add_action( 'admin_init', 'zaec_backfill_project_previews', 31 );

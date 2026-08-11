@@ -1897,12 +1897,12 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
 
     /* ---------- HTML naljepnice ---------- */
     var LAYER_LABELS = [
-      ['A. Temelji i pristup', 'ploča · staze · terasa'],
-      ['B. Zidovi i etaže', 'korpus · krilo · balkon'],
-      ['C. Stolarija', 'prozori · vrata · erker'],
-      ['D. Ulaz i detalji', 'trijem · stepenice · lampion'],
-      ['E. Krovište', 'greben · oluci · dimnjak'],
-      ['F. Dormeri', 'krovni prozori · svjetlo']
+      ['A. Temelj · domena &amp; hosting', 'infrastruktura · pristup · smjer'],
+      ['B. Konstrukcija', 'struktura · sadržaj · stranice'],
+      ['C. Otvori', 'UX · UI · mobilni put'],
+      ['D. Instalacije', 'funkcije · kontakt · mjerenje'],
+      ['E. Krovište', 'SEO · sigurnost · održavanje'],
+      ['F. Svjetlo', 'objava · analitika · učenje']
     ];
     var labelsWrap = $('#layerLabels');
     var labelEls = LAYER_LABELS.map(function (l) {
@@ -2103,15 +2103,16 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       }
       var bh = doc.getElementById('buildHud');
       if (bh) bh.style.opacity = '0';
-      if (heroCopy) { heroCopy.style.opacity = '1'; heroCopy.style.transform = ''; heroCopy.style.pointerEvents = 'auto'; }
-      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.classList.add('on'); }
+      if (heroCopy) { heroCopy.style.opacity = '1'; heroCopy.style.transform = ''; heroCopy.style.filter = ''; heroCopy.style.pointerEvents = 'auto'; }
+      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.classList.add('on'); }
     }
     if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', restoreCompactHero);
     else if (mqDesktop.addListener) mqDesktop.addListener(restoreCompactHero);
 
     if (!pinSpace || !HAS_GSAP) { occCtl.setPhase(true); return; }
     if (prefersReducedMotion) {
-      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.classList.add('on'); }
+      if (heroCopy) { heroCopy.style.filter = ''; }
+      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.classList.add('on'); }
       occCtl.setPhase(true);
       return;
     }
@@ -2133,12 +2134,12 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       buildHud.innerHTML =
         '<p class="build-hud__kicker">[ BUILD SEQUENCE ]</p>' +
         '<ol class="build-hud__list">' +
-        '<li data-step="0"><b>01</b><span>Temelj &amp; pristup</span></li>' +
-        '<li data-step="1"><b>02</b><span>Konstrukcija etaža</span></li>' +
-        '<li data-step="2"><b>03</b><span>Stolarija &amp; otvori</span></li>' +
-        '<li data-step="3"><b>04</b><span>Ulaz &amp; detalji</span></li>' +
-        '<li data-step="4"><b>05</b><span>Krovište</span></li>' +
-        '<li data-step="5"><b>06</b><span>Dormeri &amp; svjetlo</span></li>' +
+        '<li data-step="0"><b>01</b><span>Temelj · domena &amp; hosting</span></li>' +
+        '<li data-step="1"><b>02</b><span>Konstrukcija · struktura &amp; sadržaj</span></li>' +
+        '<li data-step="2"><b>03</b><span>Otvori · UX &amp; UI</span></li>' +
+        '<li data-step="3"><b>04</b><span>Instalacije · funkcije &amp; kontakt</span></li>' +
+        '<li data-step="4"><b>05</b><span>Krovište · SEO &amp; sigurnost</span></li>' +
+        '<li data-step="5"><b>06</b><span>Svjetlo · objava &amp; mjerenje</span></li>' +
         '</ol>' +
         '<p class="build-hud__note">Slojevi = dijelovi weba · klik na sloj izolira</p>';
       var stage = pinSpace.querySelector('.pin-stage') || pinSpace;
@@ -2169,7 +2170,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
 
       if (heroCopy) {
         heroCopy.style.opacity = String(ax.copy);
-        heroCopy.style.transform = 'translate3d(0,' + (-22 * (1 - ax.copy)).toFixed(1) + 'px,0)';
+        heroCopy.style.transform = 'translate3d(0,' + (46 * (1 - ax.copy)).toFixed(1) + 'px,0)';
+        heroCopy.style.filter = 'blur(' + (8 * (1 - ax.copy)).toFixed(1) + 'px)';
         heroCopy.style.pointerEvents = ax.copy > 0.4 ? 'auto' : 'none';
       }
 
@@ -2191,7 +2193,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       if (svcPanel) {
         var pan = ax.pan;
         svcPanel.style.opacity = String(pan);
-        svcPanel.style.transform = 'translate3d(0,' + (32 * (1 - pan)).toFixed(1) + 'px,0)';
+        svcPanel.style.transform = 'translate3d(0,' + (38 * (1 - pan)).toFixed(1) + 'px,0)';
+        svcPanel.style.filter = 'blur(' + (6 * (1 - pan)).toFixed(1) + 'px)';
         svcPanel.classList.toggle('on', pan > 0.4);
         // dok je slab, ne kradi klikove s HUD/house
         svcPanel.style.pointerEvents = pan > 0.42 ? 'auto' : 'none';
@@ -2248,8 +2251,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
         if (H.impl.setIsolation) H.impl.setIsolation(-1);
         if (H.impl.hideLabels) H.impl.hideLabels();
       }
-      if (heroCopy) { heroCopy.style.opacity = '1'; heroCopy.style.transform = ''; heroCopy.style.pointerEvents = 'auto'; }
-      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.classList.add('on'); }
+      if (heroCopy) { heroCopy.style.opacity = '1'; heroCopy.style.transform = ''; heroCopy.style.filter = ''; heroCopy.style.pointerEvents = 'auto'; }
+      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.classList.add('on'); }
       ax._tq = 0; ax._trf = 1; ax._tcf = 0; ax._tcopy = 1; ax._tpan = 0; ax._torb = 0; ax._trise = 0;
     }
 
@@ -2265,27 +2268,27 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
         axDirty = true;
         /*
           ORBIT BUILD timeline (desktop pin):
-          0.00–0.14  hero + djelatnosti (stabilno)
-          0.12–0.28  copy fade + orbit start
-          0.18–0.48  explode open (slojevi + HUD koraci)
-          0.42–0.58  hold open + labels (kraće = manje praznine)
-          0.56–0.74  reassemble + orbit unwind
-          0.70–1.00  services panel
+          0.00–0.12  hero + djelatnosti (stabilno)
+          0.11–0.33  copy se spušta i odbluruje + orbit start
+          0.14–0.42  explode open (slojevi + HUD koraci)
+          0.22–0.54  services panel ulazi paralelno
+          0.42–0.60  hold open + labels
+          0.56–0.76  reassemble + orbit unwind
         */
         /*
           Smooth dual-track:
           A) house build/orbit (desno)
           B) services panel (lijevo) — počinje RANIJE i raste SPORO dok traje aksonometrija
         */
-        ax._tcopy = 1 - smooth(clamp((p - 0.08) / 0.16, 0, 1));
+        ax._tcopy = 1 - smooth(clamp((p - 0.11) / 0.22, 0, 1));
         ax._tq    = smooth(clamp((p - 0.14) / 0.28, 0, 1));
         ax._trf   = 1 - smooth(clamp((p - 0.58) / 0.2, 0, 1));
         ax._tcf   = smooth(clamp((p - 0.12) / 0.18, 0, 1)) * (1 - smooth(clamp((p - 0.78) / 0.14, 0, 1)));
         // orbit blaži, duži — manje “trzanja”
         ax._torb  = smooth(clamp((p - 0.12) / 0.22, 0, 1)) * (1 - smooth(clamp((p - 0.7) / 0.18, 0, 1)));
         ax._trise = smooth(clamp((p - 0.16) / 0.22, 0, 1)) * (1 - smooth(clamp((p - 0.66) / 0.2, 0, 1)));
-        // usluge: nakon što build krene, sporo do kraja pina
-        ax._tpan  = smooth(clamp((p - 0.48) / 0.34, 0, 1));
+        // usluge ulaze ranije i paralelno s rastavljanjem kuće — bez praznog prijelaza
+        ax._tpan  = smooth(clamp((p - 0.22) / 0.32, 0, 1));
       }
     });
   })();

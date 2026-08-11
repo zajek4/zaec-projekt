@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.5.0
+# ZAEC WordPress Theme — v1.6.0
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -86,3 +86,16 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Dodana je potvrđena testimonial izjava Dominika, CEO-a Daj Grica, prema dostavljenom sadržaju.
 - Trust traka sada ističe tri stvarna projekta, Google ocjenu 4.9/5, jasan cilj weba i direktan put do kontakta.
 - Migracija `1.5.0` ponovno mijenja samo poznate stare default vrijednosti; ručne izmjene ostaju sačuvane.
+
+## v1.6.0
+
+- Radovi se prikazuju i kada WordPress baza još nema kreirane CPT zapise: naslovnica koristi sigurni fallback s tri stvarna projekta, a admin seed ih kasnije pripremi kao uređive projekte.
+- Dodane su stvarne featured slike za CZA Osijek, Eurokontrolu i Daj Gric te direktni `Live` linkovi na karticama.
+- Hero animacija sada ranije uvodi `Web koji razumije vaš zanat`; početni tekst se pri scrollu spušta i odbluruje dok se kuća rastavlja, a novi sadržaj ulazi paralelno, bez mrtvog prijelaza.
+- Build sequence sada ima smisleniju web metaforu: domena/hosting → struktura/sadržaj → UX/UI → funkcije/kontakt → SEO/sigurnost → objava/mjerenje.
+- Mobile telefon sada koristi realističniji klimatski servisni flow inspiriran dostavljenim primjerom, a tri lebdeće kartice ostaju izvan telefona: Google recenzije, Zatraži procjenu i Kontakt na jednom mjestu.
+- Uklonjena je poruka `Objaviti samo uz potvrđene recenzije` iz vizualnog prikaza.
+- FAQ sada objašnjava mogućnost dugoročne suradnje kroz jasan opseg, prioritete i povjerenje — bez obaveznih maglovitih paketa.
+- Footer legalni red i veliki ZAEC imaju isti max-width i konzistentniji spacing.
+- `ZAEC` je uklonjen iz izraza `Provjeren ZAEC layout` kako copy ne bi zvučao samohvalno.
+- Migracija `1.6.0` dodaje novi FAQ i ažurira samo poznate stare vrijednosti.
