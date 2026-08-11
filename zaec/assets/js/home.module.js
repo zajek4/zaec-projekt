@@ -28,7 +28,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
   var HAS_GSAP = !!(WIN.gsap && WIN.ScrollTrigger);
-  if (HAS_GSAP) { gsap.registerPlugin(ScrollTrigger, ScrollToPlugin); }
+  if (HAS_GSAP) {
+    if (WIN.ScrollToPlugin) gsap.registerPlugin(WIN.ScrollTrigger, WIN.ScrollToPlugin);
+    else gsap.registerPlugin(WIN.ScrollTrigger);
+  }
 
   /* ============================================================
      MICRO TWEEN ENGINE (nezavisan o GSAP-u)
@@ -1007,6 +1010,18 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
 
     var HOLO = 0x7dd3ff;
     var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    var webglDisabled = false;
+    function disableHologram() {
+      if (webglDisabled) return;
+      webglDisabled = true;
+      doc.documentElement.classList.add('no-3d');
+      canvas.setAttribute('aria-hidden', 'true');
+      try { renderer.dispose(); } catch (disposeError) { /* fallback je već aktivan */ }
+    }
+    canvas.addEventListener('webglcontextlost', function (event) {
+      event.preventDefault();
+      disableHologram();
+    }, false);
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(Math.min(WIN.devicePixelRatio || 1, isCoarse ? 1.55 : (LOW ? 1.4 : 1.75)));
     var scene = new THREE.Scene();
@@ -2102,6 +2117,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     var orbit = { v: 0 }; // 0..1 yaw orbit tijekom builda
     var rise = { v: 0 };  // blagi lift
     function frame(now) {
+      if (webglDisabled) return;
       requestAnimationFrame(frame);
       var dt = Math.min((now - last) / 1000, 0.05);
       last = now;
@@ -2175,7 +2191,12 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       underglow.material.opacity = 0.55 * (0.85 + 0.15 * Math.sin(t * 1.3)) * boost.v;
 
       updateLabels(wrap.clientWidth, wrap.clientHeight);
-      renderer.render(scene, camera);
+      try {
+        renderer.render(scene, camera);
+      } catch (renderError) {
+        disableHologram();
+        return;
+      }
       if (firstFrame) { firstFrame = false; WIN.__ZAEC_3D = true; }
     }
     requestAnimationFrame(frame);

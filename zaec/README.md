@@ -110,4 +110,8 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Forma ima nonce refresh za page-cache, čisti accidental AJAX output uz debug log, razlikuje invalid JSON od server poruke i zadržava native no-JS fallback.
 - Dodan je `wp_mail_failed` debug zapis za SMTP/PHPMailer probleme; SMTP transport i dalje ostaje u pluginu.
 - Dodani su magnetic primary CTA pomak, aktivno stanje desktop navigacije i reduced-motion fallback za HUD animacije.
+- Single projekt dobio je fullscreen HUD case-study predložak s opcionalnim panelima, LIVE/prev/next navigacijom, unutarnjim scrollom sadržaja i GSAP boot-up intro animacijom.
+- Dodani su cross-browser fallbackovi za Opera/Safari/Firefox/Edge: backdrop blur, mask, clip/overflow, viewport jedinice, aspect ratio, inset i WebGL failure path.
+- 404 i homepage Three.js sada imaju statičan, namjeran fallback bez praznog canvasa i bez nastavka render loopa nakon gubitka konteksta.
+- Inquiry AJAX sada ima nonce refresh, output-buffer dijagnostiku, jasne JSON/server greške i `wp_mail_failed` zapis za SMTP audit.
 - Theme version: `1.6.1`.

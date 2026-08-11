@@ -85,7 +85,7 @@ h3 { font-size: clamp(1.15rem, 1.7vw, 1.5rem); font-weight: 700; line-height: 1.
 .wrap { max-width: var(--page-max, 1500px); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
 .sec > .wrap { position: relative; z-index: 2; }
 .wrap-narrow { max-width: 980px; }
-.sec { position: relative; padding: var(--sec-pad) 0; overflow: clip; }
+.sec { position: relative; padding: var(--sec-pad) 0; overflow: hidden; overflow: clip; }
 .sec-paper { background: var(--paper); color: var(--ink); }
 .sec-paper2 { background: var(--paper-2); color: var(--ink); }
 .sec-ink { background: var(--black); color: var(--paper-2); }
@@ -336,6 +336,7 @@ body.on-light #nav.scrolled #burger i { background: var(--ink); }
 .pin-space { height: 560vh; position: relative; }
 .pin-stage {
   position: sticky; top: 0; height: 100vh;
+  overflow-x: hidden;
   overflow-x: clip;
   overflow-y: hidden;
   display: flex; flex-direction: column; justify-content: center;
@@ -1954,3 +1955,81 @@ body.on-light #nav.scrolled .nav-links a.is-current { color: var(--ink); border-
   .pf-card.is-live > .pf-lab::before { animation: none; }
 }
 #poseban-opseg { scroll-margin-top: 90px; }
+
+/* ============================================================
+   ZAEC 1.6.1 · cross-browser compatibility layer
+   ============================================================ */
+/* Opera/Safari fallback: clip nikad ne smije postati jedini overflow mehanizam. */
+.sec { overflow: hidden; overflow: clip; }
+.pin-stage { overflow-x: hidden; overflow-x: clip; }
+
+#nav.scrolled,
+.occ-card,
+.call-card,
+.build-hud {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  #nav.scrolled { background: rgba(14, 14, 13, .96); }
+  .occ-card { background: rgba(10, 14, 20, .96); }
+  .call-card { background: rgba(14, 14, 13, .96); }
+  .build-hud { background: rgba(14, 14, 13, .96); }
+}
+
+@supports not ((mask-image: radial-gradient(circle, #000, transparent)) or (-webkit-mask-image: radial-gradient(circle, #000, transparent))) {
+  .bp-grid-dark,
+  .pl-grid { -webkit-mask-image: none; mask-image: none; opacity: .38; }
+  .sec-ink::before { -webkit-mask-image: none; mask-image: none; opacity: .32; }
+}
+@supports not (clip-path: inset(0)) {
+  #mobileMenu { clip-path: none; max-height: 0; transform: translateY(-100%); transition: max-height .4s ease, transform .4s ease, visibility 0s .4s; }
+  #mobileMenu.open { max-height: 100vh; transform: translateY(0); transition: max-height .4s ease, transform .4s ease; }
+}
+@supports not (aspect-ratio: 1 / 1) {
+  .ph-body { height: 602px; }
+  .ms-gal i { height: 44px; }
+  .proj-mock--image { height: 260px; }
+}
+@media (max-width: 900px) {
+  @supports not (aspect-ratio: 1 / 1) {
+    .ph-body { height: calc(70vw * 2.075); }
+  }
+}
+@supports not (inset: 0) {
+  .bp-grid-dark,
+  .sec-ink::before,
+  #preloader,
+  #cursorWrap,
+  #mobileMenu,
+  #holoFallbackD,
+  #layerLabels,
+  .ek-glow,
+  .ek-rings,
+  #upitParticles,
+  .final-veil { top: 0; right: 0; bottom: 0; left: 0; }
+}
+
+/* WebGL fallback: normalni content flow, nikad prazna 560vh hero pozornica. */
+html.no-3d .pin-space { height: auto; }
+html.no-3d .pin-stage { position: static; height: auto; min-height: 0; overflow: visible; padding: 0; }
+html.no-3d .hero-grid { grid-template-columns: 1fr; height: auto; gap: 40px; padding-top: calc(var(--nav-h) + 56px); }
+html.no-3d .hero-copy,
+html.no-3d .hero-stage,
+html.no-3d .svc-panel { grid-area: auto; }
+html.no-3d .hero-copy { order: 1; opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto !important; }
+html.no-3d .hero-stage { order: 2; height: auto; overflow: visible; }
+html.no-3d .svc-panel { order: 3; opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto !important; max-width: none; padding-bottom: 0; }
+html.no-3d #holoWrap { height: min(48vh, 420px); max-height: none; }
+@media (max-width: 900px) {
+  html.no-3d .hero-grid { gap: 30px; padding-top: calc(var(--nav-h) + 34px); }
+  html.no-3d #holoWrap { min-height: 280px; height: 48vh; }
+}
+@supports not (clip-path: inset(0)) {
+  #mobileMenu { overflow: hidden; }
+}
+
+/* Stabilizira fallback metriku dok se Space Grotesk/IBM Plex Mono učitavaju. */
+@supports (font-size-adjust: .52) {
+  body { font-size-adjust: .52; }
+}
