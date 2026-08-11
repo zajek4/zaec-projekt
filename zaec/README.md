@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.4.4
+# ZAEC WordPress Theme — v1.5.0
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -20,6 +20,7 @@ Tema registrira CPT **Projekti** s javnim archiveom `/radovi/`.
 - Naslov, case-study tekst, excerpt i featured image koriste standardni WordPress editor.
 - Meta box **ZAEC — podaci projekta** sadrži oznaku projekta, uslugu, lokaciju, godinu, tehnologije, live URL i samo potvrđeni rezultat/ishod.
 - Checkbox **Istakni na naslovnici** kontrolira homepage selekciju. Ako nijedan projekt nije označen, naslovnica uzima najnovije objavljene projekte.
+- Na čistoj instalaciji tema jednokratno pripremi tri navedena ZAEC projekta (CZA Osijek, Eurokontrola, Daj Gric). Ako već postoji barem jedan projekt, seed se preskače.
 - Ne unosite izmišljene rezultate. Polje rezultata smije ostati prazno.
 
 ## Cjenik v1.1
@@ -76,3 +77,12 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Na mobilnoj navigaciji poziv je diskretna bijela ikona uz hamburger; plavi CTA ostaje u sadržaju, a kontaktne kartice imaju zaobljene rubove.
 - Veliki ZAEC u footeru vraćen je unutar iste content mreže kao i ostatak footera.
 - Migracija `1.4.4` mijenja samo poznate stare default vrijednosti; ručno uređeni sadržaj klijenta se ne prepisuje.
+
+## v1.5.0
+
+- Naslovnica vraća jači autorski ZAEC glas: manje apstraktnih fraza, više jasnih odgovora na pitanje čemu web služi i kako dovodi do kontakta.
+- Primarno obraćanje je usmjereno na majstore, servisne i lokalne uslužne djelatnosti; Centar za autizam, Eurokontrola i Daj Gric pokazuju da ista disciplina strukture radi i za ustanovu, B2B uslugu i restoran.
+- Dodana su tri stvarna projekta kao početni CPT sadržaj, samo ako u postojećem portfoliju još nema projekata. Ako projekti već postoje, tema ih ne dira.
+- Dodana je potvrđena testimonial izjava Dominika, CEO-a Daj Grica, prema dostavljenom sadržaju.
+- Trust traka sada ističe tri stvarna projekta, Google ocjenu 4.9/5, jasan cilj weba i direktan put do kontakta.
+- Migracija `1.5.0` ponovno mijenja samo poznate stare default vrijednosti; ručne izmjene ostaju sačuvane.

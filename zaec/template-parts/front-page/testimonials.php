@@ -21,6 +21,7 @@ $total  = count( $quotes );
 		<div class="sec-head offset">
 			<p class="kicker"><?php echo esc_html( zaec_front_field( 'klijenti_kicker' ) ); ?></p>
 			<h2><?php echo esc_html( zaec_front_field( 'klijenti_title' ) ); ?></h2>
+			<p class="lead"><?php echo esc_html( zaec_front_field( 'klijenti_lead' ) ); ?></p>
 		</div>
 
 		<?php if ( $quotes ) : ?>
@@ -29,7 +30,7 @@ $total  = count( $quotes );
 					<div class="car-track" id="carTrack">
 						<?php foreach ( $quotes as $index => $quote ) : ?>
 							<blockquote class="quote-card" id="quote-<?php echo esc_attr( $index + 1 ); ?>">
-								<div class="stars" aria-label="<?php esc_attr_e( 'Ocjena 5 od 5', 'zaec' ); ?>"><?php for ( $star = 0; $star < 5; $star++ ) : ?><svg aria-hidden="true"><use href="#ic-star"/></svg><?php endfor; ?></div>
+								<div class="quote-proof" aria-label="<?php esc_attr_e( 'Potvrđena izjava klijenta', 'zaec' ); ?>"><?php esc_html_e( '[ POTVRĐENA IZJAVA ]', 'zaec' ); ?></div>
 								<p>“<?php echo esc_html( $quote['quote'] ); ?>”</p>
 								<footer><b><?php echo esc_html( $quote['name'] ); ?></b><span class="q-role"><i><?php echo esc_html( $quote['role'] ); ?></i><i><?php echo esc_html( $quote['company'] ); ?></i></span></footer>
 							</blockquote>

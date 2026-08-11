@@ -102,7 +102,7 @@ $activities = array(
 
 				<div class="f-field">
 					<label for="fPoruka"><?php esc_html_e( 'Poruka', 'zaec' ); ?> <span class="f-opt"><?php esc_html_e( '(nije obavezno)', 'zaec' ); ?></span></label>
-					<textarea id="fPoruka" name="poruka" rows="4" placeholder="<?php esc_attr_e( 'Dvije rečenice su dovoljne: što nudite i što vam treba.', 'zaec' ); ?>"></textarea>
+					<textarea id="fPoruka" name="poruka" rows="4" placeholder="<?php esc_attr_e( 'Opišite što nudite, kome se trebaju javiti i što vam danas nedostaje.', 'zaec' ); ?>"></textarea>
 				</div>
 
 				<button type="submit" class="btn btn-signal btn-arrow f-submit" id="fSubmit">

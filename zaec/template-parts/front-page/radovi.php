@@ -51,7 +51,7 @@ $projects_query = zaec_get_home_projects( 3 );
 		<?php else : ?>
 			<div class="projects-empty">
 				<p class="kicker">[ STVARNI PROJEKTI ]</p>
-				<h3><?php esc_html_e( 'Ne izmišljamo dokaze.', 'zaec' ); ?></h3>
+				<h3><?php esc_html_e( 'Ne izmišljamo ono što nemamo.', 'zaec' ); ?></h3>
 				<p><?php esc_html_e( 'Ovdje prikazujemo projekte tek kada možemo jasno pokazati što je trebalo riješiti, što je isporučeno i koji je ishod stvarno potvrđen.', 'zaec' ); ?></p>
 				<?php if ( current_user_can( 'edit_posts' ) ) : ?>
 					<p class="projects-empty__admin"><?php esc_html_e( 'Admin: dodajte projekt kroz Projekti → Dodaj projekt i označite ga za naslovnicu.', 'zaec' ); ?></p>

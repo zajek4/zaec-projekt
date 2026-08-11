@@ -72,7 +72,8 @@ function zaec_front_field_groups() {
 		),
 		'Recenzije' => array(
 			'klijenti_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
-			'klijenti_title' => array( 'label' => 'Naslov', 'type' => 'text' ),
+'klijenti_title'         => array( 'label' => 'Naslov', 'type' => 'text' ),
+			'klijenti_lead'          => array( 'label' => 'Lead', 'type' => 'textarea' ),
 		),
 		'FAQ' => array(
 			'faq_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
@@ -100,7 +101,7 @@ function zaec_repeater_schemas() {
 		'screen_points' => array( 'title' => 'Mobile-first — točke', 'fixed' => true, 'fields' => array( 'code' => 'Oznaka', 'title' => 'Naslov', 'text' => 'Tekst' ) ),
 		'pricing' => array( 'title' => 'Cijene — 2× Predložak + 2× Po nacrtu', 'fixed' => true, 'fields' => array( 'track' => 'Staza (Predložak / Po nacrtu)', 'code' => 'Oznaka', 'name' => 'Naziv', 'price' => 'Cijena', 'meta' => 'Cijena meta', 'tag' => 'Podnaslov', 'badge' => 'Badge', 'featured' => 'Featured (1/0)', 'package' => 'Vrijednost paketa', 'cta' => 'CTA tekst', 'features' => 'Stavke — jedna po retku' ) ),
 		'pricing_notes' => array( 'title' => 'Cijene — pravila opsega', 'fixed' => true, 'fields' => array( 'label' => 'Oznaka', 'text' => 'Tekst' ) ),
-		'testimonials' => array( 'title' => 'Recenzije', 'fields' => array( 'quote' => 'Izjava', 'name' => 'Ime', 'role' => 'Djelatnost / uloga', 'company' => 'Tvrtka / grad' ) ),
+		'testimonials' => array( 'title' => 'Recenzije — samo potvrđene izjave', 'fields' => array( 'quote' => 'Izjava', 'name' => 'Ime', 'role' => 'Djelatnost / uloga', 'company' => 'Tvrtka / grad' ) ),
 		'trust_stats' => array( 'title' => 'Trust traka — samo potvrđene tvrdnje', 'fixed' => true, 'fields' => array( 'value' => 'Vrijednost', 'label' => 'Opis' ) ),
 		'stack_items' => array( 'title' => 'Stack kartice (Google / shop)', 'fixed' => true, 'fields' => array( 'code' => 'Oznaka', 'title' => 'Naslov', 'text' => 'Tekst' ) ),
 		'faqs' => array( 'title' => 'FAQ', 'fields' => array( 'question' => 'Pitanje', 'answer' => 'Odgovor' ) ),

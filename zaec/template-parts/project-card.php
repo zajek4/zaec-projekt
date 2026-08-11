@@ -24,6 +24,11 @@ $meta    = array_filter( array( $project['service'] ?? '', $project['location'] 
 		<h3><a href="<?php echo esc_url( $link ); ?>"><?php echo esc_html( $project['title'] ?? '' ); ?></a></h3>
 		<?php if ( $meta ) : ?><p class="proj-pack"><?php echo esc_html( implode( ' · ', $meta ) ); ?></p><?php endif; ?>
 		<?php if ( ! empty( $project['result'] ) ) : ?><p class="proj-res"><?php echo esc_html( $project['result'] ); ?></p><?php endif; ?>
-		<a class="proj-link" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'Case study', 'zaec' ); ?> →</a>
+		<div class="proj-links">
+			<a class="proj-link" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'Case study', 'zaec' ); ?> →</a>
+			<?php if ( ! empty( $project['website_url'] ) ) : ?>
+				<a class="proj-link proj-link--live" href="<?php echo esc_url( $project['website_url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Live', 'zaec' ); ?> ↗</a>
+			<?php endif; ?>
+		</div>
 	</div>
 </article>

@@ -354,5 +354,119 @@ function zaec_migrate_theme_data() {
 		update_option( 'zaec_theme_data_version', '1.4.4', false );
 	}
 
+
+	/* v1.5.0 — povratak jasnijem, autentičnijem prodajnom copyju. */
+	if ( version_compare( $version, '1.5.0', '<' ) ) {
+		if ( $front_id ) {
+			$defaults  = zaec_front_defaults();
+			$repeaters = zaec_front_repeater_defaults();
+
+			$old_scalars = array(
+				'hero_kicker'          => '[ Web studio · Osijek ]',
+				'hero_title'           => 'Web koji vaš posao objašnjava — i otvara put do kontakta.',
+				'hero_lead'            => 'Dobra web stranica nije ukras. Objasni što nudite, pokaže zašto vam vjerovati i vodi posjetitelja do poziva ili upita. Po predlošku ili po nacrtu — opseg i cijena prije početka.',
+				'hero_secondary_text'  => 'Kako web radi',
+				'hero_secondary_url'   => '#metoda',
+				'hero_note'            => 'Bez pritiska · prvo razumijemo posao, zatim predlažemo smjer.',
+				'services_title'       => 'Web koji razumije vaš posao.',
+				'services_lead'        => 'Web nije online letak. Njegov posao je da u nekoliko sekundi objasni što nudite, kome pomažete, gdje radite i kako vam se osoba može javiti.',
+				'services_note'        => 'Struktura, sadržaj i poziv na akciju slažu se prema vašem poslu — ne prema generičkom paketu.',
+				'poznato_title'        => 'Kada web ne služi samo sebi.',
+				'poznato_bridge'       => 'Web prvo smanjuje nedoumicu, zatim pokazuje razlog za povjerenje i završava jasnim pozivom ili upitom.',
+				'metoda_title'         => 'Prije koda, razlog zbog kojeg će vas netko kontaktirati.',
+				'metoda_lead'          => 'Prije dizajna razumijemo što prodajete, što klijent mora znati i koji je sljedeći korak: poziv, upit, rezervacija ili kupnja.',
+				'proces_title'         => 'Od stvarnog problema do objave.',
+				'proces_lead'          => 'Ne gradimo stranice da samo izgledaju dobro. Dogovorimo što trebaju objasniti, kamo trebaju voditi i kako provjeravamo da to radi.',
+				'ekran_title'          => 'Prvo mobitel. Onda jasan put do kontakta.',
+				'ekran_lead'           => 'Na malom ekranu nema prostora za lutanje. Posjetitelj mora odmah razumjeti što radite, vidjeti zašto vam može vjerovati i u jednom dodiru nazvati ili poslati upit.',
+				'cijene_title'         => 'Biramo način izrade prema poslu, ne prema trendu.',
+				'cijene_lead'          => 'Predložak je brži kada je standardni smjer dovoljan. Po nacrtu prvo rješavamo strukturu i UX za konkretan posao. U oba slučaja opseg i cijena su jasni prije rada.',
+				'radovi_kicker'        => '[ 07 — Dokazi ]',
+				'radovi_title'         => 'Radovi koji pokazuju kako razmišljamo.',
+				'radovi_lead'          => 'Ne pokazujemo ukrasne makete kao rezultate. Objavljujemo stvarne projekte, njihov opseg i samo potvrđene ishode.',
+				'klijenti_kicker'      => '[ 08 — Povjerenje ]',
+				'klijenti_title'       => 'Riječ majstora.',
+				'upit_title'           => 'Recite nam što vaš web treba postići.',
+				'upit_lead'            => 'Vi najbolje znate svoj posao. Mi pomažemo prevesti ga u jasnu ponudu, dokaz i put do poziva ili upita.',
+				'call_kicker'          => '[ Razgovor bez pritiska ]',
+				'call_note'            => 'Ne trebate pripremiti tehnički jezik. Dovoljno je reći što nudite, kome se obraćate i gdje danas zapinje.',
+			);
+			foreach ( $old_scalars as $key => $old_value ) {
+				$current = get_post_meta( $front_id, '_zaec_' . $key, true );
+				if ( $old_value === $current && isset( $defaults[ $key ] ) ) {
+					update_post_meta( $front_id, '_zaec_' . $key, $defaults[ $key ] );
+				}
+			}
+
+			$old_repeaters = array(
+				'services' => array(
+					array( 'number' => '01', 'title' => 'Poslovne web stranice', 'text' => 'Jasna ponuda, dokaz i put do kontakta.', 'layer' => '1' ),
+					array( 'number' => '02', 'title' => 'Struktura i UX', 'text' => 'Prvo rješavamo što posjetitelj treba znati i napraviti.', 'layer' => '2' ),
+					array( 'number' => '03', 'title' => 'Lokalna vidljivost', 'text' => 'Temelji koji pomažu da vas pravi ljudi pronađu.', 'layer' => '4' ),
+					array( 'number' => '04', 'title' => 'Landing stranice', 'text' => 'Jedna ponuda, jedan cilj i jasan sljedeći korak.', 'layer' => '5' ),
+					array( 'number' => '05', 'title' => 'Mjerenje i povezivanje', 'text' => 'Kontakt, analitika i alati koji imaju razlog.', 'layer' => '3' ),
+					array( 'number' => '06', 'title' => 'Postavljanje i primopredaja', 'text' => 'Sustav koji možete koristiti i nakon objave.', 'layer' => '0' ),
+				),
+				'pain_points' => array(
+					array( 'code' => 'F.01', 'title' => 'Ljudi ne razumiju što nudite.', 'text' => 'Ako posjetitelj brzo ne shvati kome pomažete i kako vas dobiti, odlazi prije razgovora.' ),
+					array( 'code' => 'F.02', 'title' => 'Preporuke nisu dovoljne same po sebi.', 'text' => 'Preporuka dovede osobu do vašeg imena; web joj pomaže provjeriti ponudu, radove i sljedeći korak.' ),
+					array( 'code' => 'F.03', 'title' => 'Upiti ne dolaze slučajno.', 'text' => 'Web ne može zamijeniti dobru uslugu, ali može jasno odgovoriti na ista pitanja prije prvog poziva i smanjiti trenje.' ),
+					array( 'code' => 'F.04', 'title' => 'Oprezni ste — s razlogom.', 'text' => 'Možda ste već platili web koji nikad nije zaživio. Razumije se. Zato kod nas cijenu, rok i opseg dobivate na papir prije početka — i slobodno možete reći ne.' ),
+				),
+				'method_points' => array(
+					array( 'code' => '3.1', 'title' => 'Razumijemo posao prije dizajna', 'text' => 'Što prodajete, kome pomažete i gdje nastaje odluka.' ),
+					array( 'code' => '3.2', 'title' => 'Sadržaj koji vodi do kontakta', 'text' => 'Odgovor na pitanja, dokaz i jasan sljedeći korak.' ),
+					array( 'code' => '3.3', 'title' => 'Mjerenje bez magle', 'text' => 'Pratimo klikove, pozive i upite kada je mjerenje postavljeno.' ),
+				),
+				'screen_points' => array(
+					array( 'code' => '5.1', 'title' => 'Odgovor u prvim sekundama', 'text' => 'Posjetitelj odmah vidi što nudite, kome pomažete i zašto vam se može javiti.' ),
+					array( 'code' => '5.2', 'title' => 'Kontakt bez traženja', 'text' => 'Poziv i upit ostaju dostupni tamo gdje ih osoba očekuje — bez kopanja po stranici.' ),
+					array( 'code' => '5.3', 'title' => 'Sadržaj koji vodi', 'text' => 'Usluge, dokaz, često pitanje i sljedeći korak slažu se u razumljiv put do razgovora.' ),
+				),
+				'trust_stats' => array(
+					array( 'value' => '4.9', 'label' => 'Google ocjena' ),
+					array( 'value' => 'JASNO', 'label' => 'što web treba postići' ),
+					array( 'value' => 'DIREKTNO', 'label' => 'do poziva ili upita' ),
+					array( 'value' => 'STVARNO', 'label' => 'radovi i izjave' ),
+				),
+			);
+			foreach ( $old_repeaters as $key => $old_rows ) {
+				$current_rows = get_post_meta( $front_id, '_zaec_' . $key, true );
+				if ( is_array( $current_rows ) && $old_rows === $current_rows ) {
+					update_post_meta( $front_id, '_zaec_' . $key, $repeaters[ $key ] );
+				}
+			}
+
+			$old_faq_answers = array(
+				'Koliko traje izrada?' => 'Predložak je najbrža opcija, a izrada po nacrtu traži više vremena jer prvo potvrđujemo strukturu i dizajn. Konkretan rok ulazi u ponudu prije početka rada.',
+				'Što ako mi se dizajn ne svidi?' => 'Kod predloška birate postojeći smjer i prilagođavamo ga vašem brandu. Kod izrade po nacrtu prvo potvrđujemo nacrt i vizualni smjer, uz dogovoreni broj korekcija prije razvoja.',
+				'Tko radi moju stranicu?' => 'Vi imate jednu odgovornu osobu — ne lanac podizvođača. Iza ZAEC-a stoji više od deset godina rada na webu, uz UX, sadržaj i Google integracije.',
+				'Trebam li znati o tehnologiji?' => 'Ne. Mi vodimo tehnički dio, a pri primopredaji dobijete pristupe i kratke upute za ono što stvarno trebate uređivati.',
+				'Radite li marketing i Google oglase?' => 'Ne prodajemo marketinške pakete niti obećavamo pozicije. Postavljamo tehničke i sadržajne temelje, a ako plaćeni oglas ima smisla za vaš posao, reći ćemo to otvoreno i odvojeno.',
+				'Radite li webshop i kartično plaćanje?' => 'Da, kada je opseg jasan: WooCommerce i kartično plaćanje preko Corvus Paya za hrvatsko tržište. To ide kao poseban opseg — prvo funkcije i pravila, zatim cijena, nikad "shop u pola dana".',
+				'Radite li samo lokalno ili za cijelu Hrvatsku?' => 'Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom. Radili smo s obrtnicima i s većim tvrtkama, uključujući suradnje na daljinu s klijentima izvan Hrvatske kad opseg to traži.',
+				'Što točno radite oko Googlea?' => 'U sklopu izrade postavljamo ili uredimo Google Business Profile, tehničke SEO temelje, Analytics i Search Console. Ne prodajemo vođenje oglasnih kampanja kao mjesečni paket — ako jednokratna pomoć oko oglasa ima smisla, kažemo to odvojeno.',
+			);
+			$faqs = get_post_meta( $front_id, '_zaec_faqs', true );
+			if ( is_array( $faqs ) ) {
+				foreach ( $faqs as $index => $faq ) {
+					$question = isset( $faq['question'] ) ? $faq['question'] : '';
+					$answer   = isset( $faq['answer'] ) ? $faq['answer'] : '';
+					if ( isset( $old_faq_answers[ $question ] ) && $old_faq_answers[ $question ] === $answer ) {
+						foreach ( $repeaters['faqs'] as $new_faq ) {
+							if ( isset( $new_faq['question'] ) && $new_faq['question'] === $question ) {
+								$faqs[ $index ] = $new_faq;
+								break;
+							}
+						}
+					}
+				}
+				update_post_meta( $front_id, '_zaec_faqs', $faqs );
+			}
+		}
+
+		update_option( 'zaec_theme_data_version', '1.5.0', false );
+	}
+
 }
 add_action( 'admin_init', 'zaec_migrate_theme_data' );

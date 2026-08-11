@@ -205,3 +205,99 @@ function zaec_project_archive_order( $query ) {
 	$query->set( 'orderby', array( 'menu_order' => 'ASC', 'date' => 'DESC' ) );
 }
 add_action( 'pre_get_posts', 'zaec_project_archive_order' );
+
+/**
+ * Početni stvarni projekti koje je vlasnik teme naveo za javni prikaz.
+ *
+ * Seed se izvršava samo jednom i samo ako u CPT-u još nema projekata.
+ * Ako klijent već ima vlastiti portfolio, tema ga ne dira.
+ */
+function zaec_default_project_seed_data() {
+	return array(
+		array(
+			'code'         => 'CZA.01',
+			'title'        => 'Centar za autizam Osijek',
+			'service'      => 'Web stranica · ustanova',
+			'location'     => 'Osijek',
+			'year'         => '',
+			'technologies' => 'UX · sadržajna struktura · responsive web',
+			'website_url'  => 'https://cza-os.hr/',
+			'excerpt'      => 'Jasna digitalna prezentacija Centra, njegovih programa, projekata, novosti i načina kontakta.',
+			'content'      => "Web stranica Centra za autizam Osijek okuplja ono što roditelji, učenici i lokalna zajednica trebaju pronaći: informacije o Centru, programe, terapijske postupke, projekte, novosti, galeriju i kontakt.\n\nSadržaj je organiziran tako da važna informacija ne ostane skrivena iza općenite priče.",
+		),
+		array(
+			'code'         => 'EKO.02',
+			'title'        => 'Eurokontrola',
+			'service'      => 'Web stranica · B2B',
+			'location'     => 'Osijek',
+			'year'         => '',
+			'technologies' => 'UX · usluge · sadržajna struktura',
+			'website_url'  => 'https://eurokontrola.hr/',
+			'excerpt'      => 'Stručna kontrola kvalitete i laboratorijske analize hrane, sirovina i poljoprivrednih proizvoda.',
+			'content'      => "Web stranica Eurokontrole razdvaja usluge kontrole kvalitete i laboratorijskih analiza u razumljive cjeline.\n\nPosjetitelj može brzo doći do relevantne usluge, saznati što Eurokontrola radi i nastaviti prema kontaktu bez prolaska kroz nevažan sadržaj.",
+		),
+		array(
+			'code'         => 'DGR.03',
+			'title'        => 'Daj Gric',
+			'service'      => 'Web stranica · restoran i catering',
+			'location'     => 'Bilje',
+			'year'         => '',
+			'technologies' => 'UX · meni · narudžbe · catering',
+			'website_url'  => 'https://dajgric.com/',
+			'excerpt'      => 'Web mjesto restorana brze hrane i cateringa s menijem, narudžbama, lokacijom i galerijom.',
+			'content'      => "Daj Gric treba biti brz i konkretan: što je na meniju, gdje se restoran nalazi, kako naručiti i što catering nudi za veće događaje.\n\nStranica te informacije stavlja ispred ukrasa i vodi posjetitelja prema narudžbi ili kontaktu.",
+		),
+	);
+}
+
+function zaec_seed_default_projects() {
+	if ( get_option( 'zaec_project_seed_version', '' ) ) {
+		return;
+	}
+
+	$existing = get_posts(
+		array(
+			'post_type'      => 'projekti',
+			'post_status'    => 'any',
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+		)
+	);
+	if ( $existing ) {
+		update_option( 'zaec_project_seed_version', 'skipped-existing', false );
+		return;
+	}
+
+	$created = 0;
+	foreach ( zaec_default_project_seed_data() as $project ) {
+		$post_id = wp_insert_post(
+			array(
+				'post_type'    => 'projekti',
+				'post_status'  => 'publish',
+				'post_title'   => $project['title'],
+				'post_excerpt' => $project['excerpt'],
+				'post_content' => $project['content'],
+				'menu_order'   => $created,
+			),
+			true
+		);
+
+		if ( is_wp_error( $post_id ) ) {
+			continue;
+		}
+
+		foreach ( array( 'code', 'service', 'location', 'year', 'technologies', 'website_url' ) as $key ) {
+			$value = isset( $project[ $key ] ) ? $project[ $key ] : '';
+			if ( '' !== $value ) {
+				update_post_meta( $post_id, '_zaec_project_' . $key, $value );
+			}
+		}
+		update_post_meta( $post_id, '_zaec_project_featured', '1' );
+		$created++;
+	}
+
+	if ( $created ) {
+		update_option( 'zaec_project_seed_version', '1.0.0', false );
+	}
+}
+add_action( 'admin_init', 'zaec_seed_default_projects', 30 );

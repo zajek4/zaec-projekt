@@ -25,7 +25,7 @@ $address_line  = trim( implode( ', ', array_filter( array( $options['address'], 
 		<div class="foot-col foot-brand">
 			<?php zaec_brand_mark( 'foot-mark' ); ?>
 			<p class="foot-tag">ZAEC · Web studio</p>
-			<p class="foot-line"><?php esc_html_e( 'Web stranice s jasnim opsegom, cijenom prije koda i primopredajom bez magle — za obrte i tvrtke diljem Hrvatske.', 'zaec' ); ?></p>
+			<p class="foot-line"><?php esc_html_e( 'Web koji objasni vaš posao, izgradi povjerenje i olakša prvi kontakt — za obrte i tvrtke diljem Hrvatske.', 'zaec' ); ?></p>
 			<p class="foot-loc"><?php echo esc_html( $options['location'] ); ?></p>
 		</div>
 
