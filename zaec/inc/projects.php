@@ -75,6 +75,7 @@ function zaec_project_fields() {
 		'result'       => array( 'label' => 'Potvrđeni rezultat / ishod', 'type' => 'textarea', 'placeholder' => 'Upisati samo ako je rezultat stvarno izmjeren i potvrđen.' ),
 		'technologies' => array( 'label' => 'Tehnologije', 'type' => 'text', 'placeholder' => 'WordPress, WooCommerce, GSAP' ),
 		'website_url'  => array( 'label' => 'URL projekta', 'type' => 'url', 'placeholder' => 'https://...' ),
+		'shot_mobile'  => array( 'label' => 'Screenshot mobitela', 'type' => 'url', 'placeholder' => 'https://... ili URL iz Media Library' ),
 	);
 }
 
@@ -164,6 +165,7 @@ function zaec_get_project_data( $post_id ) {
 		'result'       => (string) get_post_meta( $post_id, '_zaec_project_result', true ),
 		'technologies' => (string) get_post_meta( $post_id, '_zaec_project_technologies', true ),
 		'website_url'  => (string) get_post_meta( $post_id, '_zaec_project_website_url', true ),
+		'shot_mobile' => (string) get_post_meta( $post_id, '_zaec_project_shot_mobile', true ),
 		'image'       => (string) get_post_meta( $post_id, '_zaec_project_image', true ),
 		'permalink'    => get_permalink( $post_id ),
 	);

@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.6.1
+# ZAEC WordPress Theme — v1.7.0
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -115,3 +115,12 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - 404 i homepage Three.js sada imaju statičan, namjeran fallback bez praznog canvasa i bez nastavka render loopa nakon gubitka konteksta.
 - Inquiry AJAX sada ima nonce refresh, output-buffer dijagnostiku, jasne JSON/server greške i `wp_mail_failed` zapis za SMTP audit.
 - Theme version: `1.6.1`.
+
+## v1.7.0
+
+- Single projekt je redizajniran iz starog HUD panela u odobreni Showroom koncept.
+- Dodano je opcionalno meta polje **Screenshot mobitela** (`_zaec_project_shot_mobile`), uz backward-compatible fallback na featured screenshot.
+- Hero koristi laptop + mobitel uređaje, bento ključne podatke, opcionalnu scenu ekrana, editorial priču i veliku Next project karticu.
+- Sadržaj i meta paneli pojavljuju se samo kada stvarni podaci postoje; nema praznih scena ni izmišljenih rezultata.
+- Single projekt dobiva uvjetni GSAP + ScrollTrigger modul, a fallback ostaje statičan i potpun bez JS-a ili uz reduced motion.
+- Theme version: `1.7.0`.
