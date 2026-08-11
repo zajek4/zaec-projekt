@@ -46,6 +46,7 @@ function zaec_front_defaults() {
 		'band_price'             => 'Po procjeni',
 		'band_price_meta'        => 'nakon opsega',
 		'band_cta'               => 'Definirajmo opseg',
+		'band_next_cta'         => 'Zatraži procjenu opsega',
 		'radovi_kicker'          => '[ 07 — Radovi ]',
 		'radovi_title'           => 'Radovi iz stvarnog svijeta.',
 		'radovi_lead'            => 'Tri različita posla, tri različita razloga za dobar web. Ne pokazujemo makete — pokazujemo ono što je stvarno online.',

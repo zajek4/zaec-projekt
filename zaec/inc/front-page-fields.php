@@ -58,7 +58,8 @@ function zaec_front_field_groups() {
 			'band_text' => array( 'label' => 'Poseban opseg — tekst', 'type' => 'textarea' ),
 			'band_price' => array( 'label' => 'Poseban opseg — cijena/oznaka', 'type' => 'text' ),
 			'band_price_meta' => array( 'label' => 'Poseban opseg — meta', 'type' => 'text' ),
-			'band_cta' => array( 'label' => 'Poseban opseg — CTA', 'type' => 'text' ),
+			'band_cta' => array( 'label' => 'Poseban opseg — link CTA', 'type' => 'text' ),
+			'band_next_cta' => array( 'label' => 'Poseban opseg — sljedeći korak', 'type' => 'text' ),
 		),
 		'Stack / Google / Shop' => array(
 			'stack_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),

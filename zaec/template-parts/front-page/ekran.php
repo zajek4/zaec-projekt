@@ -12,7 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$points = zaec_front_repeater( 'screen_points' );
+$points      = zaec_front_repeater( 'screen_points' );
+$options      = zaec_get_options();
+$phone_href   = zaec_phone_href( $options['phone_raw'] );
+$phone_display = $options['phone_display'];
 ?>
 <section id="ekran" class="sec sec-ink" data-theme="dark">
 	<div class="crops" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -59,33 +62,33 @@ $points = zaec_front_repeater( 'screen_points' );
 								<div class="ms-scroll" id="msScroll">
 									<div class="ms-nav">
 										<b>KLIMA SERVIS<em>servis · montaža · čišćenje</em></b>
-										<span class="ms-cta">Pozovi</span>
+										<a class="ms-cta" href="tel:<?php echo esc_attr( $phone_href ); ?>">Pozovi</a>
 									</div>
 
 									<div class="ms-hero">
 										<span class="ms-kick">Umag · Buje · Novigrad · Istra</span>
 										<h4>Temperatura vani. Mir unutra.</h4>
 										<p>Servis, čišćenje i montaža klima uređaja. Prvo utvrdimo što prostoru treba, zatim dogovorimo termin.</p>
-										<div class="ms-btns"><span class="ms-b1">Zatraži procjenu</span><span class="ms-b2">Nazovi</span></div>
-										<div class="ms-proof"><svg class="ms-star" aria-hidden="true"><use href="#ic-star"/></svg><span>4.9/5 · Google recenzije</span></div>
+										<div class="ms-btns"><a class="ms-b1" href="#upit">Zatraži procjenu</a><a class="ms-b2" href="tel:<?php echo esc_attr( $phone_href ); ?>">Nazovi</a></div>
+										<div class="ms-proof"><svg class="ms-star" aria-hidden="true"><use href="#ic-star"/></svg><span>Google recenzije</span></div>
 									</div>
 
 									<div class="ms-gal"><i>Klima ne hladi</i><i>Osjeti se miris</i><i>Trebam novu klimu</i><i>Vrijeme za servis</i></div>
 
 									<div class="ms-list">
-										<div><b>Dijagnostika na licu mjesta</b><span>Zakaži →</span></div>
-										<div><b>Čišćenje &amp; dezinfekcija</b><span>Zakaži →</span></div>
-										<div><b>Montaža &amp; skrivena rješenja</b><span>Zakaži →</span></div>
-										<div><b>Redovito održavanje</b><span>Zakaži →</span></div>
+										<div><b>Dijagnostika na licu mjesta</b><a href="#upit">Zakaži →</a></div>
+										<div><b>Čišćenje &amp; dezinfekcija</b><a href="#upit">Zakaži →</a></div>
+										<div><b>Montaža &amp; skrivena rješenja</b><a href="#upit">Zakaži →</a></div>
+										<div><b>Redovito održavanje</b><a href="#upit">Zakaži →</a></div>
 									</div>
 
-									<div class="ms-band"><h5>Razgovarajmo o prostoru.</h5><span class="ms-b1">Zatraži procjenu</span></div>
+									<div class="ms-band"><h5>Razgovarajmo o prostoru.</h5><a class="ms-b1" href="#upit">Zatraži procjenu</a></div>
 
 									<div class="ms-foot"><b>KLIMA SERVIS</b><span>Umag · Buje · Novigrad · Istra</span><span>poziv · upit · termin</span></div>
 								</div>
 							</div>
 
-							<div class="ms-sticky"><svg class="ph-ic" aria-hidden="true"><use href="#ic-phone"/></svg><span>Pozovi · jasan kontakt</span></div>
+							<a class="ms-sticky" href="tel:<?php echo esc_attr( $phone_href ); ?>"><svg class="ph-ic" aria-hidden="true"><use href="#ic-phone"/></svg><span>Pozovi · <?php echo esc_html( $phone_display ); ?></span></a>
 							<div class="ph-island" aria-hidden="true"></div>
 							<div class="ph-glare" aria-hidden="true"></div>
 						</div>
@@ -97,24 +100,24 @@ $points = zaec_front_repeater( 'screen_points' );
 			<div class="ph-float pf-1" data-depth="14" aria-hidden="true">
 				<div class="pf-card pf-google">
 					<span class="pf-lab">Google recenzije</span>
-					<span class="pf-rating" aria-label="Google ocjena 4.9 od 5"><b class="pf-rating__n">4.9</b><span class="pf-rating__s">/5</span></span>
+					<span class="pf-rating pf-rating--word" aria-label="Google recenzije"><b class="pf-rating__n">Google</b><span class="pf-rating__s">recenzije</span></span>
 					<span class="pf-stars"><svg aria-hidden="true"><use href="#ic-star"/></svg><svg aria-hidden="true"><use href="#ic-star"/></svg><svg aria-hidden="true"><use href="#ic-star"/></svg><svg aria-hidden="true"><use href="#ic-star"/></svg><svg aria-hidden="true"><use href="#ic-star"/></svg></span>
 				</div>
 			</div>
 
-			<div class="ph-float pf-2" data-depth="30" aria-hidden="true">
-				<div class="pf-card">
+			<div class="ph-float pf-2" data-depth="30">
+				<a class="pf-card" href="#upit">
 					<span class="pf-lab"><svg class="pf-ic" aria-hidden="true"><use href="#ic-arrow"/></svg> Zatraži procjenu</span>
 					<b>„Bez obveze.”</b>
 					<span class="pf-sub">kratak upit · jasan termin</span>
-				</div>
+				</a>
 			</div>
 
-			<div class="ph-float pf-3" data-depth="10" aria-hidden="true">
-				<div class="pf-card pf-call">
+			<div class="ph-float pf-3" data-depth="10">
+				<a class="pf-card pf-call" href="tel:<?php echo esc_attr( $phone_href ); ?>">
 					<svg class="pf-ic" aria-hidden="true"><use href="#ic-phone"/></svg>
 					<span><b>Kontakt na jednom mjestu</b><span class="pf-sub">poziv · poruka · lokacija</span></span>
-				</div>
+				</a>
 			</div>
 
 			<p class="ph-cap" aria-hidden="true">Mobile-first · usluga → povjerenje → kontakt</p>

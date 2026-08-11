@@ -44,6 +44,10 @@ function zaec_enqueue_assets() {
 					'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
 					'submitLabel'     => __( 'Pošalji upit', 'zaec' ),
 					'sendingLabel'    => __( 'Šaljemo…', 'zaec' ),
+					'nonceMessage'     => __( 'Sigurnosna provjera je zastarjela. Osvježavamo obrazac…', 'zaec' ),
+					'invalidResponse'  => __( 'Server nije vratio valjan odgovor. Pokušajte ponovno.', 'zaec' ),
+					'ajaxActionMessage' => __( 'Kontakt forma trenutno nije povezana s AJAX handlerom. Provjerite aktivnu temu.', 'zaec' ),
+					'sendingMessage'   => __( 'Šaljemo upit…', 'zaec' ),
 					'successMessage'  => ! empty( $opts['form_success_message'] ) ? $opts['form_success_message'] : __( 'Upit je stigao.', 'zaec' ),
 					'phoneDisplay'    => isset( $opts['phone_display'] ) ? $opts['phone_display'] : '',
 				)

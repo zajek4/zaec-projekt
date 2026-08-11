@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function zaec_process_inquiry( $is_ajax = false ) {
 	$fail = static function ( $message, $status = 400 ) use ( $is_ajax ) {
 		if ( $is_ajax ) {
+			zaec_ajax_prepare_response();
 			wp_send_json_error( array( 'message' => $message ), $status );
 		}
 		$redirect = zaec_form_redirect_url( 'error' );
@@ -34,6 +35,7 @@ function zaec_process_inquiry( $is_ajax = false ) {
 	if ( '' !== $honeypot ) {
 		// Tihi uspjeh za botove.
 		if ( $is_ajax ) {
+			zaec_ajax_prepare_response();
 			wp_send_json_success( array( 'message' => __( 'Upit je stigao.', 'zaec' ) ) );
 		}
 		wp_safe_redirect( zaec_form_redirect_url( 'sent' ) );
@@ -194,6 +196,7 @@ function zaec_process_inquiry( $is_ajax = false ) {
 		$success_msg = ! empty( $options['form_success_message'] )
 			? $options['form_success_message']
 			: __( 'Upit je stigao.', 'zaec' );
+		zaec_ajax_prepare_response();
 		wp_send_json_success( array( 'message' => $success_msg ) );
 	}
 
@@ -260,8 +263,48 @@ function zaec_handle_inquiry_post() {
 add_action( 'admin_post_nopriv_zaec_inquiry', 'zaec_handle_inquiry_post' );
 add_action( 'admin_post_zaec_inquiry', 'zaec_handle_inquiry_post' );
 
+/**
+ * Očisti accidental output prije JSON odgovora, ali ga zadrži u debug logu.
+ *
+ * PHP notice, warning iz SMTP plugina ili whitespace iz dodatka ne smiju
+ * pokvariti admin-ajax JSON. U produkciji se sadržaj ne prikazuje korisniku;
+ * uz WP_DEBUG zapisujemo ga radi stvarnog root-cause audita.
+ */
+function zaec_ajax_prepare_response() {
+	while ( ob_get_level() > 0 ) {
+		$noise = ob_get_clean();
+		if ( $noise && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( '[ZAEC AJAX output before JSON] ' . wp_strip_all_tags( $noise ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		}
+	}
+}
+
 function zaec_handle_inquiry_ajax() {
+	// Buffer hvata samo neželjeni output tokom ovog AJAX requesta.
+	ob_start();
 	zaec_process_inquiry( true );
 }
 add_action( 'wp_ajax_nopriv_zaec_inquiry', 'zaec_handle_inquiry_ajax' );
 add_action( 'wp_ajax_zaec_inquiry', 'zaec_handle_inquiry_ajax' );
+
+/**
+ * Omogući osvježavanje noncea kada je stranica poslužena iz page cachea.
+ * Ovo je javni endpoint bez poslovnih podataka i bez slanja maila.
+ */
+function zaec_refresh_inquiry_nonce() {
+	zaec_ajax_prepare_response();
+	wp_send_json_success( array( 'nonce' => wp_create_nonce( 'zaec_inquiry' ) ) );
+}
+add_action( 'wp_ajax_nopriv_zaec_refresh_nonce', 'zaec_refresh_inquiry_nonce' );
+add_action( 'wp_ajax_zaec_refresh_nonce', 'zaec_refresh_inquiry_nonce' );
+
+/**
+ * Logiraj stvarni PHPMailer/wp_mail problem; SMTP plugin i dalje ostaje
+ * odgovoran za transport i autentikaciju.
+ */
+function zaec_log_mail_failure( $error ) {
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && is_wp_error( $error ) ) {
+		error_log( '[ZAEC wp_mail failed] ' . $error->get_error_message() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+	}
+}
+add_action( 'wp_mail_failed', 'zaec_log_mail_failure' );

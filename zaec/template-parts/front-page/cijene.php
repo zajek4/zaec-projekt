@@ -20,6 +20,7 @@ foreach ( $plans as $plan ) {
 			<p class="kicker"><?php echo esc_html( zaec_front_field( 'cijene_kicker' ) ); ?></p>
 			<h2><?php echo esc_html( zaec_front_field( 'cijene_title' ) ); ?></h2>
 			<p class="lead"><?php echo esc_html( zaec_front_field( 'cijene_lead' ) ); ?></p>
+			<a class="pricing-scope-link" href="#poseban-opseg"><span><?php echo esc_html( zaec_front_field( 'band_cta' ) ); ?></span><svg class="ar" aria-hidden="true"><use href="#ic-arrow-d"/></svg></a>
 		</div>
 
 		<div class="pricing-tracks">
@@ -64,7 +65,7 @@ foreach ( $plans as $plan ) {
 					<span class="pb-brands__note"><?php esc_html_e( 'WooCommerce webshop', 'zaec' ); ?></span>
 				</p>
 			</div>
-			<div class="pb-side"><p class="plan-price"><b><?php echo esc_html( zaec_front_field( 'band_price' ) ); ?></b><span><?php echo esc_html( zaec_front_field( 'band_price_meta' ) ); ?></span></p><a href="#upit" class="btn btn-line plan-cta" data-package="Poseban opseg"><span><?php echo esc_html( zaec_front_field( 'band_cta' ) ); ?></span></a></div>
+			<div class="pb-side"><p class="plan-price"><b><?php echo esc_html( zaec_front_field( 'band_price' ) ); ?></b><span><?php echo esc_html( zaec_front_field( 'band_price_meta' ) ); ?></span></p><a href="#upit" class="btn btn-line plan-cta" data-package="Poseban opseg"><span><?php echo esc_html( zaec_front_field( 'band_next_cta' ) ); ?></span></a></div>
 		</div>
 
 		<?php if ( $notes ) : ?>

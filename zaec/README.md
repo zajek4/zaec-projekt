@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.6.0
+# ZAEC WordPress Theme — v1.6.1
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -99,3 +99,15 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Footer legalni red i veliki ZAEC imaju isti max-width i konzistentniji spacing.
 - `ZAEC` je uklonjen iz izraza `Provjeren ZAEC layout` kako copy ne bi zvučao samohvalno.
 - Migracija `1.6.0` dodaje novi FAQ i ažurira samo poznate stare vrijednosti.
+
+## v1.6.1
+
+- `.occ-card` je povećan i dobio je zreliju HUD hijerarhiju, corner-bracket detalje, refresh flicker i suptilni desktop tilt.
+- Floating HUD kartice uz telefon veće su, vizualno usklađene s case-study HUD jezikom i interaktivne; CTA kartice vode na stvarni upit ili poziv.
+- Telefon koristi lokalni klima-service scenarij s pravim `tel:+385955612522` linkom; recenzije su označene kao Google recenzije bez nove lažne brojke.
+- Build sequence povezuje arhitektonske slojeve s domenom/hostingom, strukturom, UX/UI-jem, funkcijama, SEO-om i mjerenjem.
+- `Definirajmo opseg` sada vodi na `#poseban-opseg`, a sljedeći CTA iz banda vodi na `#upit` i prefilla `Poseban opseg`.
+- Forma ima nonce refresh za page-cache, čisti accidental AJAX output uz debug log, razlikuje invalid JSON od server poruke i zadržava native no-JS fallback.
+- Dodan je `wp_mail_failed` debug zapis za SMTP/PHPMailer probleme; SMTP transport i dalje ostaje u pluginu.
+- Dodani su magnetic primary CTA pomak, aktivno stanje desktop navigacije i reduced-motion fallback za HUD animacije.
+- Theme version: `1.6.1`.
