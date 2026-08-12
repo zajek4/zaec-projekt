@@ -1,0 +1,202 @@
+# ZAEC WordPress Theme — v1.9.5
+
+Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
+
+## Aktivacija
+
+1. Instalirajte/aktivirajte temu `zaec`.
+2. Kreirajte stranicu **Naslovnica**.
+3. `Settings → Reading` → postavite statičnu naslovnicu.
+4. Uredite naslovnicu; pojavljuje se **ZAEC — sadržaj naslovnice**.
+5. `Appearance → Menus` dodijelite **Glavna navigacija**. Landing anchori s podstranica automatski vode na home URL.
+6. `Appearance → ZAEC postavke` unesite potvrđene kontaktne/pravne/business podatke i email recipient forme.
+7. Po potrebi kreirajte Blog stranicu i dodijelite je kao Posts page.
+8. Za custom landing stranice odaberite template **ZAEC — Full Width**.
+
+## Projekti / Radovi CPT
+
+Tema registrira CPT **Projekti** s javnim archiveom `/radovi/`.
+
+- Naslov, case-study tekst, excerpt i featured image koriste standardni WordPress editor.
+- Meta box **ZAEC — podaci projekta** sadrži oznaku projekta, uslugu, lokaciju, godinu, tehnologije, live URL i samo potvrđeni rezultat/ishod.
+- Checkbox **Istakni na naslovnici** kontrolira homepage selekciju. Ako nijedan projekt nije označen, naslovnica uzima najnovije objavljene projekte.
+- Na čistoj instalaciji tema jednokratno pripremi tri navedena ZAEC projekta (CZA Osijek, Eurokontrola, Daj Gric). Ako već postoji barem jedan projekt, seed se preskače.
+- Ne unosite izmišljene rezultate. Polje rezultata smije ostati prazno.
+
+## Cjenik v1.1
+
+Ponuda je podijeljena u dvije staze: **Predložak** i **Po nacrtu**. Defaultni cjenik izričito odvaja domenu/hosting od cijene izrade i ograničava uključenu post-launch podršku na 14 dana tehničkog jamstva. Novi sadržaj, nove funkcije i održavanje ugovaraju se zasebno.
+
+## Mail
+
+Forma koristi `wp_mail()`. Na produkciji konfigurirajte pouzdani SMTP/transactional transport; tema ne hardkodira vanjske API ključeve.
+
+## SEO
+
+Bez SEO plugina tema emitira osnovni meta/OG sloj, LocalBusiness i dinamični FAQPage. Kod Yoast/Rank Math/AIOSEO detekcije business meta/schema se prepušta pluginu kako se ne bi duplicirao; FAQ ostaje vezan uz stvarno prikazana ZAEC FAQ polja.
+
+## Performance / mobile
+
+- Homepage: GSAP + ScrollTrigger + ScrollTo + Lenis + Three/home module.
+- Obične stranice/postovi/arhive: global/content CSS + lagani global JS.
+- Projects archive/single: dodatni `projects.css`, bez homepage animation stacka.
+- 404: zaseban Three.js module i 404 CSS.
+- WebGL mobile DPR je kontrolirano podignut radi oštrijih linija, bez nekontroliranog 3×/4× rendera.
+- Contact layout na mobilnom prelazi u eksplicitni column flow s `min-width: 0` zaštitom od horizontalnog overflowa.
+
+## Važno prije publishanja
+
+Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. CPT projekti namjerno nema lažne fallback klijente ni rezultate.
+
+## v1.2 hardening
+
+- Djelatnosti uz 3D kuću ponovno ostaju vidljive u svim desktop hero fazama; desna kartica je ponovno pozicionirana prema cijelom hero stageu kao u statičkom originalu.
+- Tijekom aksonometrije automatska rotacija djelatnosti staje, ali ručni tabovi ostaju dostupni i funkcionalni.
+- `Poseban opseg` više ne ovisi o reveal animaciji i zato ne može ostati skriven na `opacity: 0`.
+- Proces `K.01–K.04` koristi stabilnu lijevu code kolonu i novu semantičku shemu brief → nacrt → build → live.
+- Demo mobitel je jasno označen kao koncept strukture; ne koristi izmišljene osobe, rezultate, termine, kontakte ni lažne događaje.
+- Google ocjena 4.9/5 prikazana je kao primjer proof elementa i smije ostati javna samo ako je stvarno potvrđena za konkretan posao.
+- Prazne recenzije imaju pošten empty-state; poznati stari demo testimonials uklanjaju se migracijom samo ako nisu uređivani.
+- Migration `1.2.0` mijenja samo vrijednosti koje još točno odgovaraju prethodnim defaultima, pa ručne izmjene klijenta ostaju netaknute.
+
+
+## v1.3
+
+- 3D kuća "Villa N": medium-class blueprint (više volumena, lučni trijem, erker, dormeri, složeni krov) umjesto dječje simetrične kutije.
+- Kontakt: javni telefon 095 561 2522; email forme ide na interni recipient i nije obavezno javni.
+- Footer: jasniji linkovi + minimalni pravni podaci obrta (naziv, MB, adresa, nositelj).
+- Nova sekcija stack: Google Business / Analytics / Search Console / WooCommerce / Corvus Pay — bez lažnih partner badgeova.
+- Copy/FAQ: Hrvatska + remote, bez nepotvrđenih city-listi kao dokaza.
+
+## v1.4.4
+
+- Copy naslovnice sada polazi od poslovne svrhe weba: razumjeti ponudu, izgraditi povjerenje i dovesti posjetitelja do poziva ili upita.
+- Zamijenjene su generičke ili preoštre tvrdnje u sekcijama Poznato, Metoda, Mobile-first, Radovi i FAQ.
+- Trust traka više ne prodaje "2 načina izrade / 1 odgovorna osoba / mjesečne pakete", nego ističe Google ocjenu 4.9/5 te jasnu svrhu kontaktnog puta. Ocjenu treba objaviti samo nakon provjere stvarnog izvora.
+- Mobile-first telefon sada koristi strukturu inspiriranu servisnom stranicom za klime: problem → usluga → dokaz → jasan kontakt, bez izmišljenih cijena, termina i lažnih obavijesti.
+- Na mobilnoj navigaciji poziv je diskretna bijela ikona uz hamburger; plavi CTA ostaje u sadržaju, a kontaktne kartice imaju zaobljene rubove.
+- Veliki ZAEC u footeru vraćen je unutar iste content mreže kao i ostatak footera.
+- Migracija `1.4.4` mijenja samo poznate stare default vrijednosti; ručno uređeni sadržaj klijenta se ne prepisuje.
+
+## v1.5.0
+
+- Naslovnica vraća jači autorski ZAEC glas: manje apstraktnih fraza, više jasnih odgovora na pitanje čemu web služi i kako dovodi do kontakta.
+- Primarno obraćanje je usmjereno na majstore, servisne i lokalne uslužne djelatnosti; Centar za autizam, Eurokontrola i Daj Gric pokazuju da ista disciplina strukture radi i za ustanovu, B2B uslugu i restoran.
+- Dodana su tri stvarna projekta kao početni CPT sadržaj, samo ako u postojećem portfoliju još nema projekata. Ako projekti već postoje, tema ih ne dira.
+- Dodana je potvrđena testimonial izjava Dominika, CEO-a Daj Grica, prema dostavljenom sadržaju.
+- Trust traka sada ističe tri stvarna projekta, Google ocjenu 4.9/5, jasan cilj weba i direktan put do kontakta.
+- Migracija `1.5.0` ponovno mijenja samo poznate stare default vrijednosti; ručne izmjene ostaju sačuvane.
+
+## v1.6.0
+
+- Radovi se prikazuju i kada WordPress baza još nema kreirane CPT zapise: naslovnica koristi sigurni fallback s tri stvarna projekta, a admin seed ih kasnije pripremi kao uređive projekte.
+- Dodane su stvarne featured slike za CZA Osijek, Eurokontrolu i Daj Gric te direktni `Live` linkovi na karticama.
+- Hero animacija sada ranije uvodi `Web koji razumije vaš zanat`; početni tekst se pri scrollu spušta i odbluruje dok se kuća rastavlja, a novi sadržaj ulazi paralelno, bez mrtvog prijelaza.
+- Build sequence sada ima smisleniju web metaforu: domena/hosting → struktura/sadržaj → UX/UI → funkcije/kontakt → SEO/sigurnost → objava/mjerenje.
+- Mobile telefon sada koristi realističniji klimatski servisni flow inspiriran dostavljenim primjerom, a tri lebdeće kartice ostaju izvan telefona: Google recenzije, Zatraži procjenu i Kontakt na jednom mjestu.
+- Uklonjena je poruka `Objaviti samo uz potvrđene recenzije` iz vizualnog prikaza.
+- FAQ sada objašnjava mogućnost dugoročne suradnje kroz jasan opseg, prioritete i povjerenje — bez obaveznih maglovitih paketa.
+- Footer legalni red i veliki ZAEC imaju isti max-width i konzistentniji spacing.
+- `ZAEC` je uklonjen iz izraza `Provjeren ZAEC layout` kako copy ne bi zvučao samohvalno.
+- Migracija `1.6.0` dodaje novi FAQ i ažurira samo poznate stare vrijednosti.
+
+## v1.6.1
+
+- `.occ-card` je povećan i dobio je zreliju HUD hijerarhiju, corner-bracket detalje, refresh flicker i suptilni desktop tilt.
+- Floating HUD kartice uz telefon veće su, vizualno usklađene s case-study HUD jezikom i interaktivne; CTA kartice vode na stvarni upit ili poziv.
+- Telefon koristi lokalni klima-service scenarij s pravim `tel:+385955612522` linkom; recenzije su označene kao Google recenzije bez nove lažne brojke.
+- Build sequence povezuje arhitektonske slojeve s domenom/hostingom, strukturom, UX/UI-jem, funkcijama, SEO-om i mjerenjem.
+- `Definirajmo opseg` sada vodi na `#poseban-opseg`, a sljedeći CTA iz banda vodi na `#upit` i prefilla `Poseban opseg`.
+- Forma ima nonce refresh za page-cache, čisti accidental AJAX output uz debug log, razlikuje invalid JSON od server poruke i zadržava native no-JS fallback.
+- Dodan je `wp_mail_failed` debug zapis za SMTP/PHPMailer probleme; SMTP transport i dalje ostaje u pluginu.
+- Dodani su magnetic primary CTA pomak, aktivno stanje desktop navigacije i reduced-motion fallback za HUD animacije.
+- Single projekt dobio je fullscreen HUD case-study predložak s opcionalnim panelima, LIVE/prev/next navigacijom, unutarnjim scrollom sadržaja i GSAP boot-up intro animacijom.
+- Dodani su cross-browser fallbackovi za Opera/Safari/Firefox/Edge: backdrop blur, mask, clip/overflow, viewport jedinice, aspect ratio, inset i WebGL failure path.
+- 404 i homepage Three.js sada imaju statičan, namjeran fallback bez praznog canvasa i bez nastavka render loopa nakon gubitka konteksta.
+- Inquiry AJAX sada ima nonce refresh, output-buffer dijagnostiku, jasne JSON/server greške i `wp_mail_failed` zapis za SMTP audit.
+- Theme version: `1.6.1`.
+
+## v1.7.0
+
+- Single projekt je redizajniran iz starog HUD panela u odobreni Showroom koncept.
+- Dodano je opcionalno meta polje **Screenshot mobitela** (`_zaec_project_shot_mobile`), uz backward-compatible fallback na featured screenshot.
+- Hero koristi laptop + mobitel uređaje, bento ključne podatke, opcionalnu scenu ekrana, editorial priču i veliku Next project karticu.
+- Sadržaj i meta paneli pojavljuju se samo kada stvarni podaci postoje; nema praznih scena ni izmišljenih rezultata.
+- Single projekt dobiva uvjetni GSAP + ScrollTrigger modul, a fallback ostaje statičan i potpun bez JS-a ili uz reduced motion.
+- Theme version: `1.7.0`.
+
+## v1.7.1
+
+- Single projekt Showroom naslovi dobili su sigurniji fluidni box: ascender/descender padding, puni završetak clip reveala i wrapping za duga hrvatska imena.
+- Završna scena je zatamnjeniji kino-kadar s jeftinim CSS glow/grain efektom, jačim LIVE CTA-om i velikom klikabilnom karticom sljedećeg projekta. Ako sljedeći projekt ne postoji, kartica se ne renderira.
+- Truth audit je uklonio nepotvrđenu Google ocjenu iz zadane trust trake; vraćeni su samo postojeći podaci: 3 projekta, 14 dana tehničkog jamstva, jasan opseg i direktan put do kontakta.
+- Hero copy i opisi koji su zvučali kao neprovjerena vremenska obećanja ublaženi su bez gubitka prodajne jasnoće.
+- `COPY-BASELINE-front-page.md` nije bio dostupan u repozitoriju; za audit je korišten postojeći odobreni v1.2/v1.6 sadržaj i pravilo da nepotvrđena tvrdnja ne ide na stranicu.
+- Vlasnik prije objave treba dostaviti samo podatke koji nedostaju: potvrđene Google recenzije, dodatne mobilne screenshotove i mjerene rezultate projekata ako ih želi javno navesti.
+- Theme version: `1.7.1`.
+
+## v1.8.0
+
+- Showroom 2.0 single-project predložak ostaje uvjetan prema stvarnim podacima, s potpunim reduced-motion/no-JS fallbackom.
+- Truth-first ponuda ne prikazuje nepotvrđenu Google ocjenu; dodano je opcionalno održavanje s jasnim granicama opsega.
+- Produkcijski PHP defaults hotfix provjeren je parserom nakon popravka zareza.
+
+## v1.8.1
+
+- Hero vraća i učvršćuje 3D kuću **Villa N**: realniji arhitektonski raspored, dvije etaže, glavni ulaz, pravilniji prozorski ritam, erker, balkon, lučni bočni ulaz, dormeri, dimnjak, nadstrešnice i temeljne linije.
+- Prozori sada imaju vanjski okvir, uvučeno ostakljenje, impost/mullion i podprozornik; vrata imaju prag, nadvoj, panele i kvaku umjesto nerealnih križeva.
+- Zadržane su interakcije: auto-orbit, drag/orbit, klik za izolaciju sloja, scroll aksonometrija, rastavljanje/sastavljanje kuće i animirani slojevi za klimu, vodu, struju, krov, gradnju, smještaj, trgovinu i ostale usluge.
+- No-WebGL/no-JS fallback više nije generička kućica nego namjerni arhitektonski outline s istim ritmom otvora i oznakama Villa N.
+- Prvi kadar više se ne proglašava neuspjelim samo zato što Safari/iOS kasnije odradi compositor tick; fallback se uključuje samo kod stvarne greške modula/renderera.
+- Mikro-savjeti za klimu, električare i krovopokrivače objašnjavaju put do relevantnijeg upita, bez obećanja prometa ili prihoda.
+- Theme version: `1.8.1`.
+
+## v1.9.0 — Digital Earth Hero
+
+- Homepage hero now uses an interactive, full-bleed holographic Earth; Osijek remains a subtle local-origin marker while the global map and other cities carry the visual weight.
+- The original `Gradimo web stranice za ljude koji grade sve ostalo.` message and wireframe-house story were moved into a dedicated lower house section.
+- Added local 65-city node data and Natural Earth country data for clean continent/country outlines; city points remain informational UI, not a claim about measured live traffic.
+- Added local topology texture, atmospheric rim shader, clean all-country outlines, a separate EU layer and a brighter Croatia outline, category-colored city lights, Osijek beam/rings/label and hover tooltips.
+- Added local Three.js post-processing modules for `EffectComposer` and `UnrealBloomPass`, with a no-bloom renderer fallback.
+- Added reduced-motion, no-WebGL and no-JavaScript Earth fallbacks.
+- The former house renderer is mounted in a dedicated lower section; its render loop pauses when the section is off-screen so the full-bleed Earth hero remains the visual priority.
+- Earth assets are local copies of the supplied sources: `turban/webgl-earth` elevation map and Natural Earth `ne_110m_admin_0_countries` GeoJSON.
+- Theme version: `1.9.0`.
+
+## v1.9.1
+
+- Earth hero now uses a full-bleed 16:9 stage with no left/right card gaps; clean country/continent outlines and the Croatia outline replace the old latitude/longitude mesh.
+- `Regions.js` replaces packet/arc rendering with merged base country outlines, a 27-state EU highlight and a separate Croatia outline.
+- Reduced GPU/CPU cost with a 2048px topology map, adaptive sphere detail, lower-power bloom fallback, reduced star count, passive mobile touch mode and lazy mobile/house rendering.
+- The original wireframe house is now the second homepage section, with the original `Gradimo web stranice za ljude koji grade sve ostalo.` copy.
+- Restored the house build sequence HUD: `Web koji razumije vaš zanat` fades in as the house opens, while the occupation HUD keeps Klima, Voda, Struja, Krov and other rows available.
+- Theme version: `1.9.1`.
+
+## v1.9.2
+
+- Homepage flow audited and stabilized: Earth hero → wireframe house → transition marquee → `Zvuči poznato?`.
+- Added a scrubbed, reduced-motion-safe Earth-to-house transition without scroll-jacking.
+- Moved the lightweight marquee out of the hero and placed it between the house and `Zvuči poznato?` section.
+- Mobile Earth is passive on touch so page scrolling is never blocked; desktop keeps orbit and zoom interaction.
+- Theme version: `1.9.2`.
+
+## v1.9.3
+
+- Reintroduced the Earth hero as the first section, with the wireframe house as the second section.
+- Kept the marquee after the house and before the first white content section.
+- No artificial Earth-to-house transition; both sections remain independent and readable.
+- Theme version: `1.9.3`.
+
+## v1.9.4
+
+- Corrected release package for the planet-first hero and second-section wireframe house flow.
+- Preserved the marquee placement after the house and the compact occupation HUD.
+- Theme version: `1.9.4`.
+
+## v1.9.5
+
+- Earth is now a controlled lower-right orbital crop inspired by the supplied reference image; the left side stays clean for the business message.
+- Mouse orbit/zoom is removed. The camera is fixed and the planet rotates slowly on its own axis.
+- Added a limited, deterministic information-flow system with pooled arc geometry and arrival ripples instead of random network clutter.
+- Osijek remains an ordinary local node; no HQ spotlight is added to the flow.
+- Theme version: `1.9.5`.
