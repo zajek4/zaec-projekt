@@ -835,6 +835,22 @@ html.no-3d #earthLoader { display: none; }
   align-items: center;
   background: #0e0e0d;
 }
+.house-transition-label {
+  position: absolute;
+  z-index: 7;
+  top: 18px;
+  left: max(var(--gutter), calc((100vw - var(--page-max, 1500px)) / 2 + var(--gutter)));
+  margin: 0;
+  color: rgba(125, 211, 255, .72);
+  font-family: var(--font-m);
+  font-size: .56rem;
+  letter-spacing: .16em;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+.house-transition-label i { display: inline-block; width: 24px; height: 1px; margin: 0 8px 3px; background: var(--hologram); opacity: .6; }
 .house-grid {
   position: relative;
   z-index: 2;
@@ -1681,6 +1697,7 @@ footer .wrap { position: relative; z-index: 2; }
   .pin-stage { position: static; height: auto; overflow: visible; padding: 0; }
   .house-pin-space { height: auto; }
   .house-pin-stage { position: static; height: auto; min-height: 0; overflow: visible; padding: 0; }
+  .house-transition-label { left: var(--gutter); top: 12px; font-size: .48rem; }
   .house-grid { grid-template-columns: 1fr; height: auto; gap: 42px; padding-top: calc(var(--nav-h) + 56px); }
   .house-copy, .house-services-panel, .house-stage { grid-area: auto; }
   .house-copy { order: 1; }

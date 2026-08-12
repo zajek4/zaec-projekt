@@ -19,6 +19,7 @@ $first    = isset( $occ[0] ) ? $occ[0] : array( 'title' => '', 'sub' => '', 'q' 
 <section id="house" class="house-section sec sec-ink" data-theme="dark" aria-labelledby="houseTitle">
 	<div class="house-pin-space" id="housePinSpace">
 		<div class="house-pin-stage pin-stage" id="housePin">
+			<p class="house-transition-label" id="houseTransitionLabel" aria-hidden="true">GLOBAL NETWORK <i></i> LOCAL CRAFT</p>
 			<div class="bp-grid-dark" aria-hidden="true"></div>
 			<div class="house-grid">
 				<div class="house-copy" id="houseCopy">

@@ -8,7 +8,7 @@ get_header();
 ?>
 <main id="main">
 <?php
-foreach ( array( 'hero', 'house', 'poznato', 'metoda', 'proces', 'ekran', 'cijene', 'radovi', 'testimonials', 'faq', 'contact' ) as $part ) {
+foreach ( array( 'hero', 'house', 'marquee', 'poznato', 'metoda', 'proces', 'ekran', 'cijene', 'radovi', 'testimonials', 'faq', 'contact' ) as $part ) {
 	get_template_part( 'template-parts/front-page/' . $part );
 }
 ?>

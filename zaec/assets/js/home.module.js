@@ -316,7 +316,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           if (pct) pct.textContent = $('span', map[id]).textContent;
         });
       }, { rootMargin: '-44% 0px -44% 0px', threshold: 0 });
-      ['hero', 'za-koga', 'poznato', 'metoda', 'proces', 'ekran', 'cijene', 'radovi', 'klijenti', 'faq', 'upit'].forEach(function (id) {
+      ['hero', 'house', 'poznato', 'metoda', 'proces', 'ekran', 'cijene', 'radovi', 'klijenti', 'faq', 'upit'].forEach(function (id) {
         var el = doc.getElementById(id);
         if (el) io.observe(el);
       });
@@ -2304,6 +2304,30 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     var svcPanel = housePinSpace ? $('#houseServices') : $('#za-koga');
     var phaseCap = housePinSpace ? $('#housePhase') : $('#phaseCaption');
     var holoWrap = $('#holoWrap');
+
+    /* Earth → kuća transition: a short scrubbed hand-off, not scroll-jacking.
+       The map recedes while the architectural scene enters from below. */
+    if (earthHero && housePinSpace && HAS_GSAP && !prefersReducedMotion) {
+      var houseTransitionStage = $('#housePin');
+      var transitionLabel = $('#houseTransitionLabel');
+      if (houseTransitionStage) gsap.set(houseTransitionStage, { opacity: 0, y: 28, scale: .985, transformOrigin: '50% 50%' });
+      ScrollTrigger.create({
+        trigger: housePinSpace,
+        start: 'top bottom',
+        end: 'top 58%',
+        scrub: .45,
+        onUpdate: function (self) {
+          var p = self.progress;
+          earthHero.style.transform = 'scale(' + (1 - p * .055).toFixed(3) + ')';
+          earthHero.style.opacity = String(1 - p * .52);
+          earthHero.style.filter = 'blur(' + (p * 3.2).toFixed(1) + 'px)';
+          if (houseTransitionStage) {
+            gsap.set(houseTransitionStage, { opacity: p, y: 28 * (1 - p), scale: .985 + p * .015 });
+          }
+          if (transitionLabel) transitionLabel.style.opacity = String(p);
+        }
+      });
+    }
 
     if (earthHero && !housePinSpace) {
       /* Earth owns hero camera/intro/interaction. */

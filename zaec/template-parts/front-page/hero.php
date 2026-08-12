@@ -123,9 +123,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 </section>
-<div class="marquee" data-theme="dark" aria-hidden="true">
-	<div class="mq-track">
-		<span>Obrti // Tvrtke // Hrvatska // Remote // Landing // Google Business // WooCommerce // Corvus // Klimatizacija // Gradnja // Shop //&nbsp;</span>
-		<span>Obrti // Tvrtke // Hrvatska // Remote // Landing // Google Business // WooCommerce // Corvus // Klimatizacija // Gradnja // Shop //&nbsp;</span>
-	</div>
-</div>
