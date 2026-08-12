@@ -690,6 +690,9 @@ html.no-3d #layerLabels, html.no-3d .phase-cap { display: none; }
   animation: earthScan 10s linear infinite;
 }
 @keyframes earthScan { from { background-position: 0 0; } to { background-position: 0 140px; } }
+#earthHero.is-low-power .earth-scanlines { opacity: .2; animation: none; }
+#earthHero.is-low-power .earth-grid-glow { opacity: .14; }
+#earthHero.is-reduced .earth-scanlines { animation: none; }
 .earth-vignette {
   z-index: 4;
   pointer-events: none;
@@ -864,16 +867,21 @@ html.no-3d #earthLoader { display: none; }
   text-transform: uppercase;
 }
 .house-copy__signal i { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--hologram); box-shadow: 0 0 12px var(--hologram); }
-.house-service-brief {
-  max-width: 500px;
-  margin-top: clamp(28px, 4vh, 48px);
-  padding-top: 18px;
-  border-top: 1px solid var(--hair-d);
+.house-anchor { position: absolute; left: 0; top: 50%; width: 1px; height: 1px; }
+.house-services-panel {
+  grid-area: 1 / 1;
+  max-width: 620px;
+  padding-bottom: clamp(44px, 7vh, 96px);
+  opacity: 0;
+  transform: translateY(38px);
+  filter: blur(6px);
+  pointer-events: none;
+  transition: opacity .35s var(--ease), transform .35s var(--ease), filter .35s var(--ease);
 }
-.house-service-brief .kicker { margin: 0 0 9px; font-size: .58rem; color: var(--hologram); }
-.house-service-brief h3 { margin: 0 0 8px; font-size: clamp(1.1rem, 1.8vw, 1.45rem); }
-.house-service-brief > p:not(.mono-note) { max-width: 45ch; margin: 0; color: var(--gray-2); font-size: .9rem; line-height: 1.5; }
-.house-service-brief .mono-note { margin-top: 12px; font-size: .58rem; }
+.house-services-panel.on { pointer-events: auto; }
+.house-services-panel .kicker { color: var(--hologram); }
+.house-services-panel .svc-h { max-width: 15ch; }
+.house-services-panel .svc-lead { max-width: 48ch; }
 .house-stage {
   grid-area: 1 / 2;
   position: relative;
@@ -1675,9 +1683,10 @@ footer .wrap { position: relative; z-index: 2; }
   .house-pin-space { height: auto; }
   .house-pin-stage { position: static; height: auto; min-height: 0; overflow: visible; padding: 0; }
   .house-grid { grid-template-columns: 1fr; height: auto; gap: 42px; padding-top: calc(var(--nav-h) + 56px); }
-  .house-copy, .house-stage { grid-area: auto; }
+  .house-copy, .house-services-panel, .house-stage { grid-area: auto; }
   .house-copy { order: 1; }
-  .house-stage { order: 2; height: auto; overflow: visible; padding: 0; }
+  .house-services-panel { order: 2; max-width: none; padding-bottom: 0; opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto; }
+  .house-stage { order: 3; height: auto; overflow: visible; padding: 0; }
   .house-stage #holoWrap { height: 50vh; min-height: 300px; max-height: none; }
   .hero-grid {
     grid-template-columns: 1fr; height: auto;

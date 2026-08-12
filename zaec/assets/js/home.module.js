@@ -547,6 +547,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           } catch (e) {}
         }
       },
+      getCurrent: function () { return cur; },
       tick: tick
     };
   })();
@@ -1000,9 +1001,13 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   /* ============================================================
      HOLOGRAMSKA KUĆA (Villa N) — nadogradnja, ne uvjet
   ============================================================ */
-  if ($('#holoWrap')) {
+  var houseBooted = false;
+  function bootHouseScene() {
+    if (houseBooted || !$('#holoWrap')) return;
+    houseBooted = true;
     try {
       H.impl = buildHolo();
+      if (H.impl && occCtl && occCtl.getCurrent) H.impl.showOcc(occCtl.getCurrent());
     } catch (err) {
       /* The house is a secondary scene. Its failure must not take the Earth
          hero or the rest of the homepage down with it. */
@@ -1010,6 +1015,16 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       var houseSection = $('#house');
       if (houseSection) houseSection.classList.add('house-no-3d');
       H.impl = null;
+    }
+  }
+  if ($('#holoWrap')) {
+    var housePinForBoot = $('#housePinSpace');
+    if ('IntersectionObserver' in WIN && housePinForBoot) {
+      new IntersectionObserver(function (entries) {
+        if (entries[0] && entries[0].isIntersecting) bootHouseScene();
+      }, { rootMargin: '20% 0px 20% 0px', threshold: 0.01 }).observe(housePinForBoot);
+    } else {
+      bootHouseScene();
     }
   } else {
     H.impl = null;
@@ -2328,10 +2343,14 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', restoreCompactHero);
     else if (mqDesktop.addListener) mqDesktop.addListener(restoreCompactHero);
 
-    if (!pinSpace || !HAS_GSAP) { occCtl.setPhase(true); return; }
+    if (!pinSpace || !HAS_GSAP) {
+      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.style.pointerEvents = 'auto'; svcPanel.classList.add('on'); }
+      occCtl.setPhase(true);
+      return;
+    }
     if (prefersReducedMotion) {
       if (heroCopy) { heroCopy.style.filter = ''; }
-      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.classList.add('on'); }
+      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.style.pointerEvents = 'auto'; svcPanel.classList.add('on'); }
       occCtl.setPhase(true);
       return;
     }

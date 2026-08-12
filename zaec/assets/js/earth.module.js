@@ -36,6 +36,8 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   var coarsePointer = WIN.matchMedia('(pointer: coarse)').matches;
   var lowPower = coarsePointer || (WIN.navigator.hardwareConcurrency || 8) < 4;
   var hasGSAP = !!WIN.gsap;
+  if (lowPower) root.classList.add('is-low-power');
+  if (reducedMotion) root.classList.add('is-reduced');
   var cfg = WIN.ZAEC_EARTH || {};
   var COLORS = {
     cyan: 0x00e5ff,
@@ -49,7 +51,8 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     white: 0xd9fbff
   };
   var RADIUS = 5;
-  var MAX_PACKETS = 45;
+  var MAX_PACKETS = lowPower ? 18 : 45;
+  var PACKET_SEGMENTS = lowPower ? 32 : 64;
   var state = {
     renderer: null,
     composer: null,
@@ -64,16 +67,15 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     nodes: [],
     nodePoints: null,
     packets: [],
+    packetPool: [],
     stars: null,
     active: true,
-    introDone: false,
     destroyed: false,
     time: 0,
     last: performance.now(),
     nextPacket: 180,
     raycaster: new THREE.Raycaster(),
     pointer: new THREE.Vector2(2, 2),
-    pointerInside: false
   };
 
   var PLANET_VERTEX = '\n' +
@@ -177,7 +179,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function randomBetween(a, b) { return a + Math.random() * (b - a); }
-  function get(id) { return doc.getElementById(id); }
 
   function setProgress(value, message) {
     var fraction = clamp(value, 0, 1);
@@ -254,15 +255,16 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     var group = new THREE.Group();
     group.rotation.z = -THREE.MathUtils.degToRad(17.5);
     state.globe = group;
+    group.position.x = coarsePointer ? 0 : 0.85;
     state.scene.add(group);
 
     var inner = new THREE.Mesh(
-      new THREE.SphereGeometry(4.965, lowPower ? 48 : 80, lowPower ? 32 : 48),
+      new THREE.SphereGeometry(4.965, lowPower ? 40 : 64, lowPower ? 24 : 40),
       new THREE.MeshBasicMaterial({ color: 0x00111f, transparent: true, opacity: 0.97, depthWrite: true })
     );
     group.add(inner);
 
-    var planetGeometry = new THREE.SphereGeometry(5, lowPower ? 96 : 180, lowPower ? 64 : 120);
+    var planetGeometry = new THREE.SphereGeometry(5, lowPower ? 80 : 128, lowPower ? 48 : 80);
     state.planetMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uHeightmap: { value: heightmap },
@@ -317,7 +319,7 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
       depthWrite: false,
       blending: THREE.AdditiveBlending
     });
-    var atmosphere = new THREE.Mesh(new THREE.SphereGeometry(5.25, lowPower ? 32 : 64, lowPower ? 20 : 40), state.atmosphereMaterial);
+    var atmosphere = new THREE.Mesh(new THREE.SphereGeometry(5.25, lowPower ? 24 : 48, lowPower ? 16 : 28), state.atmosphereMaterial);
     atmosphere.renderOrder = 1;
     group.add(atmosphere);
 
@@ -339,42 +341,42 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   }
 
   function addBorders(countryData) {
+    /* One merged LineSegments object is substantially cheaper than a mesh per
+       country/ring. The dateline split prevents a false line across the globe. */
     var borderGroup = new THREE.Group();
     var material = new THREE.LineBasicMaterial({
       color: COLORS.cyan,
       transparent: true,
-      opacity: lowPower ? 0.34 : 0.52,
+      opacity: lowPower ? 0.42 : 0.64,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
     var features = countryData && Array.isArray(countryData.features) ? countryData.features : [];
-    var created = 0;
+    var positions = [];
+    var step = lowPower ? 2 : 1;
     features.forEach(function (feature) {
       collectRings(feature.geometry).forEach(function (ring) {
-        var positions = [];
         var previous = null;
-        function flush() {
-          if (positions.length >= 6) {
-            var geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            borderGroup.add(new THREE.Line(geometry, material));
-            created += 1;
-          }
-          positions = [];
-        }
-        ring.forEach(function (coordinate) {
+        ring.forEach(function (coordinate, index) {
           if (!coordinate || coordinate.length < 2) return;
+          var isLast = index === ring.length - 1;
+          if (index % step !== 0 && !isLast) return;
           var current = latLngToVector3(coordinate[1], coordinate[0], 5.045);
-          if (previous && current.distanceTo(previous) > 3.2) flush();
-          positions.push(current.x, current.y, current.z);
+          if (previous && current.distanceTo(previous) <= 3.2) {
+            positions.push(previous.x, previous.y, previous.z, current.x, current.y, current.z);
+          }
           previous = current;
         });
-        flush();
       });
     });
+    if (positions.length) {
+      var geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      borderGroup.add(new THREE.LineSegments(geometry, material));
+    }
     borderGroup.renderOrder = 4;
     state.globe.add(borderGroup);
-    if (countryCountEl) countryCountEl.textContent = String(features.length || created);
+    if (countryCountEl) countryCountEl.textContent = String(features.length);
   }
 
   function createCityLights(nodes) {
@@ -385,14 +387,12 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     var colors = [];
     var sizes = [];
     var hqFlags = [];
-    var nodePositions = [];
     state.nodes.forEach(function (node) {
       var position = latLngToVector3(node.lat, node.lng, 5.09);
       positions.push(position.x, position.y, position.z);
-      nodePositions.push(position);
       var color = new THREE.Color(node.hq ? COLORS.amber : colorForCategory(node.category));
       colors.push(color.r, color.g, color.b);
-      sizes.push(node.hq ? 0.28 : 0.13);
+      sizes.push(node.hq ? 0.18 : 0.12);
       hqFlags.push(node.hq ? 1 : 0);
     });
 
@@ -413,7 +413,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     state.nodePoints.frustumCulled = false;
     state.nodePoints.renderOrder = 6;
     state.globe.add(state.nodePoints);
-    state.nodePositions = nodePositions;
     if (nodeCountEl) nodeCountEl.textContent = String(state.nodes.length);
     return state.nodes;
   }
@@ -451,16 +450,16 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     dot.position.copy(position);
     group.add(dot);
 
-    var beamMaterial = new THREE.MeshBasicMaterial({ color: COLORS.amber, transparent: true, opacity: 0.38, blending: THREE.AdditiveBlending, depthWrite: false });
-    var beam = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.35, 8, 1, true), beamMaterial);
+    var beamMaterial = new THREE.MeshBasicMaterial({ color: COLORS.amber, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending, depthWrite: false });
+    var beam = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.95, 8, 1, true), beamMaterial);
     beam.position.copy(normal.clone().multiplyScalar(5.73));
     beam.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
     group.add(beam);
 
-    var ringGeometry = new THREE.RingGeometry(0.24, 0.275, 64);
+    var ringGeometry = new THREE.RingGeometry(0.17, 0.195, 64);
     var rings = [];
     for (var i = 0; i < 3; i++) {
-      var ringMaterial = new THREE.MeshBasicMaterial({ color: COLORS.amber, transparent: true, opacity: 0.72, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false });
+      var ringMaterial = new THREE.MeshBasicMaterial({ color: COLORS.amber, transparent: true, opacity: 0.46, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false });
       var ring = new THREE.Mesh(ringGeometry, ringMaterial);
       ring.position.copy(normal.clone().multiplyScalar(5.1));
       ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
@@ -471,13 +470,13 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
 
     var label = new THREE.Sprite(new THREE.SpriteMaterial({ map: makeLabelTexture(), transparent: true, depthTest: false, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.96 }));
     label.position.copy(normal.clone().multiplyScalar(6.05));
-    label.scale.set(2.6, 0.5, 1);
+    label.scale.set(1.65, 0.32, 1);
     group.add(label);
     state.hq = { group: group, dot: dot, beam: beam, rings: rings, label: label, normal: normal };
   }
 
   function createStarfield() {
-    var count = lowPower ? 380 : 720;
+    var count = lowPower ? 260 : 480;
     var positions = new Float32Array(count * 3);
     for (var i = 0; i < count; i++) {
       var theta = Math.random() * Math.PI * 2;
@@ -508,11 +507,35 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     });
   }
 
+  function createPacketShell() {
+    var count = PACKET_SEGMENTS + 1;
+    var geometry = new THREE.BufferGeometry();
+    var positions = new Float32Array(count * 3);
+    var progress = new Float32Array(count);
+    for (var i = 0; i < count; i++) progress[i] = i / (count - 1);
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('aT', new THREE.BufferAttribute(progress, 1));
+    geometry.setDrawRange(0, 0);
+    var line = new THREE.Line(geometry, createArcMaterial(COLORS.cyan));
+    line.frustumCulled = false;
+    line.renderOrder = 8;
+    var head = new THREE.Mesh(
+      new THREE.SphereGeometry(lowPower ? 0.042 : 0.055, lowPower ? 6 : 8, 6),
+      new THREE.MeshBasicMaterial({ color: COLORS.cyan, transparent: true, opacity: 0.98, blending: THREE.AdditiveBlending, depthWrite: false })
+    );
+    head.renderOrder = 9;
+    line.visible = false;
+    head.visible = false;
+    state.scene.add(line);
+    state.scene.add(head);
+    return { line: line, head: head, curve: null, age: 0, lifetime: 0 };
+  }
+
   function makePacket() {
     if (!state.nodes.length || state.packets.length >= MAX_PACKETS) return;
     var sourceIndex;
     var targetIndex;
-    var involveHq = Math.random() < 0.35;
+    var involveHq = Math.random() < 0.18;
     var hqIndex = state.nodes.findIndex(function (node) { return node.hq; });
     if (involveHq && hqIndex >= 0) {
       if (Math.random() < 0.5) {
@@ -533,43 +556,37 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     var control = source.clone().add(target);
     if (control.lengthSq() < 0.25) control.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
     control.normalize().multiplyScalar(randomBetween(5.7, 7.05));
-    var curve = new THREE.QuadraticBezierCurve3(source, control, target);
-    var points = curve.getPoints(64);
-    var positions = [];
-    var progressValues = [];
+    var packet = state.packetPool.pop() || createPacketShell();
+    packet.curve = new THREE.QuadraticBezierCurve3(source, control, target);
+    packet.age = 0;
+    packet.lifetime = randomBetween(1.8, 3.4);
+    var points = packet.curve.getPoints(PACKET_SEGMENTS);
+    var positionAttribute = packet.line.geometry.attributes.position;
+    var progressAttribute = packet.line.geometry.attributes.aT;
     points.forEach(function (point, index) {
-      positions.push(point.x, point.y, point.z);
-      progressValues.push(index / (points.length - 1));
+      positionAttribute.array[index * 3] = point.x;
+      positionAttribute.array[index * 3 + 1] = point.y;
+      positionAttribute.array[index * 3 + 2] = point.z;
+      progressAttribute.array[index] = index / (points.length - 1);
     });
-    var geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geometry.setAttribute('aT', new THREE.Float32BufferAttribute(progressValues, 1));
+    positionAttribute.needsUpdate = true;
+    progressAttribute.needsUpdate = true;
+    packet.line.geometry.setDrawRange(0, points.length);
     var color = state.nodes[sourceIndex].hq || state.nodes[targetIndex].hq ? COLORS.amber : colorForCategory(state.nodes[targetIndex].category);
-    var material = createArcMaterial(color);
-    var line = new THREE.Line(geometry, material);
-    line.frustumCulled = false;
-    line.renderOrder = 8;
-    var head = new THREE.Mesh(new THREE.SphereGeometry(0.055, 8, 6), new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.98, blending: THREE.AdditiveBlending, depthWrite: false }));
-    head.renderOrder = 9;
-    state.scene.add(line);
-    state.scene.add(head);
-    state.packets.push({
-      line: line,
-      head: head,
-      curve: curve,
-      age: 0,
-      lifetime: randomBetween(1.8, 3.4),
-      color: color
-    });
+    packet.line.material.uniforms.uColor.value.setHex(color);
+    packet.line.material.uniforms.uProgress.value = 0;
+    packet.head.material.color.setHex(color);
+    packet.line.visible = true;
+    packet.head.visible = true;
+    state.packets.push(packet);
   }
 
-  function disposePacket(packet) {
-    if (packet.line.parent) packet.line.parent.remove(packet.line);
-    if (packet.head.parent) packet.head.parent.remove(packet.head);
-    packet.line.geometry.dispose();
-    packet.line.material.dispose();
-    packet.head.geometry.dispose();
-    packet.head.material.dispose();
+  function releasePacket(packet) {
+    packet.line.visible = false;
+    packet.head.visible = false;
+    packet.line.geometry.setDrawRange(0, 0);
+    packet.curve = null;
+    state.packetPool.push(packet);
   }
 
   function updatePackets(dt) {
@@ -590,7 +607,7 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
       packet.head.scale.setScalar(headScale);
       packet.head.material.opacity = 0.72 + Math.sin(progress * Math.PI) * 0.28;
       if (!reducedMotion && packet.age >= packet.lifetime) {
-        disposePacket(packet);
+        releasePacket(packet);
         state.packets.splice(i, 1);
       }
     }
@@ -639,7 +656,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     var rect = canvas.getBoundingClientRect();
     state.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     state.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-    state.pointerInside = true;
     state.raycaster.setFromCamera(state.pointer, state.camera);
     state.raycaster.params.Points.threshold = 0.18;
     var hits = state.raycaster.intersectObject(state.nodePoints);
@@ -650,8 +666,8 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   function initRenderer() {
     var width = Math.max(root.clientWidth, 1);
     var height = Math.max(root.clientHeight, 1);
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(WIN.devicePixelRatio || 1, lowPower ? 1.35 : 1.75));
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: !lowPower, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(WIN.devicePixelRatio || 1, lowPower ? 1.1 : 1.35));
     renderer.setSize(width, height, false);
     renderer.setClearColor(0x000814, 0);
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -686,6 +702,7 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     });
 
     try {
+      if (lowPower) throw new Error('Bloom disabled on low-power devices');
       var renderPass = new RenderPass(state.scene, state.camera);
       var bloom = new UnrealBloomPass(new THREE.Vector2(width, height), lowPower ? 0.82 : 1.16, 0.72, 0.12);
       bloom.threshold = 0.08;
@@ -711,7 +728,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   }
 
   function completeIntro() {
-    state.introDone = true;
     state.controls.enabled = true;
     state.controls.autoRotate = !reducedMotion;
     root.classList.add('is-ready');
@@ -801,7 +817,7 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   function bindEvents() {
     WIN.addEventListener('resize', resize, { passive: true });
     canvas.addEventListener('pointermove', handlePointerMove, { passive: true });
-    canvas.addEventListener('pointerleave', function () { state.pointerInside = false; hideTooltip(); }, { passive: true });
+    canvas.addEventListener('pointerleave', hideTooltip, { passive: true });
     canvas.addEventListener('pointerdown', hideTooltip, { passive: true });
     if ('IntersectionObserver' in WIN) {
       new IntersectionObserver(function (entries) {

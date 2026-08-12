@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+$services = zaec_front_repeater( 'services' );
 $occ      = array_slice( zaec_front_repeater( 'occupations' ), 0, 8 );
 $first    = isset( $occ[0] ) ? $occ[0] : array( 'title' => '', 'sub' => '', 'q' => '' );
 ?>
@@ -36,12 +37,23 @@ $first    = isset( $occ[0] ) ? $occ[0] : array( 'title' => '', 'sub' => '', 'q' 
 					</div>
 					<p class="cta-note"><?php echo esc_html( zaec_front_field( 'hero_note' ) ); ?></p>
 					<p class="house-copy__signal"><i></i> Slojevi weba · sadržaj · UX · funkcije · objava</p>
-					<aside id="za-koga" class="house-service-brief">
-						<p class="kicker"><?php echo esc_html( zaec_front_field( 'services_kicker' ) ); ?></p>
-						<h3><?php echo esc_html( zaec_front_field( 'services_title' ) ); ?></h3>
-						<p><?php echo esc_html( zaec_front_field( 'services_lead' ) ); ?></p>
-						<p class="mono-note"><?php echo esc_html( zaec_front_field( 'services_note' ) ); ?></p>
-					</aside>
+				</div>
+
+				<span id="za-koga" class="house-anchor" aria-hidden="true"></span>
+				<div class="house-services-panel" id="houseServices">
+					<p class="kicker"><?php echo esc_html( zaec_front_field( 'services_kicker' ) ); ?></p>
+					<h2 class="svc-h"><?php echo esc_html( zaec_front_field( 'services_title' ) ); ?></h2>
+					<p class="lead svc-lead"><?php echo esc_html( zaec_front_field( 'services_lead' ) ); ?></p>
+					<div class="svc-minis">
+						<?php foreach ( $services as $service ) : ?>
+							<button type="button" class="svc-mini" data-layer="<?php echo esc_attr( absint( $service['layer'] ) ); ?>">
+								<i><?php echo esc_html( $service['number'] ); ?></i>
+								<b><?php echo esc_html( $service['title'] ); ?></b>
+								<span><?php echo esc_html( $service['text'] ); ?></span>
+							</button>
+						<?php endforeach; ?>
+					</div>
+					<p class="mono-note"><?php echo esc_html( zaec_front_field( 'services_note' ) ); ?></p>
 				</div>
 
 				<div class="house-stage">

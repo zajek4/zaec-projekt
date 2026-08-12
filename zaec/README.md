@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.9.0
+# ZAEC WordPress Theme — v1.9.1
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -162,3 +162,11 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - The former house renderer is mounted in a dedicated lower section; its render loop pauses when the section is off-screen so the full-bleed Earth hero remains the visual priority.
 - Earth assets are local copies of the supplied sources: `turban/webgl-earth` elevation map and Natural Earth `ne_110m_admin_0_countries` GeoJSON.
 - Theme version: `1.9.0`.
+
+## v1.9.1
+
+- Earth hero now uses a full-bleed stage instead of a half-width card; global country borders and city nodes remain the visual priority while Osijek is a restrained local-origin marker.
+- Reduced GPU/CPU cost with a 2048px topology map, adaptive sphere detail, merged country-border geometry, lower-power bloom fallback, reduced star count and pooled packet geometry.
+- The original wireframe house is now the second homepage section, with the original `Gradimo web stranice za ljude koji grade sve ostalo.` copy.
+- Restored the house build sequence HUD: `Web koji razumije vaš zanat` fades in as the house opens, while the occupation HUD keeps Klima, Voda, Struja, Krov and other rows available.
+- Theme version: `1.9.1`.
