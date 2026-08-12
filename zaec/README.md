@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.9.3
+# ZAEC WordPress Theme — v1.9.4
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -186,3 +186,9 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Kept the marquee after the house and before the first white content section.
 - No artificial Earth-to-house transition; both sections remain independent and readable.
 - Theme version: `1.9.3`.
+
+## v1.9.4
+
+- Corrected release package for the planet-first hero and second-section wireframe house flow.
+- Preserved the marquee placement after the house and the compact occupation HUD.
+- Theme version: `1.9.4`.
