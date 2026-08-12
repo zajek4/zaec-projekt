@@ -135,13 +135,6 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Vlasnik prije objave treba dostaviti samo podatke koji nedostaju: potvrđene Google recenzije, dodatne mobilne screenshotove i mjerene rezultate projekata ako ih želi javno navesti.
 - Theme version: `1.7.1`.
 
-## v1.9.2
-
-- Planet/Earth hero experiment removed from the active homepage; original architectural house hero is restored as the first interactive scene.
-- Existing truth-first copy, maintenance offer, projects/showroom and form hardening remain intact.
-- Occupation HUD remains interactive with Klima-servisi, voda, struja, krov and other service rows.
-- Theme version: `1.9.2`.
-
 ## v1.8.0
 
 - Showroom 2.0 single-project predložak ostaje uvjetan prema stvarnim podacima, s potpunim reduced-motion/no-JS fallbackom.
@@ -157,3 +150,10 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Prvi kadar više se ne proglašava neuspjelim samo zato što Safari/iOS kasnije odradi compositor tick; fallback se uključuje samo kod stvarne greške modula/renderera.
 - Mikro-savjeti za klimu, električare i krovopokrivače objašnjavaju put do relevantnijeg upita, bez obećanja prometa ili prihoda.
 - Theme version: `1.8.1`.
+
+## v1.9.2
+
+- Planet/Earth hero experiment removed from the active homepage; the original architectural house hero is restored as the first interactive scene.
+- Existing truth-first copy, maintenance offer, projects/showroom and form hardening remain intact.
+- Occupation HUD remains interactive with Klima-servisi, voda, struja, krov and other service rows; ordinary HUD copy is deliberately compact.
+- Theme version: `1.9.2`.
