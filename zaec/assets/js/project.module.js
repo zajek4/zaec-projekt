@@ -48,6 +48,17 @@
 	}
 
 	gsap.registerPlugin(ScrollTrigger);
+	if (window.Lenis) {
+		var lenis = new window.Lenis({ duration: .9, smoothWheel: true, anchors: false, touchMultiplier: 1.2 });
+		lenis.on('scroll', ScrollTrigger.update);
+		gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+		gsap.ticker.lagSmoothing(500, 33);
+	}
+	var refreshTimer = null;
+	window.addEventListener('resize', function () {
+		clearTimeout(refreshTimer);
+		refreshTimer = setTimeout(function () { ScrollTrigger.refresh(); }, 180);
+	}, { passive: true });
 
 	var canClip = window.CSS && (CSS.supports('clip-path', 'inset(0)') || CSS.supports('-webkit-clip-path', 'inset(0)'));
 	var codeText = code ? code.textContent : '';
@@ -98,26 +109,107 @@
 		var phone = devices.querySelector('.zaec-project-device--phone');
 		var laptopX = laptop ? gsap.quickTo(laptop, 'rotationX', { duration: .42, ease: 'power3.out' }) : null;
 		var laptopY = laptop ? gsap.quickTo(laptop, 'rotationY', { duration: .42, ease: 'power3.out' }) : null;
+		var laptopMoveX = laptop ? gsap.quickTo(laptop, 'x', { duration: .5, ease: 'power3.out' }) : null;
+		var laptopMoveY = laptop ? gsap.quickTo(laptop, 'y', { duration: .5, ease: 'power3.out' }) : null;
 		var phoneX = phone ? gsap.quickTo(phone, 'rotationX', { duration: .42, ease: 'power3.out' }) : null;
 		var phoneY = phone ? gsap.quickTo(phone, 'rotationY', { duration: .42, ease: 'power3.out' }) : null;
+		var phoneMoveX = phone ? gsap.quickTo(phone, 'x', { duration: .5, ease: 'power3.out' }) : null;
+		var phoneMoveY = phone ? gsap.quickTo(phone, 'y', { duration: .5, ease: 'power3.out' }) : null;
 		devices.addEventListener('pointermove', function (event) {
 			var rect = devices.getBoundingClientRect();
 			var nx = Math.max(-1, Math.min(1, (event.clientX - (rect.left + rect.width / 2)) / (rect.width / 2)));
 			var ny = Math.max(-1, Math.min(1, (event.clientY - (rect.top + rect.height / 2)) / (rect.height / 2)));
 			if (laptopX) laptopX(-ny * 2.2);
 			if (laptopY) laptopY(-7 + nx * 2.8);
+			if (laptopMoveX) laptopMoveX(nx * 6);
+			if (laptopMoveY) laptopMoveY(ny * 3);
 			if (phoneX) phoneX(ny * 1.8);
 			if (phoneY) phoneY(-17 + nx * 2.2);
+			if (phoneMoveX) phoneMoveX(nx * 3);
+			if (phoneMoveY) phoneMoveY(ny * 2);
 		}, { passive: true });
 		devices.addEventListener('pointerleave', function () {
 			if (laptopX) laptopX(0);
 			if (laptopY) laptopY(-7);
+			if (laptopMoveX) laptopMoveX(0);
+			if (laptopMoveY) laptopMoveY(0);
 			if (phoneX) phoneX(0);
 			if (phoneY) phoneY(-17);
+			if (phoneMoveX) phoneMoveX(0);
+			if (phoneMoveY) phoneMoveY(0);
 		}, { passive: true });
 	}
 
+	function setupGallery() {
+		var gallery = root.querySelector('[data-project-gallery]');
+		var viewport = root.querySelector('[data-gallery-viewport]');
+		var track = root.querySelector('[data-gallery-track]');
+		if (!gallery || !viewport || !track || !ScrollTrigger || !window.matchMedia('(min-width: 768px)').matches) {
+			return;
+		}
+
+		var cards = Array.prototype.slice.call(track.querySelectorAll('.zaec-project-screen-card'));
+		if (cards.length < 2) {
+			return;
+		}
+		track.classList.add('is-horizontal');
+		viewport.classList.add('is-horizontal');
+		var indexLabel = gallery.querySelector('[data-gallery-index]');
+		var progressBar = gallery.querySelector('[data-gallery-progress]');
+		var distance = function () { return Math.max(0, track.scrollWidth - viewport.clientWidth); };
+		var updateUi = function (progress) {
+			var current = Math.min(cards.length, Math.max(1, Math.round(progress * (cards.length - 1)) + 1));
+			if ( indexLabel ) indexLabel.textContent = ('0' + current).slice(-2) + ' / ' + ('0' + cards.length).slice(-2);
+			if ( progressBar ) progressBar.style.transform = 'scaleX(' + progress + ')';
+		};
+		var trigger;
+		var galleryTween = gsap.to(track, {
+			x: function () { return -distance(); },
+			ease: 'none',
+			scrollTrigger: {
+				trigger: gallery,
+				start: 'top top',
+				end: function () { return '+=' + distance(); },
+				pin: true,
+				scrub: .55,
+				invalidateOnRefresh: true,
+				anticipatePin: 1,
+				onUpdate: function (self) { updateUi(self.progress); }
+			}
+		});
+		trigger = galleryTween.scrollTrigger;
+		updateUi(0);
+
+		var drag = null;
+		viewport.addEventListener('pointerdown', function (event) {
+			if ( event.pointerType === 'mouse' && event.button !== 0 ) return;
+			if ( distance() <= 0 ) return;
+			drag = { startX: event.clientX, startProgress: trigger.progress };
+			viewport.classList.add('is-dragging');
+			try { viewport.setPointerCapture(event.pointerId); } catch (captureError) {}
+		}, { passive: true });
+		viewport.addEventListener('pointermove', function (event) {
+			if ( ! drag ) return;
+			var delta = (drag.startX - event.clientX) / Math.max(distance(), 1);
+			var nextProgress = Math.max(0, Math.min(1, drag.startProgress + delta));
+			trigger.scroll(trigger.start + nextProgress * (trigger.end - trigger.start));
+			event.preventDefault();
+		}, { passive: false });
+		function endDrag(event) {
+			if ( ! drag ) return;
+			drag = null;
+			viewport.classList.remove('is-dragging');
+			if ( event ) {
+				try { viewport.releasePointerCapture(event.pointerId); } catch (releaseError) {}
+			}
+		}
+		viewport.addEventListener('pointerup', endDrag, { passive: true });
+		viewport.addEventListener('pointercancel', endDrag, { passive: true });
+		window.addEventListener('load', function () { ScrollTrigger.refresh(); }, { once: true });
+	}
+
 	if (ScrollTrigger) {
+		setupGallery();
 		scenes.forEach(function (scene) {
 			var pieces = scene.querySelectorAll('.zaec-project-bento article, .zaec-project-screen-card, .zaec-project-story__body, .zaec-project-next');
 			if (!pieces.length) return;

@@ -549,5 +549,81 @@ function zaec_migrate_theme_data() {
 		update_option( 'zaec_theme_data_version', '1.7.1', false );
 	}
 
+
+	/* v1.8.0 — truth-first copy i opcionalno održavanje. */
+	if ( version_compare( $version, '1.8.0', '<' ) ) {
+		if ( $front_id ) {
+			$defaults  = zaec_front_defaults();
+			$repeaters = zaec_front_repeater_defaults();
+
+			$old_scalars = array(
+				'hero_lead'     => 'Web treba napraviti više od dobrog prvog dojma: jasno objasniti što radite, pokazati zašto vam vjerovati i dovesti čovjeka do poziva, upita ili rezervacije. Po predlošku ili po nacrtu — opseg i cijena prije početka.',
+				'services_note' => 'U izradu ulaze brzina, jasna struktura, Google Business Profile i mjerenje. Shop i integracije — samo kada vašem poslu stvarno trebaju.',
+				'metoda_title'  => 'Prije koda, razlog zbog kojeg će vas netko kontaktirati.',
+				'metoda_lead'   => 'Ne počinjemo od boje gumba. Počinjemo od vašeg posla, pitanja klijenta i odluke koju treba donijeti.',
+				'radovi_title'  => 'Radovi iz stvarnog svijeta.',
+				'radovi_lead'   => 'Tri različita posla, tri različita razloga za dobar web. Ne pokazujemo makete — pokazujemo ono što je stvarno online.',
+			);
+			foreach ( $old_scalars as $key => $old_value ) {
+				if ( $old_value === get_post_meta( $front_id, '_zaec_' . $key, true ) ) {
+					update_post_meta( $front_id, '_zaec_' . $key, $defaults[ $key ] );
+				}
+			}
+
+			$trust = get_post_meta( $front_id, '_zaec_trust_stats', true );
+			$old_trust = array(
+				array( 'value' => '3', 'label' => 'objavljena projekta' ),
+				array( 'value' => '4.9', 'label' => 'Google ocjena' ),
+				array( 'value' => 'JASNO', 'label' => 'što web treba postići' ),
+				array( 'value' => 'DIREKTNO', 'label' => 'do poziva ili upita' ),
+			);
+			if ( is_array( $trust ) && $old_trust === $trust ) {
+				update_post_meta( $front_id, '_zaec_trust_stats', $repeaters['trust_stats'] );
+			}
+
+			$method_points = get_post_meta( $front_id, '_zaec_method_points', true );
+			if ( is_array( $method_points ) ) {
+				foreach ( $method_points as $index => $point ) {
+					if ( isset( $point['code'], $point['title'] ) && '3.3' === $point['code'] && 'Dokaz koji ima težinu' === $point['title'] ) {
+						$method_points[ $index ] = $repeaters['method_points'][2];
+					}
+				}
+				update_post_meta( $front_id, '_zaec_method_points', $method_points );
+			}
+
+			$process = get_post_meta( $front_id, '_zaec_process_steps', true );
+			if ( is_array( $process ) ) {
+				foreach ( $process as $index => $step ) {
+					if ( isset( $step['code'], $step['text'] ) && 'K.02' === $step['code'] && in_array( $step['text'], array( 'Kod predloška biramo postojeći smjer. Kod izrade po mjeri prvo potvrđujemo vlastitu strukturu. U oba slučaja opseg je jasan prije razvoja.', 'Kod predloška biramo postojeći smjer. Kod izrade po mjeri prvo crtamo nacrt. U oba slučaja opseg potvrđujemo prije razvoja.' ), true ) ) {
+						$process[ $index ] = $repeaters['process_steps'][1];
+					}
+				}
+				update_post_meta( $front_id, '_zaec_process_steps', $process );
+			}
+
+			$faqs = get_post_meta( $front_id, '_zaec_faqs', true );
+			if ( is_array( $faqs ) ) {
+				foreach ( $faqs as $faq_index => $faq ) {
+					if ( isset( $faq['question'], $faq['answer'] ) && 'Tko radi moju stranicu?' === $faq['question'] && 'Vi imate jednu odgovornu osobu — ne lanac podizvođača. Iza ZAEC-a stoji više od deset godina rada na webu, uz UX, sadržaj i Google integracije.' === $faq['answer'] ) {
+						$faqs[ $faq_index ] = $repeaters['faqs'][2];
+					}
+				}
+				$questions = array_map(
+					static function ( $faq ) {
+						return isset( $faq['question'] ) ? $faq['question'] : '';
+					},
+					$faqs
+				);
+				foreach ( $repeaters['faqs'] as $faq ) {
+					if ( isset( $faq['question'] ) && ! in_array( $faq['question'], $questions, true ) && in_array( $faq['question'], array( 'Nudite li mjesečno održavanje?', 'Preuzimate li održavanje tuđe stranice?', 'Trebam li uopće web stranicu?', 'Što znači tehnički SEO temelj?' ), true ) ) {
+						$faqs[] = $faq;
+					}
+				}
+				update_post_meta( $front_id, '_zaec_faqs', $faqs );
+			}
+		}
+		update_option( 'zaec_theme_data_version', '1.8.0', false );
+	}
+
 }
 add_action( 'admin_init', 'zaec_migrate_theme_data' );

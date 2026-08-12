@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.7.1
+# ZAEC WordPress Theme — v1.8.0
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 

@@ -378,3 +378,31 @@
 @media (prefers-reduced-motion: reduce) {
   .zaec-project-showroom-outro::before { animation: none; opacity: .5; transform: none; }
 }
+
+/* 1.8.0 — pinned screen gallery; no-JS/reduced motion ostaje vertikalni stack. */
+.zaec-project-gallery { position: relative; }
+.zaec-project-gallery__viewport { overflow: hidden; }
+.zaec-project-gallery__track { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.zaec-project-gallery__track.is-horizontal { display: flex; width: max-content; gap: clamp(18px, 3vw, 48px); }
+.zaec-project-gallery__track.is-horizontal .zaec-project-screen-card { flex: 0 0 min(72vw, 880px); }
+.zaec-project-screen-card { min-width: 0; margin: 0; background: #11151c; border: 1px solid rgba(125,211,255,.25); overflow: hidden; }
+.zaec-project-screen-card__media { overflow: hidden; background: #0b0f15; }
+.zaec-project-screen-card__media img { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: cover; object-position: top; transition: transform .42s var(--ease), filter .42s ease; }
+.zaec-project-screen-card:hover .zaec-project-screen-card__media img { transform: scale(1.018); filter: brightness(1.06); }
+.zaec-project-screen-card--mobile { width: min(300px, 100%); }
+.zaec-project-screen-card--mobile .zaec-project-screen-card__media { aspect-ratio: 9 / 19; padding: 7px; border-radius: 24px; }
+.zaec-project-screen-card--mobile .zaec-project-screen-card__media img { height: 100%; border-radius: 17px; object-fit: cover; }
+.zaec-project-screen-card figcaption { padding: 13px 15px; font-family: var(--font-m); font-size: .62rem; letter-spacing: .16em; color: var(--gray-2); }
+.zaec-project-gallery__ui { display: flex; align-items: center; gap: 16px; max-width: 880px; margin-top: 18px; font-family: var(--font-m); font-size: .66rem; letter-spacing: .15em; color: var(--gray); }
+.zaec-project-gallery__ui > i { display: block; flex: 1; height: 2px; background: rgba(125,211,255,.16); overflow: hidden; }
+.zaec-project-gallery__ui > i b { display: block; width: 100%; height: 100%; background: var(--signal); transform: scaleX(0); transform-origin: left; }
+.zaec-project-gallery__viewport.is-dragging { cursor: grabbing; user-select: none; }
+@media (min-width: 768px) {
+  .zaec-project-gallery__viewport.is-horizontal { cursor: grab; }
+  .zaec-project-gallery__track.is-horizontal .zaec-project-screen-card--mobile { flex-basis: min(300px, 28vw); }
+}
+@media (max-width: 767px) {
+  .zaec-project-gallery__track { gap: 18px; }
+  .zaec-project-gallery__track.is-horizontal { display: grid; width: auto; }
+  .zaec-project-screen-card--mobile { width: min(250px, 76vw); justify-self: center; }
+}

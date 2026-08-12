@@ -29,12 +29,18 @@ get_header();
 		if ( $post_content && preg_match_all( '/<img[^>]+src=["\']([^"\']+)["\']/i', $post_content, $matches ) ) {
 			$content_img_urls = array_values( array_unique( array_filter( array_map( 'esc_url_raw', $matches[1] ) ) ) );
 		}
-		$screen_images = $content_img_urls;
-		if ( ! empty( $project['shot_mobile'] ) ) {
-			array_unshift( $screen_images, esc_url_raw( $project['shot_mobile'] ) );
+		$screen_items = array();
+		if ( $desktop_image ) {
+			$screen_items[] = array( 'url' => $desktop_image, 'label' => '[ DESKTOP ]', 'class' => '' );
 		}
-		$screen_images      = array_slice( array_values( array_unique( array_filter( $screen_images ) ) ), 0, 4 );
-		$has_screen_scene   = ! empty( $screen_images );
+		if ( ! empty( $project['shot_mobile'] ) ) {
+			$screen_items[] = array( 'url' => esc_url_raw( $project['shot_mobile'] ), 'label' => '[ MOBILE ]', 'class' => ' zaec-project-screen-card--mobile' );
+		}
+		foreach ( $content_img_urls as $content_img_url ) {
+			$screen_items[] = array( 'url' => $content_img_url, 'label' => '[ DETALJ ]', 'class' => '' );
+		}
+		$screen_items      = array_slice( $screen_items, 0, 6 );
+		$has_screen_scene  = ! empty( $screen_items );
 		$technology_chips   = ! empty( $project['technologies'] ) ? preg_split( '/\s*[·,|]\s*/u', $project['technologies'], -1, PREG_SPLIT_NO_EMPTY ) : array();
 		$has_data_scene     = ! empty( $project['result'] ) || ! empty( $project['service'] ) || ! empty( $project['location'] ) || ! empty( $project['year'] ) || ! empty( $technology_chips );
 		$next_post          = get_next_post();
@@ -105,11 +111,19 @@ get_header();
 			<?php if ( $has_screen_scene ) : ?>
 				<section class="zaec-project-showroom-screens" aria-labelledby="zaec-project-screens-title" data-project-scene>
 					<div class="wrap">
-						<div class="zaec-project-showroom-scene-head"><p class="zaec-project-kicker" id="zaec-project-screens-title"><?php esc_html_e( '[ EKRANI ]', 'zaec' ); ?></p><p><?php esc_html_e( 'Detalj koji se vidi prije objašnjenja.', 'zaec' ); ?></p></div>
-						<div class="zaec-project-screen-grid">
-							<?php foreach ( $screen_images as $index => $screen_image ) : ?>
-								<figure class="zaec-project-screen-card<?php echo 0 === $index && ! empty( $project['shot_mobile'] ) ? ' zaec-project-screen-card--mobile' : ''; ?>"><img src="<?php echo esc_url( $screen_image ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Detalj ekrana projekta %s', 'zaec' ), get_the_title() ) ); ?>" loading="lazy" decoding="async"></figure>
-							<?php endforeach; ?>
+						<div class="zaec-project-showroom-scene-head"><p class="zaec-project-kicker" id="zaec-project-screens-title"><?php esc_html_e( '[ EKRANI ]', 'zaec' ); ?></p><p><?php esc_html_e( 'Svaki ekran nosi svoj dio priče.', 'zaec' ); ?></p></div>
+						<div class="zaec-project-gallery" data-project-gallery>
+							<div class="zaec-project-gallery__viewport" data-gallery-viewport>
+								<div class="zaec-project-gallery__track" data-gallery-track>
+									<?php foreach ( $screen_items as $screen_item ) : ?>
+										<figure class="zaec-project-screen-card<?php echo esc_attr( $screen_item['class'] ); ?>">
+											<div class="zaec-project-screen-card__media"><img src="<?php echo esc_url( $screen_item['url'] ); ?>" alt="<?php echo esc_attr( sprintf( __( 'Prikaz projekta %s', 'zaec' ), get_the_title() ) ); ?>" loading="lazy" decoding="async"></div>
+											<figcaption><?php echo esc_html( $screen_item['label'] ); ?></figcaption>
+										</figure>
+									<?php endforeach; ?>
+								</div>
+							</div>
+							<div class="zaec-project-gallery__ui" aria-hidden="true"><span data-gallery-index>01 / <?php echo esc_html( str_pad( (string) count( $screen_items ), 2, '0', STR_PAD_LEFT ) ); ?></span><i><b data-gallery-progress></b></i></div>
 						</div>
 					</div>
 				</section>

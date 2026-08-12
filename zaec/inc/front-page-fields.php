@@ -33,6 +33,9 @@ function zaec_front_field_groups() {
 			'poznato_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
 			'poznato_title' => array( 'label' => 'Naslov', 'type' => 'text' ),
 			'poznato_bridge' => array( 'label' => 'Prijelazni tekst', 'type' => 'textarea' ),
+			'poznato_boundary_kicker' => array( 'label' => 'Iskren odgovor — kicker', 'type' => 'text' ),
+			'poznato_boundary_title' => array( 'label' => 'Iskren odgovor — naslov', 'type' => 'text' ),
+			'poznato_boundary_text' => array( 'label' => 'Iskren odgovor — tekst', 'type' => 'textarea' ),
 		),
 		'Metoda' => array(
 			'metoda_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
@@ -60,6 +63,9 @@ function zaec_front_field_groups() {
 			'band_price_meta' => array( 'label' => 'Poseban opseg — meta', 'type' => 'text' ),
 			'band_cta' => array( 'label' => 'Poseban opseg — link CTA', 'type' => 'text' ),
 			'band_next_cta' => array( 'label' => 'Poseban opseg — sljedeći korak', 'type' => 'text' ),
+			'maintenance_kicker' => array( 'label' => 'Održavanje — kicker', 'type' => 'text' ),
+			'maintenance_title' => array( 'label' => 'Održavanje — naslov', 'type' => 'text' ),
+			'maintenance_lead' => array( 'label' => 'Održavanje — lead', 'type' => 'textarea' ),
 		),
 		'Stack / Google / Shop' => array(
 			'stack_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
@@ -102,6 +108,8 @@ function zaec_repeater_schemas() {
 		'screen_points' => array( 'title' => 'Mobile-first — točke', 'fixed' => true, 'fields' => array( 'code' => 'Oznaka', 'title' => 'Naslov', 'text' => 'Tekst' ) ),
 		'pricing' => array( 'title' => 'Cijene — 2× Predložak + 2× Po nacrtu', 'fixed' => true, 'fields' => array( 'track' => 'Staza (Predložak / Po nacrtu)', 'code' => 'Oznaka', 'name' => 'Naziv', 'price' => 'Cijena', 'meta' => 'Cijena meta', 'tag' => 'Podnaslov', 'badge' => 'Badge', 'featured' => 'Featured (1/0)', 'package' => 'Vrijednost paketa', 'cta' => 'CTA tekst', 'features' => 'Stavke — jedna po retku' ) ),
 		'pricing_notes' => array( 'title' => 'Cijene — pravila opsega', 'fixed' => true, 'fields' => array( 'label' => 'Oznaka', 'text' => 'Tekst' ) ),
+		'maintenance_plans' => array( 'title' => 'Održavanje — Osnov + Plus', 'fixed' => true, 'fields' => array( 'code' => 'Oznaka', 'name' => 'Naziv', 'price' => 'Cijena', 'meta' => 'Meta', 'tag' => 'Podnaslov', 'features' => 'Stavke — jedna po retku' ) ),
+		'maintenance_notes' => array( 'title' => 'Održavanje — napomene i granice', 'fixed' => true, 'fields' => array( 'label' => 'Oznaka', 'text' => 'Tekst' ) ),
 		'testimonials' => array( 'title' => 'Recenzije — samo potvrđene izjave', 'fields' => array( 'quote' => 'Izjava', 'name' => 'Ime', 'role' => 'Djelatnost / uloga', 'company' => 'Tvrtka / grad' ) ),
 		'trust_stats' => array( 'title' => 'Trust traka — samo potvrđene tvrdnje', 'fixed' => true, 'fields' => array( 'value' => 'Vrijednost', 'label' => 'Opis' ) ),
 		'stack_items' => array( 'title' => 'Stack kartice (Google / shop)', 'fixed' => true, 'fields' => array( 'code' => 'Oznaka', 'title' => 'Naslov', 'text' => 'Tekst' ) ),

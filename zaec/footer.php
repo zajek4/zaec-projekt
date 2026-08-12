@@ -35,6 +35,7 @@ $address_line  = trim( implode( ', ', array_filter( array( $options['address'], 
 			<a href="<?php echo esc_url( zaec_home_anchor( 'cijene' ) ); ?>"><?php esc_html_e( 'Cijene', 'zaec' ); ?></a>
 			<a href="<?php echo esc_url( zaec_home_anchor( 'poseban-opseg' ) ); ?>"><?php esc_html_e( 'Webshop i integracije', 'zaec' ); ?></a>
 			<a href="<?php echo esc_url( zaec_home_anchor( 'proces' ) ); ?>"><?php esc_html_e( 'Kako radimo', 'zaec' ); ?></a>
+			<a href="<?php echo esc_url( zaec_home_anchor( 'odrzavanje' ) ); ?>"><?php esc_html_e( 'Održavanje', 'zaec' ); ?></a>
 		</div>
 
 		<div class="foot-col">
