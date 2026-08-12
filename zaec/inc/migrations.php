@@ -648,17 +648,16 @@ function zaec_migrate_theme_data() {
 
 	/* v1.9.2 — izravno obraćanje klijentima iz klima-servisa. */
 	if ( ! get_option( 'zaec_climate_copy_v192_done', false ) && $front_id ) {
-
-			$occupations = get_post_meta( $front_id, '_zaec_occupations', true );
-			if ( is_array( $occupations ) ) {
-				foreach ( $occupations as $index => $occupation ) {
-					if ( isset( $occupation['title'] ) && 'Za klimatizaciju' === $occupation['title'] ) {
-						$occupations[ $index ]['title'] = 'Za klima-servise';
-						$occupations[ $index ]['tab']   = 'Klima-servisi';
-					}
+		$occupations = get_post_meta( $front_id, '_zaec_occupations', true );
+		if ( is_array( $occupations ) ) {
+			foreach ( $occupations as $index => $occupation ) {
+				if ( isset( $occupation['title'] ) && 'Za klimatizaciju' === $occupation['title'] ) {
+					$occupations[ $index ]['title'] = 'Za klima-servise';
+					$occupations[ $index ]['tab']   = 'Klima-servisi';
 				}
-				update_post_meta( $front_id, '_zaec_occupations', $occupations );
 			}
+			update_post_meta( $front_id, '_zaec_occupations', $occupations );
+		}
 		update_option( 'zaec_theme_data_version', '1.9.2', false );
 		update_option( 'zaec_climate_copy_v192_done', 1, false );
 	}
