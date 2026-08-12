@@ -135,6 +135,13 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Vlasnik prije objave treba dostaviti samo podatke koji nedostaju: potvrđene Google recenzije, dodatne mobilne screenshotove i mjerene rezultate projekata ako ih želi javno navesti.
 - Theme version: `1.7.1`.
 
+## v1.9.2
+
+- Planet/Earth hero experiment removed from the active homepage; original architectural house hero is restored as the first interactive scene.
+- Existing truth-first copy, maintenance offer, projects/showroom and form hardening remain intact.
+- Occupation HUD remains interactive with Klima-servisi, voda, struja, krov and other service rows.
+- Theme version: `1.9.2`.
+
 ## v1.8.0
 
 - Showroom 2.0 single-project predložak ostaje uvjetan prema stvarnim podacima, s potpunim reduced-motion/no-JS fallbackom.
@@ -150,32 +157,3 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Prvi kadar više se ne proglašava neuspjelim samo zato što Safari/iOS kasnije odradi compositor tick; fallback se uključuje samo kod stvarne greške modula/renderera.
 - Mikro-savjeti za klimu, električare i krovopokrivače objašnjavaju put do relevantnijeg upita, bez obećanja prometa ili prihoda.
 - Theme version: `1.8.1`.
-
-## v1.9.0 — Digital Earth Hero
-
-- Homepage hero now uses an interactive, full-bleed holographic Earth; Osijek remains a subtle local-origin marker while the global map and other cities carry the visual weight.
-- The original `Gradimo web stranice za ljude koji grade sve ostalo.` message and wireframe-house story were moved into a dedicated lower house section.
-- Added local 65-city node data and Natural Earth country data for clean continent/country outlines; city points remain informational UI, not a claim about measured live traffic.
-- Added local topology texture, atmospheric rim shader, clean all-country outlines, a separate EU layer and a brighter Croatia outline, category-colored city lights, Osijek beam/rings/label and hover tooltips.
-- Added local Three.js post-processing modules for `EffectComposer` and `UnrealBloomPass`, with a no-bloom renderer fallback.
-- Added reduced-motion, no-WebGL and no-JavaScript Earth fallbacks.
-- The former house renderer is mounted in a dedicated lower section; its render loop pauses when the section is off-screen so the full-bleed Earth hero remains the visual priority.
-- Earth assets are local copies of the supplied sources: `turban/webgl-earth` elevation map and Natural Earth `ne_110m_admin_0_countries` GeoJSON.
-- Theme version: `1.9.0`.
-
-## v1.9.1
-
-- Earth hero now uses a full-bleed 16:9 stage with no left/right card gaps; clean country/continent outlines and the Croatia outline replace the old latitude/longitude mesh.
-- `Regions.js` replaces packet/arc rendering with merged base country outlines, a 27-state EU highlight and a separate Croatia outline.
-- Reduced GPU/CPU cost with a 2048px topology map, adaptive sphere detail, lower-power bloom fallback, reduced star count, passive mobile touch mode and lazy mobile/house rendering.
-- The original wireframe house is now the second homepage section, with the original `Gradimo web stranice za ljude koji grade sve ostalo.` copy.
-- Restored the house build sequence HUD: `Web koji razumije vaš zanat` fades in as the house opens, while the occupation HUD keeps Klima, Voda, Struja, Krov and other rows available.
-- Theme version: `1.9.1`.
-
-## v1.9.2
-
-- Homepage flow audited and stabilized: Earth hero → wireframe house → transition marquee → `Zvuči poznato?`.
-- Added a scrubbed, reduced-motion-safe Earth-to-house transition without scroll-jacking.
-- Moved the lightweight marquee out of the hero and placed it between the house and `Zvuči poznato?` section.
-- Mobile Earth is passive on touch so page scrolling is never blocked; desktop keeps orbit and zoom interaction.
-- Theme version: `1.9.2`.

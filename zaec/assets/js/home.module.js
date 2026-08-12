@@ -316,7 +316,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           if (pct) pct.textContent = $('span', map[id]).textContent;
         });
       }, { rootMargin: '-44% 0px -44% 0px', threshold: 0 });
-      ['hero', 'house', 'poznato', 'metoda', 'proces', 'ekran', 'cijene', 'radovi', 'klijenti', 'faq', 'upit'].forEach(function (id) {
+      ['hero', 'za-koga', 'poznato', 'metoda', 'proces', 'ekran', 'cijene', 'radovi', 'klijenti', 'faq', 'upit'].forEach(function (id) {
         var el = doc.getElementById(id);
         if (el) io.observe(el);
       });
@@ -418,7 +418,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
      DJELATNOSTI — podaci
   ============================================================ */
   var OCC_DEFAULT = [
-    { title: 'Za klimatizaciju', sub: 'Servis, montaža i čišćenje. Klijent mora odmah pronaći što radite, gdje dolazite i kako do termina.', q: 'Mali potez: usluge · područje rada · poziv/WhatsApp · termin' },
+    { title: 'Za klima-servise', sub: 'Servis, montaža i čišćenje. Vaš klijent treba odmah pronaći što radite, gdje dolazite i kako do termina.', q: 'Mali potez: usluge · područje rada · poziv/WhatsApp · termin' },
     { title: 'Za vodoinstalatere', sub: 'Kod curenja se ne čita roman. Hitni kontakt, područje rada i vrsta intervencije moraju biti jasni u nekoliko sekundi.', q: 'Na webu: hitni poziv · intervencije · fotografija problema · lokalne stranice' },
     { title: 'Za električare', sub: 'Od sitnog kvara do instalacija i atesta — jasno odvojimo usluge, reference i područje na koje izlazite.', q: 'Mali potez: usluga po problemu · reference · područje rada · brzi upit' },
     { title: 'Za krovopokrivače i limare', sub: 'Krov se prodaje povjerenjem: izvedeni radovi, materijali, područje rada i jednostavan put do procjene.', q: 'Mali potez: prije/poslije · materijali · područje rada · procjena' },
@@ -445,10 +445,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
 
     function paint(i) {
       var o = OCC[i];
-      if (elIdx) elIdx.textContent = pad2(i + 1);
-      if (elTitle) elTitle.textContent = o.title;
-      if (elSub) elSub.textContent = o.sub;
-      if (elQuery) elQuery.textContent = o.q;
+      elIdx.textContent = pad2(i + 1);
+      elTitle.textContent = o.title;
+      elSub.textContent = o.sub;
+      elQuery.textContent = o.q;
       if (swapWrap) {
         swapWrap.classList.remove('swap');
         void swapWrap.offsetWidth;
@@ -507,9 +507,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       card.addEventListener('pointerleave', function () { occRX(0); occRY(0); }, { passive: true });
     }
 
-    var occPinSpace = $('#housePinSpace') || $('#heroPinSpace');
-    if ('IntersectionObserver' in WIN && occPinSpace) {
-      new IntersectionObserver(function (es) { heroInView = es[0].isIntersecting; }, { threshold: 0.12 }).observe(occPinSpace);
+    if ('IntersectionObserver' in WIN && $('#heroPinSpace')) {
+      new IntersectionObserver(function (es) { heroInView = es[0].isIntersecting; }, { threshold: 0.12 }).observe($('#heroPinSpace'));
     }
 
     WIN.addEventListener('keydown', function (e) {
@@ -525,10 +524,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     });
 
     return {
-      start: function () {
-        if (!tabs.length || !OCC.length) return;
-        if (!started) { started = true; setActive(0, false); }
-      },
+      start: function () { if (!started) { started = true; setActive(0, false); } },
       setPhase: function (isA) {
         if (phaseAllows === isA) return;
         phaseAllows = isA;
@@ -547,7 +543,6 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           } catch (e) {}
         }
       },
-      getCurrent: function () { return cur; },
       tick: tick
     };
   })();
@@ -1001,32 +996,13 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   /* ============================================================
      HOLOGRAMSKA KUĆA (Villa N) — nadogradnja, ne uvjet
   ============================================================ */
-  var houseBooted = false;
-  function bootHouseScene() {
-    if (houseBooted || !$('#holoWrap')) return;
-    houseBooted = true;
-    try {
-      H.impl = buildHolo();
-      if (H.impl && occCtl && occCtl.getCurrent) H.impl.showOcc(occCtl.getCurrent());
-    } catch (err) {
-      /* The house is a secondary scene. Its failure must not take the Earth
-         hero or the rest of the homepage down with it. */
-      WIN.__ZAEC_HOUSE_ERROR = true;
-      var houseSection = $('#house');
-      if (houseSection) houseSection.classList.add('house-no-3d');
-      H.impl = null;
-    }
-  }
-  if ($('#holoWrap')) {
-    var housePinForBoot = $('#housePinSpace');
-    if ('IntersectionObserver' in WIN && housePinForBoot) {
-      new IntersectionObserver(function (entries) {
-        if (entries[0] && entries[0].isIntersecting) bootHouseScene();
-      }, { rootMargin: '20% 0px 20% 0px', threshold: 0.01 }).observe(housePinForBoot);
-    } else {
-      bootHouseScene();
-    }
-  } else {
+  try {
+    H.impl = buildHolo();
+  } catch (err) {
+    /* A renderer/context failure gets the deliberate architectural fallback;
+       it must not leave a 560vh empty stage behind. */
+    WIN.__ZAEC_3D_ERROR = true;
+    doc.documentElement.classList.add('no-3d');
     H.impl = null;
   }
 
@@ -2297,43 +2273,11 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
      SCROLL FAZE A/B/C + paralaks siluete (desktop)
   ============================================================ */
   (function () {
-    var earthHero = $('#earthHero');
-    var housePinSpace = $('#housePinSpace');
-    var pinSpace = housePinSpace || $('#heroPinSpace');
-    var heroCopy = housePinSpace ? $('#houseCopy') : $('#heroCopy');
-    var svcPanel = housePinSpace ? $('#houseServices') : $('#za-koga');
-    var phaseCap = housePinSpace ? $('#housePhase') : $('#phaseCaption');
+    var pinSpace = $('#heroPinSpace');
+    var heroCopy = $('#heroCopy');
+    var svcPanel = $('#za-koga');
+    var phaseCap = $('#phaseCaption');
     var holoWrap = $('#holoWrap');
-
-    /* Earth → kuća transition: a short scrubbed hand-off, not scroll-jacking.
-       The map recedes while the architectural scene enters from below. */
-    if (earthHero && housePinSpace && HAS_GSAP && !prefersReducedMotion) {
-      var houseTransitionStage = $('#housePin');
-      var transitionLabel = $('#houseTransitionLabel');
-      if (houseTransitionStage) gsap.set(houseTransitionStage, { opacity: 0, y: 28, scale: .985, transformOrigin: '50% 50%' });
-      ScrollTrigger.create({
-        trigger: housePinSpace,
-        start: 'top bottom',
-        end: 'top 58%',
-        scrub: .45,
-        onUpdate: function (self) {
-          var p = self.progress;
-          earthHero.style.transform = 'scale(' + (1 - p * .055).toFixed(3) + ')';
-          earthHero.style.opacity = String(1 - p * .52);
-          earthHero.style.filter = 'blur(' + (p * 3.2).toFixed(1) + 'px)';
-          if (houseTransitionStage) {
-            gsap.set(houseTransitionStage, { opacity: p, y: 28 * (1 - p), scale: .985 + p * .015 });
-          }
-          if (transitionLabel) transitionLabel.style.opacity = String(p);
-        }
-      });
-    }
-
-    if (earthHero && !housePinSpace) {
-      /* Earth owns hero camera/intro/interaction. */
-      occCtl.setPhase(true);
-      return;
-    }
 
     function wireSvcHover() {
       $$('.svc-mini').forEach(function (btn) {
@@ -2367,14 +2311,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', restoreCompactHero);
     else if (mqDesktop.addListener) mqDesktop.addListener(restoreCompactHero);
 
-    if (!pinSpace || !HAS_GSAP) {
-      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.style.pointerEvents = 'auto'; svcPanel.classList.add('on'); }
-      occCtl.setPhase(true);
-      return;
-    }
+    if (!pinSpace || !HAS_GSAP) { occCtl.setPhase(true); return; }
     if (prefersReducedMotion) {
       if (heroCopy) { heroCopy.style.filter = ''; }
-      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.style.pointerEvents = 'auto'; svcPanel.classList.add('on'); }
+      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.classList.add('on'); }
       occCtl.setPhase(true);
       return;
     }
