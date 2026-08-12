@@ -1,6 +1,6 @@
 # PROMPT-AKTIVAN — ZAEC v1.8.0 · Single projekt "Showroom 2.0" + sadržaj koji prodaje istinom
 
-> **Ovo je jedini aktivan prompt.** Prijašnji su obrisani (otpremljeno: v1.6.1 front-page, v1.7.0 Showroom v1). Sve što trebaš: ova datoteka, referenca tona `COPY-BASELINE-front-page.md` i dvije **art-direction slike koncepta**: `koncept-single-hero.png` + `koncept-single-galerija.png`.
+> **STATUS: ✅ IZVRŠEN (2026-08-11/12).** Otpremljeno kao v1.8.0 (PR #1) + sigurnosni hotfix v1.8.1 (popravak produkcijskog parse errora). Ovaj prompt **nemoj ponovno izvršavati** — služi kao zapis onoga što je napravljeno. Sljedeći korak: vizualna provjera v1.8.1 na stagingu, zatim novi prompt za novu iteraciju.
 > **Ciljna verzija: 1.8.0.** Isporuka mora biti **produkcijski spremna** — definicija dolje u QA-u.
 
 ## TKO SI
