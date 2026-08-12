@@ -1,6 +1,6 @@
 <?php
 /**
- * Hero + services panel + 3D stage.
+ * Digital Earth hero stage.
  *
  * @package ZAEC
  */
@@ -9,54 +9,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$services = zaec_front_repeater( 'services' );
-$occ      = array_slice( zaec_front_repeater( 'occupations' ), 0, 8 );
-$first    = isset( $occ[0] ) ? $occ[0] : array(
-	'title' => '',
-	'sub'   => '',
-	'q'     => '',
-);
-$hint     = trim( (string) zaec_front_field( 'hero_hint' ) );
+
 ?>
 <section id="hero" class="earth-mode" data-theme="dark" aria-label="<?php esc_attr_e( 'Uvod', 'zaec' ); ?>">
 	<div class="pin-space" id="heroPinSpace">
 		<div class="pin-stage" id="heroPin">
 			<div class="bp-grid-dark" aria-hidden="true"></div>
 			<div class="hero-grid">
-				<div class="hero-copy" id="heroCopy">
-					<p class="kicker"><?php echo esc_html( zaec_front_field( 'hero_kicker' ) ); ?></p>
-					<h1><?php echo esc_html( zaec_front_field( 'hero_title' ) ); ?></h1>
-					<p class="lead"><?php echo esc_html( zaec_front_field( 'hero_lead' ) ); ?></p>
+				<div class="hero-copy earth-copy" id="heroCopy">
+					<p class="kicker"><?php echo esc_html( zaec_front_field( 'earth_kicker' ) ); ?></p>
+					<h1><?php echo esc_html( zaec_front_field( 'earth_title' ) ); ?></h1>
+					<p class="lead"><?php echo esc_html( zaec_front_field( 'earth_lead' ) ); ?></p>
 					<div class="hero-ctas">
-						<a class="btn btn-signal btn-arrow" href="<?php echo esc_url( 0 === strpos( (string) zaec_front_field( 'hero_primary_url' ), '#' ) ? zaec_home_anchor( zaec_front_field( 'hero_primary_url' ) ) : zaec_front_field( 'hero_primary_url' ) ); ?>">
-							<span><?php echo esc_html( zaec_front_field( 'hero_primary_text' ) ); ?></span>
+						<a class="btn btn-signal btn-arrow" href="<?php echo esc_url( 0 === strpos( (string) zaec_front_field( 'earth_primary_url' ), '#' ) ? zaec_home_anchor( zaec_front_field( 'earth_primary_url' ) ) : zaec_front_field( 'earth_primary_url' ) ); ?>">
+							<span><?php echo esc_html( zaec_front_field( 'earth_primary_text' ) ); ?></span>
 							<svg class="ar" aria-hidden="true"><use href="#ic-arrow"/></svg>
 						</a>
-						<a class="btn btn-line btn-arrow" href="<?php echo esc_url( 0 === strpos( (string) zaec_front_field( 'hero_secondary_url' ), '#' ) ? zaec_home_anchor( zaec_front_field( 'hero_secondary_url' ) ) : zaec_front_field( 'hero_secondary_url' ) ); ?>">
-							<span><?php echo esc_html( zaec_front_field( 'hero_secondary_text' ) ); ?></span>
+						<a class="btn btn-line btn-arrow" href="<?php echo esc_url( 0 === strpos( (string) zaec_front_field( 'earth_secondary_url' ), '#' ) ? zaec_home_anchor( zaec_front_field( 'earth_secondary_url' ) ) : zaec_front_field( 'earth_secondary_url' ) ); ?>">
+							<span><?php echo esc_html( zaec_front_field( 'earth_secondary_text' ) ); ?></span>
 							<svg class="ar" aria-hidden="true"><use href="#ic-arrow-d"/></svg>
 						</a>
 					</div>
-					<p class="cta-note"><?php echo esc_html( zaec_front_field( 'hero_note' ) ); ?></p>
-					<?php if ( '' !== $hint ) : ?>
-						<p class="hero-hint"><?php echo esc_html( $hint ); ?></p>
-					<?php endif; ?>
-				</div>
-
-				<div class="svc-panel" id="za-koga">
-					<p class="kicker"><?php echo esc_html( zaec_front_field( 'services_kicker' ) ); ?></p>
-					<h2 class="svc-h"><?php echo esc_html( zaec_front_field( 'services_title' ) ); ?></h2>
-					<p class="lead svc-lead"><?php echo esc_html( zaec_front_field( 'services_lead' ) ); ?></p>
-					<div class="svc-minis">
-						<?php foreach ( $services as $service ) : ?>
-							<button type="button" class="svc-mini" data-layer="<?php echo esc_attr( absint( $service['layer'] ) ); ?>">
-								<i><?php echo esc_html( $service['number'] ); ?></i>
-								<b><?php echo esc_html( $service['title'] ); ?></b>
-								<span><?php echo esc_html( $service['text'] ); ?></span>
-							</button>
-						<?php endforeach; ?>
-					</div>
-					<p class="mono-note"><?php echo esc_html( zaec_front_field( 'services_note' ) ); ?></p>
+					<p class="cta-note"><?php echo esc_html( zaec_front_field( 'earth_note' ) ); ?></p>
+					<p class="earth-copy__signal"><i></i> Jasna ponuda · dokaz · sljedeći korak</p>
 				</div>
 
 				<div class="hero-stage">
@@ -95,10 +70,10 @@ $hint     = trim( (string) zaec_front_field( 'hero_hint' ) );
 									<circle cx="246" cy="220" r="3" /><circle cx="319" cy="196" r="2.3" /><circle cx="365" cy="279" r="2.6" /><circle cx="209" cy="303" r="2.1" /><circle cx="300" cy="355" r="2.2" />
 								</g>
 								<g class="earth-fallback__hq" fill="none" stroke="#ffb700">
-									<circle cx="282" cy="263" r="8" /><circle cx="282" cy="263" r="22" opacity=".65" /><circle cx="282" cy="263" r="38" opacity=".3" />
-									<path d="M282 263v-76M274 187h16" />
+									<circle cx="282" cy="263" r="5" /><circle cx="282" cy="263" r="15" opacity=".55" /><circle cx="282" cy="263" r="26" opacity=".25" />
+									<path d="M282 263v-46M277 217h10" opacity=".65" />
 								</g>
-								<text x="306" y="258" fill="#ffcf58" font-family="IBM Plex Mono, monospace" font-size="13" letter-spacing="2">OSIJEK · HQ</text>
+								<text x="302" y="258" fill="#ffcf58" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.6">OSIJEK · HR</text>
 							</svg>
 						</div>
 
@@ -114,12 +89,12 @@ $hint     = trim( (string) zaec_front_field( 'hero_hint' ) );
 						<div class="earth-hud earth-hud--bl" aria-hidden="true">
 							<span class="earth-hud__eyebrow">PACKETS</span>
 							<b id="earthPacketCount">00</b>
-							<small>SIMULATED / 80–260 MS · 35% HQ ROUTES</small>
+							<small>SIMULATED / 80–260 MS · GLOBAL MIX</small>
 						</div>
 						<div class="earth-hud earth-hud--br" aria-hidden="true">
-							<span class="earth-hud__eyebrow">HQ COORDINATES</span>
-							<b>OSIJEK</b>
-							<small>45.5550 N · 18.6955 E</small>
+							<span class="earth-hud__eyebrow">LOCAL ORIGIN</span>
+							<b>OSIJEK · HR</b>
+							<small>one node in a wider network</small>
 						</div>
 
 						<div class="earth-legend" aria-hidden="true">

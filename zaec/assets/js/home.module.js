@@ -507,8 +507,9 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       card.addEventListener('pointerleave', function () { occRX(0); occRY(0); }, { passive: true });
     }
 
-    if ('IntersectionObserver' in WIN && $('#heroPinSpace')) {
-      new IntersectionObserver(function (es) { heroInView = es[0].isIntersecting; }, { threshold: 0.12 }).observe($('#heroPinSpace'));
+    var occPinSpace = $('#housePinSpace') || $('#heroPinSpace');
+    if ('IntersectionObserver' in WIN && occPinSpace) {
+      new IntersectionObserver(function (es) { heroInView = es[0].isIntersecting; }, { threshold: 0.12 }).observe(occPinSpace);
     }
 
     WIN.addEventListener('keydown', function (e) {
@@ -999,20 +1000,18 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   /* ============================================================
      HOLOGRAMSKA KUĆA (Villa N) — nadogradnja, ne uvjet
   ============================================================ */
-  if (!$('#earthHero')) {
+  if ($('#holoWrap')) {
     try {
       H.impl = buildHolo();
     } catch (err) {
-      /* A renderer/context failure gets the deliberate architectural fallback;
-         it must not leave a 560vh empty stage behind. */
-      WIN.__ZAEC_3D_ERROR = true;
-      doc.documentElement.classList.add('no-3d');
+      /* The house is a secondary scene. Its failure must not take the Earth
+         hero or the rest of the homepage down with it. */
+      WIN.__ZAEC_HOUSE_ERROR = true;
+      var houseSection = $('#house');
+      if (houseSection) houseSection.classList.add('house-no-3d');
       H.impl = null;
     }
   } else {
-    /* The Earth Hero owns the only WebGL context on this homepage. The
-       architectural house remains in the module as the planned section-two
-       scene, not as a hidden second renderer. */
     H.impl = null;
   }
 
@@ -2283,23 +2282,17 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
      SCROLL FAZE A/B/C + paralaks siluete (desktop)
   ============================================================ */
   (function () {
-    var pinSpace = $('#heroPinSpace');
-    var heroCopy = $('#heroCopy');
-    var svcPanel = $('#za-koga');
-    var phaseCap = $('#phaseCaption');
-    var holoWrap = $('#holoWrap');
     var earthHero = $('#earthHero');
+    var housePinSpace = $('#housePinSpace');
+    var pinSpace = housePinSpace || $('#heroPinSpace');
+    var heroCopy = housePinSpace ? $('#houseCopy') : $('#heroCopy');
+    var svcPanel = housePinSpace ? $('#houseServices') : $('#za-koga');
+    var phaseCap = housePinSpace ? $('#housePhase') : $('#phaseCaption');
+    var holoWrap = $('#holoWrap');
 
-    if (earthHero) {
-      /* Earth owns hero camera/intro/interaction. Do not attach the old
-         house pin sequence or create a second hidden WebGL renderer. */
+    if (earthHero && !housePinSpace) {
+      /* Earth owns hero camera/intro/interaction. */
       occCtl.setPhase(true);
-      if (heroCopy) {
-        heroCopy.style.opacity = '1';
-        heroCopy.style.transform = 'none';
-        heroCopy.style.filter = 'none';
-        heroCopy.style.pointerEvents = 'auto';
-      }
       return;
     }
 

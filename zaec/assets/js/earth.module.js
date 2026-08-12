@@ -424,11 +424,11 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     bitmap.height = 100;
     var context = bitmap.getContext('2d');
     context.clearRect(0, 0, bitmap.width, bitmap.height);
-    context.font = '600 28px "JetBrains Mono", "IBM Plex Mono", monospace';
+    context.font = '600 22px "JetBrains Mono", "IBM Plex Mono", monospace';
     context.fillStyle = '#ffcf58';
     context.shadowColor = '#ffb700';
-    context.shadowBlur = 18;
-    context.fillText('OSIJEK · HQ', 20, 40);
+    context.shadowBlur = 12;
+    context.fillText('OSIJEK · HR', 20, 38);
     context.shadowBlur = 0;
     context.font = '400 17px "JetBrains Mono", "IBM Plex Mono", monospace';
     context.fillStyle = 'rgba(255, 223, 145, .84)';
@@ -446,8 +446,8 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     group.renderOrder = 10;
     state.globe.add(group);
 
-    var dotMaterial = new THREE.MeshBasicMaterial({ color: COLORS.amber, transparent: true, opacity: 1, blending: THREE.AdditiveBlending, depthWrite: false });
-    var dot = new THREE.Mesh(new THREE.SphereGeometry(0.115, 12, 8), dotMaterial);
+    var dotMaterial = new THREE.MeshBasicMaterial({ color: COLORS.amber, transparent: true, opacity: 0.86, blending: THREE.AdditiveBlending, depthWrite: false });
+    var dot = new THREE.Mesh(new THREE.SphereGeometry(0.075, 10, 6), dotMaterial);
     dot.position.copy(position);
     group.add(dot);
 
@@ -601,7 +601,7 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     if (!state.hq) return;
     var pulse = reducedMotion ? 1 : 1 + Math.sin(state.time * 3.0) * 0.13;
     state.hq.dot.scale.setScalar(pulse);
-    state.hq.beam.material.opacity = reducedMotion ? 0.38 : 0.28 + 0.12 * (0.5 + 0.5 * Math.sin(state.time * 2.1));
+    state.hq.beam.material.opacity = reducedMotion ? 0.2 : 0.12 + 0.08 * (0.5 + 0.5 * Math.sin(state.time * 2.1));
     state.hq.rings.forEach(function (ring) {
       if (reducedMotion) {
         ring.scale.setScalar(1);

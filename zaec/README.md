@@ -153,11 +153,12 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 
 ## v1.9.0 — Digital Earth Hero
 
-- Homepage hero now uses an interactive holographic Earth with Osijek as the amber HQ marker.
+- Homepage hero now uses an interactive, full-bleed holographic Earth; Osijek remains a subtle local-origin marker while the global map and other cities carry the visual weight.
+- The original `Gradimo web stranice za ljude koji grade sve ostalo.` message and wireframe-house story were moved into a dedicated lower house section.
 - Added local 65-city node data and Natural Earth country borders; the network layer is explicitly a visual simulation, not a claim about measured live traffic.
 - Added local topology texture, atmospheric rim shader, country lines, category-colored city lights, Osijek beam/rings/label, hover tooltip and simulated packet arcs.
 - Added local Three.js post-processing modules for `EffectComposer` and `UnrealBloomPass`, with a no-bloom renderer fallback.
 - Added reduced-motion, no-WebGL and no-JavaScript Earth fallbacks.
-- The former house renderer is not instantiated as a hidden second WebGL context; it remains available for the planned section-two wireframe-house extension.
+- The former house renderer is mounted in a dedicated lower section; its render loop pauses when the section is off-screen so the full-bleed Earth hero remains the visual priority.
 - Earth assets are local copies of the supplied sources: `turban/webgl-earth` elevation map and Natural Earth `ne_110m_admin_0_countries` GeoJSON.
 - Theme version: `1.9.0`.
