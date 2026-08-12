@@ -445,10 +445,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
 
     function paint(i) {
       var o = OCC[i];
-      elIdx.textContent = pad2(i + 1);
-      elTitle.textContent = o.title;
-      elSub.textContent = o.sub;
-      elQuery.textContent = o.q;
+      if (elIdx) elIdx.textContent = pad2(i + 1);
+      if (elTitle) elTitle.textContent = o.title;
+      if (elSub) elSub.textContent = o.sub;
+      if (elQuery) elQuery.textContent = o.q;
       if (swapWrap) {
         swapWrap.classList.remove('swap');
         void swapWrap.offsetWidth;
@@ -524,7 +524,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     });
 
     return {
-      start: function () { if (!started) { started = true; setActive(0, false); } },
+      start: function () {
+        if (!tabs.length || !OCC.length) return;
+        if (!started) { started = true; setActive(0, false); }
+      },
       setPhase: function (isA) {
         if (phaseAllows === isA) return;
         phaseAllows = isA;
@@ -996,13 +999,20 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   /* ============================================================
      HOLOGRAMSKA KUĆA (Villa N) — nadogradnja, ne uvjet
   ============================================================ */
-  try {
-    H.impl = buildHolo();
-  } catch (err) {
-    /* A renderer/context failure gets the deliberate architectural fallback;
-       it must not leave a 560vh empty stage behind. */
-    WIN.__ZAEC_3D_ERROR = true;
-    doc.documentElement.classList.add('no-3d');
+  if (!$('#earthHero')) {
+    try {
+      H.impl = buildHolo();
+    } catch (err) {
+      /* A renderer/context failure gets the deliberate architectural fallback;
+         it must not leave a 560vh empty stage behind. */
+      WIN.__ZAEC_3D_ERROR = true;
+      doc.documentElement.classList.add('no-3d');
+      H.impl = null;
+    }
+  } else {
+    /* The Earth Hero owns the only WebGL context on this homepage. The
+       architectural house remains in the module as the planned section-two
+       scene, not as a hidden second renderer. */
     H.impl = null;
   }
 
@@ -2278,6 +2288,20 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     var svcPanel = $('#za-koga');
     var phaseCap = $('#phaseCaption');
     var holoWrap = $('#holoWrap');
+    var earthHero = $('#earthHero');
+
+    if (earthHero) {
+      /* Earth owns hero camera/intro/interaction. Do not attach the old
+         house pin sequence or create a second hidden WebGL renderer. */
+      occCtl.setPhase(true);
+      if (heroCopy) {
+        heroCopy.style.opacity = '1';
+        heroCopy.style.transform = 'none';
+        heroCopy.style.filter = 'none';
+        heroCopy.style.pointerEvents = 'auto';
+      }
+      return;
+    }
 
     function wireSvcHover() {
       $$('.svc-mini').forEach(function (btn) {

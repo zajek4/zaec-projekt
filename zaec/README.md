@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.8.1
+# ZAEC WordPress Theme — v1.9.0
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -150,3 +150,14 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Prvi kadar više se ne proglašava neuspjelim samo zato što Safari/iOS kasnije odradi compositor tick; fallback se uključuje samo kod stvarne greške modula/renderera.
 - Mikro-savjeti za klimu, električare i krovopokrivače objašnjavaju put do relevantnijeg upita, bez obećanja prometa ili prihoda.
 - Theme version: `1.8.1`.
+
+## v1.9.0 — Digital Earth Hero
+
+- Homepage hero now uses an interactive holographic Earth with Osijek as the amber HQ marker.
+- Added local 65-city node data and Natural Earth country borders; the network layer is explicitly a visual simulation, not a claim about measured live traffic.
+- Added local topology texture, atmospheric rim shader, country lines, category-colored city lights, Osijek beam/rings/label, hover tooltip and simulated packet arcs.
+- Added local Three.js post-processing modules for `EffectComposer` and `UnrealBloomPass`, with a no-bloom renderer fallback.
+- Added reduced-motion, no-WebGL and no-JavaScript Earth fallbacks.
+- The former house renderer is not instantiated as a hidden second WebGL context; it remains available for the planned section-two wireframe-house extension.
+- Earth assets are local copies of the supplied sources: `turban/webgl-earth` elevation map and Natural Earth `ne_110m_admin_0_countries` GeoJSON.
+- Theme version: `1.9.0`.

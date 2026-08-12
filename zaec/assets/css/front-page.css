@@ -594,6 +594,188 @@ html.no-3d #layerLabels, html.no-3d .phase-cap { display: none; }
 .mq-rev .mq-track span { font-size: 0.7rem; }
 
 /* ============================================================
+   EARTH HERO — hologramska mreža oko Osijeka
+   ============================================================ */
+#hero.earth-mode,
+#hero.earth-mode .pin-stage { background: #000814; }
+#hero.earth-mode .pin-space { height: 100vh; min-height: 100vh; }
+#hero.earth-mode .hero-stage { overflow: visible; padding: 0 0 clamp(4px, 1vh, 12px); }
+#hero.earth-mode .svc-panel { display: none; }
+#earthHero {
+  position: relative;
+  width: 100%;
+  height: min(72vh, 700px);
+  max-height: calc(100vh - var(--nav-h) - 62px);
+  min-height: 500px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 52% 48%, rgba(0, 75, 103, .18), transparent 44%),
+    #000814;
+  border: 1px solid rgba(0, 229, 255, .14);
+  box-shadow: inset 0 0 90px rgba(0, 8, 20, .82), 0 0 50px rgba(0, 229, 255, .06);
+}
+.earth-sr-description {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+#earthCanvas,
+.earth-scanlines,
+.earth-vignette,
+.earth-grid-glow,
+.earth-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#earthCanvas { z-index: 1; display: block; touch-action: none; cursor: grab; }
+#earthHero.is-orbiting #earthCanvas { cursor: grabbing; }
+.earth-scanlines {
+  z-index: 3;
+  pointer-events: none;
+  opacity: .42;
+  background: repeating-linear-gradient(0deg, rgba(0, 229, 255, .05) 0 1px, transparent 1px 5px);
+  animation: earthScan 10s linear infinite;
+}
+@keyframes earthScan { from { background-position: 0 0; } to { background-position: 0 140px; } }
+.earth-vignette {
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(ellipse 72% 76% at 51% 49%, transparent 48%, rgba(0, 8, 20, .46) 100%);
+}
+.earth-grid-glow {
+  z-index: 0;
+  pointer-events: none;
+  opacity: .26;
+  background-image: linear-gradient(rgba(0, 229, 255, .09) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, .09) 1px, transparent 1px);
+  background-size: 42px 42px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 52% 50%, #000 5%, transparent 78%);
+  mask-image: radial-gradient(ellipse 70% 70% at 52% 50%, #000 5%, transparent 78%);
+}
+.earth-fallback { z-index: 2; display: none; align-items: center; justify-content: center; pointer-events: none; }
+.earth-fallback__globe { width: min(92%, 560px); height: auto; overflow: visible; filter: drop-shadow(0 0 18px rgba(0, 229, 255, .28)); }
+.earth-fallback__hq { animation: earthHqPulse 2.2s ease-in-out infinite; transform-origin: 282px 263px; }
+@keyframes earthHqPulse { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+#earthHero.is-fallback #earthCanvas { display: none; }
+#earthHero.is-fallback .earth-fallback { display: flex; }
+#earthHero.is-fallback .earth-loader { display: none; }
+html.no-3d #earthCanvas { display: none; }
+html.no-3d #earthFallbackD { display: flex; }
+html.no-3d #earthLoader { display: none; }
+.earth-hud {
+  position: absolute;
+  z-index: 6;
+  max-width: 46%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 13px;
+  color: rgba(175, 241, 255, .9);
+  font-family: var(--font-m);
+  font-size: .58rem;
+  line-height: 1.35;
+  letter-spacing: .14em;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+.earth-hud::before,
+.earth-hud::after { content: ""; position: absolute; width: 16px; height: 16px; pointer-events: none; }
+.earth-hud::before { top: 0; left: 0; border-top: 1px solid rgba(0, 229, 255, .75); border-left: 1px solid rgba(0, 229, 255, .75); }
+.earth-hud::after { right: 0; bottom: 0; border-right: 1px solid rgba(0, 229, 255, .46); border-bottom: 1px solid rgba(0, 229, 255, .46); }
+.earth-hud__eyebrow { color: rgba(0, 229, 255, .7); font-size: .54rem; }
+.earth-hud b { color: #c6f6ff; font-size: .75rem; font-weight: 500; letter-spacing: .11em; }
+.earth-hud small { color: rgba(139, 197, 210, .72); font-size: .5rem; letter-spacing: .09em; }
+.earth-hud--tl { top: 18px; left: 18px; }
+.earth-hud--tr { top: 18px; right: 18px; align-items: flex-end; text-align: right; }
+.earth-hud--bl { bottom: 48px; left: 18px; }
+.earth-hud--br { right: 18px; bottom: 48px; align-items: flex-end; text-align: right; }
+.earth-legend {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 18px;
+  display: flex;
+  gap: 13px;
+  transform: translateX(-50%);
+  color: rgba(168, 221, 230, .7);
+  font-family: var(--font-m);
+  font-size: .5rem;
+  letter-spacing: .1em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.earth-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.earth-legend__dot { width: 5px; height: 5px; display: inline-block; border-radius: 50%; box-shadow: 0 0 9px currentColor; }
+.earth-legend__dot--hq { color: #ffb700; background: #ffb700; }
+.earth-legend__dot--tech { color: #00ffaa; background: #00ffaa; }
+.earth-legend__dot--trade { color: #ffcc00; background: #ffcc00; }
+.earth-legend__dot--partner { color: #88aaff; background: #88aaff; }
+.earth-loader {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: 86px;
+  width: min(260px, 54%);
+  transform: translateX(-50%);
+  color: rgba(192, 243, 250, .9);
+  font-family: var(--font-m);
+  font-size: .55rem;
+  letter-spacing: .14em;
+  pointer-events: none;
+  transition: opacity .7s ease, transform .7s var(--ease);
+}
+.earth-loader.is-done { opacity: 0; transform: translate(-50%, 10px); }
+.earth-loader__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.earth-loader__top b { color: #00e5ff; font-weight: 500; }
+.earth-loader__track { height: 2px; background: rgba(0, 229, 255, .14); overflow: hidden; }
+.earth-loader__track i { display: block; width: 0; height: 100%; background: #00e5ff; box-shadow: 0 0 14px #00e5ff; transition: width .35s ease; }
+.earth-loader p { margin: 7px 0 0; color: rgba(135, 206, 218, .7); font-size: .5rem; }
+.earth-tooltip {
+  position: absolute;
+  z-index: 12;
+  min-width: 172px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 229, 255, .42);
+  background: rgba(0, 12, 25, .92);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .35), 0 0 22px rgba(0, 229, 255, .12);
+  opacity: 0;
+  transform: translate(-999px, -999px);
+  transition: opacity .18s ease;
+  pointer-events: none;
+  font-family: var(--font-m);
+  line-height: 1.4;
+}
+.earth-tooltip.is-visible { opacity: 1; }
+.earth-tooltip strong,
+.earth-tooltip span,
+.earth-tooltip small { display: block; }
+.earth-tooltip strong { color: #e0fbff; font-size: .72rem; letter-spacing: .1em; }
+.earth-tooltip span { margin-top: 3px; color: #00e5ff; font-size: .5rem; letter-spacing: .13em; }
+.earth-tooltip small { margin-top: 8px; color: rgba(178, 220, 228, .7); font-size: .5rem; }
+.earth-interaction-hint {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  bottom: 3px;
+  margin: 0;
+  transform: translateX(-50%);
+  color: rgba(130, 197, 210, .62);
+  font-family: var(--font-m);
+  font-size: .48rem;
+  letter-spacing: .14em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ============================================================
    SEKCIJA 2 · POZNATO?
    ============================================================ */
 .pain-grid {
@@ -1370,6 +1552,7 @@ footer .wrap { position: relative; z-index: 2; }
   #nav .nav-upit { display: none; }
 
   .pin-space { height: auto; }
+  #hero.earth-mode .pin-space { height: auto; min-height: 0; }
   .pin-stage { position: static; height: auto; overflow: visible; padding: 0; }
   .hero-grid {
     grid-template-columns: 1fr; height: auto;
@@ -1382,7 +1565,18 @@ footer .wrap { position: relative; z-index: 2; }
   .hero-copy h1 { max-width: none; }
   .hero-ctas { margin-bottom: 36px; }
   #holoWrap { height: 50vh; min-height: 300px; }
-  .holo-hint { left: 10px; bottom: 8px; font-size: .5rem; letter-spacing: .1em; }
+  #earthHero { height: min(72vh, 620px); max-height: none; min-height: 430px; }
+  .earth-hud { padding: 8px 10px; font-size: .5rem; }
+  .earth-hud--tl { top: 10px; left: 10px; }
+  .earth-hud--tr { top: 10px; right: 10px; }
+  .earth-hud--bl { bottom: 48px; left: 10px; }
+  .earth-hud--br { right: 10px; bottom: 48px; }
+  .earth-hud__eyebrow { font-size: .45rem; }
+  .earth-hud b { font-size: .62rem; }
+  .earth-hud small { font-size: .43rem; }
+  .earth-legend { gap: 7px; font-size: .42rem; }
+  .earth-loader { bottom: 84px; width: min(230px, 62%); }
+  .earth-interaction-hint { display: none; }
   .hero-stage { height: auto; }
   .occ-card { position: static; width: 100%; margin-top: 14px; }
   .occ-kbd { display: none; }
