@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.9.7
+# ZAEC WordPress Theme — v1.9.8
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -151,57 +151,23 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Mikro-savjeti za klimu, električare i krovopokrivače objašnjavaju put do relevantnijeg upita, bez obećanja prometa ili prihoda.
 - Theme version: `1.8.1`.
 
-## v1.9.0 — Digital Earth Hero
-
-- Homepage hero now uses an interactive, full-bleed holographic Earth; Osijek remains a subtle local-origin marker while the global map and other cities carry the visual weight.
-- The original `Gradimo web stranice za ljude koji grade sve ostalo.` message and wireframe-house story were moved into a dedicated lower house section.
-- Added local 65-city node data and Natural Earth country data for clean continent/country outlines; city points remain informational UI, not a claim about measured live traffic.
-- Added local topology texture, atmospheric rim shader, clean all-country outlines, a separate EU layer and a brighter Croatia outline, category-colored city lights, Osijek beam/rings/label and hover tooltips.
-- Added local Three.js post-processing modules for `EffectComposer` and `UnrealBloomPass`, with a no-bloom renderer fallback.
-- Added reduced-motion, no-WebGL and no-JavaScript Earth fallbacks.
-- The former house renderer is mounted in a dedicated lower section; its render loop pauses when the section is off-screen so the full-bleed Earth hero remains the visual priority.
-- Earth assets are local copies of the supplied sources: `turban/webgl-earth` elevation map and Natural Earth `ne_110m_admin_0_countries` GeoJSON.
-- Theme version: `1.9.0`.
-
-## v1.9.1
-
-- Earth hero now uses a full-bleed 16:9 stage with no left/right card gaps; clean country/continent outlines and the Croatia outline replace the old latitude/longitude mesh.
-- `Regions.js` replaces packet/arc rendering with merged base country outlines, a 27-state EU highlight and a separate Croatia outline.
-- Reduced GPU/CPU cost with a 2048px topology map, adaptive sphere detail, lower-power bloom fallback, reduced star count, passive mobile touch mode and lazy mobile/house rendering.
-- The original wireframe house is now the second homepage section, with the original `Gradimo web stranice za ljude koji grade sve ostalo.` copy.
-- Restored the house build sequence HUD: `Web koji razumije vaš zanat` fades in as the house opens, while the occupation HUD keeps Klima, Voda, Struja, Krov and other rows available.
-- Theme version: `1.9.1`.
-
 ## v1.9.2
 
-- Homepage flow audited and stabilized: Earth hero → wireframe house → transition marquee → `Zvuči poznato?`.
-- Added a scrubbed, reduced-motion-safe Earth-to-house transition without scroll-jacking.
-- Moved the lightweight marquee out of the hero and placed it between the house and `Zvuči poznato?` section.
-- Mobile Earth is passive on touch so page scrolling is never blocked; desktop keeps orbit and zoom interaction.
+- Planet/Earth hero experiment removed from the active homepage; the original architectural house hero is restored as the first interactive scene.
+- Existing truth-first copy, maintenance offer, projects/showroom and form hardening remain intact.
+- Occupation HUD remains interactive with Klima-servisi, voda, struja, krov and other service rows; ordinary HUD copy is deliberately compact.
 - Theme version: `1.9.2`.
 
-## v1.9.3
+## v1.9.6
 
-- Reintroduced the Earth hero as the first section, with the wireframe house as the second section.
-- Kept the marquee after the house and before the first white content section.
-- No artificial Earth-to-house transition; both sections remain independent and readable.
-- Theme version: `1.9.3`.
+- Stable recovery release based on the verified pre-planet house hero baseline.
+- Planetary experiments and their extra WebGL/postprocessing assets are not part of this release.
+- Keeps the existing content, maintenance offer, project/showroom work, form hardening and occupation HUD.
+- Theme version: `1.9.6`.
 
-## v1.9.4
+## v1.9.8
 
-- Corrected release package for the planet-first hero and second-section wireframe house flow.
-- Preserved the marquee placement after the house and the compact occupation HUD.
-- Theme version: `1.9.4`.
-
-## v1.9.5
-
-- Earth is now a controlled lower-right orbital crop inspired by the supplied reference image; the left side stays clean for the business message.
-- Mouse orbit/zoom is removed. The camera is fixed and the planet rotates slowly on its own axis.
-- Added a limited, deterministic information-flow system with pooled arc geometry and arrival ripples instead of random network clutter.
-- Osijek remains an ordinary local node; no HQ spotlight is added to the flow.
-- Theme version: `1.9.5`.
-
-## v1.9.7
-
-- Finalized the controlled orbital information-flow hero with fixed camera framing, lower-right crop, passive mobile behavior and destination ripples.
-- Theme version: `1.9.7`.
+- Restored the verified stable house-first homepage baseline.
+- Removed the planet experiment and its additional WebGL assets from the active theme.
+- Preserved the original Villa N interactions, scroll axonometry, parallax and occupation HUD.
+- Theme version: `1.9.8`.

@@ -648,48 +648,19 @@ function zaec_migrate_theme_data() {
 
 	/* v1.9.2 — izravno obraćanje klijentima iz klima-servisa. */
 	if ( ! get_option( 'zaec_climate_copy_v192_done', false ) && $front_id ) {
-		$occupations = get_post_meta( $front_id, '_zaec_occupations', true );
-		if ( is_array( $occupations ) ) {
-			foreach ( $occupations as $index => $occupation ) {
-				if ( isset( $occupation['title'] ) && 'Za klimatizaciju' === $occupation['title'] ) {
-					$occupations[ $index ]['title'] = 'Za klima-servise';
-					$occupations[ $index ]['tab']   = 'Klima-servisi';
+
+			$occupations = get_post_meta( $front_id, '_zaec_occupations', true );
+			if ( is_array( $occupations ) ) {
+				foreach ( $occupations as $index => $occupation ) {
+					if ( isset( $occupation['title'] ) && 'Za klimatizaciju' === $occupation['title'] ) {
+						$occupations[ $index ]['title'] = 'Za klima-servise';
+						$occupations[ $index ]['tab']   = 'Klima-servisi';
+					}
 				}
+				update_post_meta( $front_id, '_zaec_occupations', $occupations );
 			}
-			update_post_meta( $front_id, '_zaec_occupations', $occupations );
-		}
 		update_option( 'zaec_theme_data_version', '1.9.2', false );
 		update_option( 'zaec_climate_copy_v192_done', 1, false );
-	}
-
-	/* v1.9.5 — novi hero copy govori Hrvatskoj i remote klijentima bez napuhanog dosega. */
-	if ( ! get_option( 'zaec_hero_copy_v195_done', false ) && $front_id ) {
-		$copy = array(
-			'earth_kicker'       => '[ 01 — Hrvatska · remote ]',
-			'earth_title'        => 'Web koji vas učini jasnim kad vas ljudi traže.',
-			'earth_lead'         => 'Ne trebate biti svugdje. Trebate jasno pokazati što radite, kome pomažete i kako do vas. Prije dizajna zajedno složimo poruku, dokaz i sljedeći korak — za ljude iz Hrvatske i projekte na daljinu.',
-			'earth_primary_text' => 'Prvo razumijmo posao',
-			'earth_primary_url'  => '#metoda',
-			'earth_secondary_text' => 'Pogledajmo radove',
-			'earth_secondary_url'  => '#radovi',
-			'earth_note'         => 'Bez obećanja prve pozicije · s jasnim opsegom i dokazima.',
-		);
-		$old = array(
-			'earth_kicker'       => '[ 01 — Pravi ljudi · pravo mjesto ]',
-			'earth_title'        => 'Web koji vas dovodi do pravog razgovora.',
-			'earth_lead'         => 'Ne trebate biti svugdje. Trebate biti jasni ondje gdje vas traže: što radite, kome pomažete i koji je sljedeći korak. Gradimo stranice koje taj put skraćuju — od prve pretrage do poziva, upita ili rezervacije.',
-			'earth_primary_text' => 'Pogledajmo vaš posao',
-			'earth_primary_url'  => '#upit',
-			'earth_secondary_text' => 'Kako gradimo',
-			'earth_secondary_url'  => '#metoda',
-			'earth_note'         => 'Bez obećanja prve pozicije. S jasnim opsegom, dokazima i mjerenjem.',
-		);
-		foreach ( $copy as $key => $value ) {
-			if ( $old[ $key ] === get_post_meta( $front_id, '_zaec_' . $key, true ) ) {
-				update_post_meta( $front_id, '_zaec_' . $key, $value );
-			}
-		}
-		update_option( 'zaec_hero_copy_v195_done', 1, false );
 	}
 
 }
