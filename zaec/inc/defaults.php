@@ -24,7 +24,7 @@ function zaec_front_defaults() {
 		'services_kicker'        => '[ 01 — Za koga gradimo ]',
 		'services_title'         => 'Web koji razumije vaš zanat.',
 		'services_lead'          => 'Majstor, restoran, ustanova ili stručna tvrtka — ljudi vas prvo pokušaju razumjeti. Složimo web koji tu priču pretvara u povjerenje i kontakt.',
-		'services_note'          => 'Uključeno u svaku izradu, bez doplate: brzina, jasna struktura, postavljen Google Business profil i Analytics/mjerenje. Temelj ostaje čitljiv i drugom developeru — bez zaključavanja. Ako posao naraste do shopa ili rezervacija, to je poseban opseg — cijena prije koda.'
+		'services_note'          => 'Uključeno u svaku izradu, bez doplate: brzina, jasna struktura, postavljen Google Business profil i Analytics/mjerenje. Temelj ostaje čitljiv i drugom developeru — bez zaključavanja. Ako posao naraste do shopa ili rezervacija, to je poseban opseg — cijena prije koda.',
 		'poznato_kicker'         => '[ 02 — Znamo kako izgleda ]',
 		'poznato_title'          => 'Zvuči poznato?',
 		'poznato_bridge'         => 'Dobar web ne glumi veću tvrtku. Samo jasno pokaže pravu vrijednost vašeg posla — i olakša prvi kontakt.',
@@ -45,7 +45,7 @@ function zaec_front_defaults() {
 		'cijene_lead'            => 'Ako je provjeren smjer dovoljan, predložak štedi vrijeme. Ako vaš posao traži vlastitu logiku, crtamo nacrt. U oba slučaja znate što dobivate prije početka.',
 		'band_kicker'            => 'Poseban opseg',
 		'band_title'             => 'Webshop, rezervacije i integracije.',
-		'band_text'              => 'Ako je posao narastao do webshopa, rezervacija, naplate ili integracije, taj opseg složimo posebno. Prvo definiramo funkcije, zatim cijenu prije koda.'
+		'band_text'              => 'Ako je posao narastao do webshopa, rezervacija, naplate ili integracije, taj opseg složimo posebno. Prvo definiramo funkcije, zatim cijenu prije koda.',
 		'band_price'             => 'Po procjeni',
 		'band_price_meta'        => 'nakon opsega',
 		'band_cta'               => 'Definirajmo opseg',
@@ -55,7 +55,7 @@ function zaec_front_defaults() {
 		'maintenance_lead'      => 'Za one koji ne žele misliti na tehničke stvari. Održavanje je izbor, ne uvjet izrade.',
 		'radovi_kicker'          => '[ 07 — Radovi ]',
 		'radovi_title'           => 'Radovi koje možete otvoriti.',
-		'radovi_lead'            => 'Tri različita posla, tri različita razloga za dobar web. Otvorite stvarne stranice i pogledajte kako je svaka dobila svoj red.'
+		'radovi_lead'            => 'Tri različita posla, tri različita razloga za dobar web. Otvorite stvarne stranice i pogledajte kako je svaka dobila svoj red.',
 		'klijenti_kicker'        => '[ 08 — Riječ majstora ]',
 		'klijenti_title'         => 'Kad web radi svoj posao, to se osjeti.',
 		'klijenti_lead'          => 'Stvarna iskustva, kada ih možemo potpisati i objaviti bez uljepšavanja.',
