@@ -31,9 +31,10 @@ function zaec_enqueue_assets() {
 			'zaec-earth',
 			'window.ZAEC_EARTH=' . wp_json_encode(
 				array(
-					'topologyUrl' => get_theme_file_uri( 'assets/textures/earth-topology.jpg' ),
-					'bordersUrl'  => get_theme_file_uri( 'assets/data/countries.json' ),
-					'nodesUrl'    => get_theme_file_uri( 'assets/data/nodes.json' ),
+					'topologyUrl'  => get_theme_file_uri( 'assets/textures/earth-topology.jpg' ),
+					'coastlineUrl' => get_theme_file_uri( 'assets/data/coastline.json' ),
+					'bordersUrl'   => get_theme_file_uri( 'assets/data/countries.json' ),
+					'nodesUrl'     => get_theme_file_uri( 'assets/data/nodes.json' ),
 				)
 			) . ';',
 			'before'

@@ -28,7 +28,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   var statusEl = doc.getElementById('earthStatus');
   var nodeCountEl = doc.getElementById('earthNodeCount');
   var packetCountEl = doc.getElementById('earthPacketCount');
-  var countryCountEl = doc.getElementById('earthCountryCount');
 
   if (!canvas) return;
 
@@ -283,32 +282,8 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     planet.renderOrder = 2;
     group.add(planet);
 
-    var gridMaterial = new THREE.LineBasicMaterial({
-      color: COLORS.cyan,
-      transparent: true,
-      opacity: lowPower ? 0.16 : 0.22,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    });
-    var grid = new THREE.Group();
-    for (var lat = -75; lat <= 75; lat += 15) {
-      var parallel = [];
-      for (var lon = -180; lon <= 180; lon += 4) {
-        var p = latLngToVector3(lat, lon, 5.025);
-        parallel.push(p.x, p.y, p.z);
-      }
-      grid.add(makeGridLine(parallel, gridMaterial));
-    }
-    for (var lon2 = -180; lon2 < 180; lon2 += 15) {
-      var meridian = [];
-      for (var lat2 = -90; lat2 <= 90; lat2 += 4) {
-        var p2 = latLngToVector3(lat2, lon2, 5.025);
-        meridian.push(p2.x, p2.y, p2.z);
-      }
-      grid.add(makeGridLine(meridian, gridMaterial));
-    }
-    grid.renderOrder = 3;
-    group.add(grid);
+    /* No latitude/longitude wire grid: the map is carried by real coastline
+       and country outline geometry below. */
 
     state.atmosphereMaterial = new THREE.ShaderMaterial({
       uniforms: { uColor: { value: new THREE.Color(COLORS.cyan) }, uTime: { value: 0 } },
@@ -340,43 +315,68 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     return rings;
   }
 
-  function addBorders(countryData) {
-    /* One merged LineSegments object is substantially cheaper than a mesh per
-       country/ring. The dateline split prevents a false line across the globe. */
-    var borderGroup = new THREE.Group();
-    var material = new THREE.LineBasicMaterial({
+  function addMapOutlines(countryData, coastlineData) {
+    /* The old latitude/longitude mesh is intentionally gone. A real coastline
+       carries the continent silhouette; only Croatia receives a separate
+       country outline so the local origin remains legible without dominating
+       the global map. */
+    var outlineGroup = new THREE.Group();
+    var coastMaterial = new THREE.LineBasicMaterial({
       color: COLORS.cyan,
       transparent: true,
-      opacity: lowPower ? 0.42 : 0.64,
+      opacity: lowPower ? 0.5 : 0.78,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
-    var features = countryData && Array.isArray(countryData.features) ? countryData.features : [];
-    var positions = [];
+    var croatiaMaterial = new THREE.LineBasicMaterial({
+      color: COLORS.amber,
+      transparent: true,
+      opacity: 0.72,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    var coastFeatures = coastlineData && Array.isArray(coastlineData.features) ? coastlineData.features : [];
+    var countryFeatures = countryData && Array.isArray(countryData.features) ? countryData.features : [];
     var step = lowPower ? 2 : 1;
-    features.forEach(function (feature) {
-      collectRings(feature.geometry).forEach(function (ring) {
-        var previous = null;
-        ring.forEach(function (coordinate, index) {
-          if (!coordinate || coordinate.length < 2) return;
-          var isLast = index === ring.length - 1;
-          if (index % step !== 0 && !isLast) return;
-          var current = latLngToVector3(coordinate[1], coordinate[0], 5.045);
-          if (previous && current.distanceTo(previous) <= 3.2) {
-            positions.push(previous.x, previous.y, previous.z, current.x, current.y, current.z);
-          }
-          previous = current;
+
+    function segments(features, predicate) {
+      var positions = [];
+      features.forEach(function (feature) {
+        if (predicate && !predicate(feature)) return;
+        collectRings(feature.geometry).forEach(function (ring) {
+          var previous = null;
+          ring.forEach(function (coordinate, index) {
+            if (!coordinate || coordinate.length < 2) return;
+            var isLast = index === ring.length - 1;
+            if (index % step !== 0 && !isLast) return;
+            var current = latLngToVector3(coordinate[1], coordinate[0], 5.045);
+            if (previous && current.distanceTo(previous) <= 3.2) {
+              positions.push(previous.x, previous.y, previous.z, current.x, current.y, current.z);
+            }
+            previous = current;
+          });
         });
       });
-    });
-    if (positions.length) {
-      var geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      borderGroup.add(new THREE.LineSegments(geometry, material));
+      return positions;
     }
-    borderGroup.renderOrder = 4;
-    state.globe.add(borderGroup);
-    if (countryCountEl) countryCountEl.textContent = String(features.length);
+
+    var coastPositions = segments(coastFeatures.length ? coastFeatures : countryFeatures);
+    if (coastPositions.length) {
+      var coastGeometry = new THREE.BufferGeometry();
+      coastGeometry.setAttribute('position', new THREE.Float32BufferAttribute(coastPositions, 3));
+      outlineGroup.add(new THREE.LineSegments(coastGeometry, coastMaterial));
+    }
+    var croatiaPositions = segments(countryFeatures, function (feature) {
+      var properties = feature && feature.properties ? feature.properties : {};
+      return properties.ADM0_A3 === 'HRV' || properties.ISO_A3 === 'HRV' || properties.ADMIN === 'Croatia';
+    });
+    if (croatiaPositions.length) {
+      var croatiaGeometry = new THREE.BufferGeometry();
+      croatiaGeometry.setAttribute('position', new THREE.Float32BufferAttribute(croatiaPositions, 3));
+      outlineGroup.add(new THREE.LineSegments(croatiaGeometry, croatiaMaterial));
+    }
+    outlineGroup.renderOrder = 4;
+    state.globe.add(outlineGroup);
   }
 
   function createCityLights(nodes) {
@@ -838,21 +838,23 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     }
     setProgress(0.22, 'LOADING TOPOLOGY');
     var topologyUrl = cfg.topologyUrl || root.getAttribute('data-topology') || '';
+    var coastlineUrl = cfg.coastlineUrl || root.getAttribute('data-coastline') || '';
     var bordersUrl = cfg.bordersUrl || root.getAttribute('data-borders') || '';
     var nodesUrl = cfg.nodesUrl || root.getAttribute('data-nodes') || '';
     Promise.all([
       loadHeightmap(topologyUrl),
+      loadJSON(coastlineUrl, { type: 'FeatureCollection', features: [] }),
       loadJSON(bordersUrl, { type: 'FeatureCollection', features: [] }),
       loadJSON(nodesUrl, [])
     ]).then(function (assets) {
-      setProgress(0.52, 'MAPPING COUNTRY BORDERS');
+      setProgress(0.52, 'MAPPING CONTINENT OUTLINES');
       createGlobe(assets[0]);
-      addBorders(assets[1]);
+      addMapOutlines(assets[2], assets[1]);
       setProgress(0.7, 'CONNECTING GLOBAL NODES');
-      createCityLights(assets[2]);
+      createCityLights(assets[3]);
       createOsijekMarker();
       createStarfield();
-      setProgress(0.86, 'OSIJEK HQ ONLINE');
+      setProgress(0.86, 'GLOBAL MAP ONLINE');
       bindEvents();
       intro();
       animate(performance.now());

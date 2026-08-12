@@ -599,7 +599,14 @@ html.no-3d #layerLabels, html.no-3d .phase-cap { display: none; }
 #hero.earth-mode,
 #hero.earth-mode .pin-stage { background: #000814; }
 #hero.earth-mode .pin-space { height: 100vh; min-height: 100vh; }
-#hero.earth-mode .hero-grid { display: block; max-width: none; padding: 0 var(--gutter); }
+#hero.earth-mode .hero-grid {
+  display: block;
+  width: 100vw;
+  max-width: none;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  padding: 0;
+}
 #hero.earth-mode .hero-stage {
   position: absolute;
   inset: 0;
@@ -615,6 +622,7 @@ html.no-3d #layerLabels, html.no-3d .phase-cap { display: none; }
   z-index: 10;
   width: min(470px, 39vw);
   max-width: 470px;
+  margin-left: var(--gutter);
   padding-top: clamp(126px, 18vh, 190px);
   pointer-events: auto;
 }
@@ -649,6 +657,7 @@ html.no-3d #layerLabels, html.no-3d .phase-cap { display: none; }
   position: relative;
   width: 100%;
   height: 100%;
+  aspect-ratio: 16 / 9;
   max-height: none;
   min-height: 0;
   overflow: hidden;
@@ -673,7 +682,6 @@ html.no-3d #layerLabels, html.no-3d .phase-cap { display: none; }
 #earthCanvas,
 .earth-scanlines,
 .earth-vignette,
-.earth-grid-glow,
 .earth-fallback {
   position: absolute;
   inset: 0;
@@ -691,21 +699,11 @@ html.no-3d #layerLabels, html.no-3d .phase-cap { display: none; }
 }
 @keyframes earthScan { from { background-position: 0 0; } to { background-position: 0 140px; } }
 #earthHero.is-low-power .earth-scanlines { opacity: .2; animation: none; }
-#earthHero.is-low-power .earth-grid-glow { opacity: .14; }
 #earthHero.is-reduced .earth-scanlines { animation: none; }
 .earth-vignette {
   z-index: 4;
   pointer-events: none;
   background: radial-gradient(ellipse 72% 76% at 51% 49%, transparent 48%, rgba(0, 8, 20, .46) 100%);
-}
-.earth-grid-glow {
-  z-index: 0;
-  pointer-events: none;
-  opacity: .26;
-  background-image: linear-gradient(rgba(0, 229, 255, .09) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 255, .09) 1px, transparent 1px);
-  background-size: 42px 42px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 52% 50%, #000 5%, transparent 78%);
-  mask-image: radial-gradient(ellipse 70% 70% at 52% 50%, #000 5%, transparent 78%);
 }
 .earth-fallback { z-index: 2; display: none; align-items: center; justify-content: center; pointer-events: none; }
 .earth-fallback__globe { width: min(92%, 560px); height: auto; overflow: visible; filter: drop-shadow(0 0 18px rgba(0, 229, 255, .28)); }
@@ -1699,9 +1697,9 @@ footer .wrap { position: relative; z-index: 2; }
   .hero-copy h1 { max-width: none; }
   .hero-ctas { margin-bottom: 36px; }
   #holoWrap { height: 50vh; min-height: 300px; }
-  #hero.earth-mode .hero-grid { display: block; height: auto; padding-top: calc(var(--nav-h) + 34px); }
+  #hero.earth-mode .hero-grid { display: block; width: 100%; margin-left: 0; transform: none; height: auto; padding: 0 var(--gutter); padding-top: calc(var(--nav-h) + 34px); }
   #hero.earth-mode .hero-stage { position: relative; inset: auto; height: min(72vh, 620px); min-height: 430px; margin: 18px calc(var(--gutter) * -1) 0; width: calc(100% + (var(--gutter) * 2)); }
-  #hero.earth-mode .earth-copy { width: 100%; max-width: 38ch; padding-top: 0; }
+  #hero.earth-mode .earth-copy { width: 100%; max-width: 38ch; margin-left: 0; padding-top: 0; }
   #hero.earth-mode .earth-copy::before { inset: -26px -40px -34px -42px; }
   #earthHero { height: 100%; max-height: none; min-height: 0; }
   .earth-hud { padding: 8px 10px; font-size: .5rem; }

@@ -39,6 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						id="earthHero"
 						class="earth-hero"
 						data-topology="<?php echo esc_url( get_theme_file_uri( 'assets/textures/earth-topology.jpg' ) ); ?>"
+						data-coastline="<?php echo esc_url( get_theme_file_uri( 'assets/data/coastline.json' ) ); ?>"
 						data-borders="<?php echo esc_url( get_theme_file_uri( 'assets/data/countries.json' ) ); ?>"
 						data-nodes="<?php echo esc_url( get_theme_file_uri( 'assets/data/nodes.json' ) ); ?>"
 						aria-busy="true"
@@ -47,7 +48,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<canvas id="earthCanvas" role="img" aria-label="<?php esc_attr_e( 'Interaktivna hologramska Zemlja s mrežom gradova i Osijekom kao sjedištem.', 'zaec' ); ?>"></canvas>
 						<div class="earth-scanlines" aria-hidden="true"></div>
 						<div class="earth-vignette" aria-hidden="true"></div>
-						<div class="earth-grid-glow" aria-hidden="true"></div>
 
 						<div id="earthFallbackD" class="earth-fallback" aria-hidden="true">
 							<svg viewBox="0 0 560 560" class="earth-fallback__globe">
@@ -59,10 +59,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 									</radialGradient>
 								</defs>
 								<circle cx="280" cy="280" r="188" fill="url(#earthFallbackCore)" stroke="#00e5ff" stroke-width="1.5" />
-								<ellipse cx="280" cy="280" rx="190" ry="58" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".48" />
-								<ellipse cx="280" cy="280" rx="190" ry="118" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".28" />
-								<ellipse cx="280" cy="280" rx="76" ry="188" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".34" />
-								<ellipse cx="280" cy="280" rx="148" ry="188" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".2" />
+								<path d="M134 222c31-45 64-51 94-70 39-24 72-24 105 2 25 20 67 22 91 59 16 25 5 52-18 70-30 23-49 58-83 65-34 8-73-5-93-31-19-25-51-27-75-48-19-16-32-26-21-47z" fill="none" stroke="#00e5ff" stroke-width="1.2" opacity=".64" />
+								<path d="M157 334c35-21 58-11 86 16 29 29 61 35 92 18 32-17 68-3 84 27" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".44" />
+								<path d="M164 178c25 14 45 12 72-3 27-15 53-11 76 2 25 15 54 11 86-7" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".42" />
+								<path d="M217 258l8-5 9 3 5 8-9 4-10-2z" fill="none" stroke="#ffb700" stroke-width="1.2" opacity=".72" />
 								<path d="M131 245c42-56 88-56 112-87 33-42 80-17 102 8 21 24 55 21 75 51 20 31-24 48-29 81-6 36-49 48-75 67-28 21-75 15-95-17-21-34-72-20-91-57-12-22-12-31 1-46z" fill="none" stroke="#00e5ff" stroke-width="1.4" opacity=".68" />
 								<path d="M163 336c32-22 56-13 83 16 27 29 64 38 95 18 29-19 65-4 78 25" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".48" />
 								<path d="M161 192c29 10 50 4 70-12 23-18 53-16 77-1 24 16 61 10 89-12" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".42" />
@@ -82,9 +82,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<b>GLOBAL LINK ACTIVE</b>
 						</div>
 						<div class="earth-hud earth-hud--tr" aria-hidden="true">
-							<span class="earth-hud__eyebrow">NODES</span>
+							<span class="earth-hud__eyebrow">GLOBAL NODES</span>
 							<b id="earthNodeCount">00</b>
-							<small><span id="earthCountryCount">00</span> COUNTRIES · WORLD CITIES</small>
+							<small>CONTINENT OUTLINES · WORLD CITIES</small>
 						</div>
 						<div class="earth-hud earth-hud--bl" aria-hidden="true">
 							<span class="earth-hud__eyebrow">PACKETS</span>
