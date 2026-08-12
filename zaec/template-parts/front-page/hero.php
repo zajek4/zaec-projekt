@@ -74,7 +74,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</div>
 
 						<div class="earth-hud earth-hud--tl" aria-hidden="true">
-							<span class="earth-hud__eyebrow">EARTHNET // VISUAL SIMULATION</span>
+							<span class="earth-hud__eyebrow">INFO FLOW // VISUAL SIMULATION</span>
 							<b>GLOBAL LINK ACTIVE</b>
 						</div>
 						<div class="earth-hud earth-hud--tr" aria-hidden="true">
@@ -83,9 +83,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<small>CONTINENT OUTLINES · WORLD CITIES</small>
 						</div>
 						<div class="earth-hud earth-hud--bl" aria-hidden="true">
-							<span class="earth-hud__eyebrow">REGIONS</span>
-							<b>EU · 27</b>
-							<small>COUNTRY OUTLINES · CLEAN MAP</small>
+							<span class="earth-hud__eyebrow">INFO FLOW</span>
+							<b id="earthFlowCount">00</b>
+							<small>INFORMATION SPREAD · ARRIVAL RIPPLE</small>
 						</div>
 						<div class="earth-hud earth-hud--br" aria-hidden="true">
 							<span class="earth-hud__eyebrow">FOCUS</span>
@@ -111,7 +111,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<div class="earth-loader__track"><i id="earthProgress"></i></div>
 							<p id="earthStatus">INITIALIZING RENDERER</p>
 						</div>
-						<p class="earth-interaction-hint" aria-hidden="true">DRAG = ORBIT · SCROLL = ZOOM · HOVER = NODE DATA</p>
+						<p class="earth-interaction-hint" aria-hidden="true">AUTO ORBIT · HOVER = NODE DATA</p>
 						<p class="earth-mobile-hint" aria-hidden="true">SCROLL PAGE · MAP AUTO-ROTATES</p>
 					</div>
 				</div>

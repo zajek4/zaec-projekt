@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.9.4
+# ZAEC WordPress Theme — v1.9.5
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -192,3 +192,11 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Corrected release package for the planet-first hero and second-section wireframe house flow.
 - Preserved the marquee placement after the house and the compact occupation HUD.
 - Theme version: `1.9.4`.
+
+## v1.9.5
+
+- Earth is now a controlled lower-right orbital crop inspired by the supplied reference image; the left side stays clean for the business message.
+- Mouse orbit/zoom is removed. The camera is fixed and the planet rotates slowly on its own axis.
+- Added a limited, deterministic information-flow system with pooled arc geometry and arrival ripples instead of random network clutter.
+- Osijek remains an ordinary local node; no HQ spotlight is added to the flow.
+- Theme version: `1.9.5`.

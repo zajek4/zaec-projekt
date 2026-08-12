@@ -7,7 +7,6 @@
  * implied by the scene.
  */
 import * as THREE from './vendor/three.module.min.js';
-import { OrbitControls } from './vendor/OrbitControls.module.js';
 import { EffectComposer } from './vendor/postprocessing/EffectComposer.js';
 import { RenderPass } from './vendor/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
@@ -28,6 +27,7 @@ import { Regions } from './Regions.js';
   var progressLabel = doc.getElementById('earthProgressLabel');
   var statusEl = doc.getElementById('earthStatus');
   var nodeCountEl = doc.getElementById('earthNodeCount');
+  var flowCountEl = doc.getElementById('earthFlowCount');
 
   if (!canvas) return;
 
@@ -64,6 +64,12 @@ import { Regions } from './Regions.js';
     hq: null,
     nodes: [],
     nodePoints: null,
+    flows: [],
+    flowPool: [],
+    ripples: [],
+    ripplePool: [],
+    flowTimer: 0.35,
+    flowCursor: 0,
     stars: null,
     active: true,
     destroyed: false,
@@ -151,6 +157,25 @@ import { Regions } from './Regions.js';
     '  gl_FragColor = vec4(vColor * (1.0 + glow * 0.8) * beat, glow * (vHq > 0.5 ? 1.0 : 0.72));\n' +
     '}';
 
+  var FLOW_VERTEX = '\n' +
+    'attribute float aT;\n' +
+    'varying float vT;\n' +
+    'void main() {\n' +
+    '  vT = aT;\n' +
+    '  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n' +
+    '}';
+
+  var FLOW_FRAGMENT = '\n' +
+    'uniform float uProgress;\n' +
+    'uniform vec3 uColor;\n' +
+    'varying float vT;\n' +
+    'void main() {\n' +
+    '  float trail = smoothstep(0.0, 0.68, uProgress - vT);\n' +
+    '  float head = smoothstep(0.065, 0.0, abs(vT - uProgress));\n' +
+    '  float alpha = clamp(trail * 0.56 + head * 1.5, 0.0, 1.0);\n' +
+    '  gl_FragColor = vec4(uColor * (0.75 + head * 1.8), alpha);\n' +
+    '}';
+
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function randomBetween(a, b) { return a + Math.random() * (b - a); }
@@ -230,7 +255,9 @@ import { Regions } from './Regions.js';
     var group = new THREE.Group();
     group.rotation.z = -THREE.MathUtils.degToRad(17.5);
     state.globe = group;
-    group.position.x = coarsePointer ? 0 : 0.85;
+    /* The orbital crop lives in the lower-right; the left side is intentional
+       negative space for the business message. */
+    group.position.set(coarsePointer ? 0.35 : 1.65, coarsePointer ? -0.55 : -1.25, 0);
     state.scene.add(group);
 
     var inner = new THREE.Mesh(
@@ -406,6 +433,176 @@ import { Regions } from './Regions.js';
     state.scene.add(state.stars);
   }
 
+  var FLOW_ROUTES = [
+    ['Zagreb', 'London'],
+    ['Paris', 'Tokyo'],
+    ['New York', 'Berlin'],
+    ['San Francisco', 'Singapore'],
+    ['Sydney', 'Sao Paulo'],
+    ['Madrid', 'Johannesburg'],
+    ['Budapest', 'Dubai'],
+    ['Osijek', 'Dublin'],
+    ['Toronto', 'Seoul'],
+    ['Lisbon', 'Melbourne'],
+    ['Chicago', 'Copenhagen'],
+    ['Mumbai', 'Amsterdam']
+  ];
+  var MAX_FLOWS = lowPower ? 5 : 12;
+  var MAX_RIPPLES = lowPower ? 7 : 16;
+  var FLOW_SEGMENTS = lowPower ? 24 : 42;
+
+  function findNode(name) {
+    for (var i = 0; i < state.nodes.length; i++) {
+      if (state.nodes[i].name === name) return state.nodes[i];
+    }
+    return null;
+  }
+
+  function flowMaterial(color) {
+    return new THREE.ShaderMaterial({
+      uniforms: { uProgress: { value: 0 }, uColor: { value: new THREE.Color(color) } },
+      vertexShader: FLOW_VERTEX,
+      fragmentShader: FLOW_FRAGMENT,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+  }
+
+  function createFlowShell() {
+    var count = FLOW_SEGMENTS + 1;
+    var geometry = new THREE.BufferGeometry();
+    var positions = new Float32Array(count * 3);
+    var progress = new Float32Array(count);
+    for (var i = 0; i < count; i++) progress[i] = i / (count - 1);
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('aT', new THREE.BufferAttribute(progress, 1));
+    geometry.setDrawRange(0, 0);
+    var line = new THREE.Line(geometry, flowMaterial(0x00e5ff));
+    line.frustumCulled = false;
+    line.renderOrder = 8;
+    var head = new THREE.Mesh(
+      new THREE.SphereGeometry(lowPower ? .045 : .06, lowPower ? 6 : 8, 6),
+      new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: .95, blending: THREE.AdditiveBlending, depthWrite: false })
+    );
+    head.renderOrder = 9;
+    line.visible = false;
+    head.visible = false;
+    state.globe.add(line, head);
+    return { line: line, head: head, curve: null, target: null, age: 0, lifetime: 0 };
+  }
+
+  function createRippleShell() {
+    var geometry = new THREE.RingGeometry(.12, .15, lowPower ? 20 : 32);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false });
+    var ring = new THREE.Mesh(geometry, material);
+    ring.visible = false;
+    ring.renderOrder = 7;
+    state.globe.add(ring);
+    return { ring: ring, age: 0, lifetime: .95 };
+  }
+
+  function spawnRipple(target, color) {
+    if (state.ripples.length >= MAX_RIPPLES) return;
+    var ripple = state.ripplePool.pop() || createRippleShell();
+    var normal = target.clone().normalize();
+    ripple.ring.position.copy(normal.multiplyScalar(5.08));
+    ripple.ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
+    ripple.ring.material.color.setHex(color);
+    ripple.ring.material.opacity = .78;
+    ripple.ring.scale.setScalar(.65);
+    ripple.ring.visible = true;
+    ripple.age = 0;
+    state.ripples.push(ripple);
+  }
+
+  function releaseFlow(flow) {
+    flow.line.visible = false;
+    flow.head.visible = false;
+    flow.line.geometry.setDrawRange(0, 0);
+    flow.curve = null;
+    flow.target = null;
+    state.flowPool.push(flow);
+  }
+
+  function releaseRipple(ripple) {
+    ripple.ring.visible = false;
+    state.ripplePool.push(ripple);
+  }
+
+  function spawnFlow() {
+    if (reducedMotion || state.flows.length >= MAX_FLOWS || !state.nodes.length) return;
+    var route = FLOW_ROUTES[state.flowCursor % FLOW_ROUTES.length];
+    state.flowCursor += 1;
+    var sourceNode = findNode(route[0]);
+    var targetNode = findNode(route[1]);
+    if (!sourceNode || !targetNode) return;
+    var source = latLngToVector3(sourceNode.lat, sourceNode.lng, 5.08);
+    var target = latLngToVector3(targetNode.lat, targetNode.lng, 5.08);
+    var control = source.clone().add(target);
+    if (control.lengthSq() < .2) control.set(.2, .4, .1);
+    control.normalize().multiplyScalar(5.65 + Math.random() * .55);
+    var flow = state.flowPool.pop() || createFlowShell();
+    flow.curve = new THREE.QuadraticBezierCurve3(source, control, target);
+    flow.target = target;
+    flow.age = 0;
+    flow.lifetime = 2.1 + Math.random() * .8;
+    var points = flow.curve.getPoints(FLOW_SEGMENTS);
+    var position = flow.line.geometry.attributes.position;
+    var aT = flow.line.geometry.attributes.aT;
+    points.forEach(function (point, index) {
+      position.array[index * 3] = point.x;
+      position.array[index * 3 + 1] = point.y;
+      position.array[index * 3 + 2] = point.z;
+      aT.array[index] = index / (points.length - 1);
+    });
+    position.needsUpdate = true;
+    aT.needsUpdate = true;
+    flow.line.geometry.setDrawRange(0, points.length);
+    var color = colorForCategory(targetNode.category);
+    flow.line.material.uniforms.uColor.value.setHex(color);
+    flow.line.material.uniforms.uProgress.value = 0;
+    flow.head.material.color.setHex(color);
+    flow.line.visible = true;
+    flow.head.visible = true;
+    state.flows.push(flow);
+  }
+
+  function updateInformationFlow(dt) {
+    if (!reducedMotion) {
+      state.flowTimer -= dt;
+      if (state.flowTimer <= 0) {
+        spawnFlow();
+        state.flowTimer = lowPower ? .72 : .42;
+      }
+    }
+    for (var i = state.flows.length - 1; i >= 0; i--) {
+      var flow = state.flows[i];
+      flow.age += reducedMotion ? 0 : dt;
+      var progress = reducedMotion ? .52 : clamp(flow.age / flow.lifetime, 0, 1);
+      flow.line.material.uniforms.uProgress.value = progress;
+      flow.head.position.copy(flow.curve.getPoint(progress));
+      flow.head.scale.setScalar(.78 + Math.sin(progress * Math.PI) * .5);
+      if (!reducedMotion && flow.age >= flow.lifetime) {
+        spawnRipple(flow.target, flow.line.material.uniforms.uColor.value.getHex());
+        releaseFlow(flow);
+        state.flows.splice(i, 1);
+      }
+    }
+    for (var j = state.ripples.length - 1; j >= 0; j--) {
+      var ripple = state.ripples[j];
+      ripple.age += reducedMotion ? 0 : dt;
+      var wave = clamp(ripple.age / ripple.lifetime, 0, 1);
+      ripple.ring.scale.setScalar(.65 + wave * 2.4);
+      ripple.ring.material.opacity = reducedMotion ? .34 : (1 - wave) * .72;
+      if (!reducedMotion && ripple.age >= ripple.lifetime) {
+        releaseRipple(ripple);
+        state.ripples.splice(j, 1);
+      }
+    }
+    if (flowCountEl) flowCountEl.textContent = String(state.flows.length).padStart(2, '0');
+  }
+
   function updateHQ() {
     if (!state.hq) return;
     var pulse = reducedMotion ? 1 : 1 + Math.sin(state.time * 3.0) * 0.13;
@@ -472,26 +669,9 @@ import { Regions } from './Regions.js';
     state.camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 160);
     state.camera.position.set(0, 0, 25);
     state.camera.lookAt(0, 0, 0);
-    state.controls = new OrbitControls(state.camera, canvas);
-    state.controls.target.set(0, 0, 0);
-    state.controls.enableDamping = true;
-    state.controls.dampingFactor = 0.075;
-    state.controls.enablePan = false;
-    state.controls.enableZoom = !coarsePointer;
-    state.controls.zoomSpeed = 0.58;
-    state.controls.minDistance = 6.2;
-    state.controls.maxDistance = 15;
-    state.controls.autoRotate = !reducedMotion;
-    state.controls.autoRotateSpeed = 0.33;
-    state.controls.enabled = false;
-    state.controls.addEventListener('start', function () {
-      state.controls.autoRotate = false;
-      root.classList.add('is-orbiting');
-    });
-    state.controls.addEventListener('end', function () {
-      state.controls.autoRotate = !reducedMotion;
-      root.classList.remove('is-orbiting');
-    });
+    /* Camera is intentionally fixed: no mouse orbit/zoom, lower GPU and no
+       accidental page-scroll capture. The globe animates on its own axis. */
+    state.controls = null;
 
     try {
       if (lowPower) throw new Error('Bloom disabled on low-power devices');
@@ -520,8 +700,6 @@ import { Regions } from './Regions.js';
   }
 
   function completeIntro() {
-    state.controls.enabled = !coarsePointer;
-    state.controls.autoRotate = !reducedMotion && !coarsePointer;
     root.classList.add('is-ready');
     root.setAttribute('aria-busy', 'false');
     if (loader) {
@@ -534,10 +712,9 @@ import { Regions } from './Regions.js';
     var hqNode = state.nodes.filter(function (node) { return node.hq; })[0] || { lat: 45.5550, lng: 18.6955 };
     var direction = latLngToVector3(hqNode.lat, hqNode.lng, 1).normalize();
     if (state.globe) direction.applyQuaternion(state.globe.quaternion).normalize();
-    var destination = direction.clone().multiplyScalar(8.75);
+    var destination = direction.clone().multiplyScalar(coarsePointer ? 10.2 : 8.75);
     if (!hasGSAP || reducedMotion) {
       state.camera.position.copy(destination);
-      state.controls.update();
       completeIntro();
       return;
     }
@@ -555,10 +732,6 @@ import { Regions } from './Regions.js';
       duration: 3.5,
       delay: 0.18,
       ease: 'power2.inOut',
-      onUpdate: function () {
-        state.controls.target.y = Math.sin(introState.value * Math.PI) * 0.04;
-        state.controls.update();
-      },
       onComplete: completeIntro
     });
   }
@@ -587,7 +760,7 @@ import { Regions } from './Regions.js';
     if (coarsePointer && state.globe && !reducedMotion) state.globe.rotation.y += dt * 0.018;
     updateHQ();
     if (state.regions) state.regions.update(state.time, reducedMotion);
-    if (state.controls) state.controls.update();
+    updateInformationFlow(dt);
     try {
       if (state.composer) state.composer.render();
       else state.renderer.render(state.scene, state.camera);
@@ -646,6 +819,7 @@ import { Regions } from './Regions.js';
       createCityLights(assets[2]);
       createOsijekMarker();
       createStarfield();
+      if (!reducedMotion) { for (var seed = 0; seed < (lowPower ? 2 : 5); seed++) spawnFlow(); }
       setProgress(0.86, 'GLOBAL MAP ONLINE');
       bindEvents();
       intro();
