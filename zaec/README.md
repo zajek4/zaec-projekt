@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.9.2
+# ZAEC WordPress Theme — v1.9.3
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -179,3 +179,10 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Moved the lightweight marquee out of the hero and placed it between the house and `Zvuči poznato?` section.
 - Mobile Earth is passive on touch so page scrolling is never blocked; desktop keeps orbit and zoom interaction.
 - Theme version: `1.9.2`.
+
+## v1.9.3
+
+- Reintroduced the Earth hero as the first section, with the wireframe house as the second section.
+- Kept the marquee after the house and before the first white content section.
+- No artificial Earth-to-house transition; both sections remain independent and readable.
+- Theme version: `1.9.3`.
