@@ -28,7 +28,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
   var HAS_GSAP = !!(WIN.gsap && WIN.ScrollTrigger);
-  if (HAS_GSAP) { gsap.registerPlugin(ScrollTrigger, ScrollToPlugin); }
+  if (HAS_GSAP) {
+    if (WIN.ScrollToPlugin) gsap.registerPlugin(WIN.ScrollTrigger, WIN.ScrollToPlugin);
+    else gsap.registerPlugin(WIN.ScrollTrigger);
+  }
 
   /* ============================================================
      MICRO TWEEN ENGINE (nezavisan o GSAP-u)
@@ -293,6 +296,15 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     if ('IntersectionObserver' in WIN) {
       var map = {};
       links.forEach(function (l) { map[l.getAttribute('data-target')] = l; });
+      var navLinks = $$('.nav-links a[href]');
+      function setNavCurrent(id) {
+        navLinks.forEach(function (link) {
+          var href = link.getAttribute('href') || '';
+          var hashIndex = href.indexOf('#');
+          var target = hashIndex >= 0 ? href.slice(hashIndex + 1) : '';
+          link.classList.toggle('is-current', target === id);
+        });
+      }
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (en) {
           if (!en.isIntersecting) return;
@@ -300,6 +312,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           if (!map[id]) return;
           links.forEach(function (l) { l.classList.remove('on'); });
           map[id].classList.add('on');
+          setNavCurrent(id);
           if (pct) pct.textContent = $('span', map[id]).textContent;
         });
       }, { rootMargin: '-44% 0px -44% 0px', threshold: 0 });
@@ -328,6 +341,23 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       if (e.target.closest('a, button, select, input, textarea, .occ-tab, .svc-mini, .faq-q')) { cs(1); cr(0); }
     });
   }
+
+  /* ============================================================
+     MAGNETIC CTA — samo desktop, mali pomak bez scroll-jackinga
+  ============================================================ */
+  (function () {
+    if (!HAS_GSAP || prefersReducedMotion || isCoarse) return;
+    $$('.btn-signal, .f-submit').forEach(function (button) {
+      var moveX = gsap.quickTo(button, 'x', { duration: .32, ease: 'power3.out' });
+      var moveY = gsap.quickTo(button, 'y', { duration: .32, ease: 'power3.out' });
+      button.addEventListener('pointermove', function (e) {
+        var rect = button.getBoundingClientRect();
+        moveX(((e.clientX - rect.left) / rect.width - .5) * 6);
+        moveY(((e.clientY - rect.top) / rect.height - .5) * 4);
+      }, { passive: true });
+      button.addEventListener('pointerleave', function () { moveX(0); moveY(0); }, { passive: true });
+    });
+  })();
 
   /* ============================================================
      REVEAL + COUNTUP + PARALAX (data-plx)
@@ -424,6 +454,12 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
         void swapWrap.offsetWidth;
         swapWrap.classList.add('swap');
       }
+      if (card) {
+        card.classList.remove('is-refresh');
+        void card.offsetWidth;
+        card.classList.add('is-refresh');
+        setTimeout(function () { card.classList.remove('is-refresh'); }, 420);
+      }
     }
 
     function setActive(i, user) {
@@ -455,6 +491,21 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       t.addEventListener('mouseenter', function () { pauseUntil = performance.now() + 15000; });
     });
     if (card) card.addEventListener('mouseenter', function () { pauseUntil = performance.now() + 15000; });
+
+    // Suptilni HUD tilt prati miš samo u slobodnoj, desktop varijanti.
+    if (card && HAS_GSAP && !prefersReducedMotion && !isCoarse) {
+      gsap.set(card, { transformPerspective: 900 });
+      var occRX = gsap.quickTo(card, 'rotationX', { duration: 0.36, ease: 'power3.out' });
+      var occRY = gsap.quickTo(card, 'rotationY', { duration: 0.36, ease: 'power3.out' });
+      card.addEventListener('pointermove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var nx = clamp((e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2), -1, 1);
+        var ny = clamp((e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2), -1, 1);
+        occRY(nx * 2.6);
+        occRX(-ny * 2.1);
+      }, { passive: true });
+      card.addEventListener('pointerleave', function () { occRX(0); occRY(0); }, { passive: true });
+    }
 
     if ('IntersectionObserver' in WIN && $('#heroPinSpace')) {
       new IntersectionObserver(function (es) { heroInView = es[0].isIntersecting; }, { threshold: 0.12 }).observe($('#heroPinSpace'));
@@ -602,39 +653,138 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       }
       return !bad;
     }
+
     function resetButton(btn) {
+      form.classList.remove('is-sending');
       if (!btn) return;
       btn.disabled = false;
       var span = btn.querySelector('span');
       if (span) span.textContent = cfg.submitLabel || 'Pošalji upit';
     }
+
     function showSuccess(msg) {
       if (msg && success) {
-        var h = success.querySelector('h3');
-        if (h && msg) h.textContent = msg;
+        var heading = success.querySelector('h3');
+        if (heading) heading.textContent = msg;
       }
+      if (status) status.textContent = msg || 'Upit je stigao.';
       if (HAS_GSAP && !prefersReducedMotion) {
         gsap.to(form, { opacity: 0, y: -14, duration: 0.4, ease: 'power2.in', onComplete: function () {
           form.style.display = 'none';
           if (success) {
             success.hidden = false;
-            requestAnimationFrame(function () { success.classList.add('drawn'); try { success.focus({ preventScroll: true }); } catch (e) {} });
+            requestAnimationFrame(function () {
+              success.classList.add('drawn');
+              try { success.focus({ preventScroll: true }); } catch (e) {}
+            });
           }
         }});
       } else {
         form.style.display = 'none';
-        if (success) { success.hidden = false; success.classList.add('drawn'); try { success.focus({ preventScroll: true }); } catch (e2) {} }
+        if (success) {
+          success.hidden = false;
+          success.classList.add('drawn');
+          try { success.focus({ preventScroll: true }); } catch (e2) {}
+        }
       }
     }
 
-    // already sent via redirect
-    if (success && !success.hidden) {
-      success.classList.add('drawn');
+    /**
+     * Admin-ajax ponekad vrati prazan odgovor, -1 ili HTML notice prije JSON-a.
+     * Parsiramo text ručno kako korisnik ne bi dobio generičnu SyntaxError poruku.
+     */
+    function parseAjaxResponse(response) {
+      return response.text().then(function (text) {
+        var raw = (text || '').trim();
+        var payload = null;
+        try {
+          payload = raw ? JSON.parse(raw) : null;
+        } catch (parseError) {
+          var invalidMessage = '0' === raw
+            ? (cfg.ajaxActionMessage || 'Kontakt forma trenutno nije povezana s AJAX handlerom. Provjerite aktivnu temu.')
+            : ('-1' === raw || 403 === response.status
+              ? (cfg.nonceMessage || 'Sigurnosna provjera je zastarjela. Osvježavamo obrazac…')
+              : (cfg.invalidResponse || 'Server nije vratio valjan odgovor. Pokušajte ponovno.'));
+          var invalid = new Error(invalidMessage);
+          invalid.status = response.status;
+          invalid.raw = raw;
+          invalid.retryNonce = '-1' === raw || 403 === response.status;
+          throw invalid;
+        }
+
+        if (!payload || typeof payload !== 'object' || typeof payload.success === 'undefined') {
+          var malformed = new Error('0' === raw
+            ? (cfg.ajaxActionMessage || 'Kontakt forma trenutno nije povezana s AJAX handlerom. Provjerite aktivnu temu.')
+            : (cfg.invalidResponse || 'Server nije vratio valjan odgovor. Pokušajte ponovno.'));
+          malformed.status = response.status;
+          malformed.raw = raw;
+          malformed.retryNonce = 403 === response.status;
+          throw malformed;
+        }
+
+        if (!payload.success) {
+          var message = payload.data && payload.data.message
+            ? payload.data.message
+            : (payload.message || 'Slanje nije uspjelo.');
+          var failed = new Error(message);
+          failed.status = response.status;
+          failed.raw = raw;
+          failed.retryNonce = 403 === response.status || /sigurnosna provjera/i.test(message);
+          throw failed;
+        }
+
+        return payload;
+      });
     }
 
+    function refreshInquiryNonce() {
+      var nonceData = new FormData();
+      nonceData.append('action', 'zaec_refresh_nonce');
+      return fetch(cfg.ajaxUrl, {
+        method: 'POST',
+        body: nonceData,
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(parseAjaxResponse)
+        .then(function (payload) {
+          var nonce = payload.data && payload.data.nonce ? payload.data.nonce : '';
+          if (!nonce) throw new Error(cfg.nonceMessage || 'Novi sigurnosni ključ nije dostupan. Osvježite stranicu.');
+          var field = form.querySelector('input[name="zaec_nonce"]');
+          if (field) field.value = nonce;
+        });
+    }
+
+    function postInquiry(retriedNonce) {
+      var fd = new FormData(form);
+      fd.set('action', 'zaec_inquiry');
+      return fetch(cfg.ajaxUrl, {
+        method: 'POST',
+        body: fd,
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' }
+      })
+        .then(function (response) {
+          return parseAjaxResponse(response);
+        })
+        .catch(function (error) {
+          if (!retriedNonce && error && error.retryNonce) {
+            return refreshInquiryNonce().then(function () { return postInquiry(true); });
+          }
+          throw error;
+        });
+    }
+
+    // Ako je forma već poslana preko native redirecta, samo prikaži success state.
+    if (success && !success.hidden) success.classList.add('drawn');
+
     form.addEventListener('submit', function (e) {
-      // Bez fetch-a: native POST na admin-post.php (no-JS / stari browser)
-      if (!WIN.fetch || !WIN.FormData) return;
+      // Bez AJAX konfiguracije ostavi native admin-post.php put netaknutim.
+      if (!WIN.fetch || !WIN.FormData || !cfg.ajaxUrl) return;
+      if (form.classList.contains('is-sending')) {
+        e.preventDefault();
+        return;
+      }
 
       e.preventDefault();
       var imeEl = $('#fIme'), konEl = $('#fKontakt'), djelEl = $('#fDjelatnost');
@@ -657,53 +807,31 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       }
 
       var btn = $('#fSubmit');
+      form.classList.add('is-sending');
       if (btn) {
         btn.disabled = true;
         var btnSpan = btn.querySelector('span');
         if (btnSpan) btnSpan.textContent = cfg.sendingLabel || 'Šaljemo…';
       }
-      if (status) status.textContent = '';
+      if (status) status.textContent = cfg.sendingMessage || 'Šaljemo upit…';
 
-      var fd = new FormData(form);
-      // Prefer admin-ajax.php (pravi WP JSON), fallback admin-post s zaec_ajax
-      var endpoint = cfg.ajaxUrl || form.action;
-      if (cfg.ajaxUrl) {
-        fd.set('action', 'zaec_inquiry');
-      } else {
-        fd.append('zaec_ajax', '1');
-      }
-
-      fetch(endpoint, {
-        method: 'POST',
-        body: fd,
-        credentials: 'same-origin',
-        headers: { 'Accept': 'application/json' }
-      })
-        .then(function (r) {
-          return r.text().then(function (text) {
-            var data = null;
-            try { data = text ? JSON.parse(text) : null; } catch (err) { data = null; }
-            return { httpOk: r.ok, status: r.status, data: data, raw: text };
-          });
+      postInquiry(false)
+        .then(function (payload) {
+          var msg = payload.data && payload.data.message
+            ? payload.data.message
+            : (cfg.successMessage || 'Upit je stigao.');
+          showSuccess(msg);
         })
-        .then(function (res) {
-          var payload = res.data;
-          // WP wp_send_json_*: { success: true/false, data: { message } }
-          if (payload && payload.success) {
-            var msg = (payload.data && payload.data.message) || cfg.successMessage || 'Upit je stigao.';
-            showSuccess(msg);
-            return;
-          }
-          var errMsg = (payload && payload.data && payload.data.message)
-            || (payload && payload.message)
-            || 'Slanje nije uspjelo.';
-          throw new Error(errMsg);
-        })
-        .catch(function (err) {
+        .catch(function (error) {
           resetButton(btn);
-          var m = (err && err.message) ? err.message : 'Slanje nije uspjelo. Pokušajte ponovno ili nazovite.';
-          if (status) status.textContent = m;
-          toast(m);
+          var message = error && error.message
+            ? error.message
+            : 'Slanje nije uspjelo. Pokušajte ponovno ili nazovite.';
+          if (status) status.textContent = message;
+          toast(message);
+          if (WIN.console && WIN.console.warn && error && error.raw) {
+            WIN.console.warn('[ZAEC inquiry response]', error.status, error.raw.slice(0, 240));
+          }
         });
     });
   })();
@@ -882,6 +1010,18 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
 
     var HOLO = 0x7dd3ff;
     var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    var webglDisabled = false;
+    function disableHologram() {
+      if (webglDisabled) return;
+      webglDisabled = true;
+      doc.documentElement.classList.add('no-3d');
+      canvas.setAttribute('aria-hidden', 'true');
+      try { renderer.dispose(); } catch (disposeError) { /* fallback je već aktivan */ }
+    }
+    canvas.addEventListener('webglcontextlost', function (event) {
+      event.preventDefault();
+      disableHologram();
+    }, false);
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(Math.min(WIN.devicePixelRatio || 1, isCoarse ? 1.55 : (LOW ? 1.4 : 1.75)));
     var scene = new THREE.Scene();
@@ -1977,6 +2117,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     var orbit = { v: 0 }; // 0..1 yaw orbit tijekom builda
     var rise = { v: 0 };  // blagi lift
     function frame(now) {
+      if (webglDisabled) return;
       requestAnimationFrame(frame);
       var dt = Math.min((now - last) / 1000, 0.05);
       last = now;
@@ -2050,7 +2191,12 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       underglow.material.opacity = 0.55 * (0.85 + 0.15 * Math.sin(t * 1.3)) * boost.v;
 
       updateLabels(wrap.clientWidth, wrap.clientHeight);
-      renderer.render(scene, camera);
+      try {
+        renderer.render(scene, camera);
+      } catch (renderError) {
+        disableHologram();
+        return;
+      }
       if (firstFrame) { firstFrame = false; WIN.__ZAEC_3D = true; }
     }
     requestAnimationFrame(frame);
@@ -2307,6 +2453,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       Array.prototype.slice.call(scrollEl.children).forEach(function (node) {
         var dup = node.cloneNode(true);
         dup.setAttribute('aria-hidden', 'true');
+        dup.querySelectorAll('a').forEach(function (link) { link.setAttribute('tabindex', '-1'); });
         scrollEl.appendChild(dup);
       });
     }
@@ -2317,6 +2464,51 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
         var on = es[0] && es[0].isIntersecting;
         msScroll.style.animationPlayState = on ? 'running' : 'paused';
       }, { threshold: 0.05 }).observe(stage);
+    }
+
+    function lightStars(card) {
+      var stars = $$('.pf-stars svg', card);
+      if (!stars.length) return;
+      if (prefersReducedMotion || !HAS_GSAP) {
+        stars.forEach(function (star) { star.style.opacity = '1'; star.style.transform = 'scale(1)'; });
+        return;
+      }
+      stars.forEach(function (star, index) {
+        gsap.fromTo(star, { opacity: .18, scale: .72 }, {
+          opacity: 1, scale: 1, duration: .2, delay: index * .055, ease: 'power2.out',
+          onStart: function () { star.parentElement.classList.add('is-lit'); }
+        });
+      });
+    }
+
+    function setupFloatTilt() {
+      if (!HAS_GSAP || prefersReducedMotion || !mqDesktop.matches || isCoarse) return;
+      var effects = floats.map(function (float) {
+        var card = float.firstElementChild;
+        var depth = parseFloat(float.getAttribute('data-depth')) || 14;
+        if (!card) return null;
+        gsap.set(card, { transformPerspective: 850 });
+        return {
+          card: card,
+          depth: depth,
+          rx: gsap.quickTo(card, 'rotationX', { duration: .42, ease: 'power3.out' }),
+          ry: gsap.quickTo(card, 'rotationY', { duration: .42, ease: 'power3.out' }),
+          x: gsap.quickTo(card, 'x', { duration: .5, ease: 'power3.out' })
+        };
+      }).filter(Boolean);
+      stage.addEventListener('pointermove', function (e) {
+        var r = stage.getBoundingClientRect();
+        var nx = clamp((e.clientX - (r.left + r.width / 2)) / (r.width / 2), -1, 1);
+        var ny = clamp((e.clientY - (r.top + r.height / 2)) / (r.height / 2), -1, 1);
+        effects.forEach(function (fx) {
+          fx.ry(nx * Math.min(fx.depth * .14, 4));
+          fx.rx(-ny * Math.min(fx.depth * .1, 3));
+          fx.x(nx * Math.min(fx.depth * .22, 7));
+        });
+      }, { passive: true });
+      stage.addEventListener('pointerleave', function () {
+        effects.forEach(function (fx) { fx.rx(0); fx.ry(0); fx.x(0); });
+      }, { passive: true });
     }
 
     if (HAS_GSAP && !prefersReducedMotion) {
@@ -2335,6 +2527,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
         gsap.fromTo(card,
           { opacity: 0, y: 24 },
           { opacity: 1, y: 0, duration: 0.55, delay: 0.08 * i, ease: 'power2.out',
+            onComplete: function () {
+              if (f.classList.contains('pf-3')) card.classList.add('is-live');
+              lightStars(card);
+            },
             scrollTrigger: { trigger: '#ekran', start: 'top 70%', once: true } });
       });
       // blagi miš tilt samo na telefonu, ne na floatovima (manje layout thrash)
@@ -2349,6 +2545,11 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
         }, { passive: true });
         stage.addEventListener('pointerleave', function () { rx(0); ry(0); }, { passive: true });
       }
+      setupFloatTilt();
+    } else {
+      floats.forEach(function (f) {
+        if (f.firstElementChild) lightStars(f.firstElementChild);
+      });
     }
   })();
 

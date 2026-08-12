@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.6.0
+# ZAEC WordPress Theme — v1.8.0
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -99,3 +99,38 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Footer legalni red i veliki ZAEC imaju isti max-width i konzistentniji spacing.
 - `ZAEC` je uklonjen iz izraza `Provjeren ZAEC layout` kako copy ne bi zvučao samohvalno.
 - Migracija `1.6.0` dodaje novi FAQ i ažurira samo poznate stare vrijednosti.
+
+## v1.6.1
+
+- `.occ-card` je povećan i dobio je zreliju HUD hijerarhiju, corner-bracket detalje, refresh flicker i suptilni desktop tilt.
+- Floating HUD kartice uz telefon veće su, vizualno usklađene s case-study HUD jezikom i interaktivne; CTA kartice vode na stvarni upit ili poziv.
+- Telefon koristi lokalni klima-service scenarij s pravim `tel:+385955612522` linkom; recenzije su označene kao Google recenzije bez nove lažne brojke.
+- Build sequence povezuje arhitektonske slojeve s domenom/hostingom, strukturom, UX/UI-jem, funkcijama, SEO-om i mjerenjem.
+- `Definirajmo opseg` sada vodi na `#poseban-opseg`, a sljedeći CTA iz banda vodi na `#upit` i prefilla `Poseban opseg`.
+- Forma ima nonce refresh za page-cache, čisti accidental AJAX output uz debug log, razlikuje invalid JSON od server poruke i zadržava native no-JS fallback.
+- Dodan je `wp_mail_failed` debug zapis za SMTP/PHPMailer probleme; SMTP transport i dalje ostaje u pluginu.
+- Dodani su magnetic primary CTA pomak, aktivno stanje desktop navigacije i reduced-motion fallback za HUD animacije.
+- Single projekt dobio je fullscreen HUD case-study predložak s opcionalnim panelima, LIVE/prev/next navigacijom, unutarnjim scrollom sadržaja i GSAP boot-up intro animacijom.
+- Dodani su cross-browser fallbackovi za Opera/Safari/Firefox/Edge: backdrop blur, mask, clip/overflow, viewport jedinice, aspect ratio, inset i WebGL failure path.
+- 404 i homepage Three.js sada imaju statičan, namjeran fallback bez praznog canvasa i bez nastavka render loopa nakon gubitka konteksta.
+- Inquiry AJAX sada ima nonce refresh, output-buffer dijagnostiku, jasne JSON/server greške i `wp_mail_failed` zapis za SMTP audit.
+- Theme version: `1.6.1`.
+
+## v1.7.0
+
+- Single projekt je redizajniran iz starog HUD panela u odobreni Showroom koncept.
+- Dodano je opcionalno meta polje **Screenshot mobitela** (`_zaec_project_shot_mobile`), uz backward-compatible fallback na featured screenshot.
+- Hero koristi laptop + mobitel uređaje, bento ključne podatke, opcionalnu scenu ekrana, editorial priču i veliku Next project karticu.
+- Sadržaj i meta paneli pojavljuju se samo kada stvarni podaci postoje; nema praznih scena ni izmišljenih rezultata.
+- Single projekt dobiva uvjetni GSAP + ScrollTrigger modul, a fallback ostaje statičan i potpun bez JS-a ili uz reduced motion.
+- Theme version: `1.7.0`.
+
+## v1.7.1
+
+- Single projekt Showroom naslovi dobili su sigurniji fluidni box: ascender/descender padding, puni završetak clip reveala i wrapping za duga hrvatska imena.
+- Završna scena je zatamnjeniji kino-kadar s jeftinim CSS glow/grain efektom, jačim LIVE CTA-om i velikom klikabilnom karticom sljedećeg projekta. Ako sljedeći projekt ne postoji, kartica se ne renderira.
+- Truth audit je uklonio nepotvrđenu Google ocjenu iz zadane trust trake; vraćeni su samo postojeći podaci: 3 projekta, 14 dana tehničkog jamstva, jasan opseg i direktan put do kontakta.
+- Hero copy i opisi koji su zvučali kao neprovjerena vremenska obećanja ublaženi su bez gubitka prodajne jasnoće.
+- `COPY-BASELINE-front-page.md` nije bio dostupan u repozitoriju; za audit je korišten postojeći odobreni v1.2/v1.6 sadržaj i pravilo da nepotvrđena tvrdnja ne ide na stranicu.
+- Vlasnik prije objave treba dostaviti samo podatke koji nedostaju: potvrđene Google recenzije, dodatne mobilne screenshotove i mjerene rezultate projekata ako ih želi javno navesti.
+- Theme version: `1.7.1`.

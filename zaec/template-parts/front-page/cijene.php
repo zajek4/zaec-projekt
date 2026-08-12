@@ -1,6 +1,8 @@
 <?php
-$plans = zaec_front_repeater( 'pricing' );
-$notes = zaec_front_repeater( 'pricing_notes' );
+$plans              = zaec_front_repeater( 'pricing' );
+$notes              = zaec_front_repeater( 'pricing_notes' );
+$maintenance_plans  = zaec_front_repeater( 'maintenance_plans' );
+$maintenance_notes  = zaec_front_repeater( 'maintenance_notes' );
 $tracks = array();
 foreach ( $plans as $plan ) {
 	$track = ! empty( $plan['track'] ) ? $plan['track'] : __( 'Ponuda', 'zaec' );
@@ -20,6 +22,7 @@ foreach ( $plans as $plan ) {
 			<p class="kicker"><?php echo esc_html( zaec_front_field( 'cijene_kicker' ) ); ?></p>
 			<h2><?php echo esc_html( zaec_front_field( 'cijene_title' ) ); ?></h2>
 			<p class="lead"><?php echo esc_html( zaec_front_field( 'cijene_lead' ) ); ?></p>
+			<a class="pricing-scope-link" href="#poseban-opseg"><span><?php echo esc_html( zaec_front_field( 'band_cta' ) ); ?></span><svg class="ar" aria-hidden="true"><use href="#ic-arrow-d"/></svg></a>
 		</div>
 
 		<div class="pricing-tracks">
@@ -28,7 +31,7 @@ foreach ( $plans as $plan ) {
 					<header class="pricing-track__head">
 						<p class="pricing-track__index">[ <?php echo esc_html( 'Predložak' === $track_name ? 'A' : 'B' ); ?> ]</p>
 						<h3><?php echo esc_html( $track_name ); ?></h3>
-						<p><?php echo esc_html( 'Predložak' === $track_name ? 'Brže, povoljnije i s unaprijed definiranim sustavom layouta.' : 'Struktura i vizualni smjer crtaju se za konkretan posao prije razvoja.' ); ?></p>
+						<p><?php echo esc_html( 'Predložak' === $track_name ? 'Brže, povoljnije i s unaprijed definiranim sustavom stranica.' : 'Struktura i vizualni smjer crtaju se za konkretan posao prije razvoja.' ); ?></p>
 					</header>
 					<div class="pricing-track__cards">
 						<?php foreach ( $track_plans as $plan ) :
@@ -64,8 +67,38 @@ foreach ( $plans as $plan ) {
 					<span class="pb-brands__note"><?php esc_html_e( 'WooCommerce webshop', 'zaec' ); ?></span>
 				</p>
 			</div>
-			<div class="pb-side"><p class="plan-price"><b><?php echo esc_html( zaec_front_field( 'band_price' ) ); ?></b><span><?php echo esc_html( zaec_front_field( 'band_price_meta' ) ); ?></span></p><a href="#upit" class="btn btn-line plan-cta" data-package="Poseban opseg"><span><?php echo esc_html( zaec_front_field( 'band_cta' ) ); ?></span></a></div>
+			<div class="pb-side"><p class="plan-price"><b><?php echo esc_html( zaec_front_field( 'band_price' ) ); ?></b><span><?php echo esc_html( zaec_front_field( 'band_price_meta' ) ); ?></span></p><a href="#upit" class="btn btn-line plan-cta" data-package="Poseban opseg"><span><?php echo esc_html( zaec_front_field( 'band_next_cta' ) ); ?></span></a></div>
 		</div>
+
+		<?php if ( $maintenance_plans ) : ?>
+			<section id="odrzavanje" class="zaec-maintenance" aria-labelledby="zaec-maintenance-title">
+				<div class="zaec-maintenance__head">
+					<p class="kicker"><?php echo esc_html( zaec_front_field( 'maintenance_kicker' ) ); ?></p>
+					<h3 id="zaec-maintenance-title"><?php echo esc_html( zaec_front_field( 'maintenance_title' ) ); ?></h3>
+					<p><?php echo esc_html( zaec_front_field( 'maintenance_lead' ) ); ?></p>
+				</div>
+				<div class="zaec-maintenance__plans">
+					<?php foreach ( $maintenance_plans as $plan ) : ?>
+						<article class="zaec-maintenance-plan">
+							<p class="plan-num"><?php echo esc_html( $plan['code'] ); ?></p>
+							<h4><?php echo esc_html( $plan['name'] ); ?></h4>
+							<p class="zaec-maintenance-plan__price"><b><?php echo esc_html( $plan['price'] ); ?></b><span><?php echo esc_html( $plan['meta'] ); ?></span></p>
+							<p class="zaec-maintenance-plan__tag"><?php echo esc_html( $plan['tag'] ); ?></p>
+							<ul>
+								<?php foreach ( preg_split( '/\r\n|\r|\n/', $plan['features'] ) as $feature ) : if ( '' === trim( $feature ) ) { continue; } ?>
+									<li><svg class="ck" aria-hidden="true"><use href="#ic-check"/></svg><?php echo esc_html( trim( $feature ) ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						</article>
+					<?php endforeach; ?>
+				</div>
+				<?php if ( $maintenance_notes ) : ?>
+					<div class="zaec-maintenance__notes">
+						<?php foreach ( $maintenance_notes as $note ) : ?><p><b>[ <?php echo esc_html( $note['label'] ); ?> ]</b><?php echo esc_html( $note['text'] ); ?></p><?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+			</section>
+		<?php endif; ?>
 
 		<?php if ( $notes ) : ?>
 			<div class="price-notes">

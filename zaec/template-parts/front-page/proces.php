@@ -28,7 +28,7 @@ $steps = zaec_front_repeater( 'process_steps' );
 		</div>
 		<div class="ps-col">
 			<div class="ps-wrap">
-				<svg id="psScene" viewBox="0 0 460 460" aria-label="Animirana shema procesa: razgovor, nacrt, izgradnja i objava." role="img">
+				<svg id="psScene" viewBox="0 0 460 460" aria-label="Animirana shema procesa: razgovor, struktura, izgradnja i objava." role="img">
 					<rect x="8" y="8" width="444" height="444" class="ps-frame"/>
 					<path d="M230 8v444M8 230h444" class="ps-frame"/>
 

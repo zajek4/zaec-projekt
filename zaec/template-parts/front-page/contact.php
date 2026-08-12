@@ -94,7 +94,7 @@ $activities = array(
 						<select id="fSmjer" name="smjer">
 							<option value="ne-znam" selected><?php esc_html_e( 'Još ne znam — savjetujte me', 'zaec' ); ?></option>
 							<option value="predlozak"><?php esc_html_e( 'Predložak (brže / povoljnije)', 'zaec' ); ?></option>
-							<option value="po-nacrtu"><?php esc_html_e( 'Po nacrtu (custom)', 'zaec' ); ?></option>
+							<option value="po-nacrtu"><?php esc_html_e( 'Po nacrtu (po mjeri)', 'zaec' ); ?></option>
 						</select>
 						<svg class="ar ar-d" aria-hidden="true"><use href="#ic-arrow-d"/></svg>
 					</div>

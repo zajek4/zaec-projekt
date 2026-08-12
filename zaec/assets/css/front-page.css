@@ -85,7 +85,7 @@ h3 { font-size: clamp(1.15rem, 1.7vw, 1.5rem); font-weight: 700; line-height: 1.
 .wrap { max-width: var(--page-max, 1500px); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter); }
 .sec > .wrap { position: relative; z-index: 2; }
 .wrap-narrow { max-width: 980px; }
-.sec { position: relative; padding: var(--sec-pad) 0; overflow: clip; }
+.sec { position: relative; padding: var(--sec-pad) 0; overflow: hidden; overflow: clip; }
 .sec-paper { background: var(--paper); color: var(--ink); }
 .sec-paper2 { background: var(--paper-2); color: var(--ink); }
 .sec-ink { background: var(--black); color: var(--paper-2); }
@@ -336,6 +336,7 @@ body.on-light #nav.scrolled #burger i { background: var(--ink); }
 .pin-space { height: 560vh; position: relative; }
 .pin-stage {
   position: sticky; top: 0; height: 100vh;
+  overflow-x: hidden;
   overflow-x: clip;
   overflow-y: hidden;
   display: flex; flex-direction: column; justify-content: center;
@@ -1838,3 +1839,229 @@ body.on-light #nav.scrolled .nav-call-m:focus-visible { color: var(--signal); }
 .proj-mock--image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
 .proj:hover .proj-mock--image img { transform: scale(1.025); }
 .hero-copy, .svc-panel { will-change: opacity, transform, filter; }
+
+/* CTA iz uvoda cijena vodi na objašnjenje opsega; band zatim vodi na pravi upit. */
+.pricing-scope-link{display:inline-flex;align-items:center;gap:10px;margin-top:18px;font-family:var(--font-m);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--signal)}
+.pricing-scope-link .ar{width:15px;height:15px;transition:transform .3s var(--ease)}
+.pricing-scope-link:hover .ar,.pricing-scope-link:focus-visible .ar{transform:translateY(4px)}
+
+/* ============================================================
+   ZAEC 1.6.1 · HUD scale and live interaction
+   ============================================================ */
+.occ-card {
+  width: min(340px, 32vw);
+  min-height: 178px;
+  padding: 22px 24px 19px;
+  border-color: rgba(125, 211, 255, .3);
+  background: rgba(10, 14, 20, .74);
+  box-shadow: 0 22px 60px -30px rgba(0, 0, 0, .9), 0 0 28px -18px rgba(125, 211, 255, .75);
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity, filter;
+}
+.occ-card::before,
+.occ-card::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+}
+.occ-card::before { top: -1px; left: -1px; border-top: 1px solid var(--hologram); border-left: 1px solid var(--hologram); }
+.occ-card::after { right: -1px; bottom: -1px; border-right: 1px solid var(--signal-hi); border-bottom: 1px solid var(--signal-hi); }
+.occ-card.is-refresh { animation: occHudRefresh .34s steps(2, end); }
+@keyframes occHudRefresh {
+  0% { opacity: .52; filter: brightness(1.8) blur(1px); }
+  42% { opacity: .88; filter: brightness(1.15) blur(0); }
+  68% { opacity: .64; filter: brightness(1.65) blur(.5px); }
+  100% { opacity: 1; filter: brightness(1) blur(0); }
+}
+#occTitle { font-size: clamp(1.18rem, 1.7vw, 1.55rem); line-height: 1.08; margin-bottom: 10px; }
+.occ-sub { max-width: 34ch; font-size: clamp(.86rem, 1vw, .98rem); line-height: 1.5; margin-bottom: 15px; }
+.occ-query { font-size: .7rem; line-height: 1.55; margin-bottom: 16px; }
+.occ-tab.active { box-shadow: 0 0 0 1px rgba(125, 211, 255, .35) inset, 0 0 24px -12px var(--hologram); }
+.occ-tab:focus-visible { position: relative; z-index: 2; }
+
+/* Floating cards are real links where the copy promises an action. */
+.ph-float.pf-2,
+.ph-float.pf-3 { pointer-events: auto; }
+.pf-card {
+  position: relative;
+  min-width: 208px;
+  padding: 16px 18px;
+  border-radius: 0;
+  border-color: rgba(125, 211, 255, .28);
+  background: rgba(9, 14, 21, .92);
+  box-shadow: 0 26px 58px -24px rgba(0, 0, 0, .86), 0 0 24px -18px rgba(125, 211, 255, .8);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+.pf-card::before,
+.pf-card::after {
+  content: "";
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  pointer-events: none;
+}
+.pf-card::before { top: -1px; left: -1px; border-top: 1px solid var(--hologram); border-left: 1px solid var(--hologram); }
+.pf-card::after { right: -1px; bottom: -1px; border-right: 1px solid var(--signal-hi); border-bottom: 1px solid var(--signal-hi); }
+.pf-card.is-live { border-color: rgba(61, 217, 125, .42); }
+.pf-card.is-live > .pf-lab::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #3dd97d; box-shadow: 0 0 10px 2px rgba(61, 217, 125, .65); animation: pfLivePulse 1.6s ease-in-out infinite; }
+@keyframes pfLivePulse { 0%, 100% { opacity: .45; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.15); } }
+.pf-card:hover,
+.pf-card:focus-visible { border-color: var(--hologram); box-shadow: 0 28px 62px -24px rgba(0, 0, 0, .92), 0 0 32px -16px rgba(125, 211, 255, .9); }
+.pf-google { min-width: 220px; max-width: 230px; }
+.pf-2 .pf-card { min-width: 224px; max-width: 238px; }
+.pf-3 .pf-card { min-width: 230px; }
+.pf-rating__n { font-size: 34px; }
+.pf-stars svg { opacity: .2; transform: scale(.78); transform-origin: center; }
+.pf-stars.is-lit svg { opacity: 1; transform: scale(1); transition: opacity .18s ease, transform .22s var(--ease); }
+.ms-list a { font-family: var(--font-m); font-size: 7.5px; font-weight: 600; color: #7dd3ff; white-space: nowrap; }
+.ms-btns a,
+.ms-band a,
+.ms-cta,
+.ms-sticky { text-decoration: none; }
+
+@media (max-width: 1280px) and (min-width: 901px) {
+  .occ-card { width: min(320px, 30vw); }
+  .pf-card { min-width: 190px; }
+  .pf-2 .pf-card, .pf-3 .pf-card { min-width: 200px; }
+}
+@media (max-width: 900px) {
+  .occ-card { width: 100%; min-height: 0; padding: 17px 18px 15px; }
+  .pf-card, .pf-google, .pf-2 .pf-card, .pf-3 .pf-card { min-width: 0; width: min(205px, calc(100vw - 40px)); max-width: calc(100vw - 40px); padding: 12px 14px; }
+}
+@media (max-width: 480px) {
+  .pf-card, .pf-google, .pf-2 .pf-card, .pf-3 .pf-card { width: min(178px, calc(100vw - 32px)); max-width: calc(100vw - 32px); }
+  .pf-rating__n { font-size: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-stars svg { opacity: 1; transform: none; }
+  .occ-card.is-refresh { animation: none; }
+}
+.pf-rating--word .pf-rating__n { font-size: 1.2rem; letter-spacing: .08em; }
+.pf-rating--word .pf-rating__s { font-size: .58rem; letter-spacing: .14em; text-transform: uppercase; }
+
+.nav-links a.is-current { color: var(--paper-2); border-color: var(--signal); }
+body.on-light #nav.scrolled .nav-links a.is-current { color: var(--ink); border-color: var(--signal); }
+.pf-call.is-live .pf-ic { stroke: #3dd97d; animation: pfIconPulse 1.6s ease-in-out infinite; }
+@keyframes pfIconPulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; filter: drop-shadow(0 0 5px rgba(61,217,125,.7)); } }
+@media (prefers-reduced-motion: reduce) {
+  .pf-call.is-live .pf-ic { animation: none; filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-card.is-live > .pf-lab::before { animation: none; }
+}
+#poseban-opseg { scroll-margin-top: 90px; }
+
+/* ============================================================
+   ZAEC 1.6.1 · cross-browser compatibility layer
+   ============================================================ */
+/* Opera/Safari fallback: clip nikad ne smije postati jedini overflow mehanizam. */
+.sec { overflow: hidden; overflow: clip; }
+.pin-stage { overflow-x: hidden; overflow-x: clip; }
+
+#nav.scrolled,
+.occ-card,
+.call-card,
+.build-hud {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  #nav.scrolled { background: rgba(14, 14, 13, .96); }
+  .occ-card { background: rgba(10, 14, 20, .96); }
+  .call-card { background: rgba(14, 14, 13, .96); }
+  .build-hud { background: rgba(14, 14, 13, .96); }
+}
+
+@supports not ((mask-image: radial-gradient(circle, #000, transparent)) or (-webkit-mask-image: radial-gradient(circle, #000, transparent))) {
+  .bp-grid-dark,
+  .pl-grid { -webkit-mask-image: none; mask-image: none; opacity: .38; }
+  .sec-ink::before { -webkit-mask-image: none; mask-image: none; opacity: .32; }
+}
+@supports not (clip-path: inset(0)) {
+  #mobileMenu { clip-path: none; max-height: 0; transform: translateY(-100%); transition: max-height .4s ease, transform .4s ease, visibility 0s .4s; }
+  #mobileMenu.open { max-height: 100vh; transform: translateY(0); transition: max-height .4s ease, transform .4s ease; }
+}
+@supports not (aspect-ratio: 1 / 1) {
+  .ph-body { height: 602px; }
+  .ms-gal i { height: 44px; }
+  .proj-mock--image { height: 260px; }
+}
+@media (max-width: 900px) {
+  @supports not (aspect-ratio: 1 / 1) {
+    .ph-body { height: calc(70vw * 2.075); }
+  }
+}
+@supports not (inset: 0) {
+  .bp-grid-dark,
+  .sec-ink::before,
+  #preloader,
+  #cursorWrap,
+  #mobileMenu,
+  #holoFallbackD,
+  #layerLabels,
+  .ek-glow,
+  .ek-rings,
+  #upitParticles,
+  .final-veil { top: 0; right: 0; bottom: 0; left: 0; }
+}
+
+/* WebGL fallback: normalni content flow, nikad prazna 560vh hero pozornica. */
+html.no-3d .pin-space { height: auto; }
+html.no-3d .pin-stage { position: static; height: auto; min-height: 0; overflow: visible; padding: 0; }
+html.no-3d .hero-grid { grid-template-columns: 1fr; height: auto; gap: 40px; padding-top: calc(var(--nav-h) + 56px); }
+html.no-3d .hero-copy,
+html.no-3d .hero-stage,
+html.no-3d .svc-panel { grid-area: auto; }
+html.no-3d .hero-copy { order: 1; opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto !important; }
+html.no-3d .hero-stage { order: 2; height: auto; overflow: visible; }
+html.no-3d .svc-panel { order: 3; opacity: 1 !important; transform: none !important; filter: none !important; pointer-events: auto !important; max-width: none; padding-bottom: 0; }
+html.no-3d #holoWrap { height: min(48vh, 420px); max-height: none; }
+@media (max-width: 900px) {
+  html.no-3d .hero-grid { gap: 30px; padding-top: calc(var(--nav-h) + 34px); }
+  html.no-3d #holoWrap { min-height: 280px; height: 48vh; }
+}
+@supports not (clip-path: inset(0)) {
+  #mobileMenu { overflow: hidden; }
+}
+
+/* Stabilizira fallback metriku dok se Space Grotesk/IBM Plex Mono učitavaju. */
+@supports (font-size-adjust: .52) {
+  body { font-size-adjust: .52; }
+}
+
+/* Truth-first boundary: web nije automatski potreban svima. */
+.zaec-boundary { max-width: 760px; margin: clamp(44px, 6vw, 86px) 0 0; padding: clamp(24px, 3vw, 40px) 0 0; border-top: 1px solid var(--hair-l); }
+.zaec-boundary .kicker { color: var(--signal); margin-bottom: 13px; }
+.zaec-boundary h3 { max-width: 18ch; margin: 0 0 10px; font-size: clamp(1.5rem, 2.8vw, 2.7rem); line-height: 1; letter-spacing: -.03em; }
+.zaec-boundary p:last-child { max-width: 62ch; margin: 0; color: var(--gray); }
+
+/* Održavanje: opcionalan proizvod, odvojen od izrade i bez lažne pretplate. */
+.zaec-maintenance { margin-top: clamp(52px, 7vw, 100px); padding-top: clamp(30px, 4vw, 52px); border-top: 1px solid var(--hair-l); }
+.zaec-maintenance__head { display: grid; grid-template-columns: minmax(190px, .7fr) minmax(0, 1.3fr); gap: 18px 42px; margin-bottom: 28px; }
+.zaec-maintenance__head .kicker { grid-column: 1 / -1; margin: 0; color: var(--signal); }
+.zaec-maintenance__head h3 { margin: 0; font-size: clamp(1.65rem, 3vw, 3rem); line-height: .98; letter-spacing: -.04em; }
+.zaec-maintenance__head > p:last-child { max-width: 46ch; margin: 0; color: var(--gray); }
+.zaec-maintenance__plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--hair-l); border: 1px solid var(--hair-l); }
+.zaec-maintenance-plan { min-width: 0; padding: clamp(24px, 2.6vw, 38px); background: var(--paper); }
+.zaec-maintenance-plan h4 { margin: 12px 0 12px; font-size: clamp(1.25rem, 2vw, 1.9rem); line-height: 1.05; }
+.zaec-maintenance-plan__price { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px; }
+.zaec-maintenance-plan__price b { font-size: clamp(2rem, 3.5vw, 3.2rem); letter-spacing: -.05em; line-height: 1; }
+.zaec-maintenance-plan__price span { font-family: var(--font-m); font-size: .66rem; color: var(--gray); }
+.zaec-maintenance-plan__tag { min-height: 2.8em; margin: 0 0 20px; color: var(--gray); }
+.zaec-maintenance-plan ul { list-style: none; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--hair-l); }
+.zaec-maintenance-plan li { display: flex; gap: 9px; align-items: flex-start; margin: 9px 0; color: var(--gray); font-size: .9rem; line-height: 1.45; }
+.zaec-maintenance-plan .ck { flex: none; width: 15px; height: 15px; margin-top: 2px; stroke: var(--signal); fill: none; }
+.zaec-maintenance__notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 2vw, 28px); margin-top: 24px; }
+.zaec-maintenance__notes p { margin: 0; padding-top: 12px; border-top: 1px solid var(--hair-l); color: var(--gray); font-size: .84rem; line-height: 1.55; }
+.zaec-maintenance__notes b { display: block; margin-bottom: 7px; font-family: var(--font-m); font-size: .62rem; letter-spacing: .14em; color: var(--signal); }
+@media (max-width: 760px) {
+  .zaec-maintenance__head { grid-template-columns: 1fr; gap: 14px; }
+  .zaec-maintenance__plans { grid-template-columns: 1fr; }
+  .zaec-maintenance-plan__tag { min-height: 0; }
+  .zaec-maintenance__notes { grid-template-columns: 1fr; }
+}
