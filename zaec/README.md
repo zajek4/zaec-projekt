@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.9.1
+# ZAEC WordPress Theme — v1.9.2
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -171,3 +171,11 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - The original wireframe house is now the second homepage section, with the original `Gradimo web stranice za ljude koji grade sve ostalo.` copy.
 - Restored the house build sequence HUD: `Web koji razumije vaš zanat` fades in as the house opens, while the occupation HUD keeps Klima, Voda, Struja, Krov and other rows available.
 - Theme version: `1.9.1`.
+
+## v1.9.2
+
+- Homepage flow audited and stabilized: Earth hero → wireframe house → transition marquee → `Zvuči poznato?`.
+- Added a scrubbed, reduced-motion-safe Earth-to-house transition without scroll-jacking.
+- Moved the lightweight marquee out of the hero and placed it between the house and `Zvuči poznato?` section.
+- Mobile Earth is passive on touch so page scrolling is never blocked; desktop keeps orbit and zoom interaction.
+- Theme version: `1.9.2`.
