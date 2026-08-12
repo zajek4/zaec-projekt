@@ -625,5 +625,26 @@ function zaec_migrate_theme_data() {
 		update_option( 'zaec_theme_data_version', '1.8.0', false );
 	}
 
+	/* v1.8.1 — vraća arhitektonski hero i jasne mikro-savjete bez obećanja prihoda. */
+	if ( version_compare( $version, '1.8.1', '<' ) ) {
+		if ( $front_id ) {
+			$occupations = get_post_meta( $front_id, '_zaec_occupations', true );
+			$copy_map    = array(
+				'Na webu: usluge · područje rada · poziv/WhatsApp · upit za termin' => 'Mali potez: usluge · područje rada · poziv/WhatsApp · termin',
+				'Na webu: usluge · reference/certifikati · područje rada · brzi upit' => 'Mali potez: usluga po problemu · reference · područje rada · brzi upit',
+				'Na webu: prije/poslije · vrste krova · reference · zahtjev za ponudu' => 'Mali potez: prije/poslije · materijali · područje rada · procjena',
+			);
+			if ( is_array( $occupations ) ) {
+				foreach ( $occupations as $index => $occupation ) {
+					if ( isset( $occupation['q'], $copy_map[ $occupation['q'] ] ) ) {
+						$occupations[ $index ]['q'] = $copy_map[ $occupation['q'] ];
+					}
+				}
+				update_post_meta( $front_id, '_zaec_occupations', $occupations );
+			}
+		}
+		update_option( 'zaec_theme_data_version', '1.8.1', false );
+	}
+
 }
 add_action( 'admin_init', 'zaec_migrate_theme_data' );

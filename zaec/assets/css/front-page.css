@@ -456,6 +456,20 @@ body.on-light #nav.scrolled #burger i { background: var(--ink); }
   /* mekša vinjeta — ne reže siluetu oštro */
   background: radial-gradient(ellipse 92% 88% at 50% 50%, transparent 68%, rgba(14, 14, 13, 0.28) 100%);
 }
+.holo-hint {
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  z-index: 4;
+  margin: 0;
+  font-family: var(--font-m);
+  font-size: .57rem;
+  letter-spacing: .16em;
+  line-height: 1.35;
+  color: rgba(163, 163, 157, .78);
+  text-transform: uppercase;
+  pointer-events: none;
+}
 .scanlines {
   position: absolute; inset: 0; pointer-events: none; opacity: 0.5;
   background: repeating-linear-gradient(0deg, rgba(125, 211, 255, 0.055) 0 1px, transparent 1px 4px);
@@ -534,10 +548,31 @@ body.on-light #nav.scrolled #burger i { background: var(--ink); }
   transition: opacity 0.4s;
 }
 
-/* hologram fallback */
+/* hologram fallback — ista arhitektonska logika kao u Three sceni, bez praznog canvasa */
 #holoFallbackD { display: none; position: absolute; inset: 0; align-items: center; justify-content: center; }
-.fb-house { width: min(100%, 460px); height: auto; margin: auto; }
+.fb-house { width: min(100%, 560px); height: auto; margin: auto; overflow: visible; filter: drop-shadow(0 0 14px rgba(125, 211, 255, .18)); }
+.fb-house text { fill: rgba(174, 230, 255, .82); stroke: none; }
+.fb-house .fb-ground { opacity: .42; }
+.fb-house .fb-dimension { opacity: .5; }
+.fb-house .fb-shell { stroke-width: 2.15; }
+.fb-house .fb-side,
+.fb-house .fb-wing,
+.fb-house .fb-bay { stroke: rgba(125, 211, 255, .88); }
+.fb-house .fb-roof { stroke-width: 2.35; }
+.fb-house .fb-roof-detail,
+.fb-house .fb-axis { opacity: .36; }
+.fb-house .fb-window,
+.fb-house .fb-door { stroke: rgba(174, 230, 255, .94); }
+.fb-house .fb-window rect,
+.fb-house .fb-door rect { fill: rgba(125, 211, 255, .045); }
+.fb-house .fb-door circle { stroke: none; }
+.fb-house .fb-labels { opacity: .76; }
+.fb-house .fb-axis { animation: fbAxisPulse 3.8s ease-in-out infinite; transform-origin: 291px 190px; }
+.fb-house .fb-dormer,
+.fb-house .fb-chimney { opacity: .74; }
+@keyframes fbAxisPulse { 0%, 100% { opacity: .2; } 50% { opacity: .52; } }
 html.no-3d #holoCanvas, html.no-3d .scanlines { display: none; }
+html.no-3d .holo-hint { display: none; }
 html.no-3d #holoFallbackD { display: flex; }
 html.no-3d #layerLabels, html.no-3d .phase-cap { display: none; }
 
@@ -1347,6 +1382,7 @@ footer .wrap { position: relative; z-index: 2; }
   .hero-copy h1 { max-width: none; }
   .hero-ctas { margin-bottom: 36px; }
   #holoWrap { height: 50vh; min-height: 300px; }
+  .holo-hint { left: 10px; bottom: 8px; font-size: .5rem; letter-spacing: .1em; }
   .hero-stage { height: auto; }
   .occ-card { position: static; width: 100%; margin-top: 14px; }
   .occ-kbd { display: none; }

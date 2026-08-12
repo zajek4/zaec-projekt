@@ -85,8 +85,9 @@ $address_line  = trim( implode( ', ', array_filter( array( $options['address'], 
 <div id="toast" role="status" aria-live="polite"></div>
 <?php if ( is_front_page() ) : ?>
 <script>
+/* The module owns the WebGL fallback. Do not turn a slow first frame into a
+ * false negative: on Safari/iOS a cold module can take longer than six seconds. */
 window.addEventListener('error',function(e){if(e&&e.target&&e.target.tagName==='SCRIPT'&&e.target.type==='module'){document.documentElement.classList.add('no-3d');}},true);
-setTimeout(function(){if(!window.__ZAEC_3D){document.documentElement.classList.add('no-3d');}},6000);
 </script>
 <?php endif; ?>
 <?php wp_footer(); ?>

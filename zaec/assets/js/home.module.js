@@ -418,10 +418,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
      DJELATNOSTI — podaci
   ============================================================ */
   var OCC_DEFAULT = [
-    { title: 'Za klimatizaciju', sub: 'Servis, montaža i čišćenje. Klijent mora odmah pronaći što radite, gdje dolazite i kako do termina.', q: 'Na webu: usluge · područje rada · poziv/WhatsApp · upit za termin' },
+    { title: 'Za klimatizaciju', sub: 'Servis, montaža i čišćenje. Klijent mora odmah pronaći što radite, gdje dolazite i kako do termina.', q: 'Mali potez: usluge · područje rada · poziv/WhatsApp · termin' },
     { title: 'Za vodoinstalatere', sub: 'Kod curenja se ne čita roman. Hitni kontakt, područje rada i vrsta intervencije moraju biti jasni u nekoliko sekundi.', q: 'Na webu: hitni poziv · intervencije · fotografija problema · lokalne stranice' },
-    { title: 'Za električare', sub: 'Od sitnog kvara do instalacija i atesta — jasno odvojimo usluge, reference i područje na koje izlazite.', q: 'Na webu: usluge · reference/certifikati · područje rada · brzi upit' },
-    { title: 'Za krovopokrivače i limare', sub: 'Krov se prodaje povjerenjem: izvedeni radovi, materijali, područje rada i jednostavan put do procjene.', q: 'Na webu: prije/poslije · vrste krova · reference · zahtjev za ponudu' },
+    { title: 'Za električare', sub: 'Od sitnog kvara do instalacija i atesta — jasno odvojimo usluge, reference i područje na koje izlazite.', q: 'Mali potez: usluga po problemu · reference · područje rada · brzi upit' },
+    { title: 'Za krovopokrivače i limare', sub: 'Krov se prodaje povjerenjem: izvedeni radovi, materijali, područje rada i jednostavan put do procjene.', q: 'Mali potez: prije/poslije · materijali · područje rada · procjena' },
     { title: 'Za građevinu i adaptacije', sub: 'Kupac želi vidjeti što preuzimate, kako izgleda proces i možete li pokazati stvarne projekte prije prvog poziva.', q: 'Na webu: projekti · usluge · proces · upit prema opsegu projekta' },
     { title: 'Za smještaj i turizam', sub: 'Gost mora brzo vidjeti smještaj, lokaciju, sadržaje i najjednostavniji način rezervacije.', q: 'Na webu: sobe · galerija · karta · booking/upit · više jezika' },
     { title: 'Za trgovine i webshopove', sub: 'Proizvod mora biti lako pronaći, razumjeti i kupiti — posebno na mobitelu.', q: 'Na webu: katalog/webshop · filteri · dostava i plaćanje · analitika' },
@@ -999,6 +999,9 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   try {
     H.impl = buildHolo();
   } catch (err) {
+    /* A renderer/context failure gets the deliberate architectural fallback;
+       it must not leave a 560vh empty stage behind. */
+    WIN.__ZAEC_3D_ERROR = true;
     doc.documentElement.classList.add('no-3d');
     H.impl = null;
   }
@@ -1023,6 +1026,9 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       disableHologram();
     }, false);
     renderer.setClearColor(0x000000, 0);
+    /* Mark the 3D path as booted before the first frame. The first frame can
+       legitimately wait for layout, fonts or an iOS compositor tick. */
+    WIN.__ZAEC_3D_BOOTED = true;
     renderer.setPixelRatio(Math.min(WIN.devicePixelRatio || 1, isCoarse ? 1.55 : (LOW ? 1.4 : 1.75)));
     var scene = new THREE.Scene();
     scene.fog = new THREE.Fog(0x0e0e0d, 18, 32);
@@ -1095,40 +1101,60 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       S(arr, x0, yt, z0, x0, yb, z0); S(arr, x1, yt, z0, x1, yb, z0);
       S(arr, x1, yt, z1, x1, yb, z1); S(arr, x0, yt, z1, x0, yb, z1);
     }
-    // prozor na ravnini z=const (dir=+1 sprijeda)
+    // Prozor na ravnini z=const. Svaki otvor ima isti konstruktivni jezik:
+    // vanjski okvir, uvučeno ostakljenje, impost/mullion i stvarni podprozornik.
     function winZ(cx, cy, w, h, z, dir, mullions) {
-      PL(L[2], [[cx - w / 2, cy - h / 2, z], [cx + w / 2, cy - h / 2, z], [cx + w / 2, cy + h / 2, z], [cx - w / 2, cy + h / 2, z]], true);
-      var o = 0.05, zi = z + dir * 0.005;
-      PL(L[2], [[cx - w / 2 + o, cy - h / 2 + o, zi], [cx + w / 2 - o, cy - h / 2 + o, zi], [cx + w / 2 - o, cy + h / 2 - o, zi], [cx - w / 2 + o, cy + h / 2 - o, zi]], true);
-      if (mullions !== false) {
-        S(L[2], cx, cy - h / 2 + o, zi, cx, cy + h / 2 - o, zi);
-        S(L[2], cx - w / 2 + o, cy, zi, cx + w / 2 - o, cy, zi);
+      var x0 = cx - w / 2, x1 = cx + w / 2;
+      var y0 = cy - h / 2, y1 = cy + h / 2;
+      var o = Math.min(0.07, w * 0.055), zi = z + dir * 0.008;
+      PL(L[2], [[x0, y0, z], [x1, y0, z], [x1, y1, z], [x0, y1, z]], true);
+      PL(L[2], [[x0 + o, y0 + o, zi], [x1 - o, y0 + o, zi], [x1 - o, y1 - o, zi], [x0 + o, y1 - o, zi]], true);
+      // špaleta i tanki okvir čitaju se i kad je kuća u pokretu
+      S(L[2], x0 + o, y0 + o, zi, x0 + o, y1 - o, zi);
+      S(L[2], x1 - o, y0 + o, zi, x1 - o, y1 - o, zi);
+      if (mullions !== false && w > 0.62) {
+        S(L[2], cx, y0 + o, zi, cx, y1 - o, zi);
+        S(L[2], x0 + o, cy, zi, x1 - o, cy, zi);
       }
-      S(L[2], cx - w / 2 - 0.07, cy - h / 2, z, cx + w / 2 + 0.07, cy - h / 2, z); // podvižnik
+      // podprozornik je malo izbačen prema van, kao na stvarnoj fasadi
+      S(L[2], x0 - 0.09, y0 - 0.035, z + dir * 0.035, x1 + 0.09, y0 - 0.035, z + dir * 0.035);
+      S(L[2], x0 - 0.04, y0 - 0.035, z + dir * 0.035, x0 - 0.04, y0 - 0.1, z);
+      S(L[2], x1 + 0.04, y0 - 0.035, z + dir * 0.035, x1 + 0.04, y0 - 0.1, z);
     }
-    // prozor na ravnini x=const
+    // Prozor na ravnini x=const — ista logika, rotirana za bočnu fasadu.
     function winX(x, cy, cz, w, h, dir, mullions) {
-      PL(L[2], [[x, cy - h / 2, cz - w / 2], [x, cy - h / 2, cz + w / 2], [x, cy + h / 2, cz + w / 2], [x, cy + h / 2, cz - w / 2]], true);
-      var o = 0.05, xi = x + dir * 0.005;
-      PL(L[2], [[xi, cy - h / 2 + o, cz - w / 2 + o], [xi, cy - h / 2 + o, cz + w / 2 - o], [xi, cy + h / 2 - o, cz + w / 2 - o], [xi, cy + h / 2 - o, cz - w / 2 + o]], true);
-      if (mullions !== false) {
-        S(L[2], xi, cy, cz - w / 2 + o, xi, cy, cz + w / 2 - o);
-        S(L[2], xi, cy - h / 2 + o, cz, xi, cy + h / 2 - o, cz);
+      var z0 = cz - w / 2, z1 = cz + w / 2;
+      var y0 = cy - h / 2, y1 = cy + h / 2;
+      var o = Math.min(0.07, w * 0.055), xi = x + dir * 0.008;
+      PL(L[2], [[x, y0, z0], [x, y0, z1], [x, y1, z1], [x, y1, z0]], true);
+      PL(L[2], [[xi, y0 + o, z0 + o], [xi, y0 + o, z1 - o], [xi, y1 - o, z1 - o], [xi, y1 - o, z0 + o]], true);
+      S(L[2], xi, y0 + o, z0 + o, xi, y1 - o, z0 + o);
+      S(L[2], xi, y0 + o, z1 - o, xi, y1 - o, z1 - o);
+      if (mullions !== false && w > 0.62) {
+        S(L[2], xi, cy, z0 + o, xi, cy, z1 - o);
+        S(L[2], xi, y0 + o, cz, xi, y1 - o, cz);
       }
-      S(L[2], x, cy - h / 2, cz - w / 2 - 0.07, x, cy - h / 2, cz + w / 2 + 0.07);
+      S(L[2], x + dir * 0.035, y0 - 0.035, z0 - 0.09, x + dir * 0.035, y0 - 0.035, z1 + 0.09);
+      S(L[2], x, y0 - 0.035, z0 - 0.04, x, y0 - 0.1, z0 - 0.04);
+      S(L[2], x, y0 - 0.035, z1 + 0.04, x, y0 - 0.1, z1 + 0.04);
     }
-    // vrata na frontnoj ravnini
+    // Vrata: jasna visina, prag, nadsvjetlo/paneli i kvaka — ne samo križ.
     function doorZ(cx, z, w, h, panels, baseY) {
       var y0 = baseY || 0, y1 = y0 + h;
       var x0 = cx - w / 2, x1 = cx + w / 2;
+      var zi = z + 0.01, o = Math.min(0.07, w * 0.06);
       PL(L[2], [[x0, y0, z], [x1, y0, z], [x1, y1, z], [x0, y1, z]], true);
-      var o = 0.05, zi = z + 0.005;
       PL(L[2], [[x0 + o, y0 + o, zi], [x1 - o, y0 + o, zi], [x1 - o, y1 - o, zi], [x0 + o, y1 - o, zi]], true);
+      // vrata na podu imaju odvojeni prag i nadvoj
+      S(L[2], x0 - 0.09, y0, z + 0.035, x1 + 0.09, y0, z + 0.035);
+      S(L[2], x0 - 0.04, y1 + 0.06, z + 0.035, x1 + 0.04, y1 + 0.06, z + 0.035);
       if (panels) {
-        S(L[2], x0 + o, y0 + h * 0.36, zi, x1 - o, y0 + h * 0.36, zi);
+        S(L[2], x0 + o, y0 + h * 0.34, zi, x1 - o, y0 + h * 0.34, zi);
         S(L[2], x0 + o, y0 + h * 0.68, zi, x1 - o, y0 + h * 0.68, zi);
+      } else {
+        S(L[2], cx, y0 + o, zi, cx, y1 - o, zi);
       }
-      S(L[2], x1 - 0.12, y0 + h * 0.52, zi, x1 - 0.12, y0 + h * 0.42, zi);
+      ARC(L[2], x1 - Math.max(0.13, w * 0.18), y0 + h * 0.51, zi + 0.006, 0.045, 'z', 8, 0, Math.PI * 2);
     }
     // trokrilni bay (erker) na z=front
     function bayZ(cx, y0, y1, zWall, depth, w) {
@@ -1228,13 +1254,14 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     var gfCy = 1.45, gfH = 1.20, gfW = 1.05;
     var upCy = Y1 + 0.55 + gfH / 2, upH = gfH, upW = 1.0;
 
-    // ulaz u krilu
+    // bočni ulaz u krilu + glavni ulaz na prednjoj fasadi
     doorZ(-3.1, wz1 + 0.01, 0.86, 2.05, true, 0.0);
-    // prednja fasada: dnevni prozor (lijevo) + erker nosi svoje prozore
-    winZ(-0.95, gfCy, 1.25, gfH, mz1 + 0.01, 1, true);
-    // kat: francuska vrata + bočni prozor — ista visina
+    doorZ(-1.72, mz1 + 0.01, 0.88, 2.08, true, 0.0);
+    // fasada sada ima pravilan ritam: prozor · vrata · erker, bez plutajućih otvora
+    winZ(-0.55, gfCy, 0.82, gfH, mz1 + 0.01, 1, true);
+    // kat: francuska vrata na osi ulaza + jedan puni prozor lijevo
     doorZ(0.1, mz1 + 0.01, 0.9, 1.95, false, Y1 + 0.06);
-    winZ(1.05, upCy, 0.9, upH, mz1 + 0.01, 1, true);
+    winZ(-1.36, upCy, 0.86, upH, mz1 + 0.01, 1, true);
     // zabatni okulus (centar grebena)
     ARC(L[2], ridgeX, 5.25, mz1 + 0.01, 0.24, 'z', 16, 0, Math.PI * 2);
     ARC(L[2], ridgeX, 5.25, mz1 + 0.01, 0.1, 'z', 12, 0, Math.PI * 2);
@@ -1262,6 +1289,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     slab(L[3], -3.55, -2.65, 1.9, 2.4, 0.18, 0.0);
     slab(L[3], -3.55, -2.65, 2.4, 2.85, 0.12, 0.0);
     slab(L[3], -3.55, -2.65, 2.85, 3.2, 0.06, 0.0);
+    // tri plitke stube glavnog ulaza — ulaz je čitljiv i iz aksonometrije
+    slab(L[3], -2.25, -1.18, 2.25, 2.55, 0.18, 0.0);
+    slab(L[3], -2.25, -1.18, 2.55, 2.82, 0.12, 0.0);
+    slab(L[3], -2.25, -1.18, 2.82, 3.04, 0.06, 0.0);
     // rukohvat
     S(L[3], -2.68, 0.18, 1.95, -2.68, 0.92, 1.95);
     S(L[3], -2.68, 0.92, 1.95, -2.68, 0.92, 3.15);
@@ -1271,6 +1302,11 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     PL(L[3], [[-3.75, 2.4, 1.9], [-2.45, 2.4, 1.9], [-2.45, 2.4, 2.65], [-3.75, 2.4, 2.65]], true);
     S(L[3], -3.65, 2.4, 2.6, -3.65, 2.1, 1.92);
     S(L[3], -2.55, 2.4, 2.6, -2.55, 2.1, 1.92);
+    // tanka nadstrešnica nad glavnim vratima: vodoravna ploča + dva nosača
+    PL(L[3], [[-2.28, 2.42, mz1 + 0.04], [-1.16, 2.42, mz1 + 0.04], [-1.16, 2.42, mz1 + 0.72], [-2.28, 2.42, mz1 + 0.72]], true);
+    PL(L[3], [[-2.28, 2.34, mz1 + 0.04], [-1.16, 2.34, mz1 + 0.04], [-1.16, 2.34, mz1 + 0.72], [-2.28, 2.34, mz1 + 0.72]], true);
+    S(L[3], -2.18, 2.34, mz1 + 0.65, -2.18, 2.08, mz1 + 0.12);
+    S(L[3], -1.26, 2.34, mz1 + 0.65, -1.26, 2.08, mz1 + 0.12);
     // stepenice terase uz erker
     slab(L[3], 0.7, 1.9, 2.45, 2.85, 0.1, 0.0);
     // (klupa uklonjena — širila je bounding box i rezala rub canvasa)
@@ -1483,6 +1519,18 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     function buildOverlays() {
       var OV = [];
 
+      // Sitne tehničke oznake ponašaju se kao arhitektonski HUD: čitljive su
+      // u aksonometriji, ali ne preuzimaju kuću ni sadržaj kartice.
+      function overlayTag(group, recs, label, x, y, z, width) {
+        var texture = textSprite(label, 360, 64, 30);
+        var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 0.78, blending: THREE.AdditiveBlending, depthWrite: false });
+        var plane = new THREE.Mesh(new THREE.PlaneGeometry(width || 1.5, 0.27), material);
+        plane.position.set(x, y, z);
+        group.add(plane);
+        recs.push({ mat: material, base: 0.78 });
+        return plane;
+      }
+
       /* 0 · KLIMATIZACIJA — jedinice na bočnim zidovima + strujanje zraka */
       (function () {
         var g = new THREE.Group(); overlaysRoot.add(g);
@@ -1530,6 +1578,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           }
           pGeo.attributes.position.needsUpdate = true;
         });
+        var climateTag = overlayTag(g, recs, 'KLIMA / PROTOK', 2.95, 2.18, 1.05, 1.55);
+        dyn.push(function () { climateTag.lookAt(camera.position); });
         OV.push({ g: g, recs: recs, parts: parts, dyn: dyn, st: { v: 0, ap: -1 } });
       })();
 
@@ -1581,6 +1631,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           splashOp = Math.max(0, splashOp - 3.4 * dt);
           splashM.mat.opacity = 0.12 + splashOp;
         });
+        var waterTag = overlayTag(g, recs, 'VODA / PROTOK', -1.35, 3.42, -1.38, 1.45);
+        dyn.push(function () { waterTag.lookAt(camera.position); });
         OV.push({ g: g, recs: recs, parts: parts, dyn: dyn, st: { v: 0, ap: -1 } });
       })();
 
@@ -1661,6 +1713,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
         dyn.push(function (t) {
           bulbs.forEach(function (bm, k) { bm.opacity = 0.15 + 0.6 * Math.pow(Math.max(0, Math.sin(t * 1.5 - k * 1.2)), 3); });
         });
+        var electricTag = overlayTag(g, recs, 'STRUJA / TOK', -3.05, 4.42, 1.9, 1.45);
+        dyn.push(function () { electricTag.lookAt(camera.position); });
         OV.push({ g: g, recs: recs, parts: parts, dyn: dyn, st: { v: 0, ap: -1 } });
       })();
 
@@ -1710,6 +1764,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           }
           sGeo.attributes.position.needsUpdate = true;
         });
+        var roofTag = overlayTag(g, recs, 'KROV / ZAŠTITA', 0.15, 6.88, 1.35, 1.7);
+        dyn.push(function () { roofTag.lookAt(camera.position); });
         OV.push({ g: g, recs: recs, parts: parts, dyn: dyn, st: { v: 0, ap: -1 } });
       })();
 
@@ -2554,4 +2610,5 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   })();
 
   WIN.__ZAEC_READY = true;
+  WIN.__ZAEC_HOME_READY = true;
 })();

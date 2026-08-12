@@ -65,23 +65,69 @@ $hint     = trim( (string) zaec_front_field( 'hero_hint' ) );
 						<div class="scanlines" aria-hidden="true"></div>
 						<div id="layerLabels" aria-hidden="true"></div>
 						<div id="holoFallbackD" aria-hidden="true">
-							<svg viewBox="0 0 440 300" class="fb-house" aria-hidden="true">
-								<g fill="none" stroke="#7dd3ff" stroke-width="1.4">
-									<path d="M150 260V150l110-80 110 80v110z"/>
-									<path d="M138 152L260 64l122 88"/>
-									<path d="M212 260v-60h44v60zM300 208h44v36h-44zM176 208h26v32h-26z"/>
-									<path d="M212 230h44M234 200v60M300 226h44M322 208v36M176 224h26M189 208v32"/>
-									<path d="M170 260V172h-64v88zM170 172h-64"/>
-									<path d="M162 260v-52h-48v52zM162 224h-48M162 240h-48" opacity="0.7"/>
-									<path d="M298 108l16-12 16 12zM314 96V74h8v16z" opacity="0.7"/>
-									<path d="M236 120l24-18 24 18zM248 138l12-9 12 9" opacity="0.7"/>
-									<path d="M60 260h340" stroke-dasharray="4 5" opacity="0.55"/>
+							<svg viewBox="0 0 560 430" class="fb-house" aria-hidden="true">
+								<defs>
+									<linearGradient id="fbHouseGlow" x1="0" x2="1" y1="0" y2="1">
+										<stop offset="0" stop-color="#b9efff"/>
+										<stop offset="1" stop-color="#4d80ff"/>
+									</linearGradient>
+								</defs>
+								<g class="fb-hud" fill="none" stroke="#7dd3ff" stroke-width="1">
+									<path class="fb-ground" d="M52 335h430M84 350h358M116 365h294" stroke-dasharray="4 8"/>
+									<path d="M74 331l-12 12M454 331l12 12M104 361l-10 10M406 361l10 10"/>
+									<path class="fb-dimension" d="M188 315v27M394 315v27M188 333h206" stroke-dasharray="2 5"/>
+									<text x="291" y="351">6.40 m · FRONT ELEVATION</text>
+									<text x="414" y="82">N / 01</text>
+								</g>
+								<g class="fb-house-art" fill="none" stroke="url(#fbHouseGlow)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+									<!-- main volume: two floors, front facade and right return -->
+									<path class="fb-shell" d="M188 312V151L291 76 394 151v161z"/>
+									<path class="fb-shell fb-side" d="M394 151l96-45v151l-96 55z"/>
+									<path class="fb-roof" d="M171 151L291 62l121 89M291 62l216 42-113 47"/>
+									<path class="fb-roof-detail" d="M184 143l107-79 113 79M291 69l204 39" stroke-dasharray="3 6"/>
+									<path d="M188 223h206M394 223l96-45" opacity=".6"/>
+									<!-- lower side wing with a proper gable and porch -->
+									<path class="fb-wing" d="M104 312V199l83-50 82 50v113"/>
+									<path class="fb-wing-roof" d="M88 199l99-61 98 61M187 138v-18"/>
+									<path d="M104 312h165M104 285h84M187 285h82" opacity=".55"/>
+									<!-- consistent main facade windows -->
+									<g class="fb-window">
+										<rect x="215" y="171" width="46" height="53" rx="1"/><path d="M238 171v53M215 197.5h46"/>
+										<rect x="329" y="171" width="46" height="53" rx="1"/><path d="M352 171v53M329 197.5h46"/>
+										<rect x="215" y="242" width="46" height="39" rx="1"/><path d="M238 242v39M215 261.5h46"/>
+										<path d="M210 226h56M324 226h56" opacity=".55"/>
+									</g>
+									<!-- centered entry and aligned upper French doors -->
+									<g class="fb-door">
+										<rect x="278" y="238" width="44" height="74" rx="1"/><path d="M300 238v74M278 261h44M278 284h44"/>
+										<circle cx="294" cy="275" r="1.8" fill="#7dd3ff"/>
+										<rect x="279" y="137" width="42" height="55" rx="1"/><path d="M300 137v55M279 164.5h42"/>
+										<path d="M270 197h61v6h-61zM270 203l9 9M331 203l-9 9"/>
+									</g>
+									<!-- bay window: depth is visible, not a floating flat rectangle -->
+									<path class="fb-bay" d="M345 238l30-12 22 10v54l-22 12-30-11z"/>
+									<path d="M375 226v76M345 265h52M375 265l22-9M345 265l30 11"/>
+									<!-- arched side entrance, columns and steps -->
+									<path class="fb-arch" d="M130 312v-67a27 27 0 0 1 54 0v67M130 245h54"/>
+									<path d="M124 312v-71M190 312v-71M118 312h78M118 321h78M126 330h62"/>
+									<path d="M124 241h66M130 234h54" opacity=".65"/>
+									<!-- two dormers, chimney, eaves and foundation -->
+									<path class="fb-dormer" d="M233 110v-24l18-14 18 14v24M239 108V91h24v17M333 135v-27l18-14 18 14v27M339 133v-19h24v19"/>
+									<path class="fb-chimney" d="M413 102V54h23v53M409 54h31M414 48h21"/>
+									<path d="M178 312h228M178 319h228M188 326h206" opacity=".7"/>
+									<!-- construction ticks / architectural axes -->
+									<path class="fb-axis" d="M291 55v276M196 158h190M198 232h192" stroke-dasharray="2 7"/>
+								</g>
+								<g class="fb-labels" fill="#aee6ff" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.3">
+									<text x="84" y="389">VILLA N / STRUCTURE 01</text>
+									<text x="383" y="389">AXON / 1:50</text>
 								</g>
 							</svg>
 						</div>
-					</div>
+										<p class="holo-hint" aria-hidden="true">DRAG = ORBIT · SCROLL = AKSONOMETRIJA · KLIK = SLOJ</p>
+									</div>
 
-					<div class="occ-controls" id="occControls">
+									<div class="occ-controls" id="occControls">
 						<div class="occ-tabs" id="occTabs" role="tablist" aria-label="<?php esc_attr_e( 'Odaberite djelatnost i pogledajte što web može riješiti', 'zaec' ); ?>">
 							<?php foreach ( $occ as $i => $o ) : ?>
 								<button type="button" class="occ-tab<?php echo 0 === $i ? ' active' : ''; ?>" role="tab" aria-selected="<?php echo 0 === $i ? 'true' : 'false'; ?>" data-occ="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $o['tab'] ); ?></button>

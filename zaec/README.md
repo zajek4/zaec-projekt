@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.8.0
+# ZAEC WordPress Theme — v1.8.1
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -134,3 +134,19 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - `COPY-BASELINE-front-page.md` nije bio dostupan u repozitoriju; za audit je korišten postojeći odobreni v1.2/v1.6 sadržaj i pravilo da nepotvrđena tvrdnja ne ide na stranicu.
 - Vlasnik prije objave treba dostaviti samo podatke koji nedostaju: potvrđene Google recenzije, dodatne mobilne screenshotove i mjerene rezultate projekata ako ih želi javno navesti.
 - Theme version: `1.7.1`.
+
+## v1.8.0
+
+- Showroom 2.0 single-project predložak ostaje uvjetan prema stvarnim podacima, s potpunim reduced-motion/no-JS fallbackom.
+- Truth-first ponuda ne prikazuje nepotvrđenu Google ocjenu; dodano je opcionalno održavanje s jasnim granicama opsega.
+- Produkcijski PHP defaults hotfix provjeren je parserom nakon popravka zareza.
+
+## v1.8.1
+
+- Hero vraća i učvršćuje 3D kuću **Villa N**: realniji arhitektonski raspored, dvije etaže, glavni ulaz, pravilniji prozorski ritam, erker, balkon, lučni bočni ulaz, dormeri, dimnjak, nadstrešnice i temeljne linije.
+- Prozori sada imaju vanjski okvir, uvučeno ostakljenje, impost/mullion i podprozornik; vrata imaju prag, nadvoj, panele i kvaku umjesto nerealnih križeva.
+- Zadržane su interakcije: auto-orbit, drag/orbit, klik za izolaciju sloja, scroll aksonometrija, rastavljanje/sastavljanje kuće i animirani slojevi za klimu, vodu, struju, krov, gradnju, smještaj, trgovinu i ostale usluge.
+- No-WebGL/no-JS fallback više nije generička kućica nego namjerni arhitektonski outline s istim ritmom otvora i oznakama Villa N.
+- Prvi kadar više se ne proglašava neuspjelim samo zato što Safari/iOS kasnije odradi compositor tick; fallback se uključuje samo kod stvarne greške modula/renderera.
+- Mikro-savjeti za klimu, električare i krovopokrivače objašnjavaju put do relevantnijeg upita, bez obećanja prometa ili prihoda.
+- Theme version: `1.8.1`.
