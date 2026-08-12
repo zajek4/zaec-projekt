@@ -155,8 +155,8 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 
 - Homepage hero now uses an interactive, full-bleed holographic Earth; Osijek remains a subtle local-origin marker while the global map and other cities carry the visual weight.
 - The original `Gradimo web stranice za ljude koji grade sve ostalo.` message and wireframe-house story were moved into a dedicated lower house section.
-- Added local 65-city node data and Natural Earth coastline/country data; the network layer is explicitly a visual simulation, not a claim about measured live traffic.
-- Added local topology texture, atmospheric rim shader, clean continent coastlines plus a separate Croatia outline, category-colored city lights, Osijek beam/rings/label, hover tooltip and simulated packet arcs.
+- Added local 65-city node data and Natural Earth country data for clean continent/country outlines; city points remain informational UI, not a claim about measured live traffic.
+- Added local topology texture, atmospheric rim shader, clean all-country outlines, a separate EU layer and a brighter Croatia outline, category-colored city lights, Osijek beam/rings/label and hover tooltips.
 - Added local Three.js post-processing modules for `EffectComposer` and `UnrealBloomPass`, with a no-bloom renderer fallback.
 - Added reduced-motion, no-WebGL and no-JavaScript Earth fallbacks.
 - The former house renderer is mounted in a dedicated lower section; its render loop pauses when the section is off-screen so the full-bleed Earth hero remains the visual priority.
@@ -165,8 +165,9 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 
 ## v1.9.1
 
-- Earth hero now uses a full-bleed 16:9 stage with no left/right card gaps; continent coastlines and the Croatia outline replace the old latitude/longitude mesh.
-- Reduced GPU/CPU cost with a 2048px topology map, adaptive sphere detail, merged coastline geometry, lower-power bloom fallback, reduced star count and pooled packet geometry.
+- Earth hero now uses a full-bleed 16:9 stage with no left/right card gaps; clean country/continent outlines and the Croatia outline replace the old latitude/longitude mesh.
+- `Regions.js` replaces packet/arc rendering with merged base country outlines, a 27-state EU highlight and a separate Croatia outline.
+- Reduced GPU/CPU cost with a 2048px topology map, adaptive sphere detail, lower-power bloom fallback, reduced star count, passive mobile touch mode and lazy mobile/house rendering.
 - The original wireframe house is now the second homepage section, with the original `Gradimo web stranice za ljude koji grade sve ostalo.` copy.
 - Restored the house build sequence HUD: `Web koji razumije vaš zanat` fades in as the house opens, while the occupation HUD keeps Klima, Voda, Struja, Krov and other rows available.
 - Theme version: `1.9.1`.

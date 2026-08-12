@@ -39,7 +39,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 						id="earthHero"
 						class="earth-hero"
 						data-topology="<?php echo esc_url( get_theme_file_uri( 'assets/textures/earth-topology.jpg' ) ); ?>"
-						data-coastline="<?php echo esc_url( get_theme_file_uri( 'assets/data/coastline.json' ) ); ?>"
 						data-borders="<?php echo esc_url( get_theme_file_uri( 'assets/data/countries.json' ) ); ?>"
 						data-nodes="<?php echo esc_url( get_theme_file_uri( 'assets/data/nodes.json' ) ); ?>"
 						aria-busy="true"
@@ -87,14 +86,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<small>CONTINENT OUTLINES · WORLD CITIES</small>
 						</div>
 						<div class="earth-hud earth-hud--bl" aria-hidden="true">
-							<span class="earth-hud__eyebrow">PACKETS</span>
-							<b id="earthPacketCount">00</b>
-							<small>SIMULATED / 80–260 MS · GLOBAL MIX</small>
+							<span class="earth-hud__eyebrow">REGIONS</span>
+							<b>EU · 27</b>
+							<small>COUNTRY OUTLINES · CLEAN MAP</small>
 						</div>
 						<div class="earth-hud earth-hud--br" aria-hidden="true">
-							<span class="earth-hud__eyebrow">LOCAL ORIGIN</span>
-							<b>OSIJEK · HR</b>
-							<small>one node in a wider network</small>
+							<span class="earth-hud__eyebrow">FOCUS</span>
+							<b>HRVATSKA</b>
+							<small>EUROPE · OSIJEK LOCAL ORIGIN</small>
 						</div>
 
 						<div class="earth-legend" aria-hidden="true">
@@ -116,6 +115,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p id="earthStatus">INITIALIZING RENDERER</p>
 						</div>
 						<p class="earth-interaction-hint" aria-hidden="true">DRAG = ORBIT · SCROLL = ZOOM · HOVER = NODE DATA</p>
+						<p class="earth-mobile-hint" aria-hidden="true">SCROLL PAGE · MAP AUTO-ROTATES</p>
 					</div>
 				</div>
 			</div>

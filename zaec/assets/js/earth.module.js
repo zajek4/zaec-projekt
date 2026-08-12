@@ -3,14 +3,15 @@
  *
  * WordPress ships this module directly, so the scene deliberately uses local
  * Three.js modules and local data instead of a Vite-only import pipeline.
- * Network activity is a visual simulation; it is never presented as measured
- * traffic or a live analytics feed.
+ * City points are informational UI; no measured traffic or live analytics is
+ * implied by the scene.
  */
 import * as THREE from './vendor/three.module.min.js';
 import { OrbitControls } from './vendor/OrbitControls.module.js';
 import { EffectComposer } from './vendor/postprocessing/EffectComposer.js';
 import { RenderPass } from './vendor/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
+import { Regions } from './Regions.js';
 
 (function () {
   'use strict';
@@ -27,7 +28,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   var progressLabel = doc.getElementById('earthProgressLabel');
   var statusEl = doc.getElementById('earthStatus');
   var nodeCountEl = doc.getElementById('earthNodeCount');
-  var packetCountEl = doc.getElementById('earthPacketCount');
 
   if (!canvas) return;
 
@@ -50,8 +50,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     white: 0xd9fbff
   };
   var RADIUS = 5;
-  var MAX_PACKETS = lowPower ? 18 : 45;
-  var PACKET_SEGMENTS = lowPower ? 32 : 64;
   var state = {
     renderer: null,
     composer: null,
@@ -62,17 +60,15 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     planetMaterial: null,
     cityMaterial: null,
     atmosphereMaterial: null,
+    regions: null,
     hq: null,
     nodes: [],
     nodePoints: null,
-    packets: [],
-    packetPool: [],
     stars: null,
     active: true,
     destroyed: false,
     time: 0,
     last: performance.now(),
-    nextPacket: 180,
     raycaster: new THREE.Raycaster(),
     pointer: new THREE.Vector2(2, 2),
   };
@@ -102,8 +98,8 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     'void main() {\n' +
     '  float scan = 0.72 + 0.28 * sin((vUv.y * 240.0) - uTime * 4.0);\n' +
     '  float rim = 0.78 + 0.22 * pow(1.0 - max(dot(vNormal, vec3(0.0, 0.0, 1.0)), 0.0), 2.0);\n' +
-    '  vec3 color = uColor * (scan * rim + vPulse * 0.08);\n' +
-    '  gl_FragColor = vec4(color, 0.92);\n' +
+    '  vec3 color = uColor * (0.08 + scan * 0.035 + vPulse * 0.02);\n' +
+    '  gl_FragColor = vec4(color, 0.12 + rim * 0.035);\n' +
     '}';
 
   var ATMOSPHERE_VERTEX = '\n' +
@@ -153,26 +149,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     '  float glow = smoothstep(0.5, 0.0, d);\n' +
     '  float beat = vHq > 0.5 ? (0.78 + 0.22 * sin(uTime * 4.0)) : 1.0;\n' +
     '  gl_FragColor = vec4(vColor * (1.0 + glow * 0.8) * beat, glow * (vHq > 0.5 ? 1.0 : 0.72));\n' +
-    '}';
-
-  var ARC_VERTEX = '\n' +
-    'attribute float aT;\n' +
-    'varying float vT;\n' +
-    'void main() {\n' +
-    '  vT = aT;\n' +
-    '  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n' +
-    '}';
-
-  var ARC_FRAGMENT = '\n' +
-    'uniform float uProgress;\n' +
-    'uniform vec3 uColor;\n' +
-    'varying float vT;\n' +
-    'void main() {\n' +
-    '  float behind = smoothstep(0.0, 0.72, uProgress - vT);\n' +
-    '  float head = smoothstep(0.075, 0.0, abs(vT - uProgress));\n' +
-    '  float ahead = smoothstep(0.18, 0.0, vT - uProgress) * 0.12;\n' +
-    '  float alpha = clamp(behind * 0.62 + head * 1.45 + ahead, 0.0, 1.0);\n' +
-    '  gl_FragColor = vec4(uColor * (0.78 + head * 1.5), alpha);\n' +
     '}';
 
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
@@ -273,7 +249,8 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
       },
       vertexShader: PLANET_VERTEX,
       fragmentShader: PLANET_FRAGMENT,
-      wireframe: true,
+      /* Solid dark globe; the visible map is Regions.js, not a triangle mesh. */
+      wireframe: false,
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending
@@ -282,8 +259,7 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     planet.renderOrder = 2;
     group.add(planet);
 
-    /* No latitude/longitude wire grid: the map is carried by real coastline
-       and country outline geometry below. */
+    /* No latitude/longitude wire grid: the map is provided by Regions.js. */
 
     state.atmosphereMaterial = new THREE.ShaderMaterial({
       uniforms: { uColor: { value: new THREE.Color(COLORS.cyan) }, uTime: { value: 0 } },
@@ -315,69 +291,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     return rings;
   }
 
-  function addMapOutlines(countryData, coastlineData) {
-    /* The old latitude/longitude mesh is intentionally gone. A real coastline
-       carries the continent silhouette; only Croatia receives a separate
-       country outline so the local origin remains legible without dominating
-       the global map. */
-    var outlineGroup = new THREE.Group();
-    var coastMaterial = new THREE.LineBasicMaterial({
-      color: COLORS.cyan,
-      transparent: true,
-      opacity: lowPower ? 0.5 : 0.78,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    });
-    var croatiaMaterial = new THREE.LineBasicMaterial({
-      color: COLORS.amber,
-      transparent: true,
-      opacity: 0.72,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    });
-    var coastFeatures = coastlineData && Array.isArray(coastlineData.features) ? coastlineData.features : [];
-    var countryFeatures = countryData && Array.isArray(countryData.features) ? countryData.features : [];
-    var step = lowPower ? 2 : 1;
-
-    function segments(features, predicate) {
-      var positions = [];
-      features.forEach(function (feature) {
-        if (predicate && !predicate(feature)) return;
-        collectRings(feature.geometry).forEach(function (ring) {
-          var previous = null;
-          ring.forEach(function (coordinate, index) {
-            if (!coordinate || coordinate.length < 2) return;
-            var isLast = index === ring.length - 1;
-            if (index % step !== 0 && !isLast) return;
-            var current = latLngToVector3(coordinate[1], coordinate[0], 5.045);
-            if (previous && current.distanceTo(previous) <= 3.2) {
-              positions.push(previous.x, previous.y, previous.z, current.x, current.y, current.z);
-            }
-            previous = current;
-          });
-        });
-      });
-      return positions;
-    }
-
-    var coastPositions = segments(coastFeatures.length ? coastFeatures : countryFeatures);
-    if (coastPositions.length) {
-      var coastGeometry = new THREE.BufferGeometry();
-      coastGeometry.setAttribute('position', new THREE.Float32BufferAttribute(coastPositions, 3));
-      outlineGroup.add(new THREE.LineSegments(coastGeometry, coastMaterial));
-    }
-    var croatiaPositions = segments(countryFeatures, function (feature) {
-      var properties = feature && feature.properties ? feature.properties : {};
-      return properties.ADM0_A3 === 'HRV' || properties.ISO_A3 === 'HRV' || properties.ADMIN === 'Croatia';
-    });
-    if (croatiaPositions.length) {
-      var croatiaGeometry = new THREE.BufferGeometry();
-      croatiaGeometry.setAttribute('position', new THREE.Float32BufferAttribute(croatiaPositions, 3));
-      outlineGroup.add(new THREE.LineSegments(croatiaGeometry, croatiaMaterial));
-    }
-    outlineGroup.renderOrder = 4;
-    state.globe.add(outlineGroup);
-  }
 
   function createCityLights(nodes) {
     state.nodes = Array.isArray(nodes) ? nodes.filter(function (node) {
@@ -493,127 +406,6 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     state.scene.add(state.stars);
   }
 
-  function createArcMaterial(color) {
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        uProgress: { value: 0 },
-        uColor: { value: new THREE.Color(color) }
-      },
-      vertexShader: ARC_VERTEX,
-      fragmentShader: ARC_FRAGMENT,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending
-    });
-  }
-
-  function createPacketShell() {
-    var count = PACKET_SEGMENTS + 1;
-    var geometry = new THREE.BufferGeometry();
-    var positions = new Float32Array(count * 3);
-    var progress = new Float32Array(count);
-    for (var i = 0; i < count; i++) progress[i] = i / (count - 1);
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('aT', new THREE.BufferAttribute(progress, 1));
-    geometry.setDrawRange(0, 0);
-    var line = new THREE.Line(geometry, createArcMaterial(COLORS.cyan));
-    line.frustumCulled = false;
-    line.renderOrder = 8;
-    var head = new THREE.Mesh(
-      new THREE.SphereGeometry(lowPower ? 0.042 : 0.055, lowPower ? 6 : 8, 6),
-      new THREE.MeshBasicMaterial({ color: COLORS.cyan, transparent: true, opacity: 0.98, blending: THREE.AdditiveBlending, depthWrite: false })
-    );
-    head.renderOrder = 9;
-    line.visible = false;
-    head.visible = false;
-    state.scene.add(line);
-    state.scene.add(head);
-    return { line: line, head: head, curve: null, age: 0, lifetime: 0 };
-  }
-
-  function makePacket() {
-    if (!state.nodes.length || state.packets.length >= MAX_PACKETS) return;
-    var sourceIndex;
-    var targetIndex;
-    var involveHq = Math.random() < 0.18;
-    var hqIndex = state.nodes.findIndex(function (node) { return node.hq; });
-    if (involveHq && hqIndex >= 0) {
-      if (Math.random() < 0.5) {
-        sourceIndex = hqIndex;
-        targetIndex = Math.floor(Math.random() * state.nodes.length);
-      } else {
-        sourceIndex = Math.floor(Math.random() * state.nodes.length);
-        targetIndex = hqIndex;
-      }
-      if (sourceIndex === targetIndex) targetIndex = (targetIndex + 1) % state.nodes.length;
-    } else {
-      sourceIndex = Math.floor(Math.random() * state.nodes.length);
-      targetIndex = Math.floor(Math.random() * state.nodes.length);
-      while (targetIndex === sourceIndex && state.nodes.length > 1) targetIndex = Math.floor(Math.random() * state.nodes.length);
-    }
-    var source = latLngToVector3(state.nodes[sourceIndex].lat, state.nodes[sourceIndex].lng, 5.1);
-    var target = latLngToVector3(state.nodes[targetIndex].lat, state.nodes[targetIndex].lng, 5.1);
-    var control = source.clone().add(target);
-    if (control.lengthSq() < 0.25) control.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
-    control.normalize().multiplyScalar(randomBetween(5.7, 7.05));
-    var packet = state.packetPool.pop() || createPacketShell();
-    packet.curve = new THREE.QuadraticBezierCurve3(source, control, target);
-    packet.age = 0;
-    packet.lifetime = randomBetween(1.8, 3.4);
-    var points = packet.curve.getPoints(PACKET_SEGMENTS);
-    var positionAttribute = packet.line.geometry.attributes.position;
-    var progressAttribute = packet.line.geometry.attributes.aT;
-    points.forEach(function (point, index) {
-      positionAttribute.array[index * 3] = point.x;
-      positionAttribute.array[index * 3 + 1] = point.y;
-      positionAttribute.array[index * 3 + 2] = point.z;
-      progressAttribute.array[index] = index / (points.length - 1);
-    });
-    positionAttribute.needsUpdate = true;
-    progressAttribute.needsUpdate = true;
-    packet.line.geometry.setDrawRange(0, points.length);
-    var color = state.nodes[sourceIndex].hq || state.nodes[targetIndex].hq ? COLORS.amber : colorForCategory(state.nodes[targetIndex].category);
-    packet.line.material.uniforms.uColor.value.setHex(color);
-    packet.line.material.uniforms.uProgress.value = 0;
-    packet.head.material.color.setHex(color);
-    packet.line.visible = true;
-    packet.head.visible = true;
-    state.packets.push(packet);
-  }
-
-  function releasePacket(packet) {
-    packet.line.visible = false;
-    packet.head.visible = false;
-    packet.line.geometry.setDrawRange(0, 0);
-    packet.curve = null;
-    state.packetPool.push(packet);
-  }
-
-  function updatePackets(dt) {
-    if (!reducedMotion) {
-      state.nextPacket -= dt * 1000;
-      while (state.nextPacket <= 0) {
-        makePacket();
-        state.nextPacket += randomBetween(80, 260);
-      }
-    }
-    for (var i = state.packets.length - 1; i >= 0; i--) {
-      var packet = state.packets[i];
-      if (!reducedMotion) packet.age += dt;
-      var progress = reducedMotion ? 0.56 : clamp(packet.age / packet.lifetime, 0, 1);
-      packet.line.material.uniforms.uProgress.value = progress;
-      packet.head.position.copy(packet.curve.getPoint(progress));
-      var headScale = 0.72 + Math.sin(progress * Math.PI) * 0.55;
-      packet.head.scale.setScalar(headScale);
-      packet.head.material.opacity = 0.72 + Math.sin(progress * Math.PI) * 0.28;
-      if (!reducedMotion && packet.age >= packet.lifetime) {
-        releasePacket(packet);
-        state.packets.splice(i, 1);
-      }
-    }
-    if (packetCountEl) packetCountEl.textContent = String(state.packets.length).padStart(2, '0');
-  }
-
   function updateHQ() {
     if (!state.hq) return;
     var pulse = reducedMotion ? 1 : 1 + Math.sin(state.time * 3.0) * 0.13;
@@ -685,7 +477,7 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     state.controls.enableDamping = true;
     state.controls.dampingFactor = 0.075;
     state.controls.enablePan = false;
-    state.controls.enableZoom = true;
+    state.controls.enableZoom = !coarsePointer;
     state.controls.zoomSpeed = 0.58;
     state.controls.minDistance = 6.2;
     state.controls.maxDistance = 15;
@@ -728,8 +520,8 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
   }
 
   function completeIntro() {
-    state.controls.enabled = true;
-    state.controls.autoRotate = !reducedMotion;
+    state.controls.enabled = !coarsePointer;
+    state.controls.autoRotate = !reducedMotion && !coarsePointer;
     root.classList.add('is-ready');
     root.setAttribute('aria-busy', 'false');
     if (loader) {
@@ -792,8 +584,9 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     if (state.atmosphereMaterial) state.atmosphereMaterial.uniforms.uTime.value = state.time;
     if (state.cityMaterial) state.cityMaterial.uniforms.uTime.value = state.time;
     if (state.stars && !reducedMotion) state.stars.rotation.y += dt * 0.004;
+    if (coarsePointer && state.globe && !reducedMotion) state.globe.rotation.y += dt * 0.018;
     updateHQ();
-    updatePackets(dt);
+    if (state.regions) state.regions.update(state.time, reducedMotion);
     if (state.controls) state.controls.update();
     try {
       if (state.composer) state.composer.render();
@@ -838,27 +631,26 @@ import { UnrealBloomPass } from './vendor/postprocessing/UnrealBloomPass.js';
     }
     setProgress(0.22, 'LOADING TOPOLOGY');
     var topologyUrl = cfg.topologyUrl || root.getAttribute('data-topology') || '';
-    var coastlineUrl = cfg.coastlineUrl || root.getAttribute('data-coastline') || '';
     var bordersUrl = cfg.bordersUrl || root.getAttribute('data-borders') || '';
     var nodesUrl = cfg.nodesUrl || root.getAttribute('data-nodes') || '';
     Promise.all([
       loadHeightmap(topologyUrl),
-      loadJSON(coastlineUrl, { type: 'FeatureCollection', features: [] }),
       loadJSON(bordersUrl, { type: 'FeatureCollection', features: [] }),
       loadJSON(nodesUrl, [])
     ]).then(function (assets) {
-      setProgress(0.52, 'MAPPING CONTINENT OUTLINES');
+      setProgress(0.52, 'MAPPING COUNTRY OUTLINES');
       createGlobe(assets[0]);
-      addMapOutlines(assets[2], assets[1]);
+      state.regions = new Regions(5.015, lowPower).build(assets[1]);
+      state.globe.add(state.regions.group);
       setProgress(0.7, 'CONNECTING GLOBAL NODES');
-      createCityLights(assets[3]);
+      createCityLights(assets[2]);
       createOsijekMarker();
       createStarfield();
       setProgress(0.86, 'GLOBAL MAP ONLINE');
       bindEvents();
       intro();
       animate(performance.now());
-      setProgress(1, 'NETWORK SIMULATION ONLINE');
+      setProgress(1, 'REGIONS ONLINE');
     }).catch(function () {
       useFallback(false);
     });
