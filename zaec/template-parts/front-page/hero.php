@@ -62,9 +62,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 								<path d="M157 334c35-21 58-11 86 16 29 29 61 35 92 18 32-17 68-3 84 27" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".44" />
 								<path d="M164 178c25 14 45 12 72-3 27-15 53-11 76 2 25 15 54 11 86-7" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".42" />
 								<path d="M217 258l8-5 9 3 5 8-9 4-10-2z" fill="none" stroke="#ffb700" stroke-width="1.2" opacity=".72" />
-								<path d="M131 245c42-56 88-56 112-87 33-42 80-17 102 8 21 24 55 21 75 51 20 31-24 48-29 81-6 36-49 48-75 67-28 21-75 15-95-17-21-34-72-20-91-57-12-22-12-31 1-46z" fill="none" stroke="#00e5ff" stroke-width="1.4" opacity=".68" />
-								<path d="M163 336c32-22 56-13 83 16 27 29 64 38 95 18 29-19 65-4 78 25" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".48" />
-								<path d="M161 192c29 10 50 4 70-12 23-18 53-16 77-1 24 16 61 10 89-12" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".42" />
 								<g fill="#00e5ff">
 									<circle cx="246" cy="220" r="3" /><circle cx="319" cy="196" r="2.3" /><circle cx="365" cy="279" r="2.6" /><circle cx="209" cy="303" r="2.1" /><circle cx="300" cy="355" r="2.2" />
 								</g>
