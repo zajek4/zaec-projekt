@@ -40,41 +40,42 @@
 .net-live .net-copy > *:nth-child(4) { transition-delay: .21s; }
 
 /* ============================================================
-   SVG OBRIS HRVATSKE — vektorski, iscrtava se pri učitavanju
+   SVG OBRIS HRVATSKE — jak, debeo, s dvostrukim sjajem
    ============================================================ */
 .net-outline { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; overflow: visible; }
-.net-outline-fill { fill: rgba(30,94,255,.07); opacity: 0; transition: opacity .9s ease 1s; }
-/* halo — širi sjaj koji prati crtanje obrisa */
+.net-outline-fill { fill: rgba(30,94,255,.09); opacity: 0; transition: opacity 1s ease 1.1s; }
+/* vanjski široki sjaj — daje obrisu "masu" i prisutnost */
 .net-outline-halo {
   fill: none;
   stroke: #7dd3ff;
-  stroke-width: 8px;
+  stroke-width: 10px;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  opacity: .16;
-  transition: stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1) .08s;
+  opacity: .22;
+  transition: stroke-dashoffset 1.6s cubic-bezier(.22,1,.36,1) .06s;
 }
+/* glavni stroke — debeo, jasan */
 .net-outline-stroke {
   fill: none;
   stroke: #4d80ff;
-  stroke-width: 3px;
+  stroke-width: 3.6px;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1) .15s;
+  transition: stroke-dashoffset 1.6s cubic-bezier(.22,1,.36,1) .15s;
 }
 .net-live .net-outline-halo { stroke-dashoffset: 0; }
 .net-live .net-outline-stroke { stroke-dashoffset: 0; }
 .net-live .net-outline-fill { opacity: 1; }
-.net-live .net-outline { animation: netGlow 4.5s ease-in-out 2.1s infinite; }
+.net-live .net-outline { animation: netGlow 4.5s ease-in-out 2.2s infinite; }
 @keyframes netGlow {
-  0%, 100% { filter: drop-shadow(0 0 12px rgba(77,128,255,.5)); }
-  50%      { filter: drop-shadow(0 0 26px rgba(125,211,255,.85)); }
+  0%, 100% { filter: drop-shadow(0 0 14px rgba(77,128,255,.55)); }
+  50%      { filter: drop-shadow(0 0 34px rgba(125,211,255,.95)); }
 }
 
 /* meta + scroll cue */

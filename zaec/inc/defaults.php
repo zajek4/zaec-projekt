@@ -13,8 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function zaec_front_defaults() {
 	return array(
 		'net_kicker'             => '[ Web studio · Osijek · Hrvatska ]',
-		'net_title'              => "Vaš posao.\nNa karti.",
-		'net_lead'               => 'Web koji vas poveže s ljudima koji vas već traže — na Googleu i preko granice.',
+		'net_title'              => "Vaš posao zaslužuje\nda bude nađen.",
+		'net_lead'               => 'Gradimo web koji vas povezuje s ljudima koji vas već traže — na Googleu i preko granice.',
 		'net_primary_text'       => 'Zatraži procjenu',
 		'net_primary_url'        => '#upit',
 		'net_secondary_text'     => 'Pogledaj radove',

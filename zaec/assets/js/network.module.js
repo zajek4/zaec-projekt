@@ -2,9 +2,8 @@
  * ZAEC — HERO 01 "MREŽA" (2D karta povezanosti).
  *
  * Obris Hrvatske (SVG vektor, draw-in pri učitavanju) + Europa-konstelacija,
- * čvorovi (gradovi = ljudi, djelatnosti = webshop/obrt/usluge, Google Business,
- * europska tržišta) i linije s pulsom koje s vremena "skaču" s veze na vezu.
- * Interakcija = suptilni nagib/parallax po mišu (bez drag/orbit kontrole).
+ * pulsirajuće točke (bez teksta i ikonica) i linije s pulsom koji s vremena
+ * "skaču" s veze na vezu. Interakcija = suptilni nagib/parallax po mišu.
  *
  * Nativni rAF. Pauza izvan viewporta. Reduced-motion = statičan kadar.
  */
@@ -32,24 +31,44 @@
 	var mobile = false;
 
 	/* ============================================================
-	   OBRIS HRVATSKE (Natural Earth — kopnena granica, [lat, lng])
-	   → koristi se samo za projekciju i pozicioniranje; crtež je SVG.
+	   OBRIS HRVATSKE — detaljna kopnena granica [lat, lng].
+	   Služi samo za projekciju i poravnanje; crtež je SVG (isti izvor).
 	============================================================ */
 	var HR = [
-		[45.90888, 18.82984], [45.52151, 19.07277], [45.23652, 19.39048],
-		[44.86023, 19.00549], [45.08159, 18.55321], [45.06774, 17.86178],
-		[45.23378, 17.00215], [45.21161, 16.53494], [45.00413, 16.31816],
-		[45.23378, 15.95937], [44.81871, 15.75003], [44.35114, 16.23966],
-		[44.04124, 16.45644], [43.66772, 16.91616], [43.44634, 17.29737],
-		[43.02856, 17.67492], [42.65000, 18.56000], [42.47999, 18.45002],
-		[42.84999, 17.50997], [43.21000, 16.93001], [43.50722, 16.01538],
-		[44.24319, 15.17445], [44.31791, 15.37625], [44.73848, 14.92031],
-		[45.07606, 14.90160], [45.23378, 14.25875], [44.80212, 13.95225],
-		[45.13694, 13.65698], [45.48415, 13.67940], [45.50032, 13.71506],
-		[45.46617, 14.41197], [45.63494, 14.59511], [45.47169, 14.93524],
-		[45.45232, 15.32767], [45.73178, 15.32395], [45.83415, 15.67153],
-		[46.23811, 15.76873], [46.50375, 16.56481], [46.38063, 16.88252],
-		[45.95177, 17.63007], [45.75948, 18.45606]
+		[45.50000, 13.60000], [45.40000, 13.58000], [45.30000, 13.57000],
+		[45.20000, 13.59000], [45.10000, 13.62000], [44.98000, 13.70000],
+		[44.90000, 13.82000], [44.83000, 13.86000], [44.82000, 13.92000],
+		[44.92000, 14.00000], [45.02000, 14.12000], [45.12000, 14.18000],
+		[45.20000, 14.26000], [45.28000, 14.32000], [45.30000, 14.42000],
+		[45.26000, 14.52000], [45.14000, 14.63000], [45.00000, 14.78000],
+		[44.82000, 14.93000], [44.66000, 15.08000], [44.52000, 15.22000],
+		[44.40000, 15.30000], [44.30000, 15.42000], [44.16000, 15.38000],
+		[44.10000, 15.28000], [43.96000, 15.33000], [43.86000, 15.50000],
+		[43.76000, 15.66000], [43.66000, 15.88000], [43.56000, 16.05000],
+		[43.48000, 16.20000], [43.42000, 16.33000], [43.32000, 16.52000],
+		[43.24000, 16.68000], [43.14000, 16.90000], [43.02000, 17.05000],
+		[42.97000, 17.20000], [42.95000, 17.45000], [42.90000, 17.55000],
+		[42.92000, 17.62000], [42.95000, 17.75000], [42.92000, 17.95000],
+		[42.80000, 18.08000], [42.64000, 18.11000], [42.55000, 18.20000],
+		[42.46000, 18.35000], [42.40000, 18.53000], [42.55000, 18.55000],
+		[42.85000, 18.35000], [43.00000, 18.15000], [43.05000, 17.90000],
+		[43.05000, 17.60000], [43.30000, 17.30000], [43.45000, 17.00000],
+		[43.65000, 16.75000], [43.90000, 16.50000], [44.10000, 16.30000],
+		[44.40000, 16.10000], [44.70000, 16.00000], [45.00000, 16.20000],
+		[45.10000, 16.50000], [45.25000, 16.90000], [45.20000, 17.30000],
+		[45.18000, 17.70000], [45.16000, 18.00000], [45.10000, 18.40000],
+		[45.05000, 18.80000], [44.90000, 19.00000], [45.10000, 19.02000],
+		[45.18000, 19.10000], [45.38000, 19.06000], [45.55000, 19.10000],
+		[45.70000, 19.00000], [45.82000, 18.88000], [45.95000, 18.72000],
+		[46.05000, 18.55000], [46.13000, 18.35000], [46.20000, 18.10000],
+		[46.26000, 17.82000], [46.31000, 17.55000], [46.37000, 17.30000],
+		[46.41000, 17.05000], [46.44000, 16.80000], [46.47000, 16.55000],
+		[46.48000, 16.35000], [46.44000, 16.15000], [46.33000, 15.95000],
+		[46.28000, 15.70000], [46.10000, 15.60000], [45.92000, 15.64000],
+		[45.75000, 15.58000], [45.62000, 15.50000], [45.52000, 15.42000],
+		[45.48000, 15.30000], [45.42000, 15.05000], [45.44000, 14.82000],
+		[45.48000, 14.60000], [45.48000, 14.40000], [45.44000, 14.15000],
+		[45.47000, 13.95000], [45.50000, 13.80000]
 	];
 
 	var COS = Math.cos(44.5 * Math.PI / 180);
@@ -67,7 +86,7 @@
 	})();
 
 	/* ============================================================
-	   EUROPA + ČVOROVI
+	   EUROPA (konstelacija) + pozicije točaka
 	============================================================ */
 	var EU = [
 		[38.7, -9.5], [43.8, -9.0], [46.0, -2.0], [48.5, -4.5], [50.5, -1.0],
@@ -79,31 +98,33 @@
 		[37.0, -8.5]
 	];
 
-	// gradovi = ljudi koji traže uslugu (unutar Hrvatske)
-	var people = [
-		{ lat: 45.55, lng: 18.68, label: 'Osijek' },
-		{ lat: 45.81, lng: 15.98, label: 'Zagreb' },
-		{ lat: 43.51, lng: 16.44, label: 'Split' },
-		{ lat: 45.33, lng: 14.44, label: 'Rijeka' }
+	// gradovi unutar Hrvatske (bez oznaka — samo pulsirajuće točke)
+	var hrCities = [
+		{ lat: 45.55, lng: 18.68 },  // Osijek
+		{ lat: 45.81, lng: 15.98 },  // Zagreb
+		{ lat: 43.51, lng: 16.44 },  // Split
+		{ lat: 45.33, lng: 14.44 },  // Rijeka
+		{ lat: 44.12, lng: 15.23 },  // Zadar
+		{ lat: 42.64, lng: 18.11 }   // Dubrovnik
 	];
 
-	// djelatnosti (generic, bez imena klijenata)
-	var businesses = [
-		{ id: 'webshop', label: 'Webshop', icon: 'shop' },
-		{ id: 'obrt', label: 'Obrt', icon: 'craft' },
-		{ id: 'usluge', label: 'Usluge', icon: 'service' }
+	// djelatnosti (desno, bez oznaka)
+	var bizOffsets = [
+		{ dx: 0.47, dy: -0.27 },
+		{ dx: 0.47, dy: 0.0 },
+		{ dx: 0.47, dy: 0.27 }
 	];
 
-	// Europa — smjerovi (izvana prema unutra)
-	var europe = [
-		{ id: 'bec', label: 'Beč', dx: -0.62, dy: -0.30 },
-		{ id: 'munchen', label: 'München', dx: -0.84, dy: -0.16 },
-		{ id: 'milano', label: 'Milano', dx: -0.72, dy: 0.22 },
-		{ id: 'london', label: 'London', dx: -1.12, dy: -0.50 }
+	// Europa
+	var euOffsets = [
+		{ dx: -0.62, dy: -0.30 },
+		{ dx: -0.84, dy: -0.16 },
+		{ dx: -0.72, dy: 0.22 },
+		{ dx: -1.12, dy: -0.50 }
 	];
 
 	/* ============================================================
-	   PROJEKCIJE / LAYOUT
+	   LAYOUT
 	============================================================ */
 	function resize() {
 		var rect = stage.getBoundingClientRect();
@@ -117,9 +138,8 @@
 		ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 		mobile = W < 900;
 		CRO.x = W * (mobile ? 0.5 : 0.62);
-		CRO.y = H * (mobile ? 0.60 : 0.5);
-		// veći obris: visina = veći dio najmanje dimenzije
-		var oh = Math.min(W, H) * (mobile ? 0.60 : 0.54);
+		CRO.y = H * (mobile ? 0.58 : 0.5);
+		var oh = Math.min(W, H) * (mobile ? 0.62 : 0.56);
 		CRO.k = oh / GEO.spanY;
 		buildNodes();
 		buildLinks();
@@ -149,7 +169,7 @@
 	}
 
 	/* ============================================================
-	   ČVOROVI + LINIJE
+	   ČVOROVI + LINIJE (bez teksta)
 	============================================================ */
 	var NODES = [];
 	var LINKS = [];
@@ -158,16 +178,15 @@
 	function buildNodes() {
 		var m = Math.min(W, H);
 		var list = [];
-		people.forEach(function (p, i) {
-			var xy = geoToXy(p.lat, p.lng);
-			list.push({ id: 'p-' + p.label, type: 'person', x: xy.x, y: xy.y, label: p.label, delay: 0.6 + i * 0.07 });
+		hrCities.forEach(function (c, i) {
+			var xy = geoToXy(c.lat, c.lng);
+			list.push({ id: 'c' + i, x: xy.x, y: xy.y, size: 1, delay: 0.55 + i * 0.06, ph: i * 1.7 });
 		});
-		businesses.forEach(function (b, i) {
-			list.push({ id: 'b-' + b.id, type: b.icon, x: CRO.x + m * 0.47, y: CRO.y + (i - 1) * m * 0.27, label: b.label, delay: 1.25 + i * 0.12 });
+		bizOffsets.forEach(function (b, i) {
+			list.push({ id: 'b' + i, x: CRO.x + b.dx * m, y: CRO.y + b.dy * m, size: 1.25, delay: 1.2 + i * 0.12, ph: 5 + i * 2.1 });
 		});
-		list.push({ id: 'gmb', type: 'gmb', x: CRO.x - m * 0.02, y: CRO.y + m * 0.48, label: 'Google Business', delay: 1.5 });
-		europe.forEach(function (e, i) {
-			list.push({ id: 'e-' + e.id, type: 'city', x: CRO.x + e.dx * m, y: CRO.y + e.dy * m, label: e.label, delay: 1.85 + i * 0.1 });
+		euOffsets.forEach(function (e, i) {
+			list.push({ id: 'e' + i, x: CRO.x + e.dx * m, y: CRO.y + e.dy * m, size: 0.7, delay: 1.8 + i * 0.1, ph: 8 + i * 1.3 });
 		});
 		list.forEach(function (n) {
 			n.x = Math.max(46, Math.min(W - 46, n.x));
@@ -180,23 +199,23 @@
 
 	function buildLinks() {
 		LINKS = [];
-		// unutra: grad ↔ grad (mreža unutar Hrvatske)
-		LINKS.push({ a: 'p-Osijek', b: 'p-Zagreb', tone: 'in' });
-		LINKS.push({ a: 'p-Zagreb', b: 'p-Split', tone: 'in' });
-		LINKS.push({ a: 'p-Zagreb', b: 'p-Rijeka', tone: 'in' });
-		LINKS.push({ a: 'p-Split', b: 'p-Rijeka', tone: 'in' });
-		LINKS.push({ a: 'p-Osijek', b: 'p-Rijeka', tone: 'in' });
+		// unutra: mreža grad ↔ grad
+		LINKS.push({ a: 'c1', b: 'c0', tone: 'in' });  // Zagreb–Osijek
+		LINKS.push({ a: 'c1', b: 'c2', tone: 'in' });  // Zagreb–Split
+		LINKS.push({ a: 'c1', b: 'c3', tone: 'in' });  // Zagreb–Rijeka
+		LINKS.push({ a: 'c1', b: 'c4', tone: 'in' });  // Zagreb–Zadar
+		LINKS.push({ a: 'c2', b: 'c5', tone: 'in' });  // Split–Dubrovnik
+		LINKS.push({ a: 'c3', b: 'c4', tone: 'in' });  // Rijeka–Zadar
+		LINKS.push({ a: 'c0', b: 'c3', tone: 'in' });  // Osijek–Rijeka
 		// izvana: Europa → gradovi
-		LINKS.push({ a: 'e-bec', b: 'p-Zagreb', tone: 'eu' });
-		LINKS.push({ a: 'e-munchen', b: 'p-Zagreb', tone: 'eu' });
-		LINKS.push({ a: 'e-milano', b: 'p-Rijeka', tone: 'eu' });
-		LINKS.push({ a: 'e-london', b: 'p-Zagreb', tone: 'eu' });
-		// djelatnosti ↔ gradovi
-		LINKS.push({ a: 'b-webshop', b: 'p-Zagreb', tone: 'out' });
-		LINKS.push({ a: 'b-obrt', b: 'p-Osijek', tone: 'out' });
-		LINKS.push({ a: 'b-usluge', b: 'p-Split', tone: 'out' });
-		// Google Business ↔ lokalno
-		LINKS.push({ a: 'gmb', b: 'p-Osijek', tone: 'gmb' });
+		LINKS.push({ a: 'e0', b: 'c1', tone: 'eu' });
+		LINKS.push({ a: 'e1', b: 'c1', tone: 'eu' });
+		LINKS.push({ a: 'e2', b: 'c3', tone: 'eu' });
+		LINKS.push({ a: 'e3', b: 'c1', tone: 'eu' });
+		// djelatnosti → gradovi
+		LINKS.push({ a: 'b0', b: 'c1', tone: 'out' });
+		LINKS.push({ a: 'b1', b: 'c2', tone: 'out' });
+		LINKS.push({ a: 'b2', b: 'c0', tone: 'out' });
 	}
 
 	/* ============================================================
@@ -214,12 +233,11 @@
 
 	function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 	function easeOutBack(t) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
-	function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 	function lerp(a, b, t) { return a + (b - a) * t; }
 	function clamp01(t) { return Math.max(0, Math.min(1, t)); }
 
 	/* ============================================================
-	   CRTANJE — pomoćnici
+	   CRTANJE
 	============================================================ */
 	function glow(x, y, r, color, alpha) {
 		var g = ctx.createRadialGradient(x, y, 0, x, y, r);
@@ -242,95 +260,9 @@
 		return inside;
 	}
 
-	function font(size, weight) {
-		return (weight || 500) + ' ' + size + 'px "IBM Plex Mono", ui-monospace, monospace';
-	}
-
-	function label(x, y, text, color, align, alpha, size, bg) {
-		if (!text) return;
-		ctx.save();
-		ctx.globalAlpha = alpha === undefined ? 1 : alpha;
-		ctx.font = font(size || 10, 500);
-		ctx.textAlign = align || 'center';
-		ctx.textBaseline = 'top';
-		if (bg) {
-			var w = ctx.measureText(text).width + 14;
-			ctx.fillStyle = 'rgba(8,11,16,0.72)';
-			var bx = (align === 'left') ? x : x - w / 2;
-			ctx.fillRect(bx, y - 2, w, (size || 10) + 8);
-		}
-		ctx.fillStyle = color || '#a3a39d';
-		ctx.fillText(text, x, y + 2);
-		ctx.restore();
-	}
-
-	/* ---------- precizne ikone ---------- */
-	function icon(type, x, y, s, alpha) {
-		ctx.save();
-		ctx.globalAlpha = alpha === undefined ? 1 : alpha;
-		ctx.strokeStyle = '#eaf6ff';
-		ctx.fillStyle = '#eaf6ff';
-		ctx.lineWidth = 1.5;
-		ctx.lineCap = 'round';
-		ctx.lineJoin = 'round';
-
-		if (type === 'person') {
-			ctx.beginPath(); ctx.arc(x, y - s * 0.38, s * 0.27, 0, Math.PI * 2); ctx.stroke();
-			ctx.beginPath(); ctx.arc(x, y + s * 0.18, s * 0.4, 0, Math.PI); ctx.stroke();
-		} else if (type === 'shop') {
-			// webshop / trgovina: tenda + izlog + vrata
-			ctx.beginPath();
-			ctx.moveTo(x - s * 0.85, y - s * 0.45);
-			ctx.lineTo(x + s * 0.85, y - s * 0.45);
-			ctx.arc(x - s * 0.6, y - s * 0.45, s * 0.25, 0, Math.PI);
-			ctx.arc(x, y - s * 0.45, s * 0.25, 0, Math.PI);
-			ctx.arc(x + s * 0.6, y - s * 0.45, s * 0.25, 0, Math.PI);
-			ctx.stroke();
-			ctx.strokeRect(x - s * 0.85, y - s * 0.2, s * 1.7, s * 0.72);
-			ctx.strokeRect(x - s * 0.2, y + s * 0.06, s * 0.4, s * 0.46);
-		} else if (type === 'craft') {
-			// obrt / zanat: kaciga + ramena
-			ctx.beginPath(); ctx.arc(x, y - s * 0.2, s * 0.42, Math.PI, 0); ctx.stroke();
-			ctx.beginPath(); ctx.moveTo(x - s * 0.52, y - s * 0.2); ctx.lineTo(x + s * 0.52, y - s * 0.2); ctx.stroke();
-			ctx.beginPath(); ctx.moveTo(x, y - s * 0.62); ctx.lineTo(x, y - s * 0.2); ctx.stroke();
-			ctx.beginPath(); ctx.moveTo(x - s * 0.55, y + s * 0.55); ctx.quadraticCurveTo(x, y + s * 0.1, x + s * 0.55, y + s * 0.55); ctx.stroke();
-		} else if (type === 'service') {
-			// usluge: aktovka
-			ctx.strokeRect(x - s * 0.6, y - s * 0.35, s * 1.2, s * 0.85);
-			ctx.beginPath(); ctx.arc(x, y - s * 0.35, s * 0.24, Math.PI, 0); ctx.stroke();
-			ctx.beginPath(); ctx.moveTo(x, y - s * 0.35); ctx.lineTo(x, y + s * 0.14); ctx.stroke();
-		} else if (type === 'gmb') {
-			// Google Business: pin
-			ctx.beginPath();
-			ctx.arc(x, y - s * 0.25, s * 0.3, 0, Math.PI * 2);
-			ctx.moveTo(x - s * 0.22, y + s * 0.35);
-			ctx.quadraticCurveTo(x, y + s * 0.05, x, y - s * 0.05);
-			ctx.quadraticCurveTo(x, y - s * 0.15, x - s * 0.05, y - s * 0.25);
-			ctx.stroke();
-			ctx.beginPath(); ctx.arc(x, y - s * 0.25, s * 0.09, 0, Math.PI * 2); ctx.fill();
-		} else {
-			// europski grad: točka + prsten
-			ctx.beginPath(); ctx.arc(x, y, s * 0.28, 0, Math.PI * 2); ctx.fill();
-			ctx.beginPath(); ctx.arc(x, y, s * 0.5, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(234,246,255,0.55)'; ctx.stroke();
-		}
-		ctx.restore();
-	}
-
-	function nodeColor(type) {
-		if (type === 'person') return '#7dd3ff';
-		if (type === 'shop') return '#eaf6ff';
-		if (type === 'craft') return '#ffb84d';
-		if (type === 'service') return '#9fd4ff';
-		if (type === 'gmb') return '#4d80ff';
-		return '#a3a39d';
-	}
-
-	/* ============================================================
-	   CRTANJE — scena
-	============================================================ */
 	function drawEurope(t, parX, parY) {
 		ctx.save();
-		var alpha = 0.14 * easeOut(clamp01(t / 0.8));
+		var alpha = 0.15 * easeOut(clamp01(t / 0.8));
 		ctx.globalAlpha = alpha;
 		ctx.fillStyle = '#9fc3ff';
 		for (var lat = 35.5; lat <= 70; lat += 1.05) {
@@ -348,8 +280,7 @@
 	function linkColor(tone) {
 		if (tone === 'in') return '#7dd3ff';
 		if (tone === 'eu') return '#a3a39d';
-		if (tone === 'gmb') return '#ffb84d';
-		return '#4d80ff'; // out
+		return '#4d80ff';
 	}
 
 	function drawLinks(parX, parY) {
@@ -382,12 +313,12 @@
 			var a = byId[l.a], b = byId[l.b];
 			if (!a || !b) return;
 			var prog = LINKS_ANIM[l.a + '-' + l.b] || 0;
-			if (prog < 0.9) return; // puls tek po nacrtanoj liniji
+			if (prog < 0.9) return;
 			var pp = easeOut(pu.phase);
 			var px = a.x + (b.x - a.x) * pp;
 			var py = a.y + (b.y - a.y) * pp;
 			var color = linkColor(l.tone);
-			glow(px + parX, py + parY, 14, color, 0.85);
+			glow(px + parX, py + parY, 14, color, 0.9);
 			ctx.beginPath();
 			ctx.arc(px + parX, py + parY, 2.6, 0, Math.PI * 2);
 			ctx.fillStyle = color;
@@ -404,7 +335,7 @@
 			var r = 8 + pg.t * 26;
 			ctx.save();
 			ctx.globalAlpha = (1 - pg.t) * 0.55;
-			ctx.strokeStyle = nodeColor(n.type);
+			ctx.strokeStyle = '#7dd3ff';
 			ctx.lineWidth = 1.4;
 			ctx.beginPath();
 			ctx.arc(n.x + parX, n.y + parY, r, 0, Math.PI * 2);
@@ -413,34 +344,35 @@
 		});
 	}
 
-	function drawNode(n, introT, parX, parY) {
+	// pulsirajuća točka / krug — bez ikonica i teksta
+	function drawNode(n, introT, parX, parY, t) {
 		var delay = n.delay || 0;
 		var local = clamp01((introT - delay) / 0.4);
 		if (local <= 0) return;
 		var pop = easeOutBack(local);
-		var color = nodeColor(n.type);
 		var x = n.x + parX, y = n.y + parY;
-		var r = n.type === 'person' ? 10 : (n.type === 'shop' || n.type === 'craft' || n.type === 'service' ? 13 : (n.type === 'gmb' ? 12 : 6));
+		var base = (n.size === 0.7 ? 4.5 : (n.size === 1.25 ? 7 : 6)) * pop;
+		var pulse = 1 + Math.sin(t * 2.4 + (n.ph || 0)) * 0.18;
+		var r = base * pulse;
+		var color = n.size === 0.7 ? '#7d8aa6' : '#7dd3ff';
 
-		glow(x, y, r * 2.4, color, 0.55 * pop);
+		glow(x, y, r * 3.4, color, 0.75);
 		ctx.beginPath();
 		ctx.arc(x, y, r, 0, Math.PI * 2);
 		ctx.fillStyle = 'rgba(8,11,16,0.9)';
 		ctx.fill();
-		ctx.lineWidth = 1.3;
+		ctx.lineWidth = 1.6;
 		ctx.strokeStyle = color;
 		ctx.stroke();
-		icon(n.type, x, y, r * 1.55, pop);
-
-		var labA = clamp01((introT - delay - 0.1) / 0.3);
-		var hideLabel = mobile && (n.type === 'city' || n.type === 'shop' || n.type === 'craft' || n.type === 'service');
-		if (labA > 0 && !hideLabel) {
-			label(x, y + r + 7, n.label, color, 'center', labA, mobile ? 8.5 : 10, true);
-		}
+		// svijetla jezgra
+		ctx.beginPath();
+		ctx.arc(x, y, r * 0.32, 0, Math.PI * 2);
+		ctx.fillStyle = color;
+		ctx.fill();
 	}
 
 	/* ============================================================
-	   PARALLAX + EXIT (jača interakcija)
+	   PARALLAX + EXIT
 	============================================================ */
 	var copyWrap = section.querySelector('.net-inner');
 	function computeExit() {
@@ -497,11 +429,10 @@
 	resize();
 	computeExit();
 
-	// pulsovi + nasumični "skokovi" među vezama
 	pulses = [];
-	var PULSE_N = 6;
+	var PULSE_N = 7;
 	for (var p = 0; p < PULSE_N; p++) {
-		pulses.push({ linkIndex: p % LINKS.length, phase: p / PULSE_N, speed: 0.17 + (p % 3) * 0.03 });
+		pulses.push({ linkIndex: p % LINKS.length, phase: p / PULSE_N, speed: 0.19 + (p % 3) * 0.035 });
 	}
 
 	function frame(now) {
@@ -514,8 +445,8 @@
 
 		mouse.ax = lerp(mouse.ax, mouse.cx, 0.07);
 		mouse.ay = lerp(mouse.ay, mouse.cy, 0.07);
-		var tiltX = fine ? mouse.x * 3.2 : 0;
-		var tiltY = fine ? -mouse.y * 2.4 : 0;
+		var tiltX = fine ? mouse.x * 3.4 : 0;
+		var tiltY = fine ? -mouse.y * 2.5 : 0;
 
 		exitCur.stage.o = lerp(exitCur.stage.o, exit.stage.o, 0.14);
 		exitCur.stage.y = lerp(exitCur.stage.y, exit.stage.y, 0.14);
@@ -524,7 +455,6 @@
 		exitCur.copy.y = lerp(exitCur.copy.y, exit.copy.y, 0.14);
 		applyExit(tiltX, tiltY);
 
-		// ambient drift (živost i bez miša) + jači parallax
 		var amb = Math.sin(t * 0.5) * 3;
 		var parFarX = mouse.ax * 0.5 + amb * 0.2, parFarY = mouse.ay * 0.5 + amb * 0.2;
 		var parNearX = mouse.ax * 1.5 + amb * 0.35, parNearY = mouse.ay * 1.5 + amb * 0.35;
@@ -536,11 +466,10 @@
 			drawEurope(t, parFarX, parFarY);
 
 			LINKS.forEach(function (l) {
-				var ld = l.tone === 'eu' ? 2.0 : (l.tone === 'gmb' ? 1.5 : (l.tone === 'in' ? 0.8 : 1.1));
+				var ld = l.tone === 'eu' ? 2.0 : (l.tone === 'in' ? 0.8 : 1.1);
 				LINKS_ANIM[l.a + '-' + l.b] = easeOut(clamp01((t - ld) / 0.5));
 			});
 
-			// pulsovi: putuju i s vremena skoče na drugu vezu
 			pulses.forEach(function (pu) {
 				pu.phase += dt * pu.speed;
 				if (pu.phase >= 1) {
@@ -553,9 +482,8 @@
 				}
 			});
 
-			// povremeni ping na nasumičnom čvoru
 			pingTimer += dt;
-			if (pingTimer > 1.5 && pings.length < 3) {
+			if (pingTimer > 1.3 && pings.length < 3) {
 				pingTimer = 0;
 				pings.push({ nodeIndex: Math.floor(Math.random() * NODES.length), t: 0 });
 			}
@@ -565,7 +493,7 @@
 			drawLinks(parNearX, parNearY);
 			drawPulses(parNearX, parNearY);
 			drawPings(parNearX, parNearY);
-			NODES.forEach(function (n) { drawNode(n, t, parNearX, parNearY); });
+			NODES.forEach(function (n) { drawNode(n, t, parNearX, parNearY, t); });
 		} else {
 			drawEurope(0.8, 0, 0);
 		}
@@ -586,7 +514,7 @@
 		drawEurope(4, 0, 0);
 		LINKS.forEach(function (l) { LINKS_ANIM[l.a + '-' + l.b] = 1; });
 		drawLinks(0, 0);
-		NODES.forEach(function (n) { drawNode(n, 4, 0, 0); });
+		NODES.forEach(function (n) { drawNode(n, 4, 0, 0, 0); });
 	} else {
 		requestAnimationFrame(frame);
 	}
