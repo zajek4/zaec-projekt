@@ -50,10 +50,13 @@
 .net-tip { position: absolute; z-index: 5; transform: translate(-50%, -150%); white-space: nowrap; padding: 7px 10px; border: 1px solid rgba(125,211,255,.35); background: rgba(8,13,20,.88); font-family: var(--font-m); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--paper-2); pointer-events: none; opacity: 0; transition: opacity .18s; }
 .net-tip.show { opacity: 1; }
 
-/* fallback (no-JS / no-WebGL) */
+/* fallback (no-JS / no-WebGL / failed module) */
 .net-fallback { position: absolute; inset: 0; z-index: 1; display: none; align-items: center; justify-content: center; }
 .net--no-gl .net-fallback { display: flex; }
 .net--no-gl .net-stage canvas { display: none; }
+html.no-3d .net-stage canvas { display: none; }
+html.no-3d .net-fallback { display: flex; }
+html.no-3d .net-copy > * { opacity: 1 !important; transform: none !important; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 1020px) {
