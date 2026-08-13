@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.11.0
+# ZAEC WordPress Theme — v1.11.1
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -202,3 +202,10 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Performansa: render globusa se pauzira izvan viewporta i kad je tab skriven; DPR i gustoća točaka su smanjeni na slabijim uređajima; na touchu drag ne otima scroll stranice. Reduced-motion bez render petlje, no-JS/no-WebGL SVG fallback.
 - Copy je uređiv kroz novu grupu polja **Mreža · globus** na naslovnici.
 - Theme version: `1.11.0`.
+
+## v1.11.1
+
+- **Globus je redizajniran iz "lažne Zemlje" u hologramski blueprint planet.** Sfera je sada čitljiva (gradijent + fresnel rub svjetla + atmosferski halo), a ravnomjerna Fibonacci površina zamjenjuje nasumične točke — više nema "guste mrlje" ni praznine.
+- Obris Hrvatske je čista linija s halo om, a gradovi su oznake umjesto točkastog klastera; lukovi su cijevi s kometima koji skaču od čvora do čvora uz "signal primljen" prsten.
+- Dodano zvjezdano polje oko globusa i cinematic ulaz (easeOutBack pop + postupno paljenje slojeva) nakon preloadera.
+- Theme version: `1.11.1`.
