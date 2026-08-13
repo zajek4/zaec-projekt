@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.11.2
+# ZAEC WordPress Theme — v1.11.3
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -217,3 +217,10 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Google Business je uključen skromno (pin + veza s hubom) jer je postavljanje Google Business profila stvarni dio usluge — bez tvrdnji o pozicijama.
 - Fallback (no-JS/no-WebGL/reduced-motion) je sada statična karta s obrisom Hrvatske i čvorovima.
 - Theme version: `1.11.2`.
+
+## v1.11.3
+
+- **Točan vektorski obris Republike Hrvatske.** Ručno crtani obris zamijenjen je glatkom SVG putanjom generiranom iz Natural Earth podataka (prepoznatljiv: Istra, jadranska obala do Dubrovnika, istočna granica); dodan i samostalni `assets/images/hr-outline.svg`.
+- **Obris se iscrtava dinamično pri učitavanju** (stroke-dashoffset draw-in na SVG vektoru), a čvorovi na canvasu koriste istu projekciju pa su točno poravnati s obrisom.
+- **Hero sadržaj prati širinu ostatka stranice** — content wrapper je ograničen na ~1336px (`--net-max`).
+- Theme version: `1.11.3`.

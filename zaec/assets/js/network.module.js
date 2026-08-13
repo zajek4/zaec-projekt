@@ -1,10 +1,9 @@
 /*
  * ZAEC — HERO 01 "MREŽA" (2D karta povezanosti).
  *
- * Namjerno 2D canvas (bez WebGL): prepoznatljiv obris Hrvatske koji se
- * crtanjem zatvara, blijeda Europa-konstelacija u pozadini, ikonice tvrtki,
- * ljudi i Google Businessa, te linije s pulsom. Interakcija = samo suptilni
- * nagib/parallax po mišu (bez drag/orbit kontrole).
+ * Prepoznatljiv obris Hrvatske (SVG vektor, draw-in preko stroke-dashoffset),
+ * blijeda Europa-konstelacija, ikonice tvrtki / ljudi / Google Businessa i
+ * linije s pulsom — sve na canvasu. Interakcija = samo suptilni nagib po mišu.
  *
  * Nativni rAF. Pauza izvan viewporta. Reduced-motion = statičan kadar.
  */
@@ -14,6 +13,7 @@
 	var section = document.querySelector('.net');
 	var stage = document.getElementById('netStage');
 	var canvas = document.getElementById('netCanvas');
+	var outlineEl = document.getElementById('netOutline');
 	if (!section || !stage || !canvas) {
 		return;
 	}
@@ -27,27 +27,47 @@
 	var fine = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
 
 	var W = 0, H = 0, DPR = 1;
-	var CRO = { x: 0, y: 0, k: 1 }; // centar i mjerilo Hrvatske
+	var CRO = { x: 0, y: 0, k: 1 };
 	var mobile = false;
 
 	/* ============================================================
-	   PODACI
+	   OBRIS HRVATSKE (Natural Earth — točan vektor, [lat, lng])
 	============================================================ */
-
-	// Obris Hrvatske (lat, lng) — dovoljno točan da je prepoznatljiv.
 	var HR = [
-		[46.47, 16.30], [46.52, 16.05], [46.30, 15.55], [46.28, 15.65],
-		[46.15, 15.50], [45.95, 15.30], [45.80, 15.10], [45.60, 14.90],
-		[45.42, 14.60], [45.30, 14.20], [45.45, 13.90], [45.35, 13.55],
-		[45.05, 13.75], [44.95, 14.30], [44.80, 14.60], [44.60, 14.90],
-		[44.30, 15.10], [43.90, 15.30], [43.50, 15.90], [43.10, 16.40],
-		[42.90, 16.60], [42.60, 17.30], [42.55, 18.10], [42.40, 18.70],
-		[42.60, 18.90], [42.90, 19.00], [43.20, 18.60], [43.60, 18.10],
-		[44.10, 17.70], [44.60, 17.60], [45.10, 18.10], [45.30, 18.90],
-		[45.50, 19.00], [45.80, 18.80], [46.10, 17.70], [46.40, 16.90]
+		[45.90888, 18.82984], [45.52151, 19.07277], [45.23652, 19.39048],
+		[44.86023, 19.00549], [45.08159, 18.55321], [45.06774, 17.86178],
+		[45.23378, 17.00215], [45.21161, 16.53494], [45.00413, 16.31816],
+		[45.23378, 15.95937], [44.81871, 15.75003], [44.35114, 16.23966],
+		[44.04124, 16.45644], [43.66772, 16.91616], [43.44634, 17.29737],
+		[43.02856, 17.67492], [42.65000, 18.56000], [42.47999, 18.45002],
+		[42.84999, 17.50997], [43.21000, 16.93001], [43.50722, 16.01538],
+		[44.24319, 15.17445], [44.31791, 15.37625], [44.73848, 14.92031],
+		[45.07606, 14.90160], [45.23378, 14.25875], [44.80212, 13.95225],
+		[45.13694, 13.65698], [45.48415, 13.67940], [45.50032, 13.71506],
+		[45.46617, 14.41197], [45.63494, 14.59511], [45.47169, 14.93524],
+		[45.45232, 15.32767], [45.73178, 15.32395], [45.83415, 15.67153],
+		[46.23811, 15.76873], [46.50375, 16.56481], [46.38063, 16.88252],
+		[45.95177, 17.63007], [45.75948, 18.45606]
 	];
 
-	// Grubi obris Europe (za konstelaciju točaka u pozadini).
+	// equirectangular projekcija (ista za canvas i SVG → savršeno poravnanje)
+	var COS = Math.cos(44.5 * Math.PI / 180);
+	function projX(lng) { return lng * COS; }
+	function projY(lat) { return -lat; }
+
+	var GEO = (function () {
+		var xmin = Infinity, xmax = -Infinity, ymin = Infinity, ymax = -Infinity;
+		HR.forEach(function (p) {
+			var x = projX(p[1]), y = projY(p[0]);
+			if (x < xmin) xmin = x; if (x > xmax) xmax = x;
+			if (y < ymin) ymin = y; if (y > ymax) ymax = y;
+		});
+		return { xmin: xmin, xmax: xmax, ymin: ymin, ymax: ymax, cx: (xmin + xmax) / 2, cy: (ymin + ymax) / 2, spanX: xmax - xmin, spanY: ymax - ymin };
+	})();
+
+	/* ============================================================
+	   EUROPA (konstelacija) + ČVOROVI
+	============================================================ */
 	var EU = [
 		[38.7, -9.5], [43.8, -9.0], [46.0, -2.0], [48.5, -4.5], [50.5, -1.0],
 		[51.5, 1.5], [53.0, 5.0], [56.0, 8.0], [58.0, 5.0], [63.0, 5.0],
@@ -58,7 +78,6 @@
 		[37.0, -8.5]
 	];
 
-	// Gradovi HR → "ljudi" (korisnici unutar Hrvatske)
 	var people = [
 		{ lat: 45.55, lng: 18.68, label: 'Osijek' },
 		{ lat: 45.81, lng: 15.98, label: 'Zagreb' },
@@ -66,14 +85,12 @@
 		{ lat: 45.33, lng: 14.44, label: 'Rijeka' }
 	];
 
-	// Radovi (tvrtke) — desno od Hrvatske
 	var companies = [
 		{ label: 'Centar za autizam', code: 'CZA' },
 		{ label: 'Eurokontrola', code: 'EKO' },
 		{ label: 'Daj Gric', code: 'DGR' }
 	];
 
-	// Europa — čvorovi (smjerovi od Hrvatske)
 	var europe = [
 		{ label: 'Beč', dx: -0.62, dy: -0.30 },
 		{ label: 'München', dx: -0.84, dy: -0.16 },
@@ -82,7 +99,7 @@
 	];
 
 	/* ============================================================
-	   PROJEKCIJE
+	   PROJEKCIJE / LAYOUT
 	============================================================ */
 	function resize() {
 		var rect = stage.getBoundingClientRect();
@@ -95,96 +112,98 @@
 		canvas.style.height = H + 'px';
 		ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 		mobile = W < 900;
-		// centar Hrvatske: desno na desktopu, niže na mobitelu
 		CRO.x = W * (mobile ? 0.5 : 0.60);
 		CRO.y = H * (mobile ? 0.62 : 0.5);
-		CRO.k = (Math.min(W, H) * (mobile ? 0.30 : 0.38)) / 4.3;
+		// visina obrisa = dio najmanje dimenzije
+		var oh = Math.min(W, H) * (mobile ? 0.52 : 0.44);
+		CRO.k = oh / GEO.spanY;
+		buildNodes();
+		buildLinks();
+		layoutOutline();
 	}
 
-	function crToXy(lat, lng) {
+	function geoToXy(lat, lng) {
 		return {
-			x: CRO.x + (lng - 16.6) * CRO.k * Math.cos(45 * Math.PI / 180),
-			y: CRO.y - (lat - 45.2) * CRO.k
+			x: CRO.x + (projX(lng) - GEO.cx) * CRO.k,
+			y: CRO.y + (projY(lat) - GEO.cy) * CRO.k
 		};
 	}
 
+	/* ---------- SVG obris: pozicija i veličina ---------- */
+	var outlineW = 0, outlineH = 0;
+	function layoutOutline() {
+		if (!outlineEl) return;
+		outlineW = GEO.spanX * CRO.k;
+		outlineH = GEO.spanY * CRO.k;
+		outlineEl.style.width = outlineW + 'px';
+		outlineEl.style.height = outlineH + 'px';
+		outlineEl.style.left = (CRO.x - outlineW / 2) + 'px';
+		outlineEl.style.top = (CRO.y - outlineH / 2) + 'px';
+	}
+	function applyOutlineParallax(px, py) {
+		if (!outlineEl) return;
+		outlineEl.style.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px)';
+	}
+
 	/* ============================================================
-	   ČVOROVI (pozicije se računaju po resize)
+	   ČVOROVI + LINIJE
 	============================================================ */
+	var NODES = [];
+	var LINKS = [];
+	var byId = {};
+
 	function buildNodes() {
 		var m = Math.min(W, H);
-		var hub = crToXy(45.55, 18.68);
+		var hub = geoToXy(45.55, 18.68);
 		var list = [];
-		// hub
 		list.push({ id: 'hub', type: 'hub', x: hub.x, y: hub.y, label: 'ZAEC · Osijek', delay: 0.5 });
-		// ljudi unutar HR
 		people.forEach(function (p, i) {
-			var xy = crToXy(p.lat, p.lng);
+			var xy = geoToXy(p.lat, p.lng);
 			list.push({ id: 'p-' + p.label, type: 'person', x: xy.x, y: xy.y, label: p.label, delay: 0.75 + i * 0.06 });
 		});
-		// radovi desno
 		companies.forEach(function (c, i) {
-			list.push({
-				id: 'c-' + c.code, type: 'company', x: CRO.x + m * 0.46, y: CRO.y + (i - 1) * m * 0.24,
-				label: c.label, sub: c.code, delay: 1.25 + i * 0.12
-			});
+			list.push({ id: 'c-' + c.code, type: 'company', x: CRO.x + m * 0.46, y: CRO.y + (i - 1) * m * 0.24, label: c.label, sub: c.code, delay: 1.25 + i * 0.12 });
 		});
-		// Google Business lijevo-dolje
 		list.push({ id: 'gmb', type: 'gmb', x: CRO.x - m * 0.02, y: CRO.y + m * 0.46, label: 'Google Business', delay: 1.45 });
-		// Europa
 		europe.forEach(function (e, i) {
-			list.push({
-				id: 'e-' + e.label, type: 'city', x: CRO.x + e.dx * m, y: CRO.y + e.dy * m, label: e.label, delay: 1.9 + i * 0.1
-			});
+			list.push({ id: 'e-' + e.label, type: 'city', x: CRO.x + e.dx * m, y: CRO.y + e.dy * m, label: e.label, delay: 1.9 + i * 0.1 });
 		});
-		// clamp u canvas
 		list.forEach(function (n) {
 			n.x = Math.max(46, Math.min(W - 46, n.x));
 			n.y = Math.max(40, Math.min(H - 34, n.y));
 		});
-		return list;
+		NODES = list;
+		byId = {};
+		NODES.forEach(function (n) { byId[n.id] = n; });
 	}
 
-	var NODES = [];
-	var LINKS = [];
 	function buildLinks() {
-		var byId = {};
-		NODES.forEach(function (n) { byId[n.id] = n; });
 		LINKS = [];
-		people.forEach(function (p) {
-			LINKS.push({ a: 'p-' + p.label, b: 'hub', tone: 'in' });
-		});
-		companies.forEach(function (c) {
-			LINKS.push({ a: 'hub', b: 'c-' + c.code, tone: 'out' });
-		});
+		people.forEach(function (p) { LINKS.push({ a: 'p-' + p.label, b: 'hub', tone: 'in' }); });
+		companies.forEach(function (c) { LINKS.push({ a: 'hub', b: 'c-' + c.code, tone: 'out' }); });
 		LINKS.push({ a: 'hub', b: 'gmb', tone: 'gmb' });
-		europe.forEach(function (e) {
-			LINKS.push({ a: 'e-' + e.label, b: 'hub', tone: 'eu' });
-		});
+		europe.forEach(function (e) { LINKS.push({ a: 'e-' + e.label, b: 'hub', tone: 'eu' }); });
 	}
 
 	/* ============================================================
-	   ANIMACIJSKA STANJA
+	   STANJA ANIMACIJE
 	============================================================ */
 	var revealed = false;
-	var t0 = 0;           // vrijeme reveal-a
-	var drawP = 0;        // napredak crtanja Hrvatske
-	var NODES_ANIM = {};  // per-node pop scale
-	var LINKS_ANIM = {};  // per-link draw progress
+	var t0 = 0;
+	var LINKS_ANIM = {};
 	var pulses = [];
 	var mouse = { x: 0, y: 0, cx: 0, cy: 0, ax: 0, ay: 0 };
 	var exit = { stage: { o: 1, y: 0, s: 1 }, copy: { o: 1, y: 0 } };
 	var exitCur = { stage: { o: 1, y: 0, s: 1 }, copy: { o: 1, y: 0 } };
 
-	/* ============================================================
-	   POMOĆNICI CRTANJA
-	============================================================ */
 	function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 	function easeOutBack(t) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
-	function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 	function lerp(a, b, t) { return a + (b - a) * t; }
 	function clamp01(t) { return Math.max(0, Math.min(1, t)); }
 
+	/* ============================================================
+	   CRTANJE
+	============================================================ */
 	function glow(x, y, r, color, alpha) {
 		var g = ctx.createRadialGradient(x, y, 0, x, y, r);
 		g.addColorStop(0, color + 'cc');
@@ -201,9 +220,7 @@
 		for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
 			var xi = poly[i][1], yi = poly[i][0];
 			var xj = poly[j][1], yj = poly[j][0];
-			if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) {
-				inside = !inside;
-			}
+			if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) inside = !inside;
 		}
 		return inside;
 	}
@@ -230,7 +247,6 @@
 		ctx.restore();
 	}
 
-	/* ---------- ikone ---------- */
 	function icon(type, x, y, s, alpha) {
 		ctx.save();
 		ctx.globalAlpha = alpha === undefined ? 1 : alpha;
@@ -242,20 +258,17 @@
 		ctx.lineJoin = 'round';
 
 		if (type === 'hub') {
-			// središnji puls — krug + prsten
 			ctx.beginPath(); ctx.arc(x, y, s * 0.55, 0, Math.PI * 2); ctx.fillStyle = '#7dd3ff'; ctx.fill();
 			ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.strokeStyle = '#7dd3ff'; ctx.stroke();
 		} else if (type === 'person') {
 			ctx.beginPath(); ctx.arc(x, y - s * 0.35, s * 0.3, 0, Math.PI * 2); ctx.stroke();
 			ctx.beginPath(); ctx.arc(x, y + s * 0.15, s * 0.42, Math.PI, 0); ctx.stroke();
 		} else if (type === 'company') {
-			// zgrada / tvrtka
 			ctx.beginPath(); ctx.rect(x - s * 0.5, y - s * 0.35, s, s * 0.7); ctx.stroke();
 			ctx.beginPath(); ctx.rect(x - s * 0.3, y - s * 0.18, s * 0.24, s * 0.24); ctx.stroke();
 			ctx.beginPath(); ctx.rect(x + s * 0.06, y - s * 0.18, s * 0.24, s * 0.24); ctx.stroke();
 			ctx.beginPath(); ctx.moveTo(x, y + s * 0.35); ctx.lineTo(x, y + s * 0.45); ctx.stroke();
 		} else if (type === 'gmb') {
-			// pin lokacije
 			ctx.beginPath();
 			ctx.arc(x, y - s * 0.25, s * 0.3, 0, Math.PI * 2);
 			ctx.moveTo(x - s * 0.22, y + s * 0.35);
@@ -270,9 +283,6 @@
 		ctx.restore();
 	}
 
-	/* ============================================================
-	   CRTANJE SCENE
-	============================================================ */
 	function nodeColor(type) {
 		if (type === 'hub') return '#7dd3ff';
 		if (type === 'person') return '#4d80ff';
@@ -282,13 +292,10 @@
 	}
 
 	function drawEurope(t, parX, parY) {
-		// konstelacija točaka u obliku Europe
 		ctx.save();
 		var alpha = 0.14 * easeOut(clamp01(t / 0.8));
 		ctx.globalAlpha = alpha;
 		ctx.fillStyle = '#9fc3ff';
-		var step = 7;
-		var i = 0;
 		for (var lat = 35.5; lat <= 70; lat += 1.05) {
 			for (var lng = -9.5; lng <= 39; lng += 1.05) {
 				var jitter = Math.sin(lat * 12.9898 + lng * 78.233) * 43758.5453;
@@ -296,92 +303,14 @@
 				if (jitter < 0.4 && pointInPoly(lat, lng, EU)) {
 					var x = parX + ((lng + 9.5) / 48.5) * W;
 					var y = parY + ((70 - lat) / 34.5) * H;
-					ctx.fillRect(x, y, step / 6, step / 6);
+					ctx.fillRect(x, y, 1.1, 1.1);
 				}
-				i++;
 			}
 		}
 		ctx.restore();
 	}
 
-	function drawCroatia(t, parX, parY) {
-		var pts = HR.map(function (p) { return crToXy(p[0], p[1]); });
-		var N = pts.length;
-		// duljine
-		var lens = [];
-		var total = 0;
-		for (var i = 0; i < N; i++) {
-			var a = pts[i], b = pts[(i + 1) % N];
-			var d = Math.hypot(b.x - a.x, b.y - a.y);
-			lens.push(d);
-			total += d;
-		}
-		var prog = easeInOut(clamp01(t / 1.15));
-		var target = prog * total;
-
-		ctx.save();
-		ctx.translate(parX, parY);
-
-		// tihi fill
-		if (prog > 0.02) {
-			ctx.beginPath();
-			ctx.moveTo(pts[0].x, pts[0].y);
-			for (var k = 1; k < N; k++) ctx.lineTo(pts[k].x, pts[k].y);
-			ctx.closePath();
-			ctx.fillStyle = 'rgba(30,94,255,0.05)';
-			ctx.fill();
-		}
-
-		// crtanje obrisa (zatvara krug)
-		var drawn = 0;
-		ctx.beginPath();
-		ctx.moveTo(pts[0].x, pts[0].y);
-		var lead = { x: pts[0].x, y: pts[0].y };
-		for (var s = 0; s < N && drawn < target; s++) {
-			var b = pts[(s + 1) % N];
-			if (drawn + lens[s] <= target) {
-				ctx.lineTo(b.x, b.y);
-				lead = b;
-			} else {
-				var f = (target - drawn) / lens[s];
-				var px = pts[s].x + (b.x - pts[s].x) * f;
-				var py = pts[s].y + (b.y - pts[s].y) * f;
-				ctx.lineTo(px, py);
-				lead = { x: px, y: py };
-			}
-			drawn += lens[s];
-		}
-		ctx.strokeStyle = '#4d80ff';
-		ctx.lineWidth = 2.2;
-		ctx.lineJoin = 'round';
-		ctx.lineCap = 'round';
-		ctx.shadowColor = 'rgba(77,128,255,0.8)';
-		ctx.shadowBlur = 14;
-		ctx.stroke();
-		ctx.shadowBlur = 0;
-
-		// vodeća točka
-		if (prog < 1) {
-			glow(lead.x, lead.y, 12, '#7dd3ff', 0.9);
-			ctx.beginPath(); ctx.arc(lead.x, lead.y, 3, 0, Math.PI * 2); ctx.fillStyle = '#ffffff'; ctx.fill();
-		} else {
-			// zatvoren: suptilni halo puls po rubu
-			var shimmer = 0.25 + 0.15 * Math.sin(t * 2.4);
-			ctx.beginPath();
-			ctx.moveTo(pts[0].x, pts[0].y);
-			for (var q = 1; q < N; q++) ctx.lineTo(pts[q].x, pts[q].y);
-			ctx.closePath();
-			ctx.strokeStyle = 'rgba(125,211,255,' + shimmer.toFixed(2) + ')';
-			ctx.lineWidth = 4.5;
-			ctx.globalAlpha = 0.35;
-			ctx.stroke();
-			ctx.globalAlpha = 1;
-		}
-		ctx.restore();
-		return lead;
-	}
-
-	function drawLink(a, b, tone, t, parX, parY, alpha) {
+	function drawLink(a, b, tone, parX, parY, alpha) {
 		var dx = b.x - a.x, dy = b.y - a.y;
 		var dist = Math.hypot(dx, dy);
 		if (dist < 1) return;
@@ -400,10 +329,7 @@
 		ctx.stroke();
 		ctx.restore();
 
-		// puls (tek kad je linija uglavnom nacrtana)
-		if (prog < 0.85) {
-			return;
-		}
+		if (prog < 0.85) return;
 		pulses.forEach(function (pu) {
 			if (pu.linkKey !== (a.id + '-' + b.id)) return;
 			var pp = (pu.t + pu.offset) % 1;
@@ -419,7 +345,7 @@
 		});
 	}
 
-	function drawNode(n, t, parX, parY, introT) {
+	function drawNode(n, introT, parX, parY) {
 		var delay = n.delay || 0;
 		var local = clamp01((introT - delay) / 0.4);
 		if (local <= 0) return;
@@ -428,7 +354,6 @@
 		var x = n.x + parX, y = n.y + parY;
 		var r = n.type === 'hub' ? 15 : (n.type === 'person' ? 9 : (n.type === 'company' ? 12 : (n.type === 'gmb' ? 12 : 6)));
 
-		// pozadinski krug
 		glow(x, y, r * 2.4, color, 0.5 * pop);
 		ctx.beginPath();
 		ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -437,10 +362,8 @@
 		ctx.lineWidth = 1.3;
 		ctx.strokeStyle = color;
 		ctx.stroke();
-
 		icon(n.type, x, y, r * 1.5, pop);
 
-		// label
 		var labA = clamp01((introT - delay - 0.1) / 0.3);
 		if (labA > 0 && !(mobile && (n.type === 'city' || n.type === 'company'))) {
 			label(x, y + r + 7, n.label, color, 'center', labA, mobile ? 8.5 : 10, true);
@@ -448,16 +371,7 @@
 	}
 
 	/* ============================================================
-	   PARALLAX (samo nagib po mišu)
-	============================================================ */
-	function computeParallax() {
-		var k = 16;
-		mouse.cx = mouse.x * k;
-		mouse.cy = mouse.y * k;
-	}
-
-	/* ============================================================
-	   EXIT (scroll → kuća)
+	   PARALLAX + EXIT
 	============================================================ */
 	var copyWrap = section.querySelector('.net-inner');
 	function computeExit() {
@@ -486,9 +400,7 @@
 	if ('IntersectionObserver' in window) {
 		new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }, { threshold: 0 }).observe(section);
 	}
-	document.addEventListener('visibilitychange', function () {
-		inView = !document.hidden;
-	});
+	document.addEventListener('visibilitychange', function () { inView = !document.hidden; });
 
 	function revealCopy() {
 		if (revealed) return;
@@ -496,12 +408,9 @@
 		t0 = performance.now();
 		section.classList.add('net-live');
 	}
-	if (document.body.classList.contains('loaded')) {
-		revealCopy();
-	} else if ('MutationObserver' in window) {
-		var bodyWatch = new MutationObserver(function () {
-			if (document.body.classList.contains('loaded')) revealCopy();
-		});
+	if (document.body.classList.contains('loaded')) revealCopy();
+	else if ('MutationObserver' in window) {
+		var bodyWatch = new MutationObserver(function () { if (document.body.classList.contains('loaded')) revealCopy(); });
 		bodyWatch.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 	}
 	window.addEventListener('load', revealCopy);
@@ -516,21 +425,15 @@
 	window.addEventListener('scroll', computeExit, { passive: true });
 	window.addEventListener('resize', function () {
 		resize();
-		buildNodes();
-		buildLinks();
 		computeExit();
 	}, { passive: true });
 
-	// inicijalizacija
 	resize();
-	buildNodes();
-	buildLinks();
 	computeExit();
 
-	// pulse raspored
 	pulses = [];
 	var pIdx = 0;
-	LINKS.forEach(function (l, i) {
+	LINKS.forEach(function (l) {
 		var count = (l.tone === 'eu') ? 1 : 2;
 		for (var c = 0; c < count; c++) {
 			pulses.push({ linkKey: l.a + '-' + l.b, t: 0, offset: (pIdx % 5) / 5 });
@@ -545,15 +448,11 @@
 		}
 		var t = revealed ? (now - t0) / 1000 : 0;
 
-		// parallax lerp
 		mouse.ax = lerp(mouse.ax, mouse.cx, 0.06);
 		mouse.ay = lerp(mouse.ay, mouse.cy, 0.06);
-		computeParallax();
-		// tilt (CSS)
 		var tiltX = fine ? mouse.x * 2.2 : 0;
 		var tiltY = fine ? -mouse.y * 1.6 : 0;
 
-		// exit lerp
 		exitCur.stage.o = lerp(exitCur.stage.o, exit.stage.o, 0.14);
 		exitCur.stage.y = lerp(exitCur.stage.y, exit.stage.y, 0.14);
 		exitCur.stage.s = lerp(exitCur.stage.s, exit.stage.s, 0.14);
@@ -561,39 +460,28 @@
 		exitCur.copy.y = lerp(exitCur.copy.y, exit.copy.y, 0.14);
 		applyExit(tiltX, tiltY);
 
-		// parallax po slojevima
 		var parFarX = mouse.ax * 0.4, parFarY = mouse.ay * 0.4;
-		var parMidX = mouse.ax * 0.7, parMidY = mouse.ay * 0.7;
 		var parNearX = mouse.ax * 1.0, parNearY = mouse.ay * 1.0;
+		applyOutlineParallax(parNearX, parNearY);
 
 		ctx.clearRect(0, 0, W, H);
 
 		if (revealed) {
 			drawEurope(t, parFarX, parFarY);
-			drawCroatia(t, parMidX, parMidY);
 
-			// linkovi (draw-in po tipu)
 			LINKS.forEach(function (l) {
 				var ld = l.tone === 'eu' ? 2.0 : (l.tone === 'gmb' ? 1.5 : 1.0);
 				LINKS_ANIM[l.a + '-' + l.b] = easeOut(clamp01((t - ld) / 0.5));
 			});
-			// pulsi se miču
 			pulses.forEach(function (pu) { pu.t += 0.006; });
 
-			// linkovi
 			LINKS.forEach(function (l) {
-				var a = NODES.find(function (n) { return n.id === l.a; });
-				var b = NODES.find(function (n) { return n.id === l.b; });
+				var a = byId[l.a], b = byId[l.b];
 				if (!a || !b) return;
-				drawLink(a, b, l.tone, t, parNearX, parNearY, 1);
+				drawLink(a, b, l.tone, parNearX, parNearY, 1);
 			});
-
-			// čvorovi
-			NODES.forEach(function (n) {
-				drawNode(n, t, parNearX, parNearY, t);
-			});
+			NODES.forEach(function (n) { drawNode(n, t, parNearX, parNearY); });
 		} else {
-			// dok traje preloader — tihi kadar
 			drawEurope(0.8, 0, 0);
 		}
 
@@ -601,26 +489,22 @@
 	}
 
 	if (reduce) {
-		// statičan kadar
 		revealCopy();
 		t0 = performance.now();
-		var t = 4; // "gotov" timeline
+		var t = 4;
 		mouse.ax = 0; mouse.ay = 0;
 		exitCur.stage.o = 1; exitCur.stage.y = 0; exitCur.stage.s = 1;
 		exitCur.copy.o = 1; exitCur.copy.y = 0;
 		applyExit(0, 0);
+		applyOutlineParallax(0, 0);
 		ctx.clearRect(0, 0, W, H);
 		drawEurope(4, 0, 0);
-		drawCroatia(4, 0, 0);
-		NODES.forEach(function (n) {
-			LINKS.forEach(function (l) { LINKS_ANIM[l.a + '-' + l.b] = 1; });
-		});
+		LINKS.forEach(function (l) { LINKS_ANIM[l.a + '-' + l.b] = 1; });
 		LINKS.forEach(function (l) {
-			var a = NODES.find(function (n) { return n.id === l.a; });
-			var b = NODES.find(function (n) { return n.id === l.b; });
-			if (a && b) drawLink(a, b, l.tone, t, 0, 0, 1);
+			var a = byId[l.a], b = byId[l.b];
+			if (a && b) drawLink(a, b, l.tone, 0, 0, 1);
 		});
-		NODES.forEach(function (n) { drawNode(n, t, 0, 0, 4); });
+		NODES.forEach(function (n) { drawNode(n, 4, 0, 0); });
 	} else {
 		requestAnimationFrame(frame);
 	}

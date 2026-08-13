@@ -1,6 +1,7 @@
 /* ============================================================
-   ZAEC · HERO 01 — "SIGNAL GRID" (cover / mreža)
-   Blueprint globus: dot-matrix, obris Hrvatske, čvorovi + lukovi.
+   ZAEC · HERO 01 — "MREŽA" (karta povezanosti)
+   Obris Hrvatske (SVG vektor, draw-in), Europa-konstelacija, čvorovi
+   (tvrtke / ljudi / Google Business) i linije s pulsom.
    Kuća ostaje sljedeća (prva numerirana) sekcija.
    ============================================================ */
 
@@ -22,7 +23,8 @@
 .net-veil { position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(90deg, rgba(14,14,13,.96) 0%, rgba(14,14,13,.82) 34%, rgba(14,14,13,.28) 62%, rgba(14,14,13,0) 100%); }
 
-.net-inner { position: relative; z-index: 2; width: 100%; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: calc(var(--nav-h) + 24px) 0 96px; pointer-events: none; will-change: transform, opacity; }
+/* hero sadržaj prati širinu ostatka stranice (~1336px) */
+.net-inner { position: relative; z-index: 2; width: 100%; max-width: var(--net-max, 1336px); min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: calc(var(--nav-h) + 24px) 0 96px; pointer-events: none; will-change: transform, opacity; }
 .net-copy { max-width: 620px; pointer-events: auto; }
 
 .net-copy .kicker { color: var(--hologram); }
@@ -36,6 +38,30 @@
 .net-live .net-copy > *:nth-child(2) { transition-delay: .07s; }
 .net-live .net-copy > *:nth-child(3) { transition-delay: .14s; }
 .net-live .net-copy > *:nth-child(4) { transition-delay: .21s; }
+
+/* ============================================================
+   SVG OBRIS HRVATSKE — vektorski, iscrtava se pri učitavanju
+   ============================================================ */
+.net-outline { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; overflow: visible; }
+.net-outline-fill { fill: rgba(30,94,255,.06); opacity: 0; transition: opacity .9s ease .9s; }
+.net-outline-stroke {
+  fill: none;
+  stroke: #4d80ff;
+  stroke-width: 2.2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.7s cubic-bezier(.22,1,.36,1) .15s;
+}
+.net-live .net-outline-stroke { stroke-dashoffset: 0; }
+.net-live .net-outline-fill { opacity: 1; }
+.net-live .net-outline { animation: netGlow 4.5s ease-in-out 2s infinite; }
+@keyframes netGlow {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(77,128,255,.42)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(125,211,255,.72)); }
+}
 
 /* meta + scroll cue */
 .net-meta { position: absolute; left: var(--gutter); bottom: 22px; z-index: 2; display: flex; gap: 18px; font-family: var(--font-m); font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gray); pointer-events: none; }
@@ -52,7 +78,9 @@
 .net-fallback { position: absolute; inset: 0; z-index: 1; display: none; align-items: center; justify-content: center; }
 .net--no-gl .net-fallback { display: flex; }
 .net--no-gl .net-stage canvas { display: none; }
+.net--no-gl .net-outline { display: none; }
 html.no-3d .net-stage canvas { display: none; }
+html.no-3d .net-outline { display: none; }
 html.no-3d .net-fallback { display: flex; }
 html.no-3d .net-copy > * { opacity: 1 !important; transform: none !important; }
 
@@ -73,4 +101,7 @@ html.no-3d .net-copy > * { opacity: 1 !important; transform: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .net-cue i { animation: none; }
   .net-copy > * { transition: none; opacity: 1; transform: none; }
+  .net-outline-stroke { stroke-dashoffset: 0 !important; transition: none !important; }
+  .net-outline-fill { opacity: 1 !important; transition: none !important; }
+  .net-live .net-outline { animation: none !important; }
 }
