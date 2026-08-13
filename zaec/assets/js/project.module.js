@@ -28,6 +28,73 @@
 		});
 	});
 
+	/*
+	 * Fit-text za display naslove: najduža riječ se nikad ne lomi usred —
+	 * veličina slova se prilagođava širini kolone (i nakon učitavanja fonta).
+	 */
+	var titleMeasurer = null;
+	function measureWordWidth(word, fontSizePx, cs) {
+		if (!titleMeasurer) {
+			titleMeasurer = document.createElement('span');
+			titleMeasurer.setAttribute('aria-hidden', 'true');
+			titleMeasurer.style.position = 'absolute';
+			titleMeasurer.style.visibility = 'hidden';
+			titleMeasurer.style.whiteSpace = 'nowrap';
+			titleMeasurer.style.pointerEvents = 'none';
+			titleMeasurer.style.top = '-9999px';
+			titleMeasurer.style.left = '-9999px';
+			document.body.appendChild(titleMeasurer);
+		}
+		titleMeasurer.style.fontFamily = cs.fontFamily;
+		titleMeasurer.style.fontWeight = cs.fontWeight;
+		titleMeasurer.style.fontSize = fontSizePx + 'px';
+		titleMeasurer.style.letterSpacing = cs.letterSpacing;
+		titleMeasurer.style.textTransform = cs.textTransform;
+		titleMeasurer.textContent = word;
+		return titleMeasurer.getBoundingClientRect().width;
+	}
+
+	function fitTitles() {
+		var titles = Array.prototype.slice.call(
+			root.querySelectorAll('.zaec-case-intro h1, .zaec-case-next__copy strong')
+		);
+		titles.forEach(function (el) {
+			var avail = el.clientWidth;
+			if (avail <= 0) {
+				return;
+			}
+			var cs = window.getComputedStyle(el);
+			var text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+			if (!text) {
+				return;
+			}
+			var longest = text.split(' ').reduce(function (a, b) { return a.length >= b.length ? a : b; }, '');
+			var base = parseFloat(cs.fontSize) || 100;
+			var w = measureWordWidth(longest, base, cs);
+			if (w <= avail) {
+				return;
+			}
+			var size = Math.max(20, Math.floor((base * avail) / w));
+			el.style.fontSize = size + 'px';
+		});
+	}
+
+	fitTitles();
+	var fitTimer = null;
+	window.addEventListener(
+		'resize',
+		function () {
+			clearTimeout(fitTimer);
+			fitTimer = setTimeout(fitTitles, 120);
+		},
+		{ passive: true }
+	);
+	if (document.fonts && document.fonts.ready) {
+		document.fonts.ready.then(function () {
+			fitTitles();
+		});
+	}
+
 	function staticState() {
 		revealItems.forEach(function (item) {
 			item.style.opacity = '1';

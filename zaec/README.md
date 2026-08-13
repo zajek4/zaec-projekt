@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.10.1
+# ZAEC WordPress Theme — v1.10.2
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -188,3 +188,9 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Dugi jednočlani naslovi (npr. „Eurokontrola") dobivaju prilagođenu veličinu slova i pravilno lomljenje (`hyphens` + `overflow-wrap: break-word`) umjesto rezanja usred riječi (`anywhere`).
 - Rail anchor linkovi koriste čiste `#id` sekcije + `scroll-margin-top`, a navigacija i dalje ispravno vodi na `home/#sekcija` s podstranica.
 - Theme version: `1.10.1`.
+
+## v1.10.2
+
+- **Footer/nav anchor linkovi sada rade i na naslovnici.** `home.module.js` je koristio nedefiniranu varijablu `BODY` u `closeMenu()`, pa je svaki klik na `#sekciju` na front-pageu bacao grešku prije scrolla. Varijabla je definirana i scroll-lock mobilnog izbornika sada radi ispravno.
+- **Naslov se više nikad ne lomi usred riječi.** Uklonjena je hyphenacija (`EUROKON-TROLA`) i dodan fit-text koji prilagođava veličinu slova najdužoj riječi (uz re-fit na resize i nakon učitavanja fonta); isto vrijedi i za naslov sljedećeg projekta.
+- Theme version: `1.10.2`.

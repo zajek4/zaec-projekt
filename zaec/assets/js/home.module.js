@@ -10,6 +10,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
 
   var doc = document;
   var WIN = window;
+  var BODY = doc.body;
   doc.documentElement.classList.add('js');
 
   var prefersReducedMotion = WIN.matchMedia('(prefers-reduced-motion: reduce)').matches;
