@@ -12,6 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function zaec_front_defaults() {
 	return array(
+		'net_kicker'             => '[ Povezivanje · Hrvatska + remote ]',
+		'net_title'              => 'Povezujemo vaš posao s ljudima koji ga traže.',
+		'net_lead'               => 'Web koji vašu tvrtku stavlja na kartu — od Osijeka do bilo gdje. Svaka linija na globusu je put od upita do kontakta.',
+		'net_primary_text'       => 'Zatraži procjenu',
+		'net_primary_url'        => '#upit',
+		'net_secondary_text'     => 'Pogledaj radove',
+		'net_secondary_url'      => '#radovi',
 		'hero_kicker'            => '[ Web studio · Osijek · Hrvatska ]',
 		'hero_title'             => 'Gradimo web stranice za ljude koji grade sve ostalo.',
 		'hero_lead'              => 'Web treba napraviti više od dobrog prvog dojma: jasno objasniti što radite, pokazati zašto vam vjerovati i dovesti čovjeka do poziva, upita ili rezervacije. Predložak ili izrada po mjeri — opseg i cijena prije početka.',

@@ -1,0 +1,77 @@
+/* ============================================================
+   ZAEC · HERO 01 — "SIGNAL GRID" (cover / mreža)
+   Blueprint globus: dot-matrix, obris Hrvatske, čvorovi + lukovi.
+   Kuća ostaje sljedeća (prva numerirana) sekcija.
+   ============================================================ */
+
+.net { position: relative; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; background: var(--black); color: var(--paper-2); overflow: hidden; isolation: isolate; }
+
+/* blueprint grid + scanlines */
+.net::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(244,244,241,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(244,244,241,.04) 1px, transparent 1px);
+  background-size: 96px 96px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 62% 42%, #000 18%, transparent 80%); mask-image: radial-gradient(ellipse 90% 80% at 62% 42%, #000 18%, transparent 80%); }
+.net::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .13;
+  background: repeating-linear-gradient(0deg, rgba(244,244,241,.05) 0 1px, transparent 1px 5px); mix-blend-mode: soft-light; }
+
+/* stage: globus na desnoj strani (desktop) */
+.net-stage { position: absolute; top: 0; right: 0; bottom: 0; width: min(56vw, 1040px); z-index: 0; will-change: transform, opacity; }
+.net-stage canvas { display: block; width: 100%; height: 100%; }
+.net-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(circle at 50% 50%, rgba(30,94,255,.14), transparent 62%); }
+
+/* čitljivost copyja: gradijent s lijeva */
+.net-veil { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(14,14,13,.96) 0%, rgba(14,14,13,.82) 34%, rgba(14,14,13,.28) 62%, rgba(14,14,13,0) 100%); }
+
+.net-inner { position: relative; z-index: 2; width: 100%; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: calc(var(--nav-h) + 24px) 0 96px; pointer-events: none; will-change: transform, opacity; }
+.net-copy { max-width: 620px; pointer-events: auto; }
+
+.net-copy .kicker { color: var(--hologram); }
+.net-copy h1 { margin: 0; font-size: clamp(2.6rem, 5.6vw, 6.3rem); line-height: .94; letter-spacing: -.05em; text-transform: uppercase; text-wrap: balance; }
+.net-copy .lead { max-width: 46ch; margin: 22px 0 0; color: var(--gray-2); font-size: clamp(1.02rem, 1.4vw, 1.22rem); line-height: 1.6; }
+.net-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+
+/* ulaz copyja: staggered reveal */
+.net-copy > * { opacity: 0; transform: translateY(20px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.net-live .net-copy > * { opacity: 1; transform: none; }
+.net-live .net-copy > *:nth-child(2) { transition-delay: .07s; }
+.net-live .net-copy > *:nth-child(3) { transition-delay: .14s; }
+.net-live .net-copy > *:nth-child(4) { transition-delay: .21s; }
+
+/* meta + scroll cue */
+.net-meta { position: absolute; left: var(--gutter); bottom: 22px; z-index: 2; display: flex; gap: 18px; font-family: var(--font-m); font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gray); pointer-events: none; }
+.net-meta b { color: var(--hologram); font-weight: 400; }
+.net-cue { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 9px; font-family: var(--font-m); font-size: .6rem; letter-spacing: .28em; text-transform: uppercase; color: var(--gray-2); pointer-events: none; }
+.net-cue i { width: 1px; height: 42px; background: linear-gradient(180deg, var(--hologram), transparent); animation: netCue 2.2s var(--ease) infinite; }
+@keyframes netCue { 0% { transform: scaleY(0); transform-origin: top; } 45% { transform: scaleY(1); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* tooltip za čvor */
+.net-tip { position: absolute; z-index: 5; transform: translate(-50%, -150%); white-space: nowrap; padding: 7px 10px; border: 1px solid rgba(125,211,255,.35); background: rgba(8,13,20,.88); font-family: var(--font-m); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--paper-2); pointer-events: none; opacity: 0; transition: opacity .18s; }
+.net-tip.show { opacity: 1; }
+
+/* fallback (no-JS / no-WebGL) */
+.net-fallback { position: absolute; inset: 0; z-index: 1; display: none; align-items: center; justify-content: center; }
+.net--no-gl .net-fallback { display: flex; }
+.net--no-gl .net-stage canvas { display: none; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1020px) {
+  .net-stage { width: 100%; opacity: 1; }
+  .net-stage::after { opacity: .6; }
+  .net-veil { background: linear-gradient(180deg, rgba(14,14,13,.9) 0%, rgba(14,14,13,.6) 42%, rgba(14,14,13,.72) 100%); }
+  .net-inner { align-items: flex-start; }
+  .net-copy { max-width: 620px; }
+}
+@media (max-width: 767px) {
+  .net-inner { padding-top: calc(var(--nav-h) + 20px); padding-bottom: 88px; }
+  .net-copy h1 { font-size: clamp(2.2rem, 9.4vw, 3.4rem); }
+  .net-ctas { flex-direction: column; align-items: stretch; }
+  .net-ctas .btn { justify-content: center; }
+  .net-meta { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .net-cue i { animation: none; }
+  .net-copy > * { transition: none; opacity: 1; transform: none; }
+}

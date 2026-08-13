@@ -12,6 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function zaec_front_field_groups() {
 	return array(
+		'Mreža · globus (prva sekcija)' => array(
+			'net_kicker'         => array( 'label' => 'Kicker', 'type' => 'text' ),
+			'net_title'          => array( 'label' => 'H1', 'type' => 'textarea' ),
+			'net_lead'           => array( 'label' => 'Lead', 'type' => 'textarea' ),
+			'net_primary_text'   => array( 'label' => 'Primarni CTA — tekst', 'type' => 'text' ),
+			'net_primary_url'    => array( 'label' => 'Primarni CTA — URL/anchor', 'type' => 'text' ),
+			'net_secondary_text' => array( 'label' => 'Sekundarni CTA — tekst', 'type' => 'text' ),
+			'net_secondary_url'  => array( 'label' => 'Sekundarni CTA — URL/anchor', 'type' => 'text' ),
+		),
 		'Hero' => array(
 			'hero_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
 			'hero_title' => array( 'label' => 'H1', 'type' => 'textarea' ),

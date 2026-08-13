@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.10.2
+# ZAEC WordPress Theme — v1.11.0
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -194,3 +194,11 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - **Footer/nav anchor linkovi sada rade i na naslovnici.** `home.module.js` je koristio nedefiniranu varijablu `BODY` u `closeMenu()`, pa je svaki klik na `#sekciju` na front-pageu bacao grešku prije scrolla. Varijabla je definirana i scroll-lock mobilnog izbornika sada radi ispravno.
 - **Naslov se više nikad ne lomi usred riječi.** Uklonjena je hyphenacija (`EUROKON-TROLA`) i dodan fit-text koji prilagođava veličinu slova najdužoj riječi (uz re-fit na resize i nakon učitavanja fonta); isto vrijedi i za naslov sljedećeg projekta.
 - Theme version: `1.10.2`.
+
+## v1.11.0
+
+- **Nova prva sekcija naslovnice — "Signal Grid" (globus).** Blueprint globus s dot-matrix površinom, obrisom Hrvatske, čvorovima (ZAEC · Osijek + gradovi HR + remote) i lukovima s putujućim pulsom koji stižu u hub uz "signal primljen" prsten — metafora upita koji dolazi do tvrtke. Spora auto-rotacija + drag (desktop), hover na čvor, scroll-exit handoff (globus se smanjuje/bluruje dok kuća preuzima scenu).
+- **Kuća je pomaknuta u drugu sekciju** i ostaje netaknuta kao prva numerirana blueprint sekcija; rail i numeracija 00–10 nisu mijenjani jer su vezani uz klijentov sadržaj.
+- Performansa: render globusa se pauzira izvan viewporta i kad je tab skriven; DPR i gustoća točaka su smanjeni na slabijim uređajima; na touchu drag ne otima scroll stranice. Reduced-motion bez render petlje, no-JS/no-WebGL SVG fallback.
+- Copy je uređiv kroz novu grupu polja **Mreža · globus** na naslovnici.
+- Theme version: `1.11.0`.

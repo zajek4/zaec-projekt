@@ -19,12 +19,14 @@ function zaec_enqueue_assets() {
 
 	if ( is_front_page() ) {
 		wp_enqueue_style( 'zaec-front', get_theme_file_uri( 'assets/css/front-page.css' ), array( 'zaec-fonts' ), zaec_asset_version( 'assets/css/front-page.css' ) );
+		wp_enqueue_style( 'zaec-network', get_theme_file_uri( 'assets/css/network.css' ), array( 'zaec-front' ), zaec_asset_version( 'assets/css/network.css' ) );
 
 		wp_enqueue_script( 'zaec-gsap', get_theme_file_uri( 'assets/js/vendor/gsap.min.js' ), array(), zaec_asset_version( 'assets/js/vendor/gsap.min.js' ), true );
 		wp_enqueue_script( 'zaec-scrolltrigger', get_theme_file_uri( 'assets/js/vendor/ScrollTrigger.min.js' ), array( 'zaec-gsap' ), zaec_asset_version( 'assets/js/vendor/ScrollTrigger.min.js' ), true );
 		wp_enqueue_script( 'zaec-scrollto', get_theme_file_uri( 'assets/js/vendor/ScrollToPlugin.min.js' ), array( 'zaec-gsap' ), zaec_asset_version( 'assets/js/vendor/ScrollToPlugin.min.js' ), true );
 		wp_enqueue_script( 'zaec-lenis', get_theme_file_uri( 'assets/js/vendor/lenis.min.js' ), array(), zaec_asset_version( 'assets/js/vendor/lenis.min.js' ), true );
 		wp_enqueue_script( 'zaec-home', get_theme_file_uri( 'assets/js/home.module.js' ), array( 'zaec-scrolltrigger', 'zaec-scrollto', 'zaec-lenis' ), zaec_asset_version( 'assets/js/home.module.js' ), true );
+		wp_enqueue_script( 'zaec-network', get_theme_file_uri( 'assets/js/network.module.js' ), array( 'zaec-home' ), zaec_asset_version( 'assets/js/network.module.js' ), true );
 
 		$occupations = zaec_front_repeater( 'occupations' );
 		$js_occ      = array();
@@ -78,7 +80,7 @@ function zaec_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'zaec_enqueue_assets' );
 
 function zaec_module_script_tag( $tag, $handle, $src ) {
-	if ( in_array( $handle, array( 'zaec-home', 'zaec-404', 'zaec-project' ), true ) ) {
+	if ( in_array( $handle, array( 'zaec-home', 'zaec-404', 'zaec-project', 'zaec-network' ), true ) ) {
 		return '<script type="module" src="' . esc_url( $src ) . '"></script>' . "\n";
 	}
 	if ( 'zaec-global' === $handle ) {
