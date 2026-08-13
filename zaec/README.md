@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.9.8
+# ZAEC WordPress Theme — v1.10.0
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -171,3 +171,13 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Removed the planet experiment and its additional WebGL assets from the active theme.
 - Preserved the original Villa N interactions, scroll axonometry, parallax and occupation HUD.
 - Theme version: `1.9.8`.
+
+## v1.10.0
+
+- Single projekt je redizajniran iz Showroom uređaja u **Tehnički dosje** (Blueprint Case Study v2).
+- Hero koristi browser-frame live preview s crop markovima umjesto laptop/telefon mockupa; kod projekta ima type-in ulaz, a preview suptilni scroll parallax + tilt samo na finim pokazivačima.
+- Dodan je fiksni lijevi rail (00–04) s progress-fillom i aktivnom sekcijom te tanka gornja progress traka; rail se renderira samo za stvarno prisutne sekcije.
+- Dosje je spec-sheet s numeriranim redovima (usluga, lokacija, godina, tehnologije) i istaknutim `[ ISHOD ]` blokom koji je vidljiv odmah nakon heroja — rezultat je sticky uz dosje, a prikazuje se samo ako je potvrđen.
+- Priča, pinana galerija ekrana i outro (veliki LIVE CTA + sljedeći projekt) ostaju uvjetni prema stvarnim podacima.
+- Sav motion ostaje reverzibilan: reduced-motion/no-JS fallback je potpun i statičan, galerija bez JS-a postaje vertikalni stack, a stari HUD/Showroom single CSS je uklonjen iz projekta.
+- Theme version: `1.10.0`.
