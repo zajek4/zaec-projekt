@@ -1,7 +1,8 @@
 /*
  * ZAEC blueprint case study — single projekt.
- * Statični sadržaj ostaje potpun bez JS-a; GSAP/ScrollTrigger samo dodaje
- * kratke, reverzibilne ulaze, rail navigaciju i pinanu galeriju ekrana.
+ * Nativni scroll + ScrollTrigger scrub; bez smooth-scroll wrappera (Lenis).
+ * Statični sadržaj ostaje potpun bez JS-a; GSAP samo dodaje ulaze, rail i
+ * pinanu galeriju ekrana.
  */
 (function () {
 	'use strict';
@@ -66,6 +67,7 @@
 			});
 		};
 
+		// Čiste #id veze + native smooth scroll — bez ovisnosti o wrapperu.
 		links.forEach(function (link) {
 			link.addEventListener('click', function (event) {
 				var id = link.getAttribute('data-case-rail');
@@ -74,9 +76,7 @@
 					return;
 				}
 				event.preventDefault();
-				if (window.LenisScrollTo) {
-					window.LenisScrollTo(target);
-				} else if (reduce) {
+				if (reduce) {
 					target.scrollIntoView({ block: 'start' });
 				} else {
 					target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -123,7 +123,7 @@
 			bar.style.transform = 'scaleX(1)';
 			return;
 		}
-		if (ScrollTrigger && !reduce) {
+		if (ScrollTrigger) {
 			gsap.fromTo(
 				bar,
 				{ scaleX: 0 },
@@ -172,6 +172,7 @@
 				progressBar.style.transform = 'scaleX(' + progress + ')';
 			}
 		};
+		// scrub:true → track prati scroll 1:1, bez zaostajanja.
 		var galleryTween = gsap.to(track, {
 			x: function () {
 				return -distance();
@@ -184,9 +185,8 @@
 					return '+=' + distance();
 				},
 				pin: true,
-				scrub: 0.55,
+				scrub: true,
 				invalidateOnRefresh: true,
-				anticipatePin: 1,
 				onUpdate: function (self) {
 					updateUi(self.progress);
 				},
@@ -207,6 +207,7 @@
 				}
 				drag = { startX: event.clientX, startProgress: trigger.progress };
 				viewport.classList.add('is-dragging');
+				document.documentElement.style.scrollBehavior = 'auto';
 				try {
 					viewport.setPointerCapture(event.pointerId);
 				} catch (captureError) {}
@@ -232,6 +233,7 @@
 			}
 			drag = null;
 			viewport.classList.remove('is-dragging');
+			document.documentElement.style.scrollBehavior = '';
 			if (event) {
 				try {
 					viewport.releasePointerCapture(event.pointerId);
@@ -257,17 +259,6 @@
 	}
 
 	gsap.registerPlugin(ScrollTrigger);
-	if (window.Lenis) {
-		var lenis = new window.Lenis({ duration: 0.9, smoothWheel: true, anchors: false, touchMultiplier: 1.2 });
-		lenis.on('scroll', ScrollTrigger.update);
-		gsap.ticker.add(function (time) {
-			lenis.raf(time * 1000);
-		});
-		gsap.ticker.lagSmoothing(500, 33);
-		window.LenisScrollTo = function (target) {
-			lenis.scrollTo(target, { offset: 0, duration: 0.9 });
-		};
-	}
 	var refreshTimer = null;
 	window.addEventListener(
 		'resize',

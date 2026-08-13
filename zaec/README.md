@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.10.0
+# ZAEC WordPress Theme — v1.10.1
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -181,3 +181,10 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Priča, pinana galerija ekrana i outro (veliki LIVE CTA + sljedeći projekt) ostaju uvjetni prema stvarnim podacima.
 - Sav motion ostaje reverzibilan: reduced-motion/no-JS fallback je potpun i statičan, galerija bez JS-a postaje vertikalni stack, a stari HUD/Showroom single CSS je uklonjen iz projekta.
 - Theme version: `1.10.0`.
+
+## v1.10.1
+
+- Single projekt više ne koristi Lenis smooth scroll — bio je uzrok sporog/nepravilnog scrollanja jer radi bez svog CSS sloja i bori se s pinanom galerijom. Vraćen je nativni scroll uz ScrollTrigger scrub; galerija sada prati scroll 1:1 (`scrub: true`, bez `anticipatePin`).
+- Dugi jednočlani naslovi (npr. „Eurokontrola") dobivaju prilagođenu veličinu slova i pravilno lomljenje (`hyphens` + `overflow-wrap: break-word`) umjesto rezanja usred riječi (`anywhere`).
+- Rail anchor linkovi koriste čiste `#id` sekcije + `scroll-margin-top`, a navigacija i dalje ispravno vodi na `home/#sekcija` s podstranica.
+- Theme version: `1.10.1`.

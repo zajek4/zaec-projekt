@@ -65,6 +65,21 @@ get_header();
 			$host   = isset( $parsed['host'] ) ? $parsed['host'] : '';
 		}
 
+		/*
+		 * Dugi jednočlani naslovi (npr. "Eurokontrola") ne smiju se lomiti
+		 * usred riječi — prilagodi veličinu slova prema najdužoj riječi.
+		 */
+		$title_text   = get_the_title();
+		$title_words  = preg_split( '/\s+/u', trim( $title_text ) ) ?: array( $title_text );
+		$longest_word = 0;
+		foreach ( $title_words as $title_word ) {
+			$word_len = function_exists( 'mb_strlen' ) ? mb_strlen( $title_word ) : strlen( $title_word );
+			if ( $word_len > $longest_word ) {
+				$longest_word = $word_len;
+			}
+		}
+		$title_mod = $longest_word > 16 ? ' zaec-case-intro--xlong' : ( $longest_word > 10 ? ' zaec-case-intro--long' : '' );
+
 		$next_post     = get_next_post();
 		$next_project  = $next_post instanceof WP_Post ? zaec_get_project_data( $next_post->ID ) : array();
 		$next_image    = $next_post instanceof WP_Post && has_post_thumbnail( $next_post->ID ) ? get_the_post_thumbnail_url( $next_post->ID, 'zaec-card' ) : '';
@@ -105,7 +120,7 @@ get_header();
 				<div class="zaec-case-hero__bg" aria-hidden="true"></div>
 				<span class="zaec-case-sec-num" aria-hidden="true">00</span>
 				<div class="wrap zaec-case-hero__inner">
-					<header class="zaec-case-intro" data-case-reveal>
+					<header class="zaec-case-intro<?php echo esc_attr( $title_mod ); ?>" data-case-reveal>
 						<p class="zaec-case-kicker"><span>[</span><span><?php esc_html_e( 'PROJEKT · ', 'zaec' ); ?></span><?php if ( ! empty( $project['code'] ) ) : ?><span data-case-code><?php echo esc_html( $project['code'] ); ?></span><?php else : ?><span><?php esc_html_e( 'CASE STUDY', 'zaec' ); ?></span><?php endif; ?><span> ]</span></p>
 						<h1 id="zaec-case-title"><?php echo esc_html( get_the_title() ); ?></h1>
 						<?php if ( has_excerpt() ) : ?><p class="zaec-case-lead"><?php echo esc_html( get_the_excerpt() ); ?></p><?php endif; ?>

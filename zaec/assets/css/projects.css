@@ -37,7 +37,7 @@
 @media (max-width: 1080px) { .zaec-case-rail { display: none; } }
 
 /* ---------- zajednički dijelovi sekcija ---------- */
-.zaec-case-sec { position: relative; overflow: hidden; overflow: clip; }
+.zaec-case-sec { position: relative; overflow: hidden; overflow: clip; scroll-margin-top: var(--nav-h); }
 .zaec-case-sec > .wrap { position: relative; z-index: 2; }
 .zaec-case-kicker { margin: 0 0 16px; font-family: var(--font-m); font-size: .66rem; letter-spacing: .18em; line-height: 1.5; text-transform: uppercase; color: var(--gray-2); }
 .zaec-case-kicker [data-case-code] { color: var(--hologram); }
@@ -56,7 +56,20 @@
 .zaec-case-hero--no-preview .zaec-case-hero__inner { grid-template-columns: 1fr; }
 .zaec-case-hero--no-preview .zaec-case-intro { max-width: 22ch; }
 .zaec-case-intro { min-width: 0; }
-.zaec-case-intro h1 { margin: 0; padding: .06em 0 .14em; font-size: clamp(3rem, 8vw, 9rem); line-height: .9; letter-spacing: -.06em; text-transform: uppercase; overflow-wrap: anywhere; }
+.zaec-case-intro h1 {
+  margin: 0;
+  padding: .06em 0 .14em;
+  font-size: clamp(2.75rem, 7vw, 8rem);
+  line-height: .94;
+  letter-spacing: -.055em;
+  text-transform: uppercase;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  overflow-wrap: break-word;
+}
+/* Dugi jednočlani naslovi: manja slova umjesto rezanja usred riječi. */
+.zaec-case-intro--long h1 { font-size: clamp(2.5rem, 6vw, 5.2rem); }
+.zaec-case-intro--xlong h1 { font-size: clamp(2.25rem, 5.2vw, 3.7rem); }
 .zaec-case-lead { max-width: 46ch; margin: 22px 0 0; color: var(--gray-2); font-size: clamp(1.02rem, 1.4vw, 1.2rem); line-height: 1.6; }
 .zaec-case-hero__actions { margin-top: 30px; }
 
@@ -159,7 +172,7 @@
 .zaec-case-next:hover .zaec-case-next__media::after, .zaec-case-next:focus-visible .zaec-case-next__media::after { opacity: .55; }
 .zaec-case-next__copy { position: absolute; inset: auto 0 0 0; z-index: 1; display: grid; grid-template-columns: 1fr auto; gap: 12px 24px; align-items: end; padding: clamp(22px, 4vw, 56px); }
 .zaec-case-next__copy .zaec-case-kicker { grid-column: 1 / -1; margin: 0; }
-.zaec-case-next__copy strong { font-size: clamp(2rem, 5vw, 6rem); line-height: .9; letter-spacing: -.06em; text-transform: uppercase; text-wrap: balance; overflow-wrap: anywhere; }
+.zaec-case-next__copy strong { font-size: clamp(2rem, 5vw, 6rem); line-height: .9; letter-spacing: -.06em; text-transform: uppercase; text-wrap: balance; overflow-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; }
 .zaec-case-next__copy > b { font-size: clamp(2rem, 4vw, 4.5rem); font-weight: 300; line-height: .8; }
 
 .zaec-case + .site-footer { border-top-color: rgba(125,211,255,.16); background: #05070b; }
@@ -177,13 +190,15 @@
 }
 
 /* ---------- responsive ---------- */
-@media (max-width: 980px) {
-  .zaec-case-hero__inner { gap: clamp(24px, 5vw, 40px); }
+@media (max-width: 1020px) {
+  /* Tablet: intro i preview idu u jedan stupac kako dugi naslovi ne bi bili stisnuti. */
+  .zaec-case-hero__inner { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 48px); }
+  .zaec-case-hero--no-preview .zaec-case-intro { max-width: 24ch; }
+  .zaec-case-preview { max-width: 860px; }
   .zaec-case-spec__grid { grid-template-columns: 1fr; gap: 34px; }
 }
 @media (max-width: 767px) {
   .zaec-case-hero { padding-top: calc(var(--nav-h) + 24px); }
-  .zaec-case-hero__inner { grid-template-columns: 1fr; gap: clamp(24px, 6vw, 40px); }
   .zaec-case-intro h1 { font-size: clamp(2.55rem, 14vw, 4.6rem); }
   .zaec-case-browser__screen { aspect-ratio: 16 / 10; }
   .zaec-case-spec, .zaec-case-story, .zaec-case-screens { padding: 70px 0; }

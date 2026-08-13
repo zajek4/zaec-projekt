@@ -67,8 +67,7 @@ function zaec_enqueue_assets() {
 	if ( is_singular( 'projekti' ) ) {
 		wp_enqueue_script( 'zaec-project-gsap', get_theme_file_uri( 'assets/js/vendor/gsap.min.js' ), array(), zaec_asset_version( 'assets/js/vendor/gsap.min.js' ), true );
 		wp_enqueue_script( 'zaec-project-scrolltrigger', get_theme_file_uri( 'assets/js/vendor/ScrollTrigger.min.js' ), array( 'zaec-project-gsap' ), zaec_asset_version( 'assets/js/vendor/ScrollTrigger.min.js' ), true );
-		wp_enqueue_script( 'zaec-project-lenis', get_theme_file_uri( 'assets/js/vendor/lenis.min.js' ), array( 'zaec-project-scrolltrigger' ), zaec_asset_version( 'assets/js/vendor/lenis.min.js' ), true );
-		wp_enqueue_script( 'zaec-project', get_theme_file_uri( 'assets/js/project.module.js' ), array( 'zaec-project-lenis' ), zaec_asset_version( 'assets/js/project.module.js' ), true );
+		wp_enqueue_script( 'zaec-project', get_theme_file_uri( 'assets/js/project.module.js' ), array( 'zaec-project-scrolltrigger' ), zaec_asset_version( 'assets/js/project.module.js' ), true );
 	}
 
 	if ( is_404() ) {
