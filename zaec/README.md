@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.11.1
+# ZAEC WordPress Theme — v1.11.2
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -209,3 +209,11 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Obris Hrvatske je čista linija s halo om, a gradovi su oznake umjesto točkastog klastera; lukovi su cijevi s kometima koji skaču od čvora do čvora uz "signal primljen" prsten.
 - Dodano zvjezdano polje oko globusa i cinematic ulaz (easeOutBack pop + postupno paljenje slojeva) nakon preloadera.
 - Theme version: `1.11.1`.
+
+## v1.11.2
+
+- **Hero je zamijenjen 2D "kartom povezanosti" (nema više kugle ni WebGL-a).** Prepoznatljiv obris Hrvatske crta se i zatvara (draw-in), u pozadini blijeda Europa-konstelacija, a čvorovi — gradovi ("ljudi"), tri stvarna rada ("tvrtke"), Google Business i europska tržišta — povezani su linijama s pulsom.
+- **Interakcija je samo suptilni nagib/parallax po mišu** — bez drag/orbit kontrole smjera; na touchu bez interakcije.
+- Google Business je uključen skromno (pin + veza s hubom) jer je postavljanje Google Business profila stvarni dio usluge — bez tvrdnji o pozicijama.
+- Fallback (no-JS/no-WebGL/reduced-motion) je sada statična karta s obrisom Hrvatske i čvorovima.
+- Theme version: `1.11.2`.
