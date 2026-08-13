@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.11.3
+# ZAEC WordPress Theme — v1.11.4
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -224,3 +224,11 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - **Obris se iscrtava dinamično pri učitavanju** (stroke-dashoffset draw-in na SVG vektoru), a čvorovi na canvasu koriste istu projekciju pa su točno poravnati s obrisom.
 - **Hero sadržaj prati širinu ostatka stranice** — content wrapper je ograničen na ~1336px (`--net-max`).
 - Theme version: `1.11.3`.
+
+## v1.11.4
+
+- **Precizniji i jači obris Hrvatske.** Kopnenoj granici (Natural Earth) dodani su otoci — Krk, Cres, Lošinj, Rab, Pag, Dugi otok, Brač, Hvar, Korčula, Mljet i Vis; obris je veći, s halo sjajem, debljim stroke-om i jačim glowom.
+- **Topologija mreže.** Linije više ne vode sve u Osijek: grad ↔ grad unutar Hrvatske, Europa → gradovi (izvana prema unutra) i djelatnosti ↔ gradovi; pulsovi s vremena nasumično "skaču" s veze na vezu, uz povremene ping prstenove.
+- **Ikonice djelatnosti umjesto imena klijenata.** Webshop (trgovina), Obrt (kaciga/zanat) i Usluge (aktovka) — precizno iscrtane; Google Business je zadržan kao dio stvarne usluge.
+- **Jača dinamika/interakcija** — izraženiji nagib i parallax po mišu uz blagi ambient drift; naslov "Vaš posao. Na karti." s usklađenim font-size i line-height.
+- Theme version: `1.11.4`.

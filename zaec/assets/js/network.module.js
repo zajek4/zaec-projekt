@@ -1,9 +1,10 @@
 /*
  * ZAEC — HERO 01 "MREŽA" (2D karta povezanosti).
  *
- * Prepoznatljiv obris Hrvatske (SVG vektor, draw-in preko stroke-dashoffset),
- * blijeda Europa-konstelacija, ikonice tvrtki / ljudi / Google Businessa i
- * linije s pulsom — sve na canvasu. Interakcija = samo suptilni nagib po mišu.
+ * Obris Hrvatske (SVG vektor, draw-in pri učitavanju) + Europa-konstelacija,
+ * čvorovi (gradovi = ljudi, djelatnosti = webshop/obrt/usluge, Google Business,
+ * europska tržišta) i linije s pulsom koje s vremena "skaču" s veze na vezu.
+ * Interakcija = suptilni nagib/parallax po mišu (bez drag/orbit kontrole).
  *
  * Nativni rAF. Pauza izvan viewporta. Reduced-motion = statičan kadar.
  */
@@ -31,7 +32,8 @@
 	var mobile = false;
 
 	/* ============================================================
-	   OBRIS HRVATSKE (Natural Earth — točan vektor, [lat, lng])
+	   OBRIS HRVATSKE (Natural Earth — kopnena granica, [lat, lng])
+	   → koristi se samo za projekciju i pozicioniranje; crtež je SVG.
 	============================================================ */
 	var HR = [
 		[45.90888, 18.82984], [45.52151, 19.07277], [45.23652, 19.39048],
@@ -50,7 +52,6 @@
 		[45.95177, 17.63007], [45.75948, 18.45606]
 	];
 
-	// equirectangular projekcija (ista za canvas i SVG → savršeno poravnanje)
 	var COS = Math.cos(44.5 * Math.PI / 180);
 	function projX(lng) { return lng * COS; }
 	function projY(lat) { return -lat; }
@@ -66,7 +67,7 @@
 	})();
 
 	/* ============================================================
-	   EUROPA (konstelacija) + ČVOROVI
+	   EUROPA + ČVOROVI
 	============================================================ */
 	var EU = [
 		[38.7, -9.5], [43.8, -9.0], [46.0, -2.0], [48.5, -4.5], [50.5, -1.0],
@@ -78,6 +79,7 @@
 		[37.0, -8.5]
 	];
 
+	// gradovi = ljudi koji traže uslugu (unutar Hrvatske)
 	var people = [
 		{ lat: 45.55, lng: 18.68, label: 'Osijek' },
 		{ lat: 45.81, lng: 15.98, label: 'Zagreb' },
@@ -85,17 +87,19 @@
 		{ lat: 45.33, lng: 14.44, label: 'Rijeka' }
 	];
 
-	var companies = [
-		{ label: 'Centar za autizam', code: 'CZA' },
-		{ label: 'Eurokontrola', code: 'EKO' },
-		{ label: 'Daj Gric', code: 'DGR' }
+	// djelatnosti (generic, bez imena klijenata)
+	var businesses = [
+		{ id: 'webshop', label: 'Webshop', icon: 'shop' },
+		{ id: 'obrt', label: 'Obrt', icon: 'craft' },
+		{ id: 'usluge', label: 'Usluge', icon: 'service' }
 	];
 
+	// Europa — smjerovi (izvana prema unutra)
 	var europe = [
-		{ label: 'Beč', dx: -0.62, dy: -0.30 },
-		{ label: 'München', dx: -0.84, dy: -0.16 },
-		{ label: 'Milano', dx: -0.72, dy: 0.22 },
-		{ label: 'London', dx: -1.12, dy: -0.50 }
+		{ id: 'bec', label: 'Beč', dx: -0.62, dy: -0.30 },
+		{ id: 'munchen', label: 'München', dx: -0.84, dy: -0.16 },
+		{ id: 'milano', label: 'Milano', dx: -0.72, dy: 0.22 },
+		{ id: 'london', label: 'London', dx: -1.12, dy: -0.50 }
 	];
 
 	/* ============================================================
@@ -112,10 +116,10 @@
 		canvas.style.height = H + 'px';
 		ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 		mobile = W < 900;
-		CRO.x = W * (mobile ? 0.5 : 0.60);
-		CRO.y = H * (mobile ? 0.62 : 0.5);
-		// visina obrisa = dio najmanje dimenzije
-		var oh = Math.min(W, H) * (mobile ? 0.52 : 0.44);
+		CRO.x = W * (mobile ? 0.5 : 0.62);
+		CRO.y = H * (mobile ? 0.60 : 0.5);
+		// veći obris: visina = veći dio najmanje dimenzije
+		var oh = Math.min(W, H) * (mobile ? 0.60 : 0.54);
 		CRO.k = oh / GEO.spanY;
 		buildNodes();
 		buildLinks();
@@ -129,7 +133,6 @@
 		};
 	}
 
-	/* ---------- SVG obris: pozicija i veličina ---------- */
 	var outlineW = 0, outlineH = 0;
 	function layoutOutline() {
 		if (!outlineEl) return;
@@ -154,19 +157,17 @@
 
 	function buildNodes() {
 		var m = Math.min(W, H);
-		var hub = geoToXy(45.55, 18.68);
 		var list = [];
-		list.push({ id: 'hub', type: 'hub', x: hub.x, y: hub.y, label: 'ZAEC · Osijek', delay: 0.5 });
 		people.forEach(function (p, i) {
 			var xy = geoToXy(p.lat, p.lng);
-			list.push({ id: 'p-' + p.label, type: 'person', x: xy.x, y: xy.y, label: p.label, delay: 0.75 + i * 0.06 });
+			list.push({ id: 'p-' + p.label, type: 'person', x: xy.x, y: xy.y, label: p.label, delay: 0.6 + i * 0.07 });
 		});
-		companies.forEach(function (c, i) {
-			list.push({ id: 'c-' + c.code, type: 'company', x: CRO.x + m * 0.46, y: CRO.y + (i - 1) * m * 0.24, label: c.label, sub: c.code, delay: 1.25 + i * 0.12 });
+		businesses.forEach(function (b, i) {
+			list.push({ id: 'b-' + b.id, type: b.icon, x: CRO.x + m * 0.47, y: CRO.y + (i - 1) * m * 0.27, label: b.label, delay: 1.25 + i * 0.12 });
 		});
-		list.push({ id: 'gmb', type: 'gmb', x: CRO.x - m * 0.02, y: CRO.y + m * 0.46, label: 'Google Business', delay: 1.45 });
+		list.push({ id: 'gmb', type: 'gmb', x: CRO.x - m * 0.02, y: CRO.y + m * 0.48, label: 'Google Business', delay: 1.5 });
 		europe.forEach(function (e, i) {
-			list.push({ id: 'e-' + e.label, type: 'city', x: CRO.x + e.dx * m, y: CRO.y + e.dy * m, label: e.label, delay: 1.9 + i * 0.1 });
+			list.push({ id: 'e-' + e.id, type: 'city', x: CRO.x + e.dx * m, y: CRO.y + e.dy * m, label: e.label, delay: 1.85 + i * 0.1 });
 		});
 		list.forEach(function (n) {
 			n.x = Math.max(46, Math.min(W - 46, n.x));
@@ -179,10 +180,23 @@
 
 	function buildLinks() {
 		LINKS = [];
-		people.forEach(function (p) { LINKS.push({ a: 'p-' + p.label, b: 'hub', tone: 'in' }); });
-		companies.forEach(function (c) { LINKS.push({ a: 'hub', b: 'c-' + c.code, tone: 'out' }); });
-		LINKS.push({ a: 'hub', b: 'gmb', tone: 'gmb' });
-		europe.forEach(function (e) { LINKS.push({ a: 'e-' + e.label, b: 'hub', tone: 'eu' }); });
+		// unutra: grad ↔ grad (mreža unutar Hrvatske)
+		LINKS.push({ a: 'p-Osijek', b: 'p-Zagreb', tone: 'in' });
+		LINKS.push({ a: 'p-Zagreb', b: 'p-Split', tone: 'in' });
+		LINKS.push({ a: 'p-Zagreb', b: 'p-Rijeka', tone: 'in' });
+		LINKS.push({ a: 'p-Split', b: 'p-Rijeka', tone: 'in' });
+		LINKS.push({ a: 'p-Osijek', b: 'p-Rijeka', tone: 'in' });
+		// izvana: Europa → gradovi
+		LINKS.push({ a: 'e-bec', b: 'p-Zagreb', tone: 'eu' });
+		LINKS.push({ a: 'e-munchen', b: 'p-Zagreb', tone: 'eu' });
+		LINKS.push({ a: 'e-milano', b: 'p-Rijeka', tone: 'eu' });
+		LINKS.push({ a: 'e-london', b: 'p-Zagreb', tone: 'eu' });
+		// djelatnosti ↔ gradovi
+		LINKS.push({ a: 'b-webshop', b: 'p-Zagreb', tone: 'out' });
+		LINKS.push({ a: 'b-obrt', b: 'p-Osijek', tone: 'out' });
+		LINKS.push({ a: 'b-usluge', b: 'p-Split', tone: 'out' });
+		// Google Business ↔ lokalno
+		LINKS.push({ a: 'gmb', b: 'p-Osijek', tone: 'gmb' });
 	}
 
 	/* ============================================================
@@ -192,17 +206,20 @@
 	var t0 = 0;
 	var LINKS_ANIM = {};
 	var pulses = [];
+	var pings = [];
+	var pingTimer = 0;
 	var mouse = { x: 0, y: 0, cx: 0, cy: 0, ax: 0, ay: 0 };
 	var exit = { stage: { o: 1, y: 0, s: 1 }, copy: { o: 1, y: 0 } };
 	var exitCur = { stage: { o: 1, y: 0, s: 1 }, copy: { o: 1, y: 0 } };
 
 	function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 	function easeOutBack(t) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
+	function easeInOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 	function lerp(a, b, t) { return a + (b - a) * t; }
 	function clamp01(t) { return Math.max(0, Math.min(1, t)); }
 
 	/* ============================================================
-	   CRTANJE
+	   CRTANJE — pomoćnici
 	============================================================ */
 	function glow(x, y, r, color, alpha) {
 		var g = ctx.createRadialGradient(x, y, 0, x, y, r);
@@ -247,28 +264,43 @@
 		ctx.restore();
 	}
 
+	/* ---------- precizne ikone ---------- */
 	function icon(type, x, y, s, alpha) {
 		ctx.save();
 		ctx.globalAlpha = alpha === undefined ? 1 : alpha;
-		var stroke = '#eaf6ff';
-		ctx.strokeStyle = stroke;
-		ctx.fillStyle = stroke;
+		ctx.strokeStyle = '#eaf6ff';
+		ctx.fillStyle = '#eaf6ff';
 		ctx.lineWidth = 1.5;
 		ctx.lineCap = 'round';
 		ctx.lineJoin = 'round';
 
-		if (type === 'hub') {
-			ctx.beginPath(); ctx.arc(x, y, s * 0.55, 0, Math.PI * 2); ctx.fillStyle = '#7dd3ff'; ctx.fill();
-			ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.strokeStyle = '#7dd3ff'; ctx.stroke();
-		} else if (type === 'person') {
-			ctx.beginPath(); ctx.arc(x, y - s * 0.35, s * 0.3, 0, Math.PI * 2); ctx.stroke();
-			ctx.beginPath(); ctx.arc(x, y + s * 0.15, s * 0.42, Math.PI, 0); ctx.stroke();
-		} else if (type === 'company') {
-			ctx.beginPath(); ctx.rect(x - s * 0.5, y - s * 0.35, s, s * 0.7); ctx.stroke();
-			ctx.beginPath(); ctx.rect(x - s * 0.3, y - s * 0.18, s * 0.24, s * 0.24); ctx.stroke();
-			ctx.beginPath(); ctx.rect(x + s * 0.06, y - s * 0.18, s * 0.24, s * 0.24); ctx.stroke();
-			ctx.beginPath(); ctx.moveTo(x, y + s * 0.35); ctx.lineTo(x, y + s * 0.45); ctx.stroke();
+		if (type === 'person') {
+			ctx.beginPath(); ctx.arc(x, y - s * 0.38, s * 0.27, 0, Math.PI * 2); ctx.stroke();
+			ctx.beginPath(); ctx.arc(x, y + s * 0.18, s * 0.4, 0, Math.PI); ctx.stroke();
+		} else if (type === 'shop') {
+			// webshop / trgovina: tenda + izlog + vrata
+			ctx.beginPath();
+			ctx.moveTo(x - s * 0.85, y - s * 0.45);
+			ctx.lineTo(x + s * 0.85, y - s * 0.45);
+			ctx.arc(x - s * 0.6, y - s * 0.45, s * 0.25, 0, Math.PI);
+			ctx.arc(x, y - s * 0.45, s * 0.25, 0, Math.PI);
+			ctx.arc(x + s * 0.6, y - s * 0.45, s * 0.25, 0, Math.PI);
+			ctx.stroke();
+			ctx.strokeRect(x - s * 0.85, y - s * 0.2, s * 1.7, s * 0.72);
+			ctx.strokeRect(x - s * 0.2, y + s * 0.06, s * 0.4, s * 0.46);
+		} else if (type === 'craft') {
+			// obrt / zanat: kaciga + ramena
+			ctx.beginPath(); ctx.arc(x, y - s * 0.2, s * 0.42, Math.PI, 0); ctx.stroke();
+			ctx.beginPath(); ctx.moveTo(x - s * 0.52, y - s * 0.2); ctx.lineTo(x + s * 0.52, y - s * 0.2); ctx.stroke();
+			ctx.beginPath(); ctx.moveTo(x, y - s * 0.62); ctx.lineTo(x, y - s * 0.2); ctx.stroke();
+			ctx.beginPath(); ctx.moveTo(x - s * 0.55, y + s * 0.55); ctx.quadraticCurveTo(x, y + s * 0.1, x + s * 0.55, y + s * 0.55); ctx.stroke();
+		} else if (type === 'service') {
+			// usluge: aktovka
+			ctx.strokeRect(x - s * 0.6, y - s * 0.35, s * 1.2, s * 0.85);
+			ctx.beginPath(); ctx.arc(x, y - s * 0.35, s * 0.24, Math.PI, 0); ctx.stroke();
+			ctx.beginPath(); ctx.moveTo(x, y - s * 0.35); ctx.lineTo(x, y + s * 0.14); ctx.stroke();
 		} else if (type === 'gmb') {
+			// Google Business: pin
 			ctx.beginPath();
 			ctx.arc(x, y - s * 0.25, s * 0.3, 0, Math.PI * 2);
 			ctx.moveTo(x - s * 0.22, y + s * 0.35);
@@ -276,21 +308,26 @@
 			ctx.quadraticCurveTo(x, y - s * 0.15, x - s * 0.05, y - s * 0.25);
 			ctx.stroke();
 			ctx.beginPath(); ctx.arc(x, y - s * 0.25, s * 0.09, 0, Math.PI * 2); ctx.fill();
-		} else if (type === 'city') {
-			ctx.beginPath(); ctx.arc(x, y, s * 0.3, 0, Math.PI * 2); ctx.fill();
-			ctx.beginPath(); ctx.arc(x, y, s * 0.52, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(234,246,255,0.55)'; ctx.stroke();
+		} else {
+			// europski grad: točka + prsten
+			ctx.beginPath(); ctx.arc(x, y, s * 0.28, 0, Math.PI * 2); ctx.fill();
+			ctx.beginPath(); ctx.arc(x, y, s * 0.5, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(234,246,255,0.55)'; ctx.stroke();
 		}
 		ctx.restore();
 	}
 
 	function nodeColor(type) {
-		if (type === 'hub') return '#7dd3ff';
-		if (type === 'person') return '#4d80ff';
-		if (type === 'company') return '#eaf6ff';
-		if (type === 'gmb') return '#ffb84d';
+		if (type === 'person') return '#7dd3ff';
+		if (type === 'shop') return '#eaf6ff';
+		if (type === 'craft') return '#ffb84d';
+		if (type === 'service') return '#9fd4ff';
+		if (type === 'gmb') return '#4d80ff';
 		return '#a3a39d';
 	}
 
+	/* ============================================================
+	   CRTANJE — scena
+	============================================================ */
 	function drawEurope(t, parX, parY) {
 		ctx.save();
 		var alpha = 0.14 * easeOut(clamp01(t / 0.8));
@@ -301,47 +338,78 @@
 				var jitter = Math.sin(lat * 12.9898 + lng * 78.233) * 43758.5453;
 				jitter = jitter - Math.floor(jitter);
 				if (jitter < 0.4 && pointInPoly(lat, lng, EU)) {
-					var x = parX + ((lng + 9.5) / 48.5) * W;
-					var y = parY + ((70 - lat) / 34.5) * H;
-					ctx.fillRect(x, y, 1.1, 1.1);
+					ctx.fillRect(parX + ((lng + 9.5) / 48.5) * W, parY + ((70 - lat) / 34.5) * H, 1.1, 1.1);
 				}
 			}
 		}
 		ctx.restore();
 	}
 
-	function drawLink(a, b, tone, parX, parY, alpha) {
-		var dx = b.x - a.x, dy = b.y - a.y;
-		var dist = Math.hypot(dx, dy);
-		if (dist < 1) return;
-		var prog = LINKS_ANIM[a.id + '-' + b.id] || 0;
-		var len = dist * prog;
-		var nx = dx / dist, ny = dy / dist;
+	function linkColor(tone) {
+		if (tone === 'in') return '#7dd3ff';
+		if (tone === 'eu') return '#a3a39d';
+		if (tone === 'gmb') return '#ffb84d';
+		return '#4d80ff'; // out
+	}
 
-		ctx.save();
-		ctx.globalAlpha = alpha * (tone === 'eu' ? 0.4 : 0.6);
-		var color = tone === 'gmb' ? '#ffb84d' : (tone === 'eu' ? '#a3a39d' : '#7dd3ff');
-		ctx.strokeStyle = color;
-		ctx.lineWidth = 1.1;
-		ctx.beginPath();
-		ctx.moveTo(a.x + parX, a.y + parY);
-		ctx.lineTo(a.x + parX + nx * len, a.y + parY + ny * len);
-		ctx.stroke();
-		ctx.restore();
-
-		if (prog < 0.85) return;
-		pulses.forEach(function (pu) {
-			if (pu.linkKey !== (a.id + '-' + b.id)) return;
-			var pp = (pu.t + pu.offset) % 1;
-			var px = a.x + nx * dist * pp;
-			var py = a.y + ny * dist * pp;
-			glow(px + parX, py + parY, 10, color, 0.8 * alpha);
+	function drawLinks(parX, parY) {
+		LINKS.forEach(function (l) {
+			var a = byId[l.a], b = byId[l.b];
+			if (!a || !b) return;
+			var prog = LINKS_ANIM[l.a + '-' + l.b] || 0;
+			if (prog <= 0) return;
+			var dx = b.x - a.x, dy = b.y - a.y;
+			var dist = Math.hypot(dx, dy);
+			var nx = dx / dist, ny = dy / dist;
+			var len = dist * prog;
+			var color = linkColor(l.tone);
+			ctx.save();
+			ctx.globalAlpha = l.tone === 'eu' ? 0.4 : 0.6;
+			ctx.strokeStyle = color;
+			ctx.lineWidth = 1.15;
 			ctx.beginPath();
-			ctx.arc(px + parX, py + parY, 2.2, 0, Math.PI * 2);
+			ctx.moveTo(a.x + parX, a.y + parY);
+			ctx.lineTo(a.x + parX + nx * len, a.y + parY + ny * len);
+			ctx.stroke();
+			ctx.restore();
+		});
+	}
+
+	function drawPulses(parX, parY) {
+		pulses.forEach(function (pu) {
+			var l = LINKS[pu.linkIndex];
+			if (!l) return;
+			var a = byId[l.a], b = byId[l.b];
+			if (!a || !b) return;
+			var prog = LINKS_ANIM[l.a + '-' + l.b] || 0;
+			if (prog < 0.9) return; // puls tek po nacrtanoj liniji
+			var pp = easeOut(pu.phase);
+			var px = a.x + (b.x - a.x) * pp;
+			var py = a.y + (b.y - a.y) * pp;
+			var color = linkColor(l.tone);
+			glow(px + parX, py + parY, 14, color, 0.85);
+			ctx.beginPath();
+			ctx.arc(px + parX, py + parY, 2.6, 0, Math.PI * 2);
 			ctx.fillStyle = color;
-			ctx.globalAlpha = alpha;
+			ctx.globalAlpha = 0.95;
 			ctx.fill();
 			ctx.globalAlpha = 1;
+		});
+	}
+
+	function drawPings(parX, parY) {
+		pings.forEach(function (pg) {
+			var n = NODES[pg.nodeIndex];
+			if (!n) return;
+			var r = 8 + pg.t * 26;
+			ctx.save();
+			ctx.globalAlpha = (1 - pg.t) * 0.55;
+			ctx.strokeStyle = nodeColor(n.type);
+			ctx.lineWidth = 1.4;
+			ctx.beginPath();
+			ctx.arc(n.x + parX, n.y + parY, r, 0, Math.PI * 2);
+			ctx.stroke();
+			ctx.restore();
 		});
 	}
 
@@ -352,9 +420,9 @@
 		var pop = easeOutBack(local);
 		var color = nodeColor(n.type);
 		var x = n.x + parX, y = n.y + parY;
-		var r = n.type === 'hub' ? 15 : (n.type === 'person' ? 9 : (n.type === 'company' ? 12 : (n.type === 'gmb' ? 12 : 6)));
+		var r = n.type === 'person' ? 10 : (n.type === 'shop' || n.type === 'craft' || n.type === 'service' ? 13 : (n.type === 'gmb' ? 12 : 6));
 
-		glow(x, y, r * 2.4, color, 0.5 * pop);
+		glow(x, y, r * 2.4, color, 0.55 * pop);
 		ctx.beginPath();
 		ctx.arc(x, y, r, 0, Math.PI * 2);
 		ctx.fillStyle = 'rgba(8,11,16,0.9)';
@@ -362,16 +430,17 @@
 		ctx.lineWidth = 1.3;
 		ctx.strokeStyle = color;
 		ctx.stroke();
-		icon(n.type, x, y, r * 1.5, pop);
+		icon(n.type, x, y, r * 1.55, pop);
 
 		var labA = clamp01((introT - delay - 0.1) / 0.3);
-		if (labA > 0 && !(mobile && (n.type === 'city' || n.type === 'company'))) {
+		var hideLabel = mobile && (n.type === 'city' || n.type === 'shop' || n.type === 'craft' || n.type === 'service');
+		if (labA > 0 && !hideLabel) {
 			label(x, y + r + 7, n.label, color, 'center', labA, mobile ? 8.5 : 10, true);
 		}
 	}
 
 	/* ============================================================
-	   PARALLAX + EXIT
+	   PARALLAX + EXIT (jača interakcija)
 	============================================================ */
 	var copyWrap = section.querySelector('.net-inner');
 	function computeExit() {
@@ -423,23 +492,17 @@
 		}, { passive: true });
 	}
 	window.addEventListener('scroll', computeExit, { passive: true });
-	window.addEventListener('resize', function () {
-		resize();
-		computeExit();
-	}, { passive: true });
+	window.addEventListener('resize', function () { resize(); computeExit(); }, { passive: true });
 
 	resize();
 	computeExit();
 
+	// pulsovi + nasumični "skokovi" među vezama
 	pulses = [];
-	var pIdx = 0;
-	LINKS.forEach(function (l) {
-		var count = (l.tone === 'eu') ? 1 : 2;
-		for (var c = 0; c < count; c++) {
-			pulses.push({ linkKey: l.a + '-' + l.b, t: 0, offset: (pIdx % 5) / 5 });
-			pIdx++;
-		}
-	});
+	var PULSE_N = 6;
+	for (var p = 0; p < PULSE_N; p++) {
+		pulses.push({ linkIndex: p % LINKS.length, phase: p / PULSE_N, speed: 0.17 + (p % 3) * 0.03 });
+	}
 
 	function frame(now) {
 		if (!inView || document.hidden) {
@@ -447,11 +510,12 @@
 			return;
 		}
 		var t = revealed ? (now - t0) / 1000 : 0;
+		var dt = 1 / 60;
 
-		mouse.ax = lerp(mouse.ax, mouse.cx, 0.06);
-		mouse.ay = lerp(mouse.ay, mouse.cy, 0.06);
-		var tiltX = fine ? mouse.x * 2.2 : 0;
-		var tiltY = fine ? -mouse.y * 1.6 : 0;
+		mouse.ax = lerp(mouse.ax, mouse.cx, 0.07);
+		mouse.ay = lerp(mouse.ay, mouse.cy, 0.07);
+		var tiltX = fine ? mouse.x * 3.2 : 0;
+		var tiltY = fine ? -mouse.y * 2.4 : 0;
 
 		exitCur.stage.o = lerp(exitCur.stage.o, exit.stage.o, 0.14);
 		exitCur.stage.y = lerp(exitCur.stage.y, exit.stage.y, 0.14);
@@ -460,9 +524,11 @@
 		exitCur.copy.y = lerp(exitCur.copy.y, exit.copy.y, 0.14);
 		applyExit(tiltX, tiltY);
 
-		var parFarX = mouse.ax * 0.4, parFarY = mouse.ay * 0.4;
-		var parNearX = mouse.ax * 1.0, parNearY = mouse.ay * 1.0;
-		applyOutlineParallax(parNearX, parNearY);
+		// ambient drift (živost i bez miša) + jači parallax
+		var amb = Math.sin(t * 0.5) * 3;
+		var parFarX = mouse.ax * 0.5 + amb * 0.2, parFarY = mouse.ay * 0.5 + amb * 0.2;
+		var parNearX = mouse.ax * 1.5 + amb * 0.35, parNearY = mouse.ay * 1.5 + amb * 0.35;
+		applyOutlineParallax(parNearX * 0.6, parNearY * 0.6);
 
 		ctx.clearRect(0, 0, W, H);
 
@@ -470,16 +536,35 @@
 			drawEurope(t, parFarX, parFarY);
 
 			LINKS.forEach(function (l) {
-				var ld = l.tone === 'eu' ? 2.0 : (l.tone === 'gmb' ? 1.5 : 1.0);
+				var ld = l.tone === 'eu' ? 2.0 : (l.tone === 'gmb' ? 1.5 : (l.tone === 'in' ? 0.8 : 1.1));
 				LINKS_ANIM[l.a + '-' + l.b] = easeOut(clamp01((t - ld) / 0.5));
 			});
-			pulses.forEach(function (pu) { pu.t += 0.006; });
 
-			LINKS.forEach(function (l) {
-				var a = byId[l.a], b = byId[l.b];
-				if (!a || !b) return;
-				drawLink(a, b, l.tone, parNearX, parNearY, 1);
+			// pulsovi: putuju i s vremena skoče na drugu vezu
+			pulses.forEach(function (pu) {
+				pu.phase += dt * pu.speed;
+				if (pu.phase >= 1) {
+					pu.phase = 0;
+					if (LINKS.length > 1) {
+						var ni = pu.linkIndex;
+						while (ni === pu.linkIndex) ni = Math.floor(Math.random() * LINKS.length);
+						pu.linkIndex = ni;
+					}
+				}
 			});
+
+			// povremeni ping na nasumičnom čvoru
+			pingTimer += dt;
+			if (pingTimer > 1.5 && pings.length < 3) {
+				pingTimer = 0;
+				pings.push({ nodeIndex: Math.floor(Math.random() * NODES.length), t: 0 });
+			}
+			pings.forEach(function (pg) { pg.t += dt * 0.7; });
+			pings = pings.filter(function (pg) { return pg.t < 1; });
+
+			drawLinks(parNearX, parNearY);
+			drawPulses(parNearX, parNearY);
+			drawPings(parNearX, parNearY);
 			NODES.forEach(function (n) { drawNode(n, t, parNearX, parNearY); });
 		} else {
 			drawEurope(0.8, 0, 0);
@@ -500,10 +585,7 @@
 		ctx.clearRect(0, 0, W, H);
 		drawEurope(4, 0, 0);
 		LINKS.forEach(function (l) { LINKS_ANIM[l.a + '-' + l.b] = 1; });
-		LINKS.forEach(function (l) {
-			var a = byId[l.a], b = byId[l.b];
-			if (a && b) drawLink(a, b, l.tone, 0, 0, 1);
-		});
+		drawLinks(0, 0);
 		NODES.forEach(function (n) { drawNode(n, 4, 0, 0); });
 	} else {
 		requestAnimationFrame(frame);

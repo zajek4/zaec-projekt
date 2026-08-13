@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function zaec_front_defaults() {
 	return array(
-		'net_kicker'             => '[ Hrvatska · Europa · Google Business ]',
-		'net_title'              => 'Povezujemo vaš posao s ljudima koji ga traže.',
-		'net_lead'               => 'Web koji vas stavi na kartu — u Hrvatskoj i preko granice. Postavimo Google Business profil i sve što treba da vas ljudi pronađu, provjere i kontaktiraju.',
+		'net_kicker'             => '[ Web studio · Osijek · Hrvatska ]',
+		'net_title'              => "Vaš posao.\nNa karti.",
+		'net_lead'               => 'Web koji vas poveže s ljudima koji vas već traže — na Googleu i preko granice.',
 		'net_primary_text'       => 'Zatraži procjenu',
 		'net_primary_url'        => '#upit',
 		'net_secondary_text'     => 'Pogledaj radove',

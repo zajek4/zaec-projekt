@@ -28,8 +28,8 @@
 .net-copy { max-width: 620px; pointer-events: auto; }
 
 .net-copy .kicker { color: var(--hologram); }
-.net-copy h1 { margin: 0; font-size: clamp(2.6rem, 5.6vw, 6.3rem); line-height: .94; letter-spacing: -.05em; text-transform: uppercase; text-wrap: balance; }
-.net-copy .lead { max-width: 46ch; margin: 22px 0 0; color: var(--gray-2); font-size: clamp(1.02rem, 1.4vw, 1.22rem); line-height: 1.6; }
+.net-copy h1 { margin: 0; font-size: clamp(2.8rem, 6.2vw, 7rem); line-height: .96; letter-spacing: -.045em; text-transform: uppercase; text-wrap: balance; }
+.net-copy .lead { max-width: 46ch; margin: 22px 0 0; color: var(--gray-2); font-size: clamp(1.05rem, 1.4vw, 1.25rem); line-height: 1.6; }
 .net-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
 
 /* ulaz copyja: staggered reveal */
@@ -43,24 +43,38 @@
    SVG OBRIS HRVATSKE — vektorski, iscrtava se pri učitavanju
    ============================================================ */
 .net-outline { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; overflow: visible; }
-.net-outline-fill { fill: rgba(30,94,255,.06); opacity: 0; transition: opacity .9s ease .9s; }
-.net-outline-stroke {
+.net-outline-fill { fill: rgba(30,94,255,.07); opacity: 0; transition: opacity .9s ease 1s; }
+/* halo — širi sjaj koji prati crtanje obrisa */
+.net-outline-halo {
   fill: none;
-  stroke: #4d80ff;
-  stroke-width: 2.2px;
+  stroke: #7dd3ff;
+  stroke-width: 8px;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.7s cubic-bezier(.22,1,.36,1) .15s;
+  opacity: .16;
+  transition: stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1) .08s;
 }
+.net-outline-stroke {
+  fill: none;
+  stroke: #4d80ff;
+  stroke-width: 3px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1) .15s;
+}
+.net-live .net-outline-halo { stroke-dashoffset: 0; }
 .net-live .net-outline-stroke { stroke-dashoffset: 0; }
 .net-live .net-outline-fill { opacity: 1; }
-.net-live .net-outline { animation: netGlow 4.5s ease-in-out 2s infinite; }
+.net-live .net-outline { animation: netGlow 4.5s ease-in-out 2.1s infinite; }
 @keyframes netGlow {
-  0%, 100% { filter: drop-shadow(0 0 10px rgba(77,128,255,.42)); }
-  50%      { filter: drop-shadow(0 0 22px rgba(125,211,255,.72)); }
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(77,128,255,.5)); }
+  50%      { filter: drop-shadow(0 0 26px rgba(125,211,255,.85)); }
 }
 
 /* meta + scroll cue */
@@ -101,7 +115,7 @@ html.no-3d .net-copy > * { opacity: 1 !important; transform: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .net-cue i { animation: none; }
   .net-copy > * { transition: none; opacity: 1; transform: none; }
-  .net-outline-stroke { stroke-dashoffset: 0 !important; transition: none !important; }
+  .net-outline-stroke, .net-outline-halo { stroke-dashoffset: 0 !important; transition: none !important; }
   .net-outline-fill { opacity: 1 !important; transition: none !important; }
   .net-live .net-outline { animation: none !important; }
 }
