@@ -94,7 +94,7 @@ get_header();
 				<div class="zaec-case-rail__dots">
 					<?php foreach ( $sections as $id => $sec ) : ?>
 						<?php if ( $sec['on'] ) : ?>
-							<a href="#<?php echo esc_attr( $id ); ?>" data-case-rail="<?php echo esc_attr( $id ); ?>"<?php echo 'pregled' === $id ? ' class="on"' : ''; ?>><span><?php echo esc_html( $sec['num'] ); ?></span><em><?php echo esc_html( $sec['label'] ); ?></em></a>
+							<a href="#<?php echo esc_attr( $id ); ?>" data-case-rail="<?php echo esc_attr( $id ); ?>" title="<?php echo esc_attr( $sec['label'] ); ?>" aria-label="<?php echo esc_attr( $sec['label'] ); ?>"<?php echo 'pregled' === $id ? ' class="on"' : ''; ?>><i></i><span><?php echo esc_html( $sec['num'] ); ?></span></a>
 						<?php endif; ?>
 					<?php endforeach; ?>
 				</div>

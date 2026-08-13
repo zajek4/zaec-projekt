@@ -119,6 +119,10 @@
 		if (!bar) {
 			return;
 		}
+		if (reduce) {
+			bar.style.transform = 'scaleX(1)';
+			return;
+		}
 		if (ScrollTrigger && !reduce) {
 			gsap.fromTo(
 				bar,
@@ -323,17 +327,20 @@
 		});
 	}
 
-	// Preview: blagi scrub parallax + vrlo mali tilt samo na finim pokazivačima.
+	// Preview: blagi scrub parallax na browser frame + vrlo mali tilt samo na finim pokazivačima.
 	if (preview) {
-		gsap.fromTo(
-			preview,
-			{ y: 26 },
-			{
-				y: -26,
-				ease: 'none',
-				scrollTrigger: { trigger: preview, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
-			}
-		);
+		var browser = preview.querySelector('.zaec-case-browser');
+		if (browser) {
+			gsap.fromTo(
+				browser,
+				{ y: 26 },
+				{
+					y: -26,
+					ease: 'none',
+					scrollTrigger: { trigger: preview, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
+				}
+			);
+		}
 		if (finePointer) {
 			var pX = gsap.quickTo(preview, 'rotationX', { duration: 0.5, ease: 'power3.out' });
 			var pY = gsap.quickTo(preview, 'rotationY', { duration: 0.5, ease: 'power3.out' });

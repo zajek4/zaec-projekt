@@ -26,14 +26,14 @@
 .zaec-case-rail__line { position: relative; width: 2px; background: var(--hair-d); border-radius: 2px; overflow: hidden; }
 .zaec-case-rail__line i { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: var(--signal); transform: scaleY(0); transform-origin: top; }
 .zaec-case-rail__dots { display: flex; flex-direction: column; justify-content: space-between; padding: 2px 0; }
-.zaec-case-rail__dots a { display: flex; align-items: baseline; gap: 10px; padding: 3px 0; font-family: var(--font-m); font-size: .6rem; letter-spacing: .08em; color: var(--gray-2); text-decoration: none; transition: color .3s; }
+.zaec-case-rail__dots a { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-family: var(--font-m); font-size: .6rem; letter-spacing: .1em; color: var(--gray-2); text-decoration: none; transition: color .3s; }
+.zaec-case-rail__dots a i { width: 10px; height: 1.5px; background: currentColor; transition: width .3s var(--ease), background .3s; }
 .zaec-case-rail__dots a span { color: var(--gray); font-variant-numeric: tabular-nums; transition: color .3s; }
-.zaec-case-rail__dots a em { font-style: normal; text-transform: uppercase; letter-spacing: .14em; opacity: .55; transition: opacity .3s; }
 .zaec-case-rail__dots a:hover, .zaec-case-rail__dots a:focus-visible { color: var(--signal-hi); }
-.zaec-case-rail__dots a:hover em, .zaec-case-rail__dots a:focus-visible em { opacity: 1; }
+.zaec-case-rail__dots a:hover span, .zaec-case-rail__dots a:focus-visible span { color: var(--signal-hi); }
 .zaec-case-rail__dots a.on { color: var(--signal); }
-.zaec-case-rail__dots a.on span { color: var(--signal); }
-.zaec-case-rail__dots a.on em { opacity: 1; }
+.zaec-case-rail__dots a.on i { width: 22px; background: var(--signal); }
+.zaec-case-rail__dots a.on span { color: var(--signal); font-weight: 600; }
 @media (max-width: 1080px) { .zaec-case-rail { display: none; } }
 
 /* ---------- zajednički dijelovi sekcija ---------- */
