@@ -94,9 +94,10 @@
 		canvas.style.height = H + 'px';
 		ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 		mobile = W < 900;
+		// Desktop: karta desno od sadržaja. Mobile: sadržaj gore, karta ispod.
 		CRO.x = W * (mobile ? 0.5 : 0.62);
-		CRO.y = H * (mobile ? 0.58 : 0.5);
-		var oh = Math.min(W, H) * (mobile ? 0.62 : 0.56);
+		CRO.y = H * (mobile ? 0.74 : 0.5);
+		var oh = Math.min(W, H) * (mobile ? 0.52 : 0.56);
 		CRO.k = oh / GEO.spanY;
 		buildNodes();
 		buildLinks();
@@ -134,16 +135,17 @@
 
 	function buildNodes() {
 		var m = Math.min(W, H);
+		var sc = mobile ? 0.45 : 1; // mobile: vanjski čvorovi bliže karti
 		var list = [];
 		hrCities.forEach(function (c, i) {
 			var xy = geoToXy(c.lat, c.lng);
 			list.push({ id: 'c' + i, x: xy.x, y: xy.y, size: 1, delay: 0.55 + i * 0.06, ph: i * 1.7 });
 		});
 		bizOffsets.forEach(function (b, i) {
-			list.push({ id: 'b' + i, x: CRO.x + b.dx * m, y: CRO.y + b.dy * m, size: 1.25, delay: 1.2 + i * 0.12, ph: 5 + i * 2.1 });
+			list.push({ id: 'b' + i, x: CRO.x + b.dx * m * sc, y: CRO.y + b.dy * m * sc, size: 1.25, delay: 1.2 + i * 0.12, ph: 5 + i * 2.1 });
 		});
 		euOffsets.forEach(function (e, i) {
-			list.push({ id: 'e' + i, x: CRO.x + e.dx * m, y: CRO.y + e.dy * m, size: 0.7, delay: 1.8 + i * 0.1, ph: 8 + i * 1.3 });
+			list.push({ id: 'e' + i, x: CRO.x + e.dx * m * sc, y: CRO.y + e.dy * m * sc, size: 0.7, delay: 1.8 + i * 0.1, ph: 8 + i * 1.3 });
 		});
 		list.forEach(function (n) {
 			n.x = Math.max(46, Math.min(W - 46, n.x));

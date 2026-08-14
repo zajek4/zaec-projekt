@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.11.7
+# ZAEC WordPress Theme — v1.11.8
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -254,3 +254,10 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - **Gustiša mreža** — 23 veze (grad↔grad, Europa→gradovi, djelatnosti→gradovi) i 10 putujućih pulsova.
 - **Kraći, mekši hero copy**: „Ljudi vas već traže." + „Predstavimo vas tako da vas lako nađu…".
 - Theme version: `1.11.7`.
+
+## v1.11.8
+
+- **Mobile-first hero.** Karta se na mobitelu pomiče ispod sadržaja (bez preklapanja s tekstom/CTA), vanjski čvorovi se skaliraju uz kartu, a obris se smanjuje na mjeru; naslov, lead i gumbi dobivaju uravnotežen mobile raster (50px tap target, full-width CTA).
+- **UX/poliranje**: skriven scroll-cue i meta na mobitelu, `touch-action: manipulation` na CTA (bez dvostrukog tap-zooma), uklonjen 3D perspective na mobitelu radi performansi.
+- Preloader edge-case: ako se modul učita nakon `load`, funkcionalni refresh se i dalje izvršava.
+- Theme version: `1.11.8`.

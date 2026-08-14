@@ -137,7 +137,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     if (HAS_GSAP) ScrollTrigger.refresh();
   }
   // Preloader je samo vizualni sloj — gasi se rano (LCP), ne čeka se load.
-  if (doc.readyState === 'complete') { finishPreloader(); }
+  if (doc.readyState === 'complete') { finishPreloader(); onLoaded(); }
   else {
     doc.addEventListener('DOMContentLoaded', finishPreloader);
     setTimeout(finishPreloader, 1200); // failsafe
