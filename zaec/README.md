@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.11.5
+# ZAEC WordPress Theme — v1.11.6
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -239,3 +239,10 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - **Uklonjen sav tekst i ikonice** — čvorovi su sada isključivo pulsirajuće točke/krugovi sa svijetlom jezgrom; putujuće linije s pulsom ostaju, a pulsovi nasumično skaču s veze na vezu.
 - **Novi copy**: „Vaš posao zaslužuje da bude nađen." uz jasniji benefit lead.
 - Theme version: `1.11.5`.
+
+## v1.11.6
+
+- **Precizan obris Republike Hrvatske iz autoritativnog OSM izvora.** Obris je sada generiran iz detaljnih geografskih podataka (georgique/world-geojson): točna kopnena granica (~190 pojednostavljenih točaka) + 19 stvarnih otoka (Cres, Krk, Brač, Hvar, Pag, Korčula, Rab, Dugi otok, Mljet, Vis, Lošinj, Pašman, Ugljan…). Više nema ručno crtane aproksimacije.
+- Čvorovi na canvasu koriste identičnu projekciju kao SVG obris (gradovi sjedaju točno na kartu).
+- **Novi copy**: „Ljudi vas traže. Dovedimo ih do vas." + konkretan benefit lead (web + Google Business).
+- Theme version: `1.11.6`.
