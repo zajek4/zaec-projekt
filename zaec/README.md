@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.11.8
+# ZAEC WordPress Theme — v1.11.9
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -261,3 +261,9 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - **UX/poliranje**: skriven scroll-cue i meta na mobitelu, `touch-action: manipulation` na CTA (bez dvostrukog tap-zooma), uklonjen 3D perspective na mobitelu radi performansi.
 - Preloader edge-case: ako se modul učita nakon `load`, funkcionalni refresh se i dalje izvršava.
 - Theme version: `1.11.8`.
+
+## v1.11.9
+
+- **Mobile hero — kompaktan i centriran.** Uklonjen višak visine: unutarnji wrapper više ne rasteže hero preko cijelog ekrana (bio je `min-height: 100svh` + veliki vertikalni paddingi → sekcija viša od viewporta). Sad je hero jedna ekranska visina.
+- **Naslov centriran** (kicker, H1, lead i CTA poravnati po sredini), s rasterom i razmakom usklađenim s ostatkom teme; karta je centrirana iza teksta kao suptilna pozadina.
+- Theme version: `1.11.9`.

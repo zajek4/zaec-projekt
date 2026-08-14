@@ -94,10 +94,10 @@
 		canvas.style.height = H + 'px';
 		ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 		mobile = W < 900;
-		// Desktop: karta desno od sadržaja. Mobile: sadržaj gore, karta ispod.
+		// Desktop: karta desno od sadržaja. Mobile: karta centrirana iza teksta.
 		CRO.x = W * (mobile ? 0.5 : 0.62);
-		CRO.y = H * (mobile ? 0.74 : 0.5);
-		var oh = Math.min(W, H) * (mobile ? 0.52 : 0.56);
+		CRO.y = H * (mobile ? 0.5 : 0.5);
+		var oh = Math.min(W, H) * (mobile ? 0.66 : 0.56);
 		CRO.k = oh / GEO.spanY;
 		buildNodes();
 		buildLinks();
