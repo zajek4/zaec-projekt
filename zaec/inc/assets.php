@@ -83,12 +83,28 @@ function zaec_module_script_tag( $tag, $handle, $src ) {
 	if ( in_array( $handle, array( 'zaec-home', 'zaec-404', 'zaec-project', 'zaec-network' ), true ) ) {
 		return '<script type="module" src="' . esc_url( $src ) . '"></script>' . "\n";
 	}
-	if ( 'zaec-global' === $handle ) {
+	if ( in_array( $handle, array( 'zaec-global', 'zaec-gsap', 'zaec-scrolltrigger', 'zaec-scrollto', 'zaec-lenis', 'zaec-project-gsap', 'zaec-project-scrolltrigger' ), true ) ) {
 		return '<script defer src="' . esc_url( $src ) . '"></script>' . "\n";
 	}
 	return $tag;
 }
 add_filter( 'script_loader_tag', 'zaec_module_script_tag', 10, 3 );
+
+/**
+ * Google Fonts učitaj asinkrono (bez render-blockinga), uz noscript fallback.
+ */
+function zaec_async_font_css( $tag, $handle ) {
+	if ( 'zaec-fonts' !== $handle ) {
+		return $tag;
+	}
+	if ( preg_match( '/href=[\'"]([^\'"]+)[\'"]/', $tag, $m ) ) {
+		$url = $m[1];
+		return '<link rel="preload" href="' . esc_url( $url ) . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n" .
+			'<noscript><link rel="stylesheet" href="' . esc_url( $url ) . '"></noscript>' . "\n";
+	}
+	return $tag;
+}
+add_filter( 'style_loader_tag', 'zaec_async_font_css', 10, 2 );
 
 function zaec_resource_hints( $urls, $relation_type ) {
 	if ( 'preconnect' === $relation_type ) {

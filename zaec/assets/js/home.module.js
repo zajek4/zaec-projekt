@@ -108,13 +108,12 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     preloaderDone = true;
     if (prefersReducedMotion || !HAS_GSAP) {
       preloader.style.display = 'none';
-      onLoaded();
       return;
     }
     var st = { v: 0 };
     var fill = $('#plFill'), num = $('#plNum'), track = $('.pl-track');
     gsap.to(st, {
-      v: 100, duration: 1.5, ease: 'power1.inOut',
+      v: 100, duration: 0.5, ease: 'power1.inOut',
       onUpdate: function () {
         var r = Math.round(st.v);
         if (fill) fill.style.width = st.v + '%';
@@ -123,8 +122,8 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       },
       onComplete: function () {
         gsap.to(preloader, {
-          yPercent: -100, duration: 0.75, ease: 'power3.inOut', delay: 0.05,
-          onComplete: function () { preloader.style.display = 'none'; onLoaded(); }
+          yPercent: -100, duration: 0.4, ease: 'power3.inOut',
+          onComplete: function () { preloader.style.display = 'none'; }
         });
       }
     });
@@ -137,11 +136,14 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     if (occCtl) occCtl.start();
     if (HAS_GSAP) ScrollTrigger.refresh();
   }
+  // Preloader je samo vizualni sloj — gasi se rano (LCP), ne čeka se load.
   if (doc.readyState === 'complete') { finishPreloader(); }
   else {
-    WIN.addEventListener('load', finishPreloader);
-    setTimeout(finishPreloader, 3200); // failsafe
+    doc.addEventListener('DOMContentLoaded', finishPreloader);
+    setTimeout(finishPreloader, 1200); // failsafe
   }
+  // Funkcionalni refresh tek kad se teški resursi (3D/fontovi) stvarno učitaju.
+  WIN.addEventListener('load', onLoaded);
 
   /* ============================================================
      LENIS + ANCHORI

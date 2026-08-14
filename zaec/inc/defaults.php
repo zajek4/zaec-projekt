@@ -13,8 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function zaec_front_defaults() {
 	return array(
 		'net_kicker'             => '[ ZAEC · Web stranice · Osijek ]',
-		'net_title'              => "Ljudi vas traže.\nDovedimo ih do vas.",
-		'net_lead'               => 'Web stranica + Google Business profil. Složeno tako da vas klijent iz vašeg kraja — i preko granice — nađe, provjeri i kontaktira.',
+		'net_title'              => 'Ljudi vas već traže.',
+		'net_lead'               => 'Predstavimo vas tako da vas lako nađu — web i Google profil koji točno kažu što radite.',
 		'net_primary_text'       => 'Zatraži procjenu',
 		'net_primary_url'        => '#upit',
 		'net_secondary_text'     => 'Pogledaj radove',

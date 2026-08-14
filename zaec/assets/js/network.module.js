@@ -164,15 +164,24 @@
 		LINKS.push({ a: 'c2', b: 'c5', tone: 'in' });  // Split–Dubrovnik
 		LINKS.push({ a: 'c3', b: 'c4', tone: 'in' });  // Rijeka–Zadar
 		LINKS.push({ a: 'c0', b: 'c3', tone: 'in' });  // Osijek–Rijeka
+		LINKS.push({ a: 'c2', b: 'c4', tone: 'in' });  // Split–Zadar
+		LINKS.push({ a: 'c4', b: 'c5', tone: 'in' });  // Zadar–Dubrovnik
+		LINKS.push({ a: 'c3', b: 'c2', tone: 'in' });  // Rijeka–Split (obala)
+		LINKS.push({ a: 'c0', b: 'c4', tone: 'in' });  // Osijek–Zadar
 		// izvana: Europa → gradovi
-		LINKS.push({ a: 'e0', b: 'c1', tone: 'eu' });
-		LINKS.push({ a: 'e1', b: 'c1', tone: 'eu' });
-		LINKS.push({ a: 'e2', b: 'c3', tone: 'eu' });
-		LINKS.push({ a: 'e3', b: 'c1', tone: 'eu' });
+		LINKS.push({ a: 'e0', b: 'c1', tone: 'eu' });  // Beč–Zagreb
+		LINKS.push({ a: 'e0', b: 'c0', tone: 'eu' });  // Beč–Osijek
+		LINKS.push({ a: 'e1', b: 'c1', tone: 'eu' });  // München–Zagreb
+		LINKS.push({ a: 'e1', b: 'c3', tone: 'eu' });  // München–Rijeka
+		LINKS.push({ a: 'e2', b: 'c3', tone: 'eu' });  // Milano–Rijeka
+		LINKS.push({ a: 'e3', b: 'c1', tone: 'eu' });  // London–Zagreb
 		// djelatnosti → gradovi
 		LINKS.push({ a: 'b0', b: 'c1', tone: 'out' });
-		LINKS.push({ a: 'b1', b: 'c2', tone: 'out' });
-		LINKS.push({ a: 'b2', b: 'c0', tone: 'out' });
+		LINKS.push({ a: 'b0', b: 'c2', tone: 'out' });
+		LINKS.push({ a: 'b1', b: 'c0', tone: 'out' });
+		LINKS.push({ a: 'b1', b: 'c3', tone: 'out' });
+		LINKS.push({ a: 'b2', b: 'c2', tone: 'out' });
+		LINKS.push({ a: 'b2', b: 'c4', tone: 'out' });
 	}
 
 	/* ============================================================
@@ -366,13 +375,9 @@
 		t0 = performance.now();
 		section.classList.add('net-live');
 	}
-	if (document.body.classList.contains('loaded')) revealCopy();
-	else if ('MutationObserver' in window) {
-		var bodyWatch = new MutationObserver(function () { if (document.body.classList.contains('loaded')) revealCopy(); });
-		bodyWatch.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-	}
-	window.addEventListener('load', revealCopy);
-	setTimeout(revealCopy, 2600);
+	// Rani reveal (LCP): kratki vizualni delay, bez čekanja na load.
+	setTimeout(revealCopy, 350);
+	window.addEventListener('load', function () { if (!revealed) revealCopy(); });
 
 	if (fine) {
 		window.addEventListener('mousemove', function (e) {
@@ -387,9 +392,9 @@
 	computeExit();
 
 	pulses = [];
-	var PULSE_N = 7;
+	var PULSE_N = 10;
 	for (var p = 0; p < PULSE_N; p++) {
-		pulses.push({ linkIndex: p % LINKS.length, phase: p / PULSE_N, speed: 0.19 + (p % 3) * 0.035 });
+		pulses.push({ linkIndex: p % LINKS.length, phase: p / PULSE_N, speed: 0.2 + (p % 3) * 0.04 });
 	}
 
 	function frame(now) {

@@ -1,4 +1,4 @@
-# ZAEC WordPress Theme — v1.11.6
+# ZAEC WordPress Theme — v1.11.7
 
 Custom WordPress tema migrirana iz dostavljenog ZAEC statičkog projekta. Nema page buildera ni obavezne ACF Pro ovisnosti.
 
@@ -246,3 +246,11 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - Čvorovi na canvasu koriste identičnu projekciju kao SVG obris (gradovi sjedaju točno na kartu).
 - **Novi copy**: „Ljudi vas traže. Dovedimo ih do vas." + konkretan benefit lead (web + Google Business).
 - Theme version: `1.11.6`.
+
+## v1.11.7
+
+- **PageSpeed/LCP.** Preloader više ne čeka `window.load` (sav 3D JS + fontovi) — gasi se odmah po parsiranju DOM-a i traje ~0.9 s umjesto ~2.3 s; hero tekst se otkriva rano. Funkcionalni refresh (`ScrollTrigger.refresh`, autoplay djelatnosti) i dalje se radi na `load`.
+- **Render-blocking.** Vendor skripte (GSAP, ScrollTrigger, ScrollTo, Lenis) dobivaju `defer`; Google Fonts se učitavaju asinkrono (preload + onload swap + noscript fallback).
+- **Gustiša mreža** — 23 veze (grad↔grad, Europa→gradovi, djelatnosti→gradovi) i 10 putujućih pulsova.
+- **Kraći, mekši hero copy**: „Ljudi vas već traže." + „Predstavimo vas tako da vas lako nađu…".
+- Theme version: `1.11.7`.
