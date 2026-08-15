@@ -41,6 +41,7 @@ $address_line  = trim( implode( ', ', array_filter( array( $options['address'], 
 		<div class="foot-col">
 			<p class="foot-h"><?php esc_html_e( 'Studio', 'zaec' ); ?></p>
 			<?php $radovi_url = get_post_type_archive_link( 'projekti' ); if ( ! $radovi_url ) { $radovi_url = zaec_home_anchor( 'radovi' ); } ?>
+			<a href="<?php echo esc_url( zaec_home_anchor( 'studio' ) ); ?>"><?php esc_html_e( 'O ZAEC-u', 'zaec' ); ?></a>
 			<a href="<?php echo esc_url( $radovi_url ); ?>"><?php esc_html_e( 'Radovi', 'zaec' ); ?></a>
 			<a href="<?php echo esc_url( zaec_home_anchor( 'faq' ) ); ?>"><?php esc_html_e( 'Pitanja', 'zaec' ); ?></a>
 			<a href="<?php echo esc_url( zaec_home_anchor( 'upit' ) ); ?>"><?php esc_html_e( 'Upit', 'zaec' ); ?></a>

@@ -16,6 +16,7 @@ function zaec_front_field_groups() {
 			'net_kicker'         => array( 'label' => 'Kicker', 'type' => 'text' ),
 			'net_title'          => array( 'label' => 'H1', 'type' => 'textarea' ),
 			'net_lead'           => array( 'label' => 'Lead', 'type' => 'textarea' ),
+			'net_proof'          => array( 'label' => 'Mikro-dokaz', 'type' => 'textarea' ),
 			'net_primary_text'   => array( 'label' => 'Primarni CTA — tekst', 'type' => 'text' ),
 			'net_primary_url'    => array( 'label' => 'Primarni CTA — URL/anchor', 'type' => 'text' ),
 			'net_secondary_text' => array( 'label' => 'Sekundarni CTA — tekst', 'type' => 'text' ),
@@ -36,7 +37,8 @@ function zaec_front_field_groups() {
 			'services_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
 			'services_title' => array( 'label' => 'Naslov', 'type' => 'textarea' ),
 			'services_lead' => array( 'label' => 'Lead', 'type' => 'textarea' ),
-			'services_note' => array( 'label' => 'Napomena', 'type' => 'textarea' ),
+			'services_note_title' => array( 'label' => 'Google profil — naslov', 'type' => 'text' ),
+			'services_note' => array( 'label' => 'Google profil — objašnjenje', 'type' => 'textarea' ),
 		),
 		'Poznato' => array(
 			'poznato_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
@@ -65,6 +67,7 @@ function zaec_front_field_groups() {
 			'cijene_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
 			'cijene_title' => array( 'label' => 'Naslov', 'type' => 'textarea' ),
 			'cijene_lead' => array( 'label' => 'Lead', 'type' => 'textarea' ),
+			'cijene_roi' => array( 'label' => 'Logika isplativosti', 'type' => 'textarea' ),
 			'band_kicker' => array( 'label' => 'Poseban opseg — kicker', 'type' => 'text' ),
 			'band_title' => array( 'label' => 'Poseban opseg — naslov', 'type' => 'text' ),
 			'band_text' => array( 'label' => 'Poseban opseg — tekst', 'type' => 'textarea' ),
@@ -85,6 +88,11 @@ function zaec_front_field_groups() {
 			'radovi_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
 			'radovi_title' => array( 'label' => 'Naslov', 'type' => 'textarea' ),
 			'radovi_lead' => array( 'label' => 'Lead', 'type' => 'textarea' ),
+		),
+		'Studio' => array(
+			'studio_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
+			'studio_title' => array( 'label' => 'Naslov', 'type' => 'textarea' ),
+			'studio_text' => array( 'label' => 'Tekst', 'type' => 'textarea' ),
 		),
 		'Recenzije' => array(
 			'klijenti_kicker' => array( 'label' => 'Kicker', 'type' => 'text' ),
@@ -110,7 +118,7 @@ function zaec_repeater_schemas() {
 	return array(
 		'hero_stats' => array( 'title' => 'Hero statistike', 'fixed' => true, 'fields' => array( 'count' => 'Broj', 'suffix' => 'Sufiks', 'label' => 'Opis' ) ),
 		'services' => array( 'title' => 'Usluge', 'fixed' => true, 'fields' => array( 'number' => 'Broj', 'title' => 'Naslov', 'text' => 'Tekst', 'layer' => '3D sloj (0–5)' ) ),
-		'occupations' => array( 'title' => 'Djelatnosti uz 3D kuću — mora ostati točno 8 redaka', 'fixed' => true, 'fields' => array( 'tab' => 'Tab', 'title' => 'Naslov', 'sub' => 'Opis', 'q' => 'Što web može riješiti / mikrocopy' ) ),
+		'occupations' => array( 'title' => 'Djelatnosti uz 3D kuću — mora ostati točno 8 redaka', 'fixed' => true, 'fields' => array( 'tab' => 'Tab', 'title' => 'Naslov', 'sub' => 'Opis', 'q' => 'Što web može riješiti / mikrocopy', 'cta' => 'CTA prema upitu', 'activity' => 'Vrijednost djelatnosti u formi' ) ),
 		'pain_points' => array( 'title' => 'Poznato — kartice', 'fixed' => true, 'fields' => array( 'code' => 'Oznaka', 'title' => 'Naslov', 'text' => 'Tekst' ) ),
 		'method_points' => array( 'title' => 'Metoda — točke', 'fixed' => true, 'fields' => array( 'code' => 'Oznaka', 'title' => 'Naslov', 'text' => 'Tekst' ) ),
 		'process_steps' => array( 'title' => 'Proces — koraci', 'fixed' => true, 'fields' => array( 'code' => 'Oznaka', 'title' => 'Naslov', 'text' => 'Tekst', 'meta' => 'Meta' ) ),

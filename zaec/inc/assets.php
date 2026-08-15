@@ -28,13 +28,21 @@ function zaec_enqueue_assets() {
 		wp_enqueue_script( 'zaec-home', get_theme_file_uri( 'assets/js/home.module.js' ), array( 'zaec-scrolltrigger', 'zaec-scrollto', 'zaec-lenis' ), zaec_asset_version( 'assets/js/home.module.js' ), true );
 		wp_enqueue_script( 'zaec-network', get_theme_file_uri( 'assets/js/network.module.js' ), array( 'zaec-home' ), zaec_asset_version( 'assets/js/network.module.js' ), true );
 
-		$occupations = zaec_front_repeater( 'occupations' );
-		$js_occ      = array();
-		foreach ( array_slice( $occupations, 0, 8 ) as $occupation ) {
+		$occupations         = zaec_front_repeater( 'occupations' );
+		$occupation_defaults = zaec_front_repeater_defaults()['occupations'];
+		$js_occ              = array();
+		foreach ( array_slice( $occupations, 0, 8 ) as $index => $occupation ) {
+			if ( isset( $occupation_defaults[ $index ] ) ) {
+				$occupation = is_array( $occupation )
+					? array_merge( $occupation_defaults[ $index ], $occupation )
+					: $occupation_defaults[ $index ];
+			}
 			$js_occ[] = array(
-				'title' => isset( $occupation['title'] ) ? wp_strip_all_tags( $occupation['title'] ) : '',
-				'sub'   => isset( $occupation['sub'] ) ? wp_strip_all_tags( $occupation['sub'] ) : '',
-				'q'     => isset( $occupation['q'] ) ? wp_strip_all_tags( $occupation['q'] ) : '',
+				'title'    => isset( $occupation['title'] ) ? wp_strip_all_tags( $occupation['title'] ) : '',
+				'sub'      => isset( $occupation['sub'] ) ? wp_strip_all_tags( $occupation['sub'] ) : '',
+				'q'        => isset( $occupation['q'] ) ? wp_strip_all_tags( $occupation['q'] ) : '',
+				'cta'      => isset( $occupation['cta'] ) ? wp_strip_all_tags( $occupation['cta'] ) : '',
+				'activity' => isset( $occupation['activity'] ) ? wp_strip_all_tags( $occupation['activity'] ) : '',
 			);
 		}
 		$opts = zaec_get_options();

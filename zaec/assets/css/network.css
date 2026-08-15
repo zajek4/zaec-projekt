@@ -25,12 +25,13 @@
 
 /* hero sadržaj prati širinu ostatka stranice (~1336px) */
 .net-inner { position: relative; z-index: 2; width: 100%; max-width: var(--net-max, 1336px); min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: calc(var(--nav-h) + 24px) 0 96px; pointer-events: none; will-change: transform, opacity; }
-.net-copy { max-width: 620px; pointer-events: auto; }
+.net-copy { max-width: 760px; pointer-events: auto; }
 
 .net-copy .kicker { color: var(--hologram); }
-.net-copy h1 { margin: 0; font-size: clamp(2.8rem, 6.2vw, 7rem); line-height: .96; letter-spacing: -.045em; text-transform: uppercase; text-wrap: balance; }
-.net-copy .lead { max-width: 46ch; margin: 22px 0 0; color: var(--gray-2); font-size: clamp(1.05rem, 1.4vw, 1.25rem); line-height: 1.6; }
-.net-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+.net-copy h1 { margin: 0; font-size: clamp(2.6rem, 4.6vw, 5.2rem); line-height: .98; letter-spacing: -.04em; text-transform: uppercase; text-wrap: balance; }
+.net-copy .lead { max-width: 48ch; margin: 22px 0 0; color: var(--gray-2); font-size: clamp(1.05rem, 1.4vw, 1.25rem); line-height: 1.6; }
+.net-proof { max-width: 60ch; margin: 18px 0 0; padding-left: 14px; border-left: 2px solid var(--signal-hi); color: var(--paper-2); font-family: var(--font-m); font-size: .72rem; line-height: 1.6; letter-spacing: .035em; }
+.net-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .net-ctas .btn { touch-action: manipulation; }
 
 /* ulaz copyja: staggered reveal */
@@ -39,6 +40,7 @@
 .net-live .net-copy > *:nth-child(2) { transition-delay: .07s; }
 .net-live .net-copy > *:nth-child(3) { transition-delay: .14s; }
 .net-live .net-copy > *:nth-child(4) { transition-delay: .21s; }
+.net-live .net-copy > *:nth-child(5) { transition-delay: .28s; }
 
 /* ============================================================
    SVG OBRIS HRVATSKE — jak, debeo, s dvostrukim sjajem
@@ -121,7 +123,8 @@ html.no-3d .net-copy > * { opacity: 1 !important; transform: none !important; }
   .net-copy .kicker { font-size: .62rem; letter-spacing: .2em; margin: 0 auto 14px; }
   .net-copy h1 { font-size: clamp(2rem, 9vw, 3rem); line-height: 1.02; letter-spacing: -.03em; }
   .net-copy .lead { max-width: 34ch; margin: 14px auto 0; font-size: 1rem; line-height: 1.55; }
-  .net-ctas { flex-direction: column; align-items: center; margin-top: 22px; gap: 10px; }
+  .net-proof { max-width: 38ch; margin: 14px auto 0; padding: 0 0 0 12px; text-align: left; font-size: .66rem; line-height: 1.5; }
+  .net-ctas { flex-direction: column; align-items: center; margin-top: 20px; gap: 10px; }
   .net-ctas .btn { width: 100%; max-width: 340px; min-height: 50px; justify-content: center; }
   .net-cue { display: none; }
   .net-meta { display: none; }

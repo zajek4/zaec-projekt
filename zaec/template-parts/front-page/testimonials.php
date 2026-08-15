@@ -62,7 +62,7 @@ $total  = count( $quotes );
 					$value     = isset( $item['value'] ) ? trim( $item['value'] ) : '';
 					$countable = preg_match( '/^(\d+)(\+?)$/', $value, $match );
 					?>
-					<div class="trust-cell"><b><?php if ( $countable ) : ?><span data-count="<?php echo esc_attr( $match[1] ); ?>">0</span><?php echo esc_html( $match[2] ); ?><?php else : ?><?php echo esc_html( $value ); ?><?php endif; ?></b><span><?php echo esc_html( $item['label'] ); ?></span></div>
+					<div class="trust-cell"><b><?php if ( $countable ) : ?><span><?php echo esc_html( $match[1] ); ?></span><?php echo esc_html( $match[2] ); ?><?php else : ?><?php echo esc_html( $value ); ?><?php endif; ?></b><span><?php echo esc_html( $item['label'] ); ?></span></div>
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>

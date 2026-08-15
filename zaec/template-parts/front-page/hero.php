@@ -9,12 +9,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$services = zaec_front_repeater( 'services' );
-$occ      = array_slice( zaec_front_repeater( 'occupations' ), 0, 8 );
-$first    = isset( $occ[0] ) ? $occ[0] : array(
-	'title' => '',
-	'sub'   => '',
-	'q'     => '',
+$services            = zaec_front_repeater( 'services' );
+$occ                 = array_slice( zaec_front_repeater( 'occupations' ), 0, 8 );
+$occupation_defaults = zaec_front_repeater_defaults()['occupations'];
+foreach ( $occ as $index => $occupation ) {
+	if ( isset( $occupation_defaults[ $index ] ) ) {
+		$occ[ $index ] = is_array( $occupation )
+			? array_merge( $occupation_defaults[ $index ], $occupation )
+			: $occupation_defaults[ $index ];
+	}
+}
+$first = isset( $occ[0] ) ? $occ[0] : array(
+	'title'    => '',
+	'sub'      => '',
+	'q'        => '',
+	'cta'      => '',
+	'activity' => '',
 );
 $hint     = trim( (string) zaec_front_field( 'hero_hint' ) );
 ?>
@@ -56,7 +66,10 @@ $hint     = trim( (string) zaec_front_field( 'hero_hint' ) );
 							</button>
 						<?php endforeach; ?>
 					</div>
-					<p class="mono-note"><?php echo esc_html( zaec_front_field( 'services_note' ) ); ?></p>
+					<div class="svc-google-note">
+						<strong><?php echo esc_html( zaec_front_field( 'services_note_title' ) ); ?></strong>
+						<p><?php echo esc_html( zaec_front_field( 'services_note' ) ); ?></p>
+					</div>
 				</div>
 
 				<div class="hero-stage">
@@ -140,6 +153,7 @@ $hint     = trim( (string) zaec_front_field( 'hero_hint' ) );
 								<h3 id="occTitle"><?php echo esc_html( $first['title'] ); ?></h3>
 								<p class="occ-sub" id="occSub"><?php echo esc_html( $first['sub'] ); ?></p>
 								<p class="occ-query" id="occQueryWrap"><svg class="ic" aria-hidden="true"><use href="#ic-query"/></svg><span id="occQuery"><?php echo esc_html( $first['q'] ); ?></span></p>
+								<a class="occ-cta" id="occCta" href="<?php echo esc_url( zaec_home_anchor( 'upit' ) ); ?>" data-activity="<?php echo esc_attr( isset( $first['activity'] ) ? $first['activity'] : '' ); ?>"><?php echo esc_html( isset( $first['cta'] ) ? $first['cta'] : '' ); ?></a>
 							</div>
 							<div class="occ-bar" aria-hidden="true"><i id="occBarFill"></i></div>
 						</aside>

@@ -267,3 +267,13 @@ Provjerite stvarne poslovne podatke, testimonials i svaku marketinšku tvrdnju. 
 - **Mobile hero — kompaktan i centriran.** Uklonjen višak visine: unutarnji wrapper više ne rasteže hero preko cijelog ekrana (bio je `min-height: 100svh` + veliki vertikalni paddingi → sekcija viša od viewporta). Sad je hero jedna ekranska visina.
 - **Naslov centriran** (kicker, H1, lead i CTA poravnati po sredini), s rasterom i razmakom usklađenim s ostatkom teme; karta je centrirana iza teksta kao suptilna pozadina.
 - Theme version: `1.11.9`.
+
+## v1.12.0
+
+- Hero sada koristi pitanje „Netko upravo traži vašu uslugu na Googleu. Što pronalazi?”, novi podnaslov, mikro-dokaz i postojeća dva jasna CTA-a.
+- Google profil objašnjen je unutar onoga što ulazi u svaku izradu, bez obećavanja pozicije; uz cijene je dodana jednostavna logika isplativosti bez projekcija prihoda.
+- Dodana je kratka ZAEC studio sekcija, potvrđena izjava Dominika iz Daj Grica te stvarni proof od `50+` realiziranih projekata (bez početnog prikaza nule).
+- Svaka djelatnost ima vlastiti CTA prema kontaktnoj formi; klik unaprijed odabire odgovarajuću djelatnost bez mijenjanja postojećeg teksta slajda.
+- Mobile kontakt i footer/logotip eksplicitno prelaze u vertikalni flex raspored.
+- Uključena je sigurna migracija tvorničkog sadržaja koja ne prepisuje ručne izmjene.
+- Theme version: `1.12.0`.

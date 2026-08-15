@@ -42,6 +42,7 @@ $hr_path_d = 'M 11.674 -46.555 L 11.589 -46.501 L 11.629 -46.380 L 11.453 -46.39
 			<p class="kicker"><?php echo esc_html( zaec_front_field( 'net_kicker' ) ); ?></p>
 			<h1><?php echo nl2br( esc_html( zaec_front_field( 'net_title' ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h1>
 			<p class="lead"><?php echo esc_html( zaec_front_field( 'net_lead' ) ); ?></p>
+			<p class="net-proof"><?php echo esc_html( zaec_front_field( 'net_proof' ) ); ?></p>
 			<div class="net-ctas">
 				<a class="btn btn-signal btn-arrow" href="<?php echo esc_url( 0 === strpos( $net_primary_url, '#' ) ? zaec_home_anchor( $net_primary_url ) : $net_primary_url ); ?>">
 					<span><?php echo esc_html( $net_primary_text ); ?></span>

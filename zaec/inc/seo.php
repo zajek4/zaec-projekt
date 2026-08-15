@@ -15,7 +15,7 @@ function zaec_meta_description() {
 	}
 	$description = '';
 	if ( is_front_page() ) {
-		$description = zaec_front_field( 'hero_lead' );
+		$description = zaec_front_field( 'net_lead' );
 	} elseif ( is_singular() ) {
 		$post = get_queried_object();
 		if ( $post instanceof WP_Post ) {
@@ -51,7 +51,7 @@ function zaec_front_schema() {
 			'@type'       => 'LocalBusiness',
 			'name'        => get_bloginfo( 'name' ),
 			'legalName'   => $options['legal_name'],
-			'description' => zaec_front_field( 'hero_lead' ),
+			'description' => zaec_front_field( 'net_lead' ),
 			'url'         => home_url( '/' ),
 			'address'     => array_filter(
 				array(

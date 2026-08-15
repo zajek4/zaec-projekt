@@ -22,6 +22,7 @@ foreach ( $plans as $plan ) {
 			<p class="kicker"><?php echo esc_html( zaec_front_field( 'cijene_kicker' ) ); ?></p>
 			<h2><?php echo esc_html( zaec_front_field( 'cijene_title' ) ); ?></h2>
 			<p class="lead"><?php echo esc_html( zaec_front_field( 'cijene_lead' ) ); ?></p>
+			<p class="pricing-roi"><?php echo esc_html( zaec_front_field( 'cijene_roi' ) ); ?></p>
 			<a class="pricing-scope-link" href="#poseban-opseg"><span><?php echo esc_html( zaec_front_field( 'band_cta' ) ); ?></span><svg class="ar" aria-hidden="true"><use href="#ic-arrow-d"/></svg></a>
 		</div>
 

@@ -367,7 +367,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   ============================================================ */
   if (HAS_GSAP && !prefersReducedMotion) {
     // JEDAN batch reveal — manje ScrollTrigger instanci = glatkiji scroll
-    var revealSel = '.sec-head, .pain-grid, .m-points, .timeline, .pricing-tracks, .plan-band, .price-notes, .projects, .trust-strip, .faq-list, .form-wrap, .call-card, .bridge, .bp-wrap, .ps-wrap, .ek-points, .ph-stage';
+    var revealSel = '.sec-head, .pain-grid, .m-points, .timeline, .pricing-tracks, .plan-band, .price-notes, .projects, .zaec-studio__grid, .trust-strip, .faq-list, .form-wrap, .call-card, .bridge, .bp-wrap, .ps-wrap, .ek-points, .ph-stage';
     $$(revealSel).forEach(function (el) {
       el.classList.add('rv');
       gsap.to(el, {
@@ -421,14 +421,14 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
      DJELATNOSTI — podaci
   ============================================================ */
   var OCC_DEFAULT = [
-    { title: 'Za klima-servise', sub: 'Servis, montaža i čišćenje. Vaš klijent treba odmah pronaći što radite, gdje dolazite i kako do termina.', q: 'Mali potez: usluge · područje rada · poziv/WhatsApp · termin' },
-    { title: 'Za vodoinstalatere', sub: 'Kod curenja se ne čita roman. Hitni kontakt, područje rada i vrsta intervencije moraju biti jasni u nekoliko sekundi.', q: 'Na webu: hitni poziv · intervencije · fotografija problema · lokalne stranice' },
-    { title: 'Za električare', sub: 'Od sitnog kvara do instalacija i atesta — jasno odvojimo usluge, reference i područje na koje izlazite.', q: 'Mali potez: usluga po problemu · reference · područje rada · brzi upit' },
-    { title: 'Za krovopokrivače i limare', sub: 'Krov se prodaje povjerenjem: izvedeni radovi, materijali, područje rada i jednostavan put do procjene.', q: 'Mali potez: prije/poslije · materijali · područje rada · procjena' },
-    { title: 'Za građevinu i adaptacije', sub: 'Kupac želi vidjeti što preuzimate, kako izgleda proces i možete li pokazati stvarne projekte prije prvog poziva.', q: 'Na webu: projekti · usluge · proces · upit prema opsegu projekta' },
-    { title: 'Za smještaj i turizam', sub: 'Gost mora brzo vidjeti smještaj, lokaciju, sadržaje i najjednostavniji način rezervacije.', q: 'Na webu: sobe · galerija · karta · booking/upit · više jezika' },
-    { title: 'Za trgovine i webshopove', sub: 'Proizvod mora biti lako pronaći, razumjeti i kupiti — posebno na mobitelu.', q: 'Na webu: katalog/webshop · filteri · dostava i plaćanje · analitika' },
-    { title: 'Za ostale usluge i struke', sub: 'Odvjetnik, računovođa, ordinacija, studio, škola… Ako klijenti prije odluke uvijek pitaju isto, stranica može dati jasan odgovor i uputiti na poziv ili upit.', q: 'Na webu: usluge · cijene/okvir · FAQ · jasan CTA — bez generičkog paketa' }
+    { title: 'Za klima-servise', sub: 'Servis, montaža i čišćenje. Vaš klijent treba odmah pronaći što radite, gdje dolazite i kako do termina.', q: 'Mali potez: usluge · područje rada · poziv/WhatsApp · termin', cta: 'Pogledaj kako to izgleda za klima servis →', activity: 'Klimatizacija, grijanje, hlađenje' },
+    { title: 'Za vodoinstalatere', sub: 'Kod curenja se ne čita roman. Hitni kontakt, područje rada i vrsta intervencije moraju biti jasni u nekoliko sekundi.', q: 'Na webu: hitni poziv · intervencije · fotografija problema · lokalne stranice', cta: 'Pogledaj kako web radi za vodoinstalatere →', activity: 'Vodovod i instalacije' },
+    { title: 'Za električare', sub: 'Od sitnog kvara do instalacija i atesta — jasno odvojimo usluge, reference i područje na koje izlazite.', q: 'Mali potez: usluga po problemu · reference · područje rada · brzi upit', cta: 'Pogledaj primjer za električare →', activity: 'Elektrika' },
+    { title: 'Za krovopokrivače i limare', sub: 'Krov se prodaje povjerenjem: izvedeni radovi, materijali, područje rada i jednostavan put do procjene.', q: 'Mali potez: prije/poslije · materijali · područje rada · procjena', cta: 'Pogledaj kako web radi za krovopokrivače →', activity: 'Krovopokrivanje i limarija' },
+    { title: 'Za građevinu i adaptacije', sub: 'Kupac želi vidjeti što preuzimate, kako izgleda proces i možete li pokazati stvarne projekte prije prvog poziva.', q: 'Na webu: projekti · usluge · proces · upit prema opsegu projekta', cta: 'Pogledaj primjer za građevinu i adaptacije →', activity: 'Građevina i adaptacije' },
+    { title: 'Za smještaj i turizam', sub: 'Gost mora brzo vidjeti smještaj, lokaciju, sadržaje i najjednostavniji način rezervacije.', q: 'Na webu: sobe · galerija · karta · booking/upit · više jezika', cta: 'Pogledaj kako web radi za smještaj i turizam →', activity: 'Ugostiteljstvo, smještaj, turizam' },
+    { title: 'Za trgovine i webshopove', sub: 'Proizvod mora biti lako pronaći, razumjeti i kupiti — posebno na mobitelu.', q: 'Na webu: katalog/webshop · filteri · dostava i plaćanje · analitika', cta: 'Pogledaj primjer za trgovine i webshopove →', activity: 'Trgovina, proizvodnja, webshop' },
+    { title: 'Za ostale usluge i struke', sub: 'Odvjetnik, računovođa, ordinacija, studio, škola… Ako klijenti prije odluke uvijek pitaju isto, stranica može dati jasan odgovor i uputiti na poziv ili upit.', q: 'Na webu: usluge · cijene/okvir · FAQ · jasan CTA — bez generičkog paketa', cta: 'Pogledaj kako web radi za vašu djelatnost →', activity: 'Uslužne djelatnosti' }
   ];
 
   var OCC = (WIN.ZAEC_HOME && Array.isArray(WIN.ZAEC_HOME.occupations) && WIN.ZAEC_HOME.occupations.length === 8) ? WIN.ZAEC_HOME.occupations : OCC_DEFAULT;
@@ -438,7 +438,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   ============================================================ */
   var occCtl = (function () {
     var tabs = $$('.occ-tab');
-    var elIdx = $('#occIdx'), elTitle = $('#occTitle'), elSub = $('#occSub'), elQuery = $('#occQuery');
+    var elIdx = $('#occIdx'), elTitle = $('#occTitle'), elSub = $('#occSub'), elQuery = $('#occQuery'), elCta = $('#occCta');
     var swapWrap = $('#occSwap');
     var bar = $('#occBarFill'), card = $('#occCard'), controlsWrap = $('#occControls');
     var cur = 0, started = false;
@@ -452,6 +452,11 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       elTitle.textContent = o.title;
       elSub.textContent = o.sub;
       elQuery.textContent = o.q;
+      if (elCta) {
+        elCta.textContent = o.cta || '';
+        elCta.setAttribute('data-activity', o.activity || '');
+        elCta.hidden = !o.cta;
+      }
       if (swapWrap) {
         swapWrap.classList.remove('swap');
         void swapWrap.offsetWidth;
@@ -494,6 +499,18 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       t.addEventListener('mouseenter', function () { pauseUntil = performance.now() + 15000; });
     });
     if (card) card.addEventListener('mouseenter', function () { pauseUntil = performance.now() + 15000; });
+    if (elCta) {
+      elCta.addEventListener('click', function () {
+        var activity = elCta.getAttribute('data-activity') || '';
+        var select = $('#fDjelatnost');
+        if (!select || !activity) return;
+        var hasOption = Array.prototype.some.call(select.options, function (option) { return option.value === activity; });
+        if (hasOption) {
+          select.value = activity;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+    }
 
     // Suptilni HUD tilt prati miš samo u slobodnoj, desktop varijanti.
     if (card && HAS_GSAP && !prefersReducedMotion && !isCoarse) {

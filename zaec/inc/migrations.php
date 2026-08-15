@@ -663,5 +663,96 @@ function zaec_migrate_theme_data() {
 		update_option( 'zaec_climate_copy_v192_done', 1, false );
 	}
 
+	/*
+	 * v1.12.0 — završni poslovni copy, stvarni proof i CTA po djelatnosti.
+	 * Postojeći ručno uređeni sadržaj ostaje netaknut; mijenjaju se samo
+	 * poznati tvornički tekstovi, a nova polja se nadopunjuju ako ne postoje.
+	 */
+	if ( version_compare( $version, '1.12.0', '<' ) ) {
+		if ( $front_id ) {
+			$defaults  = zaec_front_defaults();
+			$repeaters = zaec_front_repeater_defaults();
+
+			$scalar_migrations = array(
+				'net_title' => array(
+					'Ljudi vas već traže.',
+					'Ljudi vas traže. Dovedimo ih do vas.',
+				),
+				'net_lead' => array(
+					'Predstavimo vas tako da vas lako nađu — web i Google profil koji točno kažu što radite.',
+					'Web stranica i Google Business profil koji jasno pokazuju što radite, gdje radite i kako vas kontaktirati.',
+				),
+				'services_note' => array(
+					'Uključeno u svaku izradu, bez doplate: brzina, jasna struktura, postavljen Google Business profil i Analytics/mjerenje. Temelj ostaje čitljiv i drugom developeru — bez zaključavanja. Ako posao naraste do shopa ili rezervacija, to je poseban opseg — cijena prije koda.',
+					'U izradu ulaze brzina, jasna struktura, Google Business Profile i mjerenje. Shop i integracije — samo kada vašem poslu stvarno trebaju.',
+				),
+			);
+			foreach ( $scalar_migrations as $key => $known_old_values ) {
+				$current = get_post_meta( $front_id, '_zaec_' . $key, true );
+				if ( in_array( $current, $known_old_values, true ) ) {
+					update_post_meta( $front_id, '_zaec_' . $key, $defaults[ $key ] );
+				}
+			}
+
+			// Ova polja prije v1.12.0 nisu postojala, pa ih je sigurno inicijalizirati.
+			foreach ( array( 'net_proof', 'services_note_title', 'cijene_roi', 'studio_kicker', 'studio_title', 'studio_text' ) as $key ) {
+				if ( '' === get_post_meta( $front_id, '_zaec_' . $key, true ) ) {
+					update_post_meta( $front_id, '_zaec_' . $key, $defaults[ $key ] );
+				}
+			}
+
+			$quotes = get_post_meta( $front_id, '_zaec_testimonials', true );
+			$known_old_quotes = array(
+				'Vrlo sam zadovoljan rezultatima web stranice. Povećala mi je promet, a samim time i prihod. Gosti su zadovoljni, pa tako i ja — ulaganje se isplatilo.',
+				'Nova stranica je moderna i privlačna, ali najvažnije je da radi svoj posao. Povećala je promet restoranu i pokazala da se ulaganje u dobar web isplati.',
+			);
+			if ( is_array( $quotes ) ) {
+				foreach ( $quotes as $index => $quote ) {
+					if ( isset( $quote['quote'], $quote['name'] ) && 'Dominik' === $quote['name'] && in_array( $quote['quote'], $known_old_quotes, true ) ) {
+						$quotes[ $index ] = $repeaters['testimonials'][0];
+					}
+				}
+				update_post_meta( $front_id, '_zaec_testimonials', $quotes );
+			}
+
+			$trust = get_post_meta( $front_id, '_zaec_trust_stats', true );
+			if ( is_array( $trust ) ) {
+				foreach ( $trust as $index => $item ) {
+					$value = isset( $item['value'] ) ? (string) $item['value'] : '';
+					$label = isset( $item['label'] ) ? (string) $item['label'] : '';
+					if ( in_array( $value, array( '0', '3' ), true ) && in_array( $label, array( 'objavljena projekta', 'objavljeni projekti' ), true ) ) {
+						$trust[ $index ] = $repeaters['trust_stats'][0];
+					}
+				}
+				update_post_meta( $front_id, '_zaec_trust_stats', $trust );
+			}
+
+			// Tekst djelatnosti ostaje kakav jest; dodaju se samo novi CTA podaci.
+			$occupations = get_post_meta( $front_id, '_zaec_occupations', true );
+			if ( is_array( $occupations ) ) {
+				$changed = false;
+				foreach ( $occupations as $index => $occupation ) {
+					if ( ! isset( $repeaters['occupations'][ $index ] ) ) {
+						break;
+					}
+					if ( ! is_array( $occupation ) ) {
+						continue;
+					}
+					foreach ( array( 'cta', 'activity' ) as $key ) {
+						if ( ! isset( $occupation[ $key ] ) || '' === trim( (string) $occupation[ $key ] ) ) {
+							$occupations[ $index ][ $key ] = $repeaters['occupations'][ $index ][ $key ];
+							$changed = true;
+						}
+					}
+				}
+				if ( $changed ) {
+					update_post_meta( $front_id, '_zaec_occupations', $occupations );
+				}
+			}
+		}
+
+		update_option( 'zaec_theme_data_version', '1.12.0', false );
+	}
+
 }
 add_action( 'admin_init', 'zaec_migrate_theme_data' );
