@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function zaec_enqueue_assets() {
 	wp_enqueue_style(
 		'zaec-fonts',
-		'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap',
+		'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap',
 		array(),
 		null
 	);
@@ -25,6 +25,19 @@ function zaec_enqueue_assets() {
 		wp_enqueue_script( 'zaec-scrollto', get_theme_file_uri( 'assets/js/vendor/ScrollToPlugin.min.js' ), array( 'zaec-gsap' ), zaec_asset_version( 'assets/js/vendor/ScrollToPlugin.min.js' ), true );
 		wp_enqueue_script( 'zaec-lenis', get_theme_file_uri( 'assets/js/vendor/lenis.min.js' ), array(), zaec_asset_version( 'assets/js/vendor/lenis.min.js' ), true );
 		wp_enqueue_script( 'zaec-home', get_theme_file_uri( 'assets/js/home.module.js' ), array( 'zaec-scrolltrigger', 'zaec-scrollto', 'zaec-lenis' ), zaec_asset_version( 'assets/js/home.module.js' ), true );
+		wp_enqueue_script( 'zaec-earth', get_theme_file_uri( 'assets/js/earth.module.js' ), array( 'zaec-gsap' ), zaec_asset_version( 'assets/js/earth.module.js' ), true );
+
+		wp_add_inline_script(
+			'zaec-earth',
+			'window.ZAEC_EARTH=' . wp_json_encode(
+				array(
+					'topologyUrl'  => get_theme_file_uri( 'assets/textures/earth-topology.jpg' ),
+					'bordersUrl'   => get_theme_file_uri( 'assets/data/countries.json' ),
+					'nodesUrl'     => get_theme_file_uri( 'assets/data/nodes.json' ),
+				)
+			) . ';',
+			'before'
+		);
 
 		$occupations = zaec_front_repeater( 'occupations' );
 		$js_occ      = array();
@@ -79,7 +92,7 @@ function zaec_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'zaec_enqueue_assets' );
 
 function zaec_module_script_tag( $tag, $handle, $src ) {
-	if ( in_array( $handle, array( 'zaec-home', 'zaec-404', 'zaec-project' ), true ) ) {
+	if ( in_array( $handle, array( 'zaec-home', 'zaec-earth', 'zaec-404', 'zaec-project' ), true ) ) {
 		return '<script type="module" src="' . esc_url( $src ) . '"></script>' . "\n";
 	}
 	if ( 'zaec-global' === $handle ) {

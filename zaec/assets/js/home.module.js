@@ -316,7 +316,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           if (pct) pct.textContent = $('span', map[id]).textContent;
         });
       }, { rootMargin: '-44% 0px -44% 0px', threshold: 0 });
-      ['hero', 'za-koga', 'poznato', 'metoda', 'proces', 'ekran', 'cijene', 'radovi', 'klijenti', 'faq', 'upit'].forEach(function (id) {
+      ['hero', 'house', 'poznato', 'metoda', 'proces', 'ekran', 'cijene', 'radovi', 'klijenti', 'faq', 'upit'].forEach(function (id) {
         var el = doc.getElementById(id);
         if (el) io.observe(el);
       });
@@ -445,10 +445,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
 
     function paint(i) {
       var o = OCC[i];
-      elIdx.textContent = pad2(i + 1);
-      elTitle.textContent = o.title;
-      elSub.textContent = o.sub;
-      elQuery.textContent = o.q;
+      if (elIdx) elIdx.textContent = pad2(i + 1);
+      if (elTitle) elTitle.textContent = o.title;
+      if (elSub) elSub.textContent = o.sub;
+      if (elQuery) elQuery.textContent = o.q;
       if (swapWrap) {
         swapWrap.classList.remove('swap');
         void swapWrap.offsetWidth;
@@ -507,8 +507,9 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
       card.addEventListener('pointerleave', function () { occRX(0); occRY(0); }, { passive: true });
     }
 
-    if ('IntersectionObserver' in WIN && $('#heroPinSpace')) {
-      new IntersectionObserver(function (es) { heroInView = es[0].isIntersecting; }, { threshold: 0.12 }).observe($('#heroPinSpace'));
+    var occPinSpace = $('#housePinSpace') || $('#heroPinSpace');
+    if ('IntersectionObserver' in WIN && occPinSpace) {
+      new IntersectionObserver(function (es) { heroInView = es[0].isIntersecting; }, { threshold: 0.12 }).observe(occPinSpace);
     }
 
     WIN.addEventListener('keydown', function (e) {
@@ -524,7 +525,10 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     });
 
     return {
-      start: function () { if (!started) { started = true; setActive(0, false); } },
+      start: function () {
+        if (!tabs.length || !OCC.length) return;
+        if (!started) { started = true; setActive(0, false); }
+      },
       setPhase: function (isA) {
         if (phaseAllows === isA) return;
         phaseAllows = isA;
@@ -543,6 +547,7 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
           } catch (e) {}
         }
       },
+      getCurrent: function () { return cur; },
       tick: tick
     };
   })();
@@ -996,13 +1001,32 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
   /* ============================================================
      HOLOGRAMSKA KUĆA (Villa N) — nadogradnja, ne uvjet
   ============================================================ */
-  try {
-    H.impl = buildHolo();
-  } catch (err) {
-    /* A renderer/context failure gets the deliberate architectural fallback;
-       it must not leave a 560vh empty stage behind. */
-    WIN.__ZAEC_3D_ERROR = true;
-    doc.documentElement.classList.add('no-3d');
+  var houseBooted = false;
+  function bootHouseScene() {
+    if (houseBooted || !$('#holoWrap')) return;
+    houseBooted = true;
+    try {
+      H.impl = buildHolo();
+      if (H.impl && occCtl && occCtl.getCurrent) H.impl.showOcc(occCtl.getCurrent());
+    } catch (err) {
+      /* The house is a secondary scene. Its failure must not take the Earth
+         hero or the rest of the homepage down with it. */
+      WIN.__ZAEC_HOUSE_ERROR = true;
+      var houseSection = $('#house');
+      if (houseSection) houseSection.classList.add('house-no-3d');
+      H.impl = null;
+    }
+  }
+  if ($('#holoWrap')) {
+    var housePinForBoot = $('#housePinSpace');
+    if ('IntersectionObserver' in WIN && housePinForBoot) {
+      new IntersectionObserver(function (entries) {
+        if (entries[0] && entries[0].isIntersecting) bootHouseScene();
+      }, { rootMargin: '20% 0px 20% 0px', threshold: 0.01 }).observe(housePinForBoot);
+    } else {
+      bootHouseScene();
+    }
+  } else {
     H.impl = null;
   }
 
@@ -2273,11 +2297,20 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
      SCROLL FAZE A/B/C + paralaks siluete (desktop)
   ============================================================ */
   (function () {
-    var pinSpace = $('#heroPinSpace');
-    var heroCopy = $('#heroCopy');
-    var svcPanel = $('#za-koga');
-    var phaseCap = $('#phaseCaption');
+    var earthHero = $('#earthHero');
+    var housePinSpace = $('#housePinSpace');
+    var pinSpace = housePinSpace || $('#heroPinSpace');
+    var heroCopy = housePinSpace ? $('#houseCopy') : $('#heroCopy');
+    var svcPanel = housePinSpace ? $('#houseServices') : $('#za-koga');
+    var phaseCap = housePinSpace ? $('#housePhase') : $('#phaseCaption');
     var holoWrap = $('#holoWrap');
+
+
+    if (earthHero && !housePinSpace) {
+      /* Earth owns hero camera/intro/interaction. */
+      occCtl.setPhase(true);
+      return;
+    }
 
     function wireSvcHover() {
       $$('.svc-mini').forEach(function (btn) {
@@ -2311,10 +2344,14 @@ import { OrbitControls } from './vendor/OrbitControls.module.js';
     if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', restoreCompactHero);
     else if (mqDesktop.addListener) mqDesktop.addListener(restoreCompactHero);
 
-    if (!pinSpace || !HAS_GSAP) { occCtl.setPhase(true); return; }
+    if (!pinSpace || !HAS_GSAP) {
+      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.style.pointerEvents = 'auto'; svcPanel.classList.add('on'); }
+      occCtl.setPhase(true);
+      return;
+    }
     if (prefersReducedMotion) {
       if (heroCopy) { heroCopy.style.filter = ''; }
-      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.classList.add('on'); }
+      if (svcPanel) { svcPanel.style.opacity = '1'; svcPanel.style.transform = 'none'; svcPanel.style.filter = ''; svcPanel.style.pointerEvents = 'auto'; svcPanel.classList.add('on'); }
       occCtl.setPhase(true);
       return;
     }

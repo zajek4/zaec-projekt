@@ -1,6 +1,6 @@
 <?php
 /**
- * Hero + services panel + 3D stage.
+ * Digital Earth hero stage.
  *
  * @package ZAEC
  */
@@ -9,145 +9,114 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$services = zaec_front_repeater( 'services' );
-$occ      = array_slice( zaec_front_repeater( 'occupations' ), 0, 8 );
-$first    = isset( $occ[0] ) ? $occ[0] : array(
-	'title' => '',
-	'sub'   => '',
-	'q'     => '',
-);
-$hint     = trim( (string) zaec_front_field( 'hero_hint' ) );
+
 ?>
-<section id="hero" data-theme="dark" aria-label="<?php esc_attr_e( 'Uvod', 'zaec' ); ?>">
+<section id="hero" class="earth-mode" data-theme="dark" aria-label="<?php esc_attr_e( 'Uvod', 'zaec' ); ?>">
 	<div class="pin-space" id="heroPinSpace">
 		<div class="pin-stage" id="heroPin">
 			<div class="bp-grid-dark" aria-hidden="true"></div>
 			<div class="hero-grid">
-				<div class="hero-copy" id="heroCopy">
-					<p class="kicker"><?php echo esc_html( zaec_front_field( 'hero_kicker' ) ); ?></p>
-					<h1><?php echo esc_html( zaec_front_field( 'hero_title' ) ); ?></h1>
-					<p class="lead"><?php echo esc_html( zaec_front_field( 'hero_lead' ) ); ?></p>
+				<div class="hero-copy earth-copy" id="heroCopy">
+					<p class="kicker"><?php echo esc_html( zaec_front_field( 'earth_kicker' ) ); ?></p>
+					<h1><?php echo esc_html( zaec_front_field( 'earth_title' ) ); ?></h1>
+					<p class="lead"><?php echo esc_html( zaec_front_field( 'earth_lead' ) ); ?></p>
 					<div class="hero-ctas">
-						<a class="btn btn-signal btn-arrow" href="<?php echo esc_url( 0 === strpos( (string) zaec_front_field( 'hero_primary_url' ), '#' ) ? zaec_home_anchor( zaec_front_field( 'hero_primary_url' ) ) : zaec_front_field( 'hero_primary_url' ) ); ?>">
-							<span><?php echo esc_html( zaec_front_field( 'hero_primary_text' ) ); ?></span>
+						<a class="btn btn-signal btn-arrow" href="<?php echo esc_url( 0 === strpos( (string) zaec_front_field( 'earth_primary_url' ), '#' ) ? zaec_home_anchor( zaec_front_field( 'earth_primary_url' ) ) : zaec_front_field( 'earth_primary_url' ) ); ?>">
+							<span><?php echo esc_html( zaec_front_field( 'earth_primary_text' ) ); ?></span>
 							<svg class="ar" aria-hidden="true"><use href="#ic-arrow"/></svg>
 						</a>
-						<a class="btn btn-line btn-arrow" href="<?php echo esc_url( 0 === strpos( (string) zaec_front_field( 'hero_secondary_url' ), '#' ) ? zaec_home_anchor( zaec_front_field( 'hero_secondary_url' ) ) : zaec_front_field( 'hero_secondary_url' ) ); ?>">
-							<span><?php echo esc_html( zaec_front_field( 'hero_secondary_text' ) ); ?></span>
+						<a class="btn btn-line btn-arrow" href="<?php echo esc_url( 0 === strpos( (string) zaec_front_field( 'earth_secondary_url' ), '#' ) ? zaec_home_anchor( zaec_front_field( 'earth_secondary_url' ) ) : zaec_front_field( 'earth_secondary_url' ) ); ?>">
+							<span><?php echo esc_html( zaec_front_field( 'earth_secondary_text' ) ); ?></span>
 							<svg class="ar" aria-hidden="true"><use href="#ic-arrow-d"/></svg>
 						</a>
 					</div>
-					<p class="cta-note"><?php echo esc_html( zaec_front_field( 'hero_note' ) ); ?></p>
-					<?php if ( '' !== $hint ) : ?>
-						<p class="hero-hint"><?php echo esc_html( $hint ); ?></p>
-					<?php endif; ?>
-				</div>
-
-				<div class="svc-panel" id="za-koga">
-					<p class="kicker"><?php echo esc_html( zaec_front_field( 'services_kicker' ) ); ?></p>
-					<h2 class="svc-h"><?php echo esc_html( zaec_front_field( 'services_title' ) ); ?></h2>
-					<p class="lead svc-lead"><?php echo esc_html( zaec_front_field( 'services_lead' ) ); ?></p>
-					<div class="svc-minis">
-						<?php foreach ( $services as $service ) : ?>
-							<button type="button" class="svc-mini" data-layer="<?php echo esc_attr( absint( $service['layer'] ) ); ?>">
-								<i><?php echo esc_html( $service['number'] ); ?></i>
-								<b><?php echo esc_html( $service['title'] ); ?></b>
-								<span><?php echo esc_html( $service['text'] ); ?></span>
-							</button>
-						<?php endforeach; ?>
-					</div>
-					<p class="mono-note"><?php echo esc_html( zaec_front_field( 'services_note' ) ); ?></p>
+					<p class="cta-note"><?php echo esc_html( zaec_front_field( 'earth_note' ) ); ?></p>
+					<p class="earth-copy__signal"><i></i> Jasna ponuda · dokaz · sljedeći korak</p>
 				</div>
 
 				<div class="hero-stage">
-					<div id="holoWrap">
-						<canvas id="holoCanvas" role="img" aria-label="<?php esc_attr_e( 'Hologramska 3D vizualizacija obiteljske kuće koja se transformira i prikazuje različite djelatnosti.', 'zaec' ); ?>"></canvas>
-						<div class="scanlines" aria-hidden="true"></div>
-						<div id="layerLabels" aria-hidden="true"></div>
-						<div id="holoFallbackD" aria-hidden="true">
-							<svg viewBox="0 0 560 430" class="fb-house" aria-hidden="true">
+					<div
+						id="earthHero"
+						class="earth-hero"
+						data-topology="<?php echo esc_url( get_theme_file_uri( 'assets/textures/earth-topology.jpg' ) ); ?>"
+						data-borders="<?php echo esc_url( get_theme_file_uri( 'assets/data/countries.json' ) ); ?>"
+						data-nodes="<?php echo esc_url( get_theme_file_uri( 'assets/data/nodes.json' ) ); ?>"
+						aria-busy="true"
+					>
+						<p class="earth-sr-description"><?php esc_html_e( 'Interaktivna hologramska Zemlja s mrežom 65 svjetskih gradova. Osijek je označen kao sjedište. Mrežni promet je vizualna simulacija.', 'zaec' ); ?></p>
+						<canvas id="earthCanvas" role="img" aria-label="<?php esc_attr_e( 'Interaktivna hologramska Zemlja s mrežom gradova i Osijekom kao sjedištem.', 'zaec' ); ?>"></canvas>
+						<div class="earth-scanlines" aria-hidden="true"></div>
+						<div class="earth-vignette" aria-hidden="true"></div>
+
+						<div id="earthFallbackD" class="earth-fallback" aria-hidden="true">
+							<svg viewBox="0 0 560 560" class="earth-fallback__globe">
 								<defs>
-									<linearGradient id="fbHouseGlow" x1="0" x2="1" y1="0" y2="1">
-										<stop offset="0" stop-color="#b9efff"/>
-										<stop offset="1" stop-color="#4d80ff"/>
-									</linearGradient>
+									<radialGradient id="earthFallbackCore" cx="42%" cy="35%">
+										<stop offset="0" stop-color="#06364a" stop-opacity=".9" />
+										<stop offset=".72" stop-color="#001c2d" stop-opacity=".5" />
+										<stop offset="1" stop-color="#000814" stop-opacity="0" />
+									</radialGradient>
 								</defs>
-								<g class="fb-hud" fill="none" stroke="#7dd3ff" stroke-width="1">
-									<path class="fb-ground" d="M52 335h430M84 350h358M116 365h294" stroke-dasharray="4 8"/>
-									<path d="M74 331l-12 12M454 331l12 12M104 361l-10 10M406 361l10 10"/>
-									<path class="fb-dimension" d="M188 315v27M394 315v27M188 333h206" stroke-dasharray="2 5"/>
-									<text x="291" y="351">6.40 m · FRONT ELEVATION</text>
-									<text x="414" y="82">N / 01</text>
+								<circle cx="280" cy="280" r="188" fill="url(#earthFallbackCore)" stroke="#00e5ff" stroke-width="1.5" />
+								<path d="M134 222c31-45 64-51 94-70 39-24 72-24 105 2 25 20 67 22 91 59 16 25 5 52-18 70-30 23-49 58-83 65-34 8-73-5-93-31-19-25-51-27-75-48-19-16-32-26-21-47z" fill="none" stroke="#00e5ff" stroke-width="1.2" opacity=".64" />
+								<path d="M157 334c35-21 58-11 86 16 29 29 61 35 92 18 32-17 68-3 84 27" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".44" />
+								<path d="M164 178c25 14 45 12 72-3 27-15 53-11 76 2 25 15 54 11 86-7" fill="none" stroke="#00e5ff" stroke-width="1" opacity=".42" />
+								<path d="M217 258l8-5 9 3 5 8-9 4-10-2z" fill="none" stroke="#ffb700" stroke-width="1.2" opacity=".72" />
+								<g fill="#00e5ff">
+									<circle cx="246" cy="220" r="3" /><circle cx="319" cy="196" r="2.3" /><circle cx="365" cy="279" r="2.6" /><circle cx="209" cy="303" r="2.1" /><circle cx="300" cy="355" r="2.2" />
 								</g>
-								<g class="fb-house-art" fill="none" stroke="url(#fbHouseGlow)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-									<!-- main volume: two floors, front facade and right return -->
-									<path class="fb-shell" d="M188 312V151L291 76 394 151v161z"/>
-									<path class="fb-shell fb-side" d="M394 151l96-45v151l-96 55z"/>
-									<path class="fb-roof" d="M171 151L291 62l121 89M291 62l216 42-113 47"/>
-									<path class="fb-roof-detail" d="M184 143l107-79 113 79M291 69l204 39" stroke-dasharray="3 6"/>
-									<path d="M188 223h206M394 223l96-45" opacity=".6"/>
-									<!-- lower side wing with a proper gable and porch -->
-									<path class="fb-wing" d="M104 312V199l83-50 82 50v113"/>
-									<path class="fb-wing-roof" d="M88 199l99-61 98 61M187 138v-18"/>
-									<path d="M104 312h165M104 285h84M187 285h82" opacity=".55"/>
-									<!-- consistent main facade windows -->
-									<g class="fb-window">
-										<rect x="215" y="171" width="46" height="53" rx="1"/><path d="M238 171v53M215 197.5h46"/>
-										<rect x="329" y="171" width="46" height="53" rx="1"/><path d="M352 171v53M329 197.5h46"/>
-										<rect x="215" y="242" width="46" height="39" rx="1"/><path d="M238 242v39M215 261.5h46"/>
-										<path d="M210 226h56M324 226h56" opacity=".55"/>
-									</g>
-									<!-- centered entry and aligned upper French doors -->
-									<g class="fb-door">
-										<rect x="278" y="238" width="44" height="74" rx="1"/><path d="M300 238v74M278 261h44M278 284h44"/>
-										<circle cx="294" cy="275" r="1.8" fill="#7dd3ff"/>
-										<rect x="279" y="137" width="42" height="55" rx="1"/><path d="M300 137v55M279 164.5h42"/>
-										<path d="M270 197h61v6h-61zM270 203l9 9M331 203l-9 9"/>
-									</g>
-									<!-- bay window: depth is visible, not a floating flat rectangle -->
-									<path class="fb-bay" d="M345 238l30-12 22 10v54l-22 12-30-11z"/>
-									<path d="M375 226v76M345 265h52M375 265l22-9M345 265l30 11"/>
-									<!-- arched side entrance, columns and steps -->
-									<path class="fb-arch" d="M130 312v-67a27 27 0 0 1 54 0v67M130 245h54"/>
-									<path d="M124 312v-71M190 312v-71M118 312h78M118 321h78M126 330h62"/>
-									<path d="M124 241h66M130 234h54" opacity=".65"/>
-									<!-- two dormers, chimney, eaves and foundation -->
-									<path class="fb-dormer" d="M233 110v-24l18-14 18 14v24M239 108V91h24v17M333 135v-27l18-14 18 14v27M339 133v-19h24v19"/>
-									<path class="fb-chimney" d="M413 102V54h23v53M409 54h31M414 48h21"/>
-									<path d="M178 312h228M178 319h228M188 326h206" opacity=".7"/>
-									<!-- construction ticks / architectural axes -->
-									<path class="fb-axis" d="M291 55v276M196 158h190M198 232h192" stroke-dasharray="2 7"/>
+								<g class="earth-fallback__hq" fill="none" stroke="#ffb700">
+									<circle cx="282" cy="263" r="5" /><circle cx="282" cy="263" r="15" opacity=".55" /><circle cx="282" cy="263" r="26" opacity=".25" />
+									<path d="M282 263v-46M277 217h10" opacity=".65" />
 								</g>
-								<g class="fb-labels" fill="#aee6ff" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.3">
-									<text x="84" y="389">VILLA N / STRUCTURE 01</text>
-									<text x="383" y="389">AXON / 1:50</text>
-								</g>
+								<text x="302" y="258" fill="#ffcf58" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.6">OSIJEK · HR</text>
 							</svg>
 						</div>
-										<p class="holo-hint" aria-hidden="true">DRAG = ORBIT · SCROLL = AKSONOMETRIJA · KLIK = SLOJ</p>
-									</div>
 
-									<div class="occ-controls" id="occControls">
-						<div class="occ-tabs" id="occTabs" role="tablist" aria-label="<?php esc_attr_e( 'Odaberite djelatnost i pogledajte što web može riješiti', 'zaec' ); ?>">
-							<?php foreach ( $occ as $i => $o ) : ?>
-								<button type="button" class="occ-tab<?php echo 0 === $i ? ' active' : ''; ?>" role="tab" aria-selected="<?php echo 0 === $i ? 'true' : 'false'; ?>" data-occ="<?php echo esc_attr( $i ); ?>"><?php echo esc_html( $o['tab'] ); ?></button>
-							<?php endforeach; ?>
+						<div class="earth-hud earth-hud--tl" aria-hidden="true">
+							<span class="earth-hud__eyebrow">INFO FLOW // VISUAL SIMULATION</span>
+							<b>GLOBAL LINK ACTIVE</b>
 						</div>
-						<p class="occ-kbd" aria-hidden="true">← → promjena · Space pauza</p>
-						<aside class="occ-card" id="occCard" aria-live="polite">
-							<p class="occ-meta"><span id="occIdx">01</span>/08 · <?php esc_html_e( 'Pronađite svoju djelatnost', 'zaec' ); ?></p>
-							<div class="occ-swap" id="occSwap">
-								<h3 id="occTitle"><?php echo esc_html( $first['title'] ); ?></h3>
-								<p class="occ-sub" id="occSub"><?php echo esc_html( $first['sub'] ); ?></p>
-								<p class="occ-query" id="occQueryWrap"><svg class="ic" aria-hidden="true"><use href="#ic-query"/></svg><span id="occQuery"><?php echo esc_html( $first['q'] ); ?></span></p>
-							</div>
-							<div class="occ-bar" aria-hidden="true"><i id="occBarFill"></i></div>
-						</aside>
+						<div class="earth-hud earth-hud--tr" aria-hidden="true">
+							<span class="earth-hud__eyebrow">GLOBAL NODES</span>
+							<b id="earthNodeCount">00</b>
+							<small>CONTINENT OUTLINES · WORLD CITIES</small>
+						</div>
+						<div class="earth-hud earth-hud--bl" aria-hidden="true">
+							<span class="earth-hud__eyebrow">INFO FLOW</span>
+							<b id="earthFlowCount">00</b>
+							<small>INFORMATION SPREAD · ARRIVAL RIPPLE</small>
+						</div>
+						<div class="earth-hud earth-hud--br" aria-hidden="true">
+							<span class="earth-hud__eyebrow">FOCUS</span>
+							<b>HRVATSKA</b>
+							<small>EUROPE · OSIJEK LOCAL ORIGIN</small>
+						</div>
+
+						<div class="earth-legend" aria-hidden="true">
+							<span><i class="earth-legend__dot earth-legend__dot--hq"></i> HQ</span>
+							<span><i class="earth-legend__dot earth-legend__dot--tech"></i> TECH</span>
+							<span><i class="earth-legend__dot earth-legend__dot--trade"></i> TRADE</span>
+							<span><i class="earth-legend__dot earth-legend__dot--partner"></i> PARTNER</span>
+						</div>
+
+						<div id="earthTooltip" class="earth-tooltip" role="status" aria-live="polite">
+							<strong data-earth-tooltip-name>NODE</strong>
+							<span data-earth-tooltip-category>NETWORK</span>
+							<small data-earth-tooltip-meta>00.0000 N / 00.0000 E</small>
+						</div>
+
+						<div id="earthLoader" class="earth-loader" role="status" aria-live="polite">
+							<div class="earth-loader__top"><span>PLANETARY SYSTEM</span><b id="earthProgressLabel">000</b></div>
+							<div class="earth-loader__track"><i id="earthProgress"></i></div>
+							<p id="earthStatus">INITIALIZING RENDERER</p>
+						</div>
+						<p class="earth-interaction-hint" aria-hidden="true">AUTO ORBIT · HOVER = NODE DATA</p>
+						<p class="earth-mobile-hint" aria-hidden="true">SCROLL PAGE · MAP AUTO-ROTATES</p>
 					</div>
-					<p class="phase-cap" id="phaseCaption"><?php esc_html_e( 'Svaki zanat na svom sloju · Aksonometrija 1:50', 'zaec' ); ?></p>
 				</div>
 			</div>
-			<svg class="wm wm-hero" viewBox="0 0 100 100" aria-hidden="true"><use href="#zMon"/></svg>
+						<svg class="wm wm-hero" viewBox="0 0 100 100" aria-hidden="true"><use href="#zMon"/></svg>
 		</div>
 	</div>
 </section>
