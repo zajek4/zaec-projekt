@@ -118,25 +118,24 @@ export function createEurope({ geo, lite }) {
   });
   cro.add(topo.points);
 
-  /* ── Osijek noću: svjetla grada koja se pojavljuju dok kamera ponire ── */
-  const LN = lite ? 1400 : 2800;
+  /* ── Slavonija noću: svjetla okolnih mjesta (Osijek sam donosi stvarna ulična svjetla iz city.js) ── */
+  const LN = lite ? 1200 : 2400;
   const lights = glowPoints({ count: LN, color: '#ffb35a', core: '#fff0d0', size: 0.24, depthTest: false });
-  lights.uniforms.uMax.value = 13;
+  lights.uniforms.uMax.value = 9;
+  lights.uniforms.uMin.value = 1.3;
   lights.points.renderOrder = 2;
-  // stvarna mjesta oko Osijeka (lon, lat, težina)
-  const towns = [[18.41, 45.31, 1], [19.0, 45.35, 1], [18.8, 45.29, 0.9], [18.42, 45.66, 0.6], [18.4, 45.68, 0.5], [18.1, 45.49, 0.6], [18.6, 45.77, 0.6], [18.17, 45.76, 0.5], [18.69, 45.43, 0.4], [18.89, 45.47, 0.4]]
-    .map(([lon, lat, w]) => [...proj(lon, lat), w]);
+  // stvarna mjesta oko Osijeka (ime, lon, lat, težina)
+  const TOWNS = [['Đakovo', 18.41, 45.31, 1], ['Vukovar', 19.0, 45.35, 1], ['Vinkovci', 18.8, 45.29, 0.95], ['Valpovo', 18.42, 45.66, 0.6], ['Belišće', 18.4, 45.68, 0.5], ['Našice', 18.1, 45.49, 0.6], ['Beli Manastir', 18.6, 45.77, 0.6], ['Donji Miholjac', 18.17, 45.76, 0.5], ['Čepin', 18.565, 45.524, 0.45], ['Tenja', 18.749, 45.497, 0.35], ['Bilje', 18.743, 45.606, 0.35], ['Darda', 18.692, 45.627, 0.35]];
+  const towns = TOWNS.map(([, lon, lat, w]) => [...proj(lon, lat), w]);
   const gauss = () => Math.sqrt(-2 * Math.log(rand() + 1e-6)) * Math.cos(rand() * Math.PI * 2);
   for (let i = 0; i < LN; i++) {
     let x, z;
-    const r = rand();
-    if (r < 0.38) {
-      x = gauss() * 0.09; z = gauss() * 0.06 + 0.01; // gradska jezgra
-    } else if (r < 0.62) {
-      x = gauss() * 0.3; z = gauss() * 0.22; // prigradska naselja
+    if (rand() < 0.3) {
+      // raspršena prigradska naselja — ne u samom gradu (tamo su stvarna ulična svjetla)
+      do { x = gauss() * 0.32; z = gauss() * 0.24; } while (Math.hypot(x, z * 1.4) < 0.12);
     } else {
       const t = towns[(rand() * towns.length) | 0];
-      const sp = 0.025 + t[2] * 0.03;
+      const sp = 0.012 + t[2] * 0.028;
       x = t[0] + gauss() * sp; z = t[1] + gauss() * sp;
     }
     lights.pos[i * 3] = x; lights.pos[i * 3 + 1] = 1.03; lights.pos[i * 3 + 2] = z;
@@ -192,6 +191,10 @@ export function createEurope({ geo, lite }) {
   return {
     group,
     cro,
+    towns: TOWNS.map((t) => t[0]),
+    townWorld(i, out = new THREE.Vector3()) {
+      return out.set(towns[i][0], 1.05, towns[i][1]).applyMatrix4(cro.matrixWorld);
+    },
     cityWorld(i, out = new THREE.Vector3()) {
       return out.fromArray(cityPts.pos, i * 3).applyMatrix4(cro.matrixWorld);
     },
@@ -208,7 +211,7 @@ export function createEurope({ geo, lite }) {
       const zoomIn = smooth(1.05, 1.5, s.Z || 1);
       topMat.emissiveIntensity = (0.22 + 0.18 * s.lift) * (1 - 0.85 * zoomIn);
       topMat.color.lerpColors(topBase, topDark, zoomIn);
-      lights.uniforms.uOpacity.value = a * smooth(1.08, 1.4, s.Z || 1) * (1 - smooth(1.55, 1.8, s.Z || 1));
+      lights.uniforms.uOpacity.value = a * smooth(1.08, 1.4, s.Z || 1) * (1 - smooth(1.75, 1.95, s.Z || 1));
       outlineMat.opacity = a * smooth(0.02, 0.4, s.lift) * (1 - s.cityFade);
       baseOutlineMat.opacity = a * (1 - s.cityFade);
       arcMat.opacity = 0.42 * a * s.net * (1 - s.cityFade);

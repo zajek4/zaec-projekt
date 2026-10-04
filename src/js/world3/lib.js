@@ -2,10 +2,18 @@
 import * as THREE from 'three';
 
 export const DEG = Math.PI / 180;
-export const OSIJEK = [18.6955, 45.555];
+export const OSIJEK = [18.675555, 45.560846]; // težište tlocrta konkatedrale (OSM) = ishodište svijeta
 export const MAPK = 4; // jedinica karte po stupnju (na Z = 1)
 export const COSLAT = Math.cos(45 * DEG);
 export const GLOBE_R = 225; // radijus globusa u jedinicama karte (Z = 1)
+
+/* Višerazinski sustav: karta (Z = 1) ima 1 jedinicu = ¼° geografske širine. Grad je u metrima i
+   skalira se s kartom (mapScale) pa se svjetla, ceste i zgrade uvijek poklapaju s kartom.
+   Na Z_CITY jedna svjetska jedinica ≈ 7 m (konkatedrala 94 m ≈ 13,4 jedinica). */
+export const CITY_KX = 1 / 27551; // jedinica karte po metru prema istoku (cos 45,56°)
+export const CITY_KZ = 1 / 27786; // jedinica karte po metru prema sjeveru
+export const M_PER_UNIT_CITY = 7;
+export const Z_CITY = 1 + Math.log(1 / (CITY_KZ * M_PER_UNIT_CITY)) / Math.log(500);
 
 export const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 export const lerp = (a, b, t) => a + (b - a) * t;
@@ -58,6 +66,7 @@ export function glowPoints({ count, color = '#7fa2ff', core = '#ffffff', size = 
     uPR: { value: 1 },
     uOpacity: { value: 1 },
     uMax: { value: 40 },
+    uMin: { value: 0 },
   };
   const m = new THREE.ShaderMaterial({
     uniforms,
@@ -67,12 +76,12 @@ export function glowPoints({ count, color = '#7fa2ff', core = '#ffffff', size = 
     blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
     vertexShader: /* glsl */ `
       attribute float aAlpha; attribute float aSize;
-      uniform float uSize; uniform float uPR; uniform float uMax; varying float vA;
+      uniform float uSize; uniform float uPR; uniform float uMax; uniform float uMin; varying float vA;
       void main(){
         vA = aAlpha;
         vec4 mv = modelViewMatrix * vec4(position, 1.0);
         float sc = length(modelMatrix[0].xyz);
-        gl_PointSize = min(uMax * uPR, aSize * uSize * uPR * 300.0 * sc / max(0.5, -mv.z));
+        gl_PointSize = clamp(aSize * uSize * uPR * 300.0 * sc / max(0.5, -mv.z), uMin * uPR * min(1.0, aSize), uMax * uPR);
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader: /* glsl */ `

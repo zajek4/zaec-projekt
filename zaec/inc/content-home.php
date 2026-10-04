@@ -36,6 +36,10 @@ function zaec_home_defaults() {
 		'hr_lead'         => 'Projekte vodimo uživo kad ima smisla, a inače video-pozivom i jasnim pisanim dogovorom. Lokalno tržište poznajemo iznutra: kako ljudi ovdje traže, uspoređuju i odlučuju.',
 		'hr_title_2'      => 'Malo tržište ne nagrađuje <em>glasnoću</em>.',
 		'hr_lead_2'       => 'Nagrađuje jasnoću. Tko prvi jasno odgovori na pitanje kupca — što, gdje, koliko brzo i zašto baš vi — dobiva poziv.',
+		// Slavonija (svjetla naselja).
+		'slav_kicker'     => 'Slavonija · noću',
+		'slav_title'      => 'Svako svjetlo je nečiji <em>posao</em>.',
+		'slav_lead'       => 'Pekara u Đakovu, servis klima u Vinkovcima, salon u Osijeku. Svi se svaki dan natječu za iste pretrage. Posao dobiva onaj kojeg kupac prvi razumije.',
 		// Osijek.
 		'os_kicker'       => '03 — Osijek',
 		'os_title'        => 'Dobri gradovi nastaju iz <em>plana</em>.',
@@ -48,6 +52,8 @@ function zaec_home_defaults() {
 		'plan_kicker'     => '05 — Nacrt',
 		'plan_title'      => 'Iste linije. <em>Drugi</em> materijal.',
 		'plan_lead'       => 'Web stranica je zgrada u koju kupac ulazi. Ima ulaz, hodnike, putokaze i vrata kroz koja izlazi kao klijent — ili ne izlazi.',
+		'plan_grid_title' => 'Mjere zgrade postaju <em>mreža</em>.',
+		'plan_grid_lead'  => 'Raspored, ritam i proporcije: ista pravila koja drže zgradu drže i dobar web. Na toj mreži slažemo sadržaj.',
 		'plan_title_2'    => 'Prvo struktura, onda <em>boja</em>.',
 		'plan_lead_2'     => 'Prije fotografija i boja crtamo nacrt: što posjetitelj mora vidjeti, kojim redom i gdje donosi odluku. Dizajn dolazi na čvrst temelj — nikad obrnuto.',
 		// Put posjetitelja.
@@ -59,7 +65,7 @@ function zaec_home_defaults() {
 		'sys_kicker'      => '07 — Ispod površine',
 		'sys_title'       => 'Sedam slojeva između pretrage i <em>poziva</em>.',
 		'sys_lead'        => 'Svaki sloj ima svoj posao. Ako jedan zakaže, ostali ga ne mogu sakriti.',
-		'sys_statement'   => 'Web koji donosi rezultate nije jedna lijepa naslovnica. <em>To je sustav.</em>',
+		'sys_statement'   => 'Web koji radi nije jedan lijep ekran. <em>To je sustav.</em>',
 		// Prepoznavanje.
 		'recog_kicker'    => 'Zvuči poznato?',
 		'recog_title'     => 'Dobri ste u svom poslu. <em>Web</em> to još ne pokazuje.',
@@ -286,20 +292,5 @@ function zaec_home_faq() {
 		array( 'Što je s ChatGPT-om i AI pretragom?', 'Postavljamo ono što AI asistenti koriste: jasan sadržaj s odgovorima, schema markup, dosljedne podatke o tvrtki i recenzije. Preporuku ne može garantirati nitko, ali šanse možemo bitno povećati — i mjeriti.' ),
 		array( 'Radite li webshop i praćenje prodaje?', 'Da: WooCommerce, kartično plaćanje za hrvatsko tržište i GA4 e-commerce praćenje (od pregleda proizvoda do kupnje), uz Consent Mode v2.' ),
 		array( 'Radite li samo u Osijeku?', 'Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom.' ),
-	);
-}
-
-/** Primjer mjesečnog izvještaja (ilustrativni podaci — jasno označeno u prikazu). */
-function zaec_sample_report() {
-	return array(
-		'period'  => 'Primjer · 30 dana',
-		'kpis'    => array(
-			array( 'Upiti s weba', '38', '+12' ),
-			array( 'Klikovi na poziv', '64', '+19' ),
-			array( 'Prikazi na Google karti', '2.140', '+31 %' ),
-			array( 'Prihod webshopa', '4.860 €', '+18 %' ),
-		),
-		'bars'    => array( 42, 55, 48, 61, 58, 72, 69, 80, 77, 86, 83, 95 ),
-		'sources' => array( array( 'Google pretraga', 46 ), array( 'Google karta', 27 ), array( 'Izravno', 14 ), array( 'Društvene mreže', 9 ), array( 'Ostalo', 4 ) ),
 	);
 }

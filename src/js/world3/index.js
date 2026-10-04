@@ -1,17 +1,26 @@
 // ZAEC kino-uvod: jedan renderer, jedan svijet, scroll kao dirigent.
-// Svijet → Europa → Hrvatska → Osijek → konkatedrala → web → put posjetitelja → slojevi → mreža.
+// Orbita → Europa → Hrvatska → Slavonija → Osijek → konkatedrala → crtež → mreža → web → put do upita → slojevi → mreža.
+//
+// Višerazinska arhitektura: karta (Z = 1) je referentni sustav; globus, karta i grad (u metrima) skaliraju se
+// s mapScale(Z) oko ishodišta u konkatedrali, pa kamera putuje kontinuirano kroz šest redova veličine bez
+// gubitka preciznosti (sve je blizu ishodišta). Dva prijelaza mjerila skrivaju oblaci (orbita → karta,
+// kontinent → regija); svjetla naselja su stvarna ulična svjetla grada i ostaju na mjestu dok grad izrasta.
 import * as THREE from 'three';
 import geo from './data/geo.json';
 import { createGlobe } from './globe.js';
+import { createNetwork } from './network.js';
+import { createClouds } from './clouds.js';
 import { createEurope } from './europe.js';
 import { createCity } from './city.js';
 import { createMorph, createLayers, LAYER_DEFS } from './wire.js';
 import { createFlow } from './flow.js';
 import { GATES } from './gates.js';
 import { FRAMES, KEYS, frameState } from './keyframes.js';
-import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded } from './lib.js';
+import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, Z_CITY, CITY_KX, CITY_KZ } from './lib.js';
 
-export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }) {
+const bump = (z, c, w) => 1 - smooth(0, w, Math.abs(z - c));
+
+export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapter, onFrame }) {
   const root = document.documentElement;
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -19,7 +28,7 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
 
   /* ── renderer ── */
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lite, alpha: false, powerPreference: 'high-performance', stencil: false });
-  renderer.setClearColor('#04060c', 1);
+  renderer.setClearColor('#03050b', 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const maxDpr = lite ? 1.35 : 1.75;
   let dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
@@ -36,26 +45,48 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
   scene.add(rim);
 
   /* ── pozornice ── */
-  const globe = createGlobe({ geo, lite });
+  const globe = createGlobe({ geo, lite, landUrl: assets.land });
+  const network = createNetwork({ geo, lite });
+  globe.spin.add(network.group);
+  const clouds = createClouds({ lite });
   const europe = createEurope({ geo, lite });
-  const city = createCity({ lite });
-  const morph = createMorph(city.cathGeo);
+  const morph = createMorph(null, { max: lite ? 3200 : 6500 });
+  // rubovi konkatedrale (metri) → svjetske jedinice na mjerilu grada
+  const kCity = mapScale(Z_CITY);
+  const toWorldLines = (g) => {
+    const out = g.clone();
+    out.scale(kCity * CITY_KX, kCity * CITY_KZ, kCity * CITY_KZ);
+    return out;
+  };
+  const city = createCity({
+    lite,
+    dataUrl: assets.city,
+    modelUrl: assets.model,
+    onLines: (g) => { const w = toWorldLines(g); morph.setSource(w); w.dispose(); },
+  });
   const layers = createLayers();
   const flow = createFlow({ lite });
-  scene.add(globe.group, europe.group, city.group, morph.object, layers.group, flow.group);
+  scene.add(globe.group, europe.group, city.group, morph.object, layers.group, flow.group, clouds.object);
 
-  // zvjezdana prašina oko kamere (dubina u otvaranju)
+  // zvijezde: rijetke, oko kamere (bez "sci-fi" gustoće)
   const rand = seeded(99);
-  const stars = glowPoints({ count: lite ? 380 : 720, color: '#7f95d6', core: '#dfe6ff', size: 1.4, depthTest: false });
+  const stars = glowPoints({ count: lite ? 260 : 480, color: '#8d9fd6', core: '#e6ebff', size: 1.2, depthTest: false });
   for (let i = 0; i < stars.alpha.length; i++) {
     const u = rand() * 2 - 1, th = rand() * Math.PI * 2, r = 700 + rand() * 300;
     const q = Math.sqrt(1 - u * u);
     stars.pos.set([Math.cos(th) * q * r, u * r, Math.sin(th) * q * r], i * 3);
-    stars.alpha[i] = 0.12 + rand() * 0.45;
-    stars.size[i] = 0.5 + rand() * rand() * 2.2;
+    stars.alpha[i] = 0.08 + rand() * rand() * 0.6;
+    stars.size[i] = 0.45 + rand() * rand() * 1.8;
   }
   stars.points.renderOrder = -10;
   scene.add(stars.points);
+  // sunce iza ruba planeta (gore desno): samo mekani sjaj, bez "sci-fi" bljeska
+  const sunGlow = glowPoints({ count: 2, color: '#9fc0ff', core: '#ffffff', size: 1, depthTest: true, additive: true });
+  sunGlow.size[0] = 260; sunGlow.size[1] = 40;
+  sunGlow.alpha[0] = 0.32; sunGlow.alpha[1] = 0.9;
+  sunGlow.uniforms.uMax.value = 520;
+  sunGlow.points.renderOrder = -5;
+  scene.add(sunGlow.points);
 
   /* ── sidra i stanje ── */
   let anchors = [];
@@ -88,7 +119,6 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
       const r = el.getBoundingClientRect();
       return [r.top + sy, r.bottom + sy];
     });
-    // spoji susjedne pokrivače
     covers.sort((a, b) => a[0] - b[0]);
     const merged = [];
     covers.forEach((c) => {
@@ -171,7 +201,6 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
   const labels = labelsRoot ? [...labelsRoot.querySelectorAll('[data-l]')].map((el) => ({ el, key: el.dataset.l, o: -1, x: -1e4, y: -1e4 })) : [];
   const v3 = new THREE.Vector3();
   const n3 = new THREE.Vector3();
-  const CITY_PTS = { cath: [-4.05, 14.2, 0], drava: [-30, 0.6, -23.5], hotel: [-16.5, 8.4, -13.5] };
   const cityIdx = (name) => geo.cities.findIndex((c) => c[0] === name);
 
   function labelWorld(key, ctx) {
@@ -187,13 +216,18 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
       }
       case 'city': {
         europe.cityWorld(cityIdx(idx), v3);
-        return st.labCities * ctx.europeA;
+        return (idx === 'Osijek' ? Math.max(st.labCities, st.labTowns) * (1 - smooth(1.62, 1.8, st.Z)) : st.labCities) * ctx.europeA;
+      }
+      case 'town': {
+        europe.townWorld(i, v3);
+        return st.labTowns * ctx.europeA;
       }
       case 'cath':
       case 'drava':
       case 'hotel':
-        v3.fromArray(CITY_PTS[kind]);
-        return st.labCity * ctx.cityA;
+      case 'trg':
+        v3.copy(city.anchors[kind]).applyMatrix4(city.group.matrixWorld);
+        return st.labCity * ctx.cityA * smooth(Z_CITY - 0.12, Z_CITY - 0.01, st.Z);
       case 'ch':
         v3.copy(flow.channelWorld(i));
         return st.labFlow;
@@ -205,9 +239,8 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
         return st.labFlow;
       case 'layer': {
         layers.anchor(i, v3);
-        const arrive = clamp(st.layers * 8.2 - i);
-        const act = layerHover >= 0 ? (layerHover === i ? 1 : 0.0) : 1;
-        return st.labLayers * st.layersA * arrive * act;
+        const arrive = clamp(st.layers * 8 - i);
+        return st.labLayers * st.layersA * arrive * (0.38 + 0.62 * layers.emphasis(i));
       }
       default:
         return 0;
@@ -250,6 +283,7 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
   let frameEMA = 16;
   let labelsHidden = false;
   let override = null;
+  let osmShown = false;
   const ctx = { globeCenter: new THREE.Vector3(), camPos: new THREE.Vector3(), globeA: 0, europeA: 0, cityA: 0 };
 
   function frame(now, forcedDt) {
@@ -266,7 +300,6 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
     if (Math.abs(rig.smooth - rig.target) < 1e-4) rig.smooth = rig.target;
     stateAt(rig.smooth, st);
     if (override) Object.assign(st, override);
-    // motiv mora stati u širinu kadra (uski i visoki ekrani)
     if (st.fit > 0) st.dist = Math.max(st.dist, st.fit / (2 * Math.tan((st.fov * DEG) / 2) * (vw / vh) * 0.92));
     const exact = stateAt(rig.target, {});
     if (exact.chapter !== lastChapter) {
@@ -287,52 +320,70 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
       ptr.sx = damp(ptr.sx, ptr.x, 2.5, dt);
       ptr.sy = damp(ptr.sy, ptr.y, 2.5, dt);
     }
-    const az = (st.az + ptr.sx * 3.2) * DEG;
-    const el = (st.el - ptr.sy * 1.8) * DEG;
+    const az = (st.az + ptr.sx * 2.6) * DEG;
+    const el = (st.el - ptr.sy * 1.5) * DEG;
     camera.position.set(st.tx + st.dist * Math.cos(el) * Math.sin(az), st.ty + st.dist * Math.sin(el), st.tz + st.dist * Math.cos(el) * Math.cos(az));
+    camera.up.set(0, 1, 0);
     camera.lookAt(st.tx, st.ty, st.tz);
+    if (st.roll) camera.rotateZ(st.roll * DEG);
     if (Math.abs(camera.fov - st.fov) > 0.01) camera.fov = st.fov;
-    camera.near = st.Z > 1.5 ? 0.5 : 0.1;
-    camera.far = st.Z > 1.5 ? 1200 : 6000;
+    camera.near = st.Z > 1.5 ? 0.5 : 0.05;
+    camera.far = st.Z > 1.5 ? 2400 : 6000;
     camera.setViewOffset(vw, vh, -st.sx * vw, st.sy * vh, vw, vh);
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
 
-    /* globus */
+    /* planet + mreža */
     const Z = st.Z;
     const s = mapScale(Z);
     const gs = GLOBE_R * s;
     globe.group.scale.setScalar(gs);
     globe.group.position.set(0, -gs, 0);
     ctx.globeCenter.set(0, -gs, 0);
-    if (st.idle > 0.985 && !reduce) idleAngle += dt * 0.11;
+    if (st.idle > 0.985 && !reduce) idleAngle += dt * 0.012;
     const wrapped = Math.atan2(Math.sin(idleAngle), Math.cos(idleAngle));
-    const globeA = 1 - smooth(0.8, 0.93, Z);
-    globe.update({ alpha: globeA, spin: wrapped * st.idle, net: st.net, finale: st.finale, dive: smooth(0.5, 1, Z), time, dt, pr: dpr, reduce });
+    const globeA = 1 - smooth(0.82, 0.92, Z);
+    globe.update({ alpha: globeA, spin: wrapped * st.idle, net: st.net, finale: st.finale, dive: smooth(0.45, 0.9, Z), time, pr: dpr, reduce });
+    globe.group.updateMatrixWorld();
+    network.update({ alpha: globeA * (0.55 + 0.45 * st.net), time, conv: st.conv, pr: dpr, camera, frame: globe.spin });
 
-    /* Europa + Hrvatska */
-    const europeA = smooth(0.7, 0.92, Z) * (1 - smooth(1.72, 1.96, Z));
-    const cityFade = smooth(1.35, 1.85, Z);
+    /* Europa + Hrvatska + Slavonija */
+    const europeA = smooth(0.8, 0.9, Z) * (1 - smooth(1.8, 1.97, Z));
+    const cityFade = smooth(1.06, 1.4, Z);
     const sy = Math.min(s, 1);
     europe.group.scale.set(s, sy, s);
     europe.group.position.y = -st.lift * (1 - cityFade * 0.985) * sy * smooth(1.0, 1.25, Z);
     europe.update({ alpha: europeA, lift: st.lift, net: st.net, cityFade, Z, time, dt, pr: dpr, reduce });
 
-    /* Osijek */
-    const cityA = smooth(1.62, 1.9, Z);
-    city.update({ alpha: cityA, rise: st.rise, dim: st.dim, lines: st.lines, cath: smooth(0.45, 1, st.cath), glow: st.glow, cathSolid: st.cathSolid, time, pr: dpr, reduce });
+    /* Osijek: stvarno mjerilo (metri) vezano uz kartu */
+    city.group.scale.set(s * CITY_KX, s * CITY_KZ, s * CITY_KZ);
+    const cityA = smooth(1.6, 1.86, Z);
+    const lamps = smooth(1.1, 1.34, Z);
+    city.update({ alpha: cityA, lamps, rise: st.rise, dim: st.dim, lines: st.lines, cath: smooth(0.45, 1, st.cath), glow: st.glow, cathSolid: st.cathSolid, time, pr: dpr, reduce });
+    const osm = lamps > 0.15;
+    if (osm !== osmShown) { osmShown = osm; root.classList.toggle('show-osm', osm); }
 
-    /* arhitektura → web, tok, slojevi */
+    /* oblaci: orbita → karta i kontinent → regija */
+    const c1 = bump(Z, 0.865, 0.07), c2 = bump(Z, 1.3, 0.085) * 0.62;
+    const zoom1 = clamp((Z - 0.795) / 0.14), zoom2 = clamp((Z - 1.215) / 0.17);
+    clouds.update({ amount: Math.max(c1, c2), zoom: c1 >= c2 ? zoom1 : zoom2, time, aspect: vw / Math.max(1, vh), seed: c1 >= c2 ? 1.3 : 7.9 });
+
+    /* arhitektura → crtež → mreža → web, tok, slojevi */
     const bad = badFrac * st.flow;
-    morph.update({ morph: st.morph, opacity: st.wire * cityA, time, focus: 0, bad });
+    morph.update({ morph: st.morph, opacity: st.wire * cityA, time, bad });
     flow.update({ alpha: st.flow, time, dt, pr: dpr, reduce, focusGate });
-    const autoLayer = layerHover >= 0 ? layerHover : -1;
-    layers.update({ p: st.layers, alpha: st.layersA, hover: autoLayer });
+    layers.update({ p: st.layers, alpha: st.layersA, assemble: st.assemble, active: st.assemble > 0.5 ? -1 : layerHover, dt, reduce });
+
+    /* sunce: daleko u smjeru svjetla, prati kameru */
+    for (let k = 0; k < 2; k++) sunGlow.pos.set([camera.position.x + globe.sun.x * 900, camera.position.y + globe.sun.y * 900, camera.position.z + globe.sun.z * 900], k * 3);
+    sunGlow.geometry.attributes.position.needsUpdate = true;
+    sunGlow.uniforms.uPR.value = dpr;
+    sunGlow.uniforms.uOpacity.value = (1 - smooth(0.25, 0.8, Z)) * (st.finale > 0.5 ? 0.7 : 1);
 
     /* zvijezde prate kameru */
     stars.points.position.copy(camera.position);
     stars.uniforms.uPR.value = dpr;
-    stars.uniforms.uOpacity.value = st.stars * (0.55 + 0.45 * (1 - smooth(1.2, 1.8, Z)));
+    stars.uniforms.uOpacity.value = st.stars * (1 - smooth(0.6, 1.0, Z)) + st.stars * 0.25 * smooth(1.5, 2, Z);
 
     scene.updateMatrixWorld();
     ctx.camPos.copy(camera.position);
@@ -406,14 +457,13 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
       return this.debugCam();
     },
     debugCam() {
-      return { progress: +rig.smooth.toFixed(3), chapter: lastChapter, Z: +st.Z.toFixed(3), cam: camera.position.toArray().map((v) => +v.toFixed(2)), target: [st.tx, st.ty, st.tz].map((v) => +v.toFixed(2)), anchors: anchors.map((a) => `${a.id}@${Math.round(a.y)}`), dpr, lite };
+      return { progress: +rig.smooth.toFixed(3), chapter: lastChapter, Z: +st.Z.toFixed(3), cam: camera.position.toArray().map((v) => +v.toFixed(2)), target: [st.tx, st.ty, st.tz].map((v) => +v.toFixed(2)), anchors: anchors.map((a) => `${a.id}@${Math.round(a.y)}`), dpr, lite, lines: morph.count, cityLoaded: city.isLoaded() };
     },
     stats: () => flow.stats(),
     debugState: () => ({ ...st }),
     debug: { camera, scene, globe, europe, city, renderer },
     /** privremeno nadjačaj stanje (podešavanje kadrova u pregledniku) */
     debugOverride(o) { override = o; return this.debugStep(1); },
-    debugStates: () => states.map((x, i) => ({ id: anchors[i].id, labFlow: x.labFlow, labCity: x.labCity, labOsijek: x.labOsijek })),
     dispose() {
       cancelAnimationFrame(raf);
       ro.disconnect();
@@ -421,8 +471,9 @@ export function createWorld3({ canvas, labelsRoot, onReady, onChapter, onFrame }
       document.removeEventListener('visibilitychange', onVis);
       canvas.removeEventListener('webglcontextlost', onLost);
       window.removeEventListener('pointermove', onPointer);
-      [globe, europe, city, morph, layers, flow].forEach((m) => m.dispose());
+      [globe, network, clouds, europe, city, morph, layers, flow].forEach((m) => m.dispose());
       stars.geometry.dispose();
+      sunGlow.geometry.dispose(); sunGlow.material.dispose();
       stars.material.dispose();
       renderer.dispose();
     },

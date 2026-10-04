@@ -52,6 +52,8 @@ function zaec_head_early() {
 		'thanks' => zaec_url( 'hvala' ),
 		'phone'  => zaec_option( 'phone_display' ),
 		'home'   => home_url( '/' ),
+		'theme'  => ZAEC_THEME_URI,
+		'ver'    => ZAEC_VERSION,
 	);
 	echo "<script>(function(){var d=document.documentElement;d.classList.remove('no-js');d.classList.add('js');if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion-ok');})();window.ZAEC_CFG=" . wp_json_encode( $cfg ) . ";</script>\n"; // phpcs:ignore
 	$font = glob( ZAEC_THEME_DIR . '/assets/build/assets/archivo-latin-standard-normal-*.woff2' );

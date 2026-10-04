@@ -32,7 +32,7 @@ get_template_part( 'template-parts/page-hero', null, array( 'landing' => $hero )
 		<?php else : ?>
 			<p class="lead">Projekti se uskoro dodaju.</p>
 		<?php endif; ?>
-		<div style="margin-top:60px"><?php get_template_part( 'template-parts/proof', null, array( 'report' => true ) ); ?></div>
+		<div style="margin-top:60px"><?php get_template_part( 'template-parts/proof', null, array( 'report' => false ) ); ?></div>
 	</div>
 </section>
 <?php

@@ -177,7 +177,7 @@ function zaec_registry_services() {
 					array( 'best' => 'Prodaja 0–24', 'title' => 'Webshop', 'tag' => 'WooCommerce', 'feat' => true, 'items' => array( 'Standardni proizvodi i jasne cijene', 'Kartično plaćanje i dostava', 'Narudžbe bez vašeg sudjelovanja', 'Mjerenje prihoda po kanalu' ) ),
 				),
 			),
-			array( 'type' => 'report', 'title' => 'Prodaja koju <em>vidite</em> u brojkama.', 'lead' => 'Uz svaki webshop postavljamo GA4 e-commerce praćenje. Ovako izgleda pregled koji dobivate — primjer s ilustrativnim podacima.' ),
+			array( 'type' => 'report', 'title' => 'Prodaja koju <em>vidite</em> u brojkama.', 'lead' => 'Uz svaki webshop postavljamo GA4 e-commerce praćenje. Ovo je ono što svaki mjesec vidite — s vašim stvarnim brojkama.' ),
 			array( 'type' => 'process' ),
 		),
 		'faq'          => array(
@@ -276,7 +276,7 @@ function zaec_registry_services() {
 				),
 				'cols'  => 3,
 			),
-			array( 'type' => 'report', 'title' => 'Mjesečno znate <em>što</em> se mijenja.', 'lead' => 'Izvještaj bez žargona: koliko vas ljudi vidi, koliko klikne i koliko se javi. Primjer s ilustrativnim podacima.' ),
+			array( 'type' => 'report', 'title' => 'Mjesečno znate <em>što</em> se mijenja.', 'lead' => 'Pregled bez žargona: koliko vas ljudi vidi, koliko klikne i koliko se javi — iz vaših podataka.' ),
 			array( 'type' => 'statement', 'text' => 'Bježite od svakoga tko vam <em>garantira</em> prvo mjesto. Mi garantiramo da su temelji napravljeni ispravno — i da vidite brojke.' ),
 		),
 		'faq'          => array(
@@ -487,7 +487,7 @@ function zaec_registry_services() {
 				),
 				'cols'  => 3,
 			),
-			array( 'type' => 'report', 'title' => 'Ovako izgleda <em>pregled</em>.', 'lead' => 'Primjer izvještaja s ilustrativnim podacima — vaš izvještaj koristi vaše stvarne brojke.' ),
+			array( 'type' => 'report', 'title' => 'Što sadrži <em>pregled</em>.', 'lead' => 'Pet stvari koje vlasniku tvrtke trebaju — iz vaših stvarnih podataka, bez primjera i izmišljenih brojki.' ),
 		),
 		'faq'          => array(
 			array( 'Radite li ovo i za web koji niste vi izradili?', 'Da. Krenemo od revizije postojećeg mjerenja (što se bilježi, a što ne) i dobivate popis popravaka prije bilo kakvog rada.' ),

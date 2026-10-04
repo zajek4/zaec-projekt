@@ -301,9 +301,13 @@ async function bootWorld() {
   try {
     await document.fonts?.ready;
     const { createWorld3 } = await import('./world3/index.js');
+    const cfg = window.ZAEC_CFG || {};
+    const T = (cfg.theme || '') + '/assets/';
+    const v = '?v=' + (cfg.ver || '1');
     world = createWorld3({
       canvas,
       labelsRoot: document.querySelector('[data-stage-labels]'),
+      assets: { land: T + 'img/world/land.png' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },
       onReady: () => root.classList.add('stage-ready'),
     });
     world.setGates(gates);
