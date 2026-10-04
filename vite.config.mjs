@@ -17,6 +17,11 @@ export default defineConfig({
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: 'chunks/[name]-[hash].js',
+        // Ulazne datoteke se učitavaju s ?ver=… — chunk nikad ne smije uvoziti ulaz (inače se modul izvrši dvaput).
+        manualChunks(id) {
+          if (id.includes('/src/js/world3/gates')) return 'gates';
+          return undefined;
+        },
         assetFileNames: (info) => {
           const n = info.names?.[0] || info.name || '';
           return n.endsWith('.css') ? '[name][extname]' : 'assets/[name]-[hash][extname]';

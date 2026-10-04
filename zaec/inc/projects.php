@@ -47,6 +47,9 @@ function zaec_project_fields() {
 		'year'           => array( 'Godina', 'text', '2026' ),
 		'technologies'   => array( 'Tehnologije', 'text', 'WordPress, GA4, schema' ),
 		'website_url'    => array( 'URL projekta (live)', 'url', 'https://…' ),
+		'challenge'      => array( 'Problem / izazov', 'textarea', 'S čime je klijent došao — bez preuveličavanja.' ),
+		'approach'       => array( 'Razmišljanje', 'textarea', 'Kako smo pristupili problemu.' ),
+		'solution'       => array( 'Rješenje', 'textarea', 'Što je konkretno napravljeno.' ),
 		'result'         => array( 'Ishod (samo potvrđen)', 'textarea', 'Upisati samo ako je stvarno potvrđen.' ),
 		'quote'          => array( 'Izjava klijenta', 'textarea', 'Doslovno, uz dopuštenje klijenta.' ),
 		'quote_author'   => array( 'Izjava — ime', 'text', 'npr. Dominik' ),
@@ -131,6 +134,9 @@ function zaec_get_project_data( $post_id ) {
 		'technologies'=> $m( 'technologies' ),
 		'website_url' => $m( 'website_url' ),
 		'result'      => $m( 'result' ),
+		'challenge'   => $m( 'challenge' ),
+		'approach'    => $m( 'approach' ),
+		'solution'    => $m( 'solution' ),
 		'quote'       => $m( 'quote' ),
 		'quote_author'=> $m( 'quote_author' ),
 		'quote_role'  => $m( 'quote_role' ),
@@ -177,6 +183,9 @@ function zaec_default_project_seed_data() {
 			'code' => 'CZA.01', 'title' => 'Centar za autizam Osijek', 'service' => 'Web stranica · ustanova', 'location' => 'Osijek',
 			'technologies' => 'UX · sadržajna struktura · responsive', 'website_url' => 'https://cza-os.hr/', 'image' => 'assets/img/projects/cza-osijek.png',
 			'result' => 'Lakši i pregledniji način prikazivanja objava, programa i pomoći za djecu.',
+			'challenge' => 'Mnogo različitih posjetitelja — roditelji, učenici, stručnjaci i lokalna zajednica — i puno sadržaja koji svatko od njih treba pronaći bez lutanja.',
+			'approach' => 'Sadržaj složiti prema pitanjima posjetitelja, a ne prema unutarnjoj organizaciji ustanove. Važna informacija ne smije ostati skrivena iza općenite priče.',
+			'solution' => 'Jasne cjeline: o Centru, programi, terapijski postupci, projekti, novosti, galerija i kontakt — pregledno na mobitelu i računalu.',
 			'excerpt' => 'Jasna digitalna prezentacija Centra, programa, projekata, novosti i kontakta.',
 			'content' => "Web stranica Centra za autizam Osijek okuplja ono što roditelji, učenici i lokalna zajednica trebaju pronaći: informacije o Centru, programe, terapijske postupke, projekte, novosti, galeriju i kontakt.\n\nSadržaj je organiziran tako da važna informacija ne ostane skrivena iza općenite priče.",
 		),
@@ -184,6 +193,9 @@ function zaec_default_project_seed_data() {
 			'code' => 'EKO.02', 'title' => 'Eurokontrola', 'service' => 'Web stranica · B2B', 'location' => 'Osijek',
 			'technologies' => 'UX · usluge · sadržajna struktura', 'website_url' => 'https://eurokontrola.hr/', 'image' => 'assets/img/projects/eurokontrola.png',
 			'result' => 'Ozbiljan identitet i jasnije objašnjeno što Eurokontrola radi.',
+			'challenge' => 'Stručne usluge kontrole kvalitete i laboratorijskih analiza moraju biti razumljive i kupcu koji nije stručnjak.',
+			'approach' => 'Razdvojiti usluge u razumljive cjeline i skratiti put od dolaska na web do prave usluge i kontakta.',
+			'solution' => 'Struktura usluga kontrole kvalitete i laboratorijskih analiza, ozbiljan vizualni identitet i jasan put prema kontaktu.',
 			'excerpt' => 'Kontrola kvalitete i laboratorijske analize hrane, sirovina i poljoprivrednih proizvoda.',
 			'content' => "Web stranica Eurokontrole razdvaja usluge kontrole kvalitete i laboratorijskih analiza u razumljive cjeline.\n\nPosjetitelj brzo dolazi do relevantne usluge i nastavlja prema kontaktu bez prolaska kroz nevažan sadržaj.",
 		),
@@ -191,6 +203,9 @@ function zaec_default_project_seed_data() {
 			'code' => 'DGR.03', 'title' => 'Daj Gric', 'service' => 'Web stranica · restoran i catering', 'location' => 'Bilje',
 			'technologies' => 'UX · meni · narudžbe · catering', 'website_url' => 'https://dajgric.com/', 'image' => 'assets/img/projects/daj-gric.jpg',
 			'result' => 'Veći promet i prepoznatljivost hrane u lokalnom mjestu.',
+			'challenge' => 'Gost restorana brze hrane treba odmah znati što je na meniju, gdje je restoran i kako naručiti — a catering kupac što dobiva za veći događaj.',
+			'approach' => 'Informacije ispred ukrasa. Svaki ekran vodi prema narudžbi ili kontaktu, bez prolaska kroz nevažan sadržaj.',
+			'solution' => 'Meni, narudžbe, lokacija, catering ponuda i galerija — brzo i konkretno, prvo za mobitel.',
 			'quote' => 'Stvarno sam zadovoljan, svaka čast. Promet je veći nego prije.', 'quote_author' => 'Dominik', 'quote_role' => 'Daj Gric, Bilje',
 			'excerpt' => 'Restoran brze hrane i catering: meni, narudžbe, lokacija i galerija.',
 			'content' => "Daj Gric treba biti brz i konkretan: što je na meniju, gdje se restoran nalazi, kako naručiti i što catering nudi za veće događaje.\n\nStranica te informacije stavlja ispred ukrasa i vodi posjetitelja prema narudžbi ili kontaktu.",
@@ -214,7 +229,7 @@ function zaec_seed_default_projects() {
 		if ( is_wp_error( $id ) ) {
 			continue;
 		}
-		foreach ( array( 'code', 'service', 'location', 'technologies', 'website_url', 'image', 'result', 'quote', 'quote_author', 'quote_role' ) as $k ) {
+		foreach ( array( 'code', 'service', 'location', 'technologies', 'website_url', 'image', 'result', 'challenge', 'approach', 'solution', 'quote', 'quote_author', 'quote_role' ) as $k ) {
 			if ( ! empty( $p[ $k ] ) ) {
 				update_post_meta( $id, '_zaec_project_' . $k, $p[ $k ] );
 			}
@@ -243,6 +258,26 @@ function zaec_backfill_project_quotes() {
 	}
 	update_option( 'zaec_quotes_backfill', '1', false );
 }
+
+/** v2.1: polja studije slučaja (izazov, razmišljanje, rješenje) za poznate projekte — samo ako su prazna. */
+function zaec_backfill_project_cases() {
+	if ( get_option( 'zaec_cases_backfill' ) ) {
+		return;
+	}
+	foreach ( zaec_default_project_seed_data() as $p ) {
+		$ids = get_posts( array( 'post_type' => 'projekti', 'post_status' => 'any', 'posts_per_page' => 1, 'fields' => 'ids', 'meta_key' => '_zaec_project_website_url', 'meta_value' => $p['website_url'] ) );
+		if ( ! $ids ) {
+			continue;
+		}
+		foreach ( array( 'challenge', 'approach', 'solution' ) as $k ) {
+			if ( ! empty( $p[ $k ] ) && ! get_post_meta( $ids[0], '_zaec_project_' . $k, true ) ) {
+				update_post_meta( $ids[0], '_zaec_project_' . $k, $p[ $k ] );
+			}
+		}
+	}
+	update_option( 'zaec_cases_backfill', '1', false );
+}
+add_action( 'admin_init', 'zaec_backfill_project_cases', 40 );
 
 /** Sve izjave klijenata (za sekciju preporuka). */
 function zaec_get_testimonials( $limit = 6 ) {

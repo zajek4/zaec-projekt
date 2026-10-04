@@ -61,7 +61,7 @@ function zaec_head_early() {
 	if ( is_front_page() ) {
 		printf( '<link rel="preload" href="%s" as="image" type="image/webp" fetchpriority="high">' . "\n", esc_url( zaec_img( 'world/poster.webp' ) ) );
 	}
-	echo '<meta name="theme-color" content="#efebe3">' . "\n";
+	printf( '<meta name="theme-color" content="%s">' . "\n", is_front_page() ? '#04060c' : '#efebe3' );
 	printf( '<link rel="icon" href="%s" type="image/svg+xml">' . "\n", esc_url( zaec_img( 'favicon.svg' ) ) );
 	printf( '<link rel="icon" href="%s" sizes="32x32" type="image/png">' . "\n", esc_url( zaec_img( 'favicon-32.png' ) ) );
 	printf( '<link rel="apple-touch-icon" href="%s">' . "\n", esc_url( zaec_img( 'apple-touch-icon.png' ) ) );

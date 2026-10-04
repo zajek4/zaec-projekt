@@ -7,6 +7,8 @@ import './site.js';
 import { initContactForms } from './form.js';
 import { initConfigurators } from './configurator.js';
 import './sub.js';
+import { initCursor } from './cursor.js';
 
 initContactForms();
 initConfigurators();
+initCursor();

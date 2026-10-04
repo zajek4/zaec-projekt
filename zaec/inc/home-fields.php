@@ -50,7 +50,7 @@ function zaec_render_home_fields() {
 	foreach ( $defaults as $k => $v ) {
 		$groups[ strtok( $k, '_' ) ][ $k ] = $v;
 	}
-	$names = array( 'hero' => 'Hero', 'problem' => 'Problem', 'trades' => 'Djelatnosti', 'system' => 'Sustav (5 slojeva)', 'night' => 'Noć / 0–24', 'process' => 'Proces', 'work' => 'Radovi', 'cfg' => 'Procjena', 'services' => 'Usluge', 'who' => 'Tko', 'faq' => 'Pitanja', 'final' => 'Završni upit' );
+	$names = array( 'hero' => 'Hero', 'net' => '01 Mreža', 'hr' => '02 Hrvatska', 'os' => '03 Osijek', 'cath' => '04 Konkatedrala', 'plan' => '05 Nacrt', 'path' => '06 Put do upita', 'sys' => '07 Sustav (7 slojeva)', 'recog' => 'Prepoznavanje', 'cmp' => 'Lijepo vs učinkovito', 'services' => 'Usluge', 'work' => 'Radovi', 'maybe' => 'Možda vam ne treba', 'process' => 'Proces', 'invest' => 'Ulaganje', 'faq' => 'Pitanja', 'final' => 'Završni upit' );
 	?>
 	<div class="wrap">
 		<h1>ZAEC — tekstovi naslovnice</h1>

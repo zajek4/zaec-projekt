@@ -63,6 +63,7 @@ function zaec_process_inquiry( $is_ajax = false ) {
 	$message  = zaec_field( 'poruka', 'textarea' );
 	$config   = zaec_field( 'konfiguracija', 'textarea' );
 	$company  = zaec_field( 'tvrtka' );
+	$goals    = isset( $_POST['ciljevi'] ) ? array_values( array_intersect( array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['ciljevi'] ) ), zaec_home_goals() ) ) : array(); // phpcs:ignore
 	$place    = zaec_field( 'mjesto' );
 	$web      = esc_url_raw( zaec_field( 'web' ) );
 	$source   = esc_url_raw( zaec_field( 'izvor' ) );
@@ -86,7 +87,7 @@ function zaec_process_inquiry( $is_ajax = false ) {
 	$recipient = ! empty( $o['form_recipient'] ) && is_email( $o['form_recipient'] ) ? $o['form_recipient'] : get_option( 'admin_email' );
 	$subject   = 'provjera' === $kind
 		? sprintf( '[ZAEC provjera vidljivosti] %s — %s', $company, $place ? $place : $name )
-		: sprintf( '[ZAEC upit] %s%s', $name, $activity ? ' — ' . $activity : '' );
+		: sprintf( '[ZAEC upit] %s%s', $name, $company ? ' — ' . $company : ( $activity ? ' — ' . $activity : '' ) );
 
 	$lines = array(
 		'provjera' === $kind ? 'Zahtjev za besplatnu provjeru vidljivosti' : 'Novi upit s web stranice',
@@ -94,7 +95,7 @@ function zaec_process_inquiry( $is_ajax = false ) {
 		'Ime: ' . $name,
 		'Kontakt: ' . $contact,
 	);
-	foreach ( array( 'Tvrtka' => $company, 'Mjesto' => $place, 'Web' => $web, 'Djelatnost' => $activity, 'Usluga' => $service ) as $label => $val ) {
+	foreach ( array( 'Ciljevi' => implode( ', ', $goals ), 'Tvrtka' => $company, 'Mjesto' => $place, 'Web' => $web, 'Djelatnost' => $activity, 'Usluga' => $service ) as $label => $val ) {
 		if ( $val ) {
 			$lines[] = $label . ': ' . $val;
 		}
@@ -134,7 +135,7 @@ function zaec_process_inquiry( $is_ajax = false ) {
 		zaec_send_mail( $contact, (string) $o['form_autorespond_subject'], $body, array( 'Content-Type: text/plain; charset=UTF-8' ), $from_email, $from_name );
 	}
 
-	do_action( 'zaec_inquiry_sent', compact( 'kind', 'name', 'contact', 'activity', 'service', 'company', 'place', 'web', 'message', 'config', 'source' ) );
+	do_action( 'zaec_inquiry_sent', compact( 'kind', 'name', 'contact', 'activity', 'service', 'goals', 'company', 'place', 'web', 'message', 'config', 'source' ) );
 
 	if ( $is_ajax ) {
 		zaec_ajax_prepare_response();

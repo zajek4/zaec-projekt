@@ -460,6 +460,17 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(2
 .prose th, .prose td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .prose th { font-weight: 650; color: var(--ink); }
 
+/* ───────── pokazivač (samo fini pokazivač) ───────── */
+.cursor { position: fixed; left: 0; top: 0; z-index: 1001; pointer-events: none; opacity: 0; transition: opacity 0.3s; mix-blend-mode: difference; }
+.cursor.is-on { opacity: 1; }
+.cursor.is-hidden { opacity: 0; }
+.cursor-ring { position: absolute; left: -16px; top: -16px; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid #fff; transition: transform 0.45s var(--ease-out), background 0.3s, border-color 0.3s; }
+.cursor.is-hot .cursor-ring { transform: scale(1.7); background: rgba(255, 255, 255, 0.12); }
+.cursor.is-down .cursor-ring { transform: scale(0.8); }
+.cursor.has-label .cursor-ring { transform: scale(2.6); background: #fff; }
+.cursor-label { position: absolute; left: 0; top: 0; translate: -50% -50%; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: #000; white-space: nowrap; opacity: 0; transition: opacity 0.25s; }
+.cursor.has-label .cursor-label { opacity: 1; }
+
 /* ───────── reduced motion ───────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
