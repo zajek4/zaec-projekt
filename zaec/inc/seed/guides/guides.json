@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "zasto-web-ne-donosi-upite",
+    "title": "Zašto web stranica ne donosi upite: 9 najčešćih razloga",
+    "short": "Zašto web ne donosi upite",
+    "description": "Imate web, a telefon šuti? Devet najčešćih razloga zašto web stranica obrta ili male tvrtke ne donosi upite — i što konkretno popraviti, redom po važnosti.",
+    "date": "2026-10-04",
+    "readMin": 8,
+    "kicker": "Vodič · Konverzija",
+    "order": 1
+  },
+  {
+    "slug": "kako-se-pojaviti-u-chatgpt-i-google-ai-odgovorima",
+    "title": "Kako se pojaviti u ChatGPT-u i Google AI odgovorima: vodič za lokalne tvrtke",
+    "short": "Kako vas AI asistenti preporučuju",
+    "description": "Što ChatGPT, Gemini, Perplexity i Google AI koriste kad preporučuju lokalne tvrtke — i sedam konkretnih koraka da vaša tvrtka bude točno opisana i češće spomenuta.",
+    "date": "2026-10-04",
+    "readMin": 9,
+    "kicker": "Vodič · AI vidljivost",
+    "order": 2
+  },
+  {
+    "slug": "ga4-ecommerce-pracenje-vodic",
+    "title": "GA4 e-commerce praćenje: vodič za webshopove (WooCommerce)",
+    "short": "GA4 e-commerce praćenje",
+    "description": "Kako ispravno postaviti GA4 e-commerce praćenje za webshop: ključni događaji, dataLayer, Google Tag Manager, Consent Mode v2, provjera podataka i najčešće greške koje kvare izvještaje.",
+    "date": "2026-10-04",
+    "readMin": 10,
+    "kicker": "Vodič · Analitika",
+    "order": 3
+  },
+  {
+    "slug": "google-business-profil-vodic",
+    "title": "Google Business profil: vodič za obrtnike i male tvrtke",
+    "short": "Google Business profil — vodič",
+    "description": "Kako urediti Google Business profil da vas lokalni klijenti nađu i nazovu: kategorije, usluge, područje rada, fotografije, recenzije i najčešće greške. Praktični vodič na hrvatskom.",
+    "date": "2026-10-04",
+    "readMin": 9,
+    "kicker": "Vodič · Lokalni SEO",
+    "order": 4
+  },
+  {
+    "slug": "sto-pripremiti-prije-izrade-web-stranice",
+    "title": "Što pripremiti prije izrade web stranice: checklista za obrtnike",
+    "short": "Što pripremiti prije izrade weba",
+    "description": "Praktična checklista prije izrade web stranice: domena, tekstovi, fotografije, usluge, područje rada, pristupi i pravni podaci. Uštedite tjedne i novac pripremom unaprijed.",
+    "date": "2026-10-04",
+    "readMin": 7,
+    "kicker": "Vodič · Priprema",
+    "order": 5
+  },
+  {
+    "slug": "predlozak-ili-web-po-mjeri",
+    "title": "Predložak ili web po mjeri: što se isplati vašem poslu?",
+    "short": "Predložak ili web po mjeri?",
+    "description": "Usporedba izrade web stranice po predlošku i po mjeri: brzina, cijena, kontrola, SEO i održavanje. Kako odabrati pravi pristup za obrt ili malu tvrtku.",
+    "date": "2026-10-04",
+    "readMin": 6,
+    "kicker": "Vodič · Odluka",
+    "order": 6
+  }
+]

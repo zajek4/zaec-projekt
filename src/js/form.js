@@ -1,0 +1,135 @@
+// Forma za upit: validacija, priložena konfiguracija, slanje preko admin-ajax (progressive enhancement).
+const PHONE_RE = /^[+()\d\s/-]{6,}$/;
+const MAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const CFG = window.ZAEC_CFG || {};
+
+export function initContactForms() {
+  document.querySelectorAll('[data-contact-form]').forEach(init);
+}
+
+async function refreshNonce(form) {
+  try {
+    const body = new FormData();
+    body.append('action', 'zaec_refresh_nonce');
+    const res = await fetch(CFG.ajax, { method: 'POST', body, credentials: 'same-origin' });
+    const json = await res.json();
+    if (json && json.success && json.data && json.data.nonce) {
+      form.querySelectorAll('input[name="zaec_nonce"]').forEach((i) => (i.value = json.data.nonce));
+      return true;
+    }
+  } catch (e) {}
+  return false;
+}
+
+function init(form) {
+  if (form.dataset.ready) return;
+  form.dataset.ready = '1';
+  const status = form.querySelector('[data-status]');
+  const btn = form.querySelector('button[type="submit"]');
+  const chip = form.querySelector('[data-config-chip]');
+  const chipText = form.querySelector('[data-config-text]');
+  const cfgField = form.querySelector('[data-config-field]');
+  const started = form.querySelector('input[name="started_at"]');
+  if (started) started.value = String(Math.floor(Date.now() / 1000));
+  const src = form.querySelector('input[name="izvor"]');
+  if (src) src.value = location.href.split('#')[0];
+
+  function attach(cfg) {
+    if (!cfg || !cfg.summary || !cfgField) return;
+    cfgField.value = cfg.summary;
+    chipText.textContent = cfg.summary.split('\n').slice(0, 3).join('\n');
+    chip.hidden = false;
+    const sel = form.querySelector('select[name="djelatnost"]');
+    if (sel && cfg.trade && !sel.value) {
+      const opt = [...sel.options].find((o) => o.value === cfg.trade || o.dataset.tab === cfg.trade);
+      if (opt) sel.value = opt.value;
+    }
+    const usl = form.querySelector('select[name="usluga"]');
+    const map = { landing: 'Landing stranica', web: 'Web stranica', shop: 'Webshop', redesign: 'Redizajn postojećeg weba' };
+    if (usl && cfg.type && map[cfg.type]) usl.value = map[cfg.type];
+  }
+  try { attach(JSON.parse(sessionStorage.getItem('zaec-config') || 'null')); } catch (e) {}
+  document.addEventListener('zaec:config', (e) => attach(e.detail));
+  form.querySelector('[data-config-clear]')?.addEventListener('click', () => {
+    cfgField.value = '';
+    chip.hidden = true;
+    try { sessionStorage.removeItem('zaec-config'); } catch (e) {}
+  });
+
+  const fields = {
+    ime: (v) => v.trim().length >= 2,
+    kontakt: (v) => PHONE_RE.test(v.trim()) || MAIL_RE.test(v.trim()),
+  };
+  if (form.elements.tvrtka && form.elements.tvrtka.required) fields.tvrtka = (v) => v.trim().length >= 2;
+  function validate(name) {
+    const input = form.elements[name];
+    if (!input) return true;
+    const ok = fields[name](input.value);
+    input.closest('.field').classList.toggle('has-error', !ok);
+    input.setAttribute('aria-invalid', String(!ok));
+    return ok;
+  }
+  Object.keys(fields).forEach((n) => {
+    const el = form.elements[n];
+    if (!el) return;
+    el.addEventListener('blur', () => el.value && validate(n));
+    el.addEventListener('input', () => el.closest('.field').classList.contains('has-error') && validate(n));
+  });
+
+  let started2 = false;
+  form.addEventListener('focusin', () => {
+    if (!started2) { started2 = true; window.zaecTrack?.('form_start', { form: form.id }); }
+  });
+
+  async function send(retry = true) {
+    const res = await fetch(CFG.ajax, {
+      method: 'POST',
+      body: new FormData(form),
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json' },
+    });
+    let json = null;
+    try { json = await res.json(); } catch (e) { json = null; }
+    if (res.status === 403 && retry && (await refreshNonce(form))) return send(false);
+    return { res, json };
+  }
+
+  form.addEventListener('submit', async (e) => {
+    if (!CFG.ajax) return; // bez konfiguracije: klasični POST (admin-post.php)
+    e.preventDefault();
+    const okAll = Object.keys(fields).map(validate).every(Boolean);
+    if (!okAll) {
+      form.querySelector('.has-error input, .has-error textarea')?.focus();
+      setStatus('Provjerite označena polja.', 'error');
+      return;
+    }
+    btn.classList.add('is-loading');
+    btn.disabled = true;
+    setStatus('Šaljemo…');
+    try {
+      const { res, json } = await send();
+      if (res.ok && json && json.success) {
+        window.zaecTrack?.('generate_lead', { form: form.id, type: form.dataset.kind || 'upit' });
+        try { sessionStorage.removeItem('zaec-config'); } catch (err) {}
+        setStatus((json.data && json.data.message) || 'Upit je stigao.', 'ok');
+        if (CFG.thanks) setTimeout(() => (location.href = CFG.thanks), 500);
+        else form.reset();
+        return;
+      }
+      throw new Error((json && json.data && json.data.message) || 'send-failed');
+    } catch (err) {
+      const msg = err && err.message && err.message !== 'send-failed' && !/fetch|network|json/i.test(err.message)
+        ? err.message
+        : `Slanje trenutno nije uspjelo. Nazovite nas${CFG.phone ? ' na ' + CFG.phone : ''} — javljamo se u radno vrijeme.`;
+      setStatus(msg, 'error');
+    } finally {
+      btn.classList.remove('is-loading');
+      btn.disabled = false;
+    }
+  });
+
+  function setStatus(text, kind = '') {
+    status.textContent = text;
+    status.className = 'cform-status' + (kind ? ` is-${kind}` : '');
+  }
+}

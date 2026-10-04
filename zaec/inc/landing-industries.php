@@ -1,0 +1,428 @@
+<?php
+/**
+ * Djelatnosti (landing stranice + tabovi i 3D rekviziti na naslovnici) i posebne stranice.
+ *
+ * @package ZAEC
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/** Zajednički FAQ za djelatnosti. */
+function zaec_industry_common_faq() {
+	return array(
+		array( 'Koliko košta web za moju djelatnost?', 'Ovisi o broju usluga, stranica i funkcija (npr. rezervacije ili webshop). Složite procjenu projekta — vaša djelatnost je već odabrana — i dobit ćete pisanu ponudu s fiksnom cijenom.' ),
+		array( 'Što ako već imam web?', 'Prvo napravimo besplatnu provjeru vidljivosti. Često je dovoljno popraviti profil, dodati stranice za usluge i složiti recenzije — bez izrade novog weba.' ),
+	);
+}
+
+function zaec_registry_industries() {
+	$r = array();
+
+	$r['djelatnosti'] = array(
+		'type'        => 'hub-industries',
+		'title'       => 'Djelatnosti',
+		'seo_title'   => 'Web stranice za obrtnike — po djelatnostima | ZAEC',
+		'description' => 'Web stranice i Google profil za klima servise, vodoinstalatere, električare, krovopokrivače, građevinu, smještaj, trgovine i salone. Što vaš kupac traži i kako vas nađe.',
+		'kicker'      => 'Djelatnosti',
+		'h1'          => 'Web koji razumije <em>vaš</em> zanat.',
+		'lead'        => 'Kod kvara se zove odmah, salon se bira po fotografijama, krov po povjerenju. Svaka djelatnost ima svoja pitanja — i svoj put do poziva. Odaberite svoju.',
+		'answer'      => 'ZAEC slaže web stranice i Google profile prilagođene djelatnosti: hitni poziv za vodoinstalatere, upit za termin za klima servise, galerije radova za krovopokrivače, rezervacije za smještaj i salone, webshop za trgovine.',
+		'image'       => 'world/usluga-web.webp',
+		'image_alt'   => 'Low-poly gradić na lebdećem otoku s vašim obrtom u središtu',
+		'cta'         => array( 'Besplatna provjera vidljivosti', 'provjera-vidljivosti' ),
+		'blocks'      => array( array( 'type' => 'trades', 'title' => '', 'full' => true ) ),
+		'faq'         => array(
+			array( 'Moje djelatnosti nema na popisu.', 'Nema problema. Isti pristup radi za svaku uslugu koju ljudi traže lokalno: računovođe, autoservise, fizioterapeute, škole i druge. Javite se i složimo strukturu za vaš posao.' ),
+		),
+	);
+
+	$industries = array(
+		'klima-i-grijanje'          => array(
+			'tab' => 'Klima', 'icon' => 'snowflake', 'prop' => 0, 'sign' => 'KLIMA SERVIS',
+			'title' => 'Klima uređaji i grijanje', 'name' => 'klima servise',
+			'seo_title' => 'Web stranica i Google profil za klima servise i montažu klima | ZAEC',
+			'description' => 'Web stranica za klima servise: montaža, servis i čišćenje klima uređaja, dizalice topline, upit za termin u dva koraka i lokalni SEO prije sezone. Fiksna cijena u ponudi.',
+			'h1' => 'Web za klima servise: budite <em>prvi</em> izbor prije sezone.',
+			'lead' => 'Prvi vrući tjedan i prvi hladni dan donesu najviše poziva. Tko je tada vidljiv na karti i ima jasnu ponudu — puni raspored. Ostali gledaju kako konkurencija radi.',
+			'short' => 'Servis, montaža i čišćenje. Kupac mora odmah vidjeti što radite, gdje dolazite i kako do termina — prije nego nazove konkurenciju.',
+			'onweb' => array( 'Montaža · servis · čišćenje', 'Područje rada', 'Poziv / WhatsApp', 'Upit za termin' ),
+			'searches' => array( 'montaža klime + grad', 'servis klime cijena', 'čišćenje klime', 'klima ne hladi', 'dizalica topline ugradnja' ),
+			'problems' => array(
+				array( 'Sezona vas zatekne', 'Profil i web treba urediti prije sezone, a ne kad telefon već zvoni.' ),
+				array( 'Nejasno što ulazi u montažu', 'Najčešće pitanje. Ako web ne odgovori, odgovarate na telefonu deset puta dnevno.' ),
+				array( 'Samo poziv u radno vrijeme', 'Ljudi žele poslati upit u 22 sata, kad sjednu doma.' ),
+			),
+			'deliver' => array(
+				array( 'Stranice za montažu, servis i čišćenje', 'Svaka usluga sa svojim opisom, onim što uključuje i načinom formiranja cijene.' ),
+				array( 'Upit za termin u dva koraka', 'Usluga i mjesto — sve ostalo pitate na telefonu. Kraća forma, više upita.' ),
+				array( 'Sezonske stranice i objave', 'Servis prije ljeta, grijanje prije zime — na webu i u Google profilu.' ),
+				array( 'Marke i ovlaštenja', 'Ako ste ovlašteni serviser proizvođača, ističemo to. Ljudi traže po marki.' ),
+			),
+			'structure' => array( 'Hero: usluga + područje + „Naruči servis”', 'Usluge: montaža, servis, čišćenje', 'Radovi i recenzije', 'Područje rada (mjesta + radijus)', 'FAQ: koliko često servis, što uključuje', 'Upit za termin + poziv' ),
+			'faq' => array( array( 'Isplati li se web ako imam dovoljno posla ljeti?', 'Web pomaže i izvan sezone: servisi, čišćenje i grijanje mogu popuniti mirnije mjesece.' ) ),
+			'related' => array( 'djelatnosti/elektricari', 'djelatnosti/vodoinstalateri', 'usluge/lokalni-seo' ),
+		),
+		'vodoinstalateri'           => array(
+			'tab' => 'Voda', 'icon' => 'waterdrop', 'prop' => 1, 'sign' => 'VODOINSTALATER',
+			'title' => 'Vodoinstalateri i plinoinstalateri', 'name' => 'vodoinstalatere',
+			'seo_title' => 'Web stranica i Google profil za vodoinstalatere — hitni pozivi | ZAEC',
+			'description' => 'Web stranica za vodoinstalatere i plinoinstalatere: hitni poziv na prvom ekranu, stranice za intervencije, područje rada, upit s fotografijom i recenzije koje donose pozive.',
+			'h1' => 'Web za vodoinstalatere: kad curi, zovu <em>onoga</em> koga prvog nađu.',
+			'lead' => 'Kod kvara nitko ne čita roman. Čovjek otvori Google, pogleda kartu i recenzije — i nazove. Složimo profil i web tako da ste vi taj prvi poziv u svom području.',
+			'short' => 'Kod curenja nitko ne čita roman. Hitni kontakt, područje rada i vrsta intervencije moraju biti jasni u nekoliko sekundi — na mobitelu, s mokrim rukama.',
+			'onweb' => array( 'Hitni poziv', 'Intervencije', 'Upit s fotografijom', 'Područje rada' ),
+			'searches' => array( 'vodoinstalater + grad', 'hitni vodoinstalater', 'curi bojler', 'odčepljenje odvoda', 'plinoinstalater + grad' ),
+			'problems' => array(
+				array( 'Hitni poziv je zakopan', 'Ako je broj na dnu stranice, čovjek s poplavom u kupaonici već zove sljedećeg.' ),
+				array( 'Nije jasno gdje dolazite', 'Ljudi žele odmah znati pokrivate li njihov kvart ili mjesto.' ),
+				array( 'Sve usluge u jednoj rečenici', 'Odčepljenja, bojleri, kupaonice i plin su različite pretrage — i trebaju različite stranice.' ),
+			),
+			'deliver' => array(
+				array( 'Gumb „Hitno — nazovi”', 'Prikovan za dno ekrana na mobitelu, uz jasnu oznaku radite li hitno i kada.' ),
+				array( 'Pošalji fotografiju kvara', 'Upit s fotografijom štedi izlazak na teren i daje bolju procjenu.' ),
+				array( 'Stranica za svaku intervenciju', 'Hitne intervencije, bojleri, odvodi, kupaonice, plin — svaka sa svojim pitanjima.' ),
+				array( 'Recenzije nakon svakog posla', 'QR kartica ili WhatsApp poruka dok je klijent zadovoljan.' ),
+			),
+			'structure' => array( 'Hero: hitni poziv + područje', 'Intervencije (kartice)', 'Prije / poslije', 'Područje rada', 'FAQ: izlazak, obračun, rokovi', 'Upit s fotografijom + poziv' ),
+			'faq' => array( array( 'Trebam li objaviti cijene?', 'Ne morate točne cijene, ali način obračuna (izlazak, sat rada) smanjuje nepotrebne pozive i gradi povjerenje.' ) ),
+			'related' => array( 'djelatnosti/klima-i-grijanje', 'usluge/google-business-profil', 'usluge/lokalni-seo' ),
+		),
+		'elektricari'               => array(
+			'tab' => 'Struja', 'icon' => 'bolt', 'prop' => 2, 'sign' => 'ELEKTRO',
+			'title' => 'Električari', 'name' => 'električare',
+			'seo_title' => 'Web stranica i Google profil za električare | ZAEC',
+			'description' => 'Web stranica za električare: kvarovi, instalacije, atesti, solari i punionice kao zasebne usluge, ovlaštenja, područje rada i brz upit. Fiksna cijena u ponudi.',
+			'h1' => 'Web za električare: od sitnog kvara do <em>solara</em>.',
+			'lead' => 'Netko traži električara za kvar, netko za nove instalacije, a netko za atest ili punjač za auto. To su različiti kupci — kad ih web razdvoji, dobivate bolje upite.',
+			'short' => 'Od sitnog kvara do instalacija, atesta i solara — jasno odvojene usluge, reference i područje rada, da vas zovu za poslove koje želite.',
+			'onweb' => array( 'Kvarovi · instalacije · solari', 'Ovlaštenja', 'Područje rada', 'Brzi upit' ),
+			'searches' => array( 'električar + grad', 'hitni električar', 'atest električnih instalacija', 'ugradnja punjača za auto', 'ugradnja solarnih panela' ),
+			'problems' => array(
+				array( 'Sve pod „elektroinstalacije”', 'Kupac koji traži atest ili punjač ne prepozna se u općenitom opisu.' ),
+				array( 'Nema dokaza stručnosti', 'Kod struje ljudi žele sigurnost: ovlaštenja, iskustvo i stvarne radove.' ),
+				array( 'Pozivi za poslove koje ne radite', 'Jasan popis usluga i područja smanjuje pozive koji samo troše vrijeme.' ),
+			),
+			'deliver' => array(
+				array( 'Usluge razdvojene po potrebi', 'Kvarovi, nove instalacije, atesti, pametna kuća, punionice, solari — svaka sa svojom stranicom.' ),
+				array( 'Ovlaštenja i jamstvo', 'Vidljivo istaknute licence, ovlaštenja i jamstvo na rad.' ),
+				array( 'Radovi s opisom', 'Što je bio problem i kako je riješen — kratko i provjerljivo.' ),
+				array( 'Upit prema opsegu', 'Za veće radove: vrsta objekta, kvadratura, rok. Ozbiljniji upiti.' ),
+			),
+			'structure' => array( 'Hero: usluge + područje', 'Usluge: kvar / instalacija / solar', 'Ovlaštenja i reference', 'Radovi', 'FAQ', 'Upit prema opsegu' ),
+			'faq' => array(),
+			'related' => array( 'djelatnosti/klima-i-grijanje', 'djelatnosti/gradevina-i-adaptacije', 'usluge/google-business-profil' ),
+		),
+		'krovopokrivaci'            => array(
+			'tab' => 'Krov', 'icon' => 'home', 'prop' => 3, 'sign' => 'KROVOVI',
+			'title' => 'Krovopokrivači i limari', 'name' => 'krovopokrivače i limare',
+			'seo_title' => 'Web stranica i Google profil za krovopokrivače i limare | ZAEC',
+			'description' => 'Web stranica za krovopokrivače i limare: galerija prije/poslije, vrste krovova i materijala, hitne sanacije nakon nevremena i upit za procjenu s fotografijama.',
+			'h1' => 'Web za krovopokrivače: krov se prodaje <em>povjerenjem</em>.',
+			'lead' => 'Krov je velika investicija i nitko ne bira naslijepo. Prije poziva ljudi žele vidjeti vaše radove, materijale i da ste stvarna, ozbiljna firma. Upravo to pokazuje dobar web.',
+			'short' => 'Krov se prodaje povjerenjem: izvedeni radovi, materijali, područje rada i jednostavan put do procjene.',
+			'onweb' => array( 'Prije / poslije', 'Vrste krova', 'Hitne sanacije', 'Zahtjev za procjenu' ),
+			'searches' => array( 'krovopokrivač + grad', 'sanacija krova cijena', 'izmjena crijepa', 'limarski radovi oluci', 'popravak krova nakon nevremena' ),
+			'problems' => array(
+				array( 'Nema fotografija radova', 'Bez prije i poslije kupac ne može procijeniti kvalitetu.' ),
+				array( 'Nevrijeme donese val upita', 'Nakon oluje svi traže krovopokrivača odjednom — tko je vidljiv tog dana, dobiva posao.' ),
+				array( 'Upit bez podataka', 'Ako forma ne traži osnovno, procjena traje dulje i gubite vrijeme.' ),
+			),
+			'deliver' => array(
+				array( 'Galerija prije / poslije', 'S kratkim opisom: lokacija, vrsta krova, materijal.' ),
+				array( 'Stranice po vrsti posla', 'Sanacije, novi krovovi, limarija i oluci, ravni krovovi.' ),
+				array( 'Upit za procjenu', 'Mjesto, vrsta krova, površina i fotografije — dolazite pripremljeni.' ),
+				array( 'Hitne sanacije', 'Jasno istaknuta mogućnost hitnog izlaska nakon nevremena, ako je nudite.' ),
+			),
+			'structure' => array( 'Hero: vrste radova + područje', 'Prije / poslije', 'Materijali i vrste krova', 'Proces i jamstvo', 'FAQ', 'Zahtjev za procjenu' ),
+			'faq' => array(),
+			'related' => array( 'djelatnosti/gradevina-i-adaptacije', 'usluge/izrada-web-stranica', 'usluge/lokalni-seo' ),
+		),
+		'gradevina-i-adaptacije'    => array(
+			'tab' => 'Građevina', 'icon' => 'buildings', 'prop' => 4, 'sign' => 'GRADNJA',
+			'title' => 'Građevina i adaptacije', 'name' => 'građevinske obrte i adaptacije',
+			'seo_title' => 'Web stranica za građevinske obrte i adaptacije | ZAEC',
+			'description' => 'Web stranica za građevinske obrte: adaptacije stanova i kupaonica, fasade, keramika i završni radovi. Projekti kao studije, jasan proces i upit prema opsegu.',
+			'h1' => 'Web za građevinu: pokažite kako radite <em>prije</em> prvog poziva.',
+			'lead' => 'Kod adaptacije kupac se boji kašnjenja, skrivenih troškova i nereda. Web koji pokazuje stvarne projekte, jasan proces i tko radi posao uklanja taj strah — i privlači ozbiljnije klijente.',
+			'short' => 'Kupac želi vidjeti što preuzimate, kako izgleda proces i stvarne projekte — prije prvog poziva. Dobar web filtrira ozbiljne upite.',
+			'onweb' => array( 'Projekti', 'Proces', 'Usluge', 'Upit prema opsegu' ),
+			'searches' => array( 'adaptacija stana + grad', 'adaptacija kupaonice cijena', 'keramičar + grad', 'fasaderski radovi', 'građevinska firma + grad' ),
+			'problems' => array(
+				array( 'Projekti nisu prikazani', 'Fotografije su na Facebooku od prije tri godine, a na webu ništa.' ),
+				array( 'Nejasan proces', 'Kupac ne zna kako izgleda suradnja: izvid, ponuda, rokovi, plaćanje.' ),
+				array( 'Pogrešni upiti', 'Bez jasnog opisa što preuzimate javljaju se ljudi za poslove koje ne želite.' ),
+			),
+			'deliver' => array(
+				array( 'Projekti kao studije', 'Što je bilo, što je napravljeno i koliko je trajalo — uz fotografije.' ),
+				array( 'Proces u koracima', 'Od izvida do primopredaje, da kupac zna što ga čeka.' ),
+				array( 'Stranice po vrsti radova', 'Stanovi, kupaonice, fasade, keramika, suhi radovi.' ),
+				array( 'Upit s fotografijama', 'Fotografije prostora i okvirne mjere već u prvom upitu.' ),
+			),
+			'structure' => array( 'Hero: što preuzimate', 'Usluge', 'Projekti (studije)', 'Proces', 'FAQ', 'Upit prema opsegu' ),
+			'faq' => array(),
+			'related' => array( 'djelatnosti/krovopokrivaci', 'djelatnosti/elektricari', 'usluge/izrada-web-stranica' ),
+		),
+		'ugostiteljstvo-i-smjestaj' => array(
+			'tab' => 'Smještaj', 'icon' => 'bed', 'prop' => 5, 'sign' => 'APARTMANI',
+			'title' => 'Ugostiteljstvo i smještaj', 'name' => 'restorane i smještaj',
+			'seo_title' => 'Web stranica za restorane, apartmane i smještaj — direktne rezervacije | ZAEC',
+			'description' => 'Web stranica za restorane, apartmane i kuće za odmor: meni, galerija, lokacija, više jezika i direktan upit ili rezervacija bez provizije platformi.',
+			'h1' => 'Web za restorane i smještaj: više <em>direktnih</em> gostiju.',
+			'lead' => 'Gost vas najčešće prvo vidi na Google karti ili platformi. Vlastiti web s menijem, fotografijama, lokacijom i direktnim upitom pretvara taj pogled u rezervaciju — bez provizije.',
+			'short' => 'Gost mora brzo vidjeti smještaj ili meni, lokaciju i najjednostavniji način rezervacije. Svaki direktni upit je rezervacija bez provizije.',
+			'onweb' => array( 'Meni / sobe', 'Galerija', 'Rezervacija', 'Više jezika' ),
+			'searches' => array( 'restoran + grad', 'apartmani + mjesto', 'smještaj s bazenom', 'catering + grad', 'sobe za najam' ),
+			'problems' => array(
+				array( 'Meni kao PDF', 'Na mobitelu je PDF spor i nečitljiv. Ljudi zatvore stranicu.' ),
+				array( 'Sve preko platformi', 'Provizija na svaku rezervaciju — čak i za goste koji se vraćaju.' ),
+				array( 'Zastarjeli podaci', 'Krivo radno vrijeme na Googleu znači gost pred zatvorenim vratima i loša recenzija.' ),
+			),
+			'deliver' => array(
+				array( 'Meni i ponuda na webu', 'Brzo čitljivo na mobitelu i lako za ažurirati.' ),
+				array( 'Direktan upit ili rezervacija', 'Datumi i broj gostiju u prvom koraku; povezivanje s booking sustavom po potrebi.' ),
+				array( 'Fotografije i lokacija', 'Prostor, jela ili smještaj, karta, parking i kako doći.' ),
+				array( 'Više jezika', 'Engleski i njemački za ključne stranice — bez strojnog prijevoda koji odbija goste.' ),
+			),
+			'structure' => array( 'Hero: fotografija + upit/rezervacija', 'Smještaj ili meni', 'Galerija', 'Lokacija', 'Recenzije', 'Upit / rezervacija' ),
+			'faq' => array( array( 'Trebam li vlastiti web ako sam na Bookingu?', 'Platforme donose goste, ali uzimaju proviziju. Vlastiti web je mjesto za povratne goste i direktne upite.' ) ),
+			'related' => array( 'djelatnosti/saloni-ljepote', 'usluge/google-business-profil', 'usluge/izrada-web-stranica' ),
+		),
+		'trgovine-i-webshop'        => array(
+			'tab' => 'Shop', 'icon' => 'shop', 'prop' => 6, 'sign' => 'TRGOVINA',
+			'title' => 'Trgovine i webshopovi', 'name' => 'trgovine',
+			'seo_title' => 'Web stranica i webshop za trgovine — WooCommerce i GA4 | ZAEC',
+			'description' => 'Web i webshop za lokalne trgovine: katalog ili košarica, kartično plaćanje, dostava, lokalni podaci i GA4 e-commerce praćenje prodaje po kanalu.',
+			'h1' => 'Web i webshop za trgovine: <em>prodaja</em> i kad je zatvoreno.',
+			'lead' => 'Proizvod mora biti lako pronaći, razumjeti i kupiti — posebno na mobitelu. Katalog, plaćanje, dostava i mjerenje prodaje rade kao jedna cjelina, a ne kao dodatak.',
+			'short' => 'Proizvod mora biti lako pronaći, razumjeti i kupiti. Katalog, dostava, plaćanje i mjerenje prodaje kao jedna cjelina.',
+			'onweb' => array( 'Katalog / webshop', 'Plaćanje karticama', 'Dostava', 'GA4 prodaja' ),
+			'searches' => array( 'naziv proizvoda + kupiti', 'trgovina + grad', 'webshop dostava Hrvatska', 'radno vrijeme trgovine', 'proizvod + cijena' ),
+			'problems' => array(
+				array( 'Webshop bez plana', 'Dostava, povrati i plaćanje dogovaraju se usput — i projekt traje mjesecima.' ),
+				array( 'Spore stranice proizvoda', 'Velike slike i previše dodataka — kupac odustane prije košarice.' ),
+				array( 'Ne znate što prodaje', 'Bez e-commerce praćenja ne znate koji kanal i proizvod donosi prihod.' ),
+			),
+			'deliver' => array(
+				array( 'Katalog ili webshop', 'Ponekad je katalog s upitom brži put do prodaje. Odlučujemo prema vašem načinu rada.' ),
+				array( 'Plaćanje i dostava', 'Kartice za hrvatsko tržište, dostavne službe, osobno preuzimanje.' ),
+				array( 'Lokalni podaci', 'Radno vrijeme, adresa i Google profil za kupce koji dolaze u trgovinu.' ),
+				array( 'GA4 e-commerce', 'Prihod po proizvodu i kanalu, odustajanja u košarici.' ),
+			),
+			'structure' => array( 'Hero: kategorije + ponuda', 'Istaknuti proizvodi', 'Dostava i plaćanje', 'O trgovini i lokacija', 'FAQ', 'Kontakt' ),
+			'faq' => array( array( 'Radite li fiskalizaciju i ERP integracije?', 'To ide kao poseban opseg — prvo definiramo što točno treba povezati, zatim procjena i cijena.' ) ),
+			'related' => array( 'usluge/webshop', 'usluge/ga4-i-pracenje-konverzija', 'djelatnosti/ugostiteljstvo-i-smjestaj' ),
+		),
+		'saloni-ljepote'            => array(
+			'tab' => 'Salon', 'icon' => 'star', 'prop' => 7, 'sign' => 'SALON',
+			'title' => 'Saloni ljepote i frizeri', 'name' => 'salone ljepote i frizere',
+			'seo_title' => 'Web stranica i Google profil za salone ljepote i frizere | ZAEC',
+			'description' => 'Web stranica za salone ljepote, frizere i kozmetičare: usluge s cijenama, online rezervacija termina, galerija radova i recenzije koje pune raspored.',
+			'h1' => 'Web za salone: da novi klijent <em>rezervira</em>, a ne samo pogleda.',
+			'lead' => 'Kod salona odluka pada brzo: fotografije, cjenik, recenzije i slobodan termin. Ako nešto od toga nedostaje, klijent ode na sljedeći profil. Složimo put od pretrage do rezervacije.',
+			'short' => 'Fotografije, cjenik, recenzije i slobodan termin — ako nešto nedostaje, klijent ode na sljedeći profil.',
+			'onweb' => array( 'Cjenik', 'Online rezervacija', 'Galerija i tim', 'Recenzije' ),
+			'searches' => array( 'frizer + grad', 'kozmetički salon + kvart', 'manikura + grad', 'trajno uklanjanje dlačica', 'pedikura' ),
+			'problems' => array(
+				array( 'Cjenik nije online', 'Ljudi ne žele zvati samo da pitaju cijenu — biraju salon koji ga ima.' ),
+				array( 'Termini samo telefonom', 'Mnogi rezerviraju navečer. Ako ne mogu, rezerviraju drugdje.' ),
+				array( 'Instagram nije dovoljan', 'Instagram je izlog, a Google karta je mjesto gdje vas nađu novi klijenti iz okolice.' ),
+			),
+			'deliver' => array(
+				array( 'Usluge s cijenama', 'Jasan cjenik po kategorijama, jednostavan za ažuriranje.' ),
+				array( 'Online rezervacija', 'Povezivanje sa sustavom koji već koristite ili postavljanje novog.' ),
+				array( 'Galerija i tim', 'Stvarni radovi i ljudi koji ih rade — ljudi biraju osobu, ne samo salon.' ),
+				array( 'Recenzije koje rastu', 'Podsjetnik za recenziju nakon termina i odgovori na recenzije.' ),
+			),
+			'structure' => array( 'Hero: usluge + rezervacija', 'Cjenik', 'Galerija radova', 'Tim', 'Recenzije', 'Rezervacija / upit' ),
+			'faq' => array(),
+			'related' => array( 'usluge/google-business-profil', 'djelatnosti/ugostiteljstvo-i-smjestaj', 'usluge/izrada-web-stranica' ),
+		),
+	);
+
+	foreach ( $industries as $slug => $d ) {
+		$r[ 'djelatnosti/' . $slug ] = array(
+			'type'         => 'industry',
+			'parent'       => 'djelatnosti',
+			'slug'         => $slug,
+			'title'        => $d['title'],
+			'name'         => $d['name'],
+			'service_type' => 'Web stranica i lokalni SEO za ' . $d['name'],
+			'seo_title'    => $d['seo_title'],
+			'description'  => $d['description'],
+			'kicker'       => 'Djelatnost · ' . $d['tab'],
+			'h1'           => $d['h1'],
+			'lead'         => $d['lead'],
+			'short'        => $d['short'],
+			'tab'          => $d['tab'],
+			'icon'         => $d['icon'],
+			'prop'         => $d['prop'],
+			'sign'         => $d['sign'],
+			'onweb'        => $d['onweb'],
+			'image'        => 'world/djelatnost-' . $slug . '.webp',
+			'image_alt'    => 'Low-poly ilustracija: vaš obrt s natpisom ' . $d['sign'] . ' i opremom djelatnosti',
+			'cta'          => array( 'Složite svoj projekt', 'cijene?djelatnost=' . rawurlencode( $d['tab'] ) . '#konfigurator' ),
+			'blocks'       => array(
+				array( 'type' => 'searches', 'items' => $d['searches'] ),
+				array( 'type' => 'problems', 'title' => 'Gdje se <em>gube</em> pozivi.', 'items' => $d['problems'] ),
+				array( 'type' => 'deliver', 'title' => 'Što vaš web <em>mora</em> imati.', 'items' => array_map( static fn( $x ) => array( '', $x[0], $x[1] ), $d['deliver'] ), 'cols' => 2, 'numbered' => true ),
+				array( 'type' => 'anatomy', 'title' => 'Struktura koja vodi do <em>poziva</em>.', 'lead' => 'Predložak redoslijeda za naslovnicu — prilagođavamo ga vašim uslugama, ali logika ostaje.', 'label' => 'nacrt — ' . $slug . '.pdf', 'parts' => array_map( null, $d['structure'] ) ),
+			),
+			'faq'          => array_merge( $d['faq'], zaec_industry_common_faq() ),
+			'related'      => $d['related'],
+		);
+	}
+
+	return $r;
+}
+
+/** Posebne stranice: lokalno, cijene/procjena, provjera, kontakt, o nama, hvala, privatnost. */
+function zaec_registry_special() {
+	$r = array();
+
+	$r['izrada-web-stranica-osijek'] = array(
+		'type'         => 'local',
+		'title'        => 'Izrada web stranica Osijek',
+		'service_type' => 'Izrada web stranica i lokalni SEO',
+		'area'         => array( 'Osijek', 'Osječko-baranjska županija', 'Slavonija' ),
+		'seo_title'    => 'Izrada web stranica Osijek — web studio za obrte i tvrtke | ZAEC',
+		'description'  => 'Izrada web stranica u Osijeku: web, SEO, Google Business profil i GA4 mjerenje iz jednog mjesta. Sastanak uživo u Osijeku i Slavoniji, na daljinu za cijelu Hrvatsku.',
+		'kicker'       => 'Osijek · Slavonija',
+		'h1'           => 'Izrada web stranica u <em>Osijeku</em> — za tvrtke koje žele više poziva.',
+		'lead'         => 'ZAEC je web studio iz Osijeka. Radimo web stranice, SEO i Google profile za obrte i tvrtke u Osijeku, Osječko-baranjskoj županiji i Slavoniji — uživo, za istim stolom. Za ostatak Hrvatske radimo na daljinu.',
+		'answer'       => 'ZAEC je web studio sa sjedištem u Osijeku (Čvrsnička ulica 29 A). Izrađuje web stranice, webshopove i landing stranice te radi SEO, Google Business profil i GA4 mjerenje za tvrtke u Osijeku, Osječko-baranjskoj županiji i cijeloj Hrvatskoj.',
+		'image'        => 'world/usluga-kontakt.webp',
+		'image_alt'    => 'Low-poly gradić na lebdećem otoku uz rijeku i slavonska polja',
+		'cta'          => array( 'Dogovorimo kratak razgovor', 'kontakt#upit' ),
+		'blocks'       => array(
+			array(
+				'type'  => 'problems',
+				'title' => 'Zašto lokalni <em>partner</em>.',
+				'items' => array(
+					array( 'Agencija iz drugog grada', 'Teško ih je dobiti, ne poznaju lokalno tržište, a svaka izmjena traje tjednima.' ),
+					array( 'Prijatelj koji „zna napraviti web”', 'Web postoji, ali nitko ne zna tko ima pristupe i kako se mijenja.' ),
+					array( 'Konkurencija je vidljivija', 'Lokalni kupci zovu onoga tko je na karti — ne nužno najboljeg majstora.' ),
+				),
+			),
+			array(
+				'type'  => 'deliver',
+				'title' => 'Što dobivate <em>u Osijeku</em>.',
+				'items' => array(
+					array( 'hand-shake', 'Sastanak uživo', 'Kod vas, u radionici ili na kavi — pogledamo posao na licu mjesta.' ),
+					array( 'map-point', 'Poznavanje tržišta', 'Znamo kako ljudi u Slavoniji traže usluge i koja mjesta trebate pokriti.' ),
+					array( 'user-check', 'Jedna osoba od početka do kraja', 'Bez prebacivanja između prodaje, dizajna i razvoja.' ),
+					array( 'layers', 'Web, SEO i mjerenje zajedno', 'Sve što treba da vas lokalni kupci nađu — na jednom mjestu.' ),
+				),
+			),
+			array( 'type' => 'projects', 'title' => 'Radovi iz <em>Slavonije</em>.' ),
+		),
+		'faq'          => array(
+			array( 'Radite li i izvan Osijeka?', 'Da. Za Osijek, Osječko-baranjsku županiju i Slavoniju možemo se naći uživo, a za ostatak Hrvatske radimo preko poziva i videopoziva.' ),
+			array( 'Koliko košta izrada web stranice u Osijeku?', 'Jednako kao i drugdje — ovisi o opsegu. Nakon kratkog razgovora dobivate pisanu ponudu s fiksnom cijenom. Okvirni opseg vidite u procjeni projekta.' ),
+			array( 'Gdje ste točno?', 'Sjedište je u Osijeku, Čvrsnička ulica 29 A. Sastanke dogovaramo unaprijed.' ),
+		),
+		'related'      => array( 'usluge/izrada-web-stranica', 'usluge/lokalni-seo', 'djelatnosti' ),
+	);
+
+	$r['cijene'] = array(
+		'type'        => 'pricing',
+		'title'       => 'Cijene i procjena',
+		'seo_title'   => 'Koliko košta izrada web stranice? Procjena projekta u 60 sekundi | ZAEC',
+		'description' => 'Koliko košta web stranica, landing ili webshop? Složite projekt i odmah vidite opseg i okvirni rok. Točnu cijenu dobivate u pisanoj ponudi — fiksno, bez obveze i skrivenih troškova.',
+		'kicker'      => 'Cijene · procjena u 60 sekundi',
+		'h1'          => 'Složite svoj web. <em>Cijenu</em> dobivate na papiru.',
+		'lead'        => 'Odaberite što trebate i odmah vidite razinu opsega i okvirni rok. Pošaljite konfiguraciju — dobivate pisanu ponudu s fiksnom cijenom, bez obveze.',
+		'answer'      => 'Cijena izrade web stranice ovisi o opsegu: broju stranica, funkcijama (rezervacije, webshop, više jezika, integracije) i tome imate li tekstove i fotografije. ZAEC ne objavljuje paušalne „od” cijene; nakon kratkog razgovora šalje pisanu ponudu s fiksnom cijenom i rokom. Plaćanje je 50 % na početku i 50 % prije objave.',
+		'image'       => 'world/usluga-procjena.webp',
+		'image_alt'   => 'Nacrt otoka rastavljen na pet slojeva weba u plavom blueprint prikazu',
+		'cta'         => array( 'Na procjenu', '#konfigurator' ),
+		'blocks'      => array(
+			array( 'type' => 'configurator' ),
+			array( 'type' => 'guarantees' ),
+			array( 'type' => 'contact', 'title' => 'Pošaljite <em>konfiguraciju</em>.' ),
+		),
+		'faq'         => array(
+			array( 'Zašto na webu nema cjenika?', 'Jer cijena bez opsega ne znači ništa — dvije „web stranice” mogu se razlikovati po trudu nekoliko puta. Umjesto „od” iznosa koji navodi na krivi zaključak, dobivate pisanu ponudu s fiksnom cijenom za točno ono što trebate.' ),
+			array( 'Je li procjena obvezujuća?', 'Ne. Procjena vam pomaže razumjeti opseg i rok, a ni ponuda koju dobijete ne obvezuje vas ni na što.' ),
+			array( 'Kako se plaća?', 'Standardno 50 % za rezervaciju termina i početak rada, 50 % prije objave. Veći projekti mogu se podijeliti u faze.' ),
+			array( 'Može li se cijena promijeniti tijekom rada?', 'Cijena iz ponude vrijedi za dogovoreni opseg. Sve izvan njega prvo dobiva zasebnu procjenu i ide u rad tek uz vašu potvrdu.' ),
+			array( 'Jesu li domena i hosting uključeni?', 'Registriraju se na vas i plaćate ih izravno pružatelju; mi odradimo tehničko postavljanje. Tako vlasništvo i trošak ostaju transparentni.' ),
+		),
+		'related'     => array( 'usluge/izrada-web-stranica', 'usluge/webshop', 'provjera-vidljivosti' ),
+	);
+
+	$r['provjera-vidljivosti'] = array(
+		'type'        => 'check',
+		'title'       => 'Besplatna provjera vidljivosti',
+		'seo_title'   => 'Besplatna provjera vidljivosti na Googleu i u AI pretraživačima | ZAEC',
+		'description' => 'Besplatna SEO i AI provjera: kako vašu tvrtku vide Google karta, pretraga, ChatGPT i Google AI te kako stojite naspram tri konkurenta. Kratko izvješće i tri konkretna koraka.',
+		'kicker'      => 'Besplatno · bez obveze',
+		'h1'          => 'Kako vas vide <em>Google</em> i AI? Provjerimo besplatno.',
+		'lead'        => 'Pošaljite naziv tvrtke i grad. Ručno provjeravamo Google profil, recenzije, web, brzinu i što o vama kažu ChatGPT i Google AI — uz usporedbu s tri konkurenta i tri koraka koja najviše donose.',
+		'answer'      => 'Besplatna provjera vidljivosti uključuje ručnu analizu Google Business profila, recenzija, web stranice (sadržaj, brzina, mobitel, mjerenje) i odgovora AI asistenata o vašoj tvrtki, usporedbu s tri lokalna konkurenta i kratko izvješće s tri prioritetna koraka.',
+		'image'       => 'world/usluga-seo.webp',
+		'image_alt'   => 'Low-poly toranj pretrage s povećalom iznad gradića',
+		'cta'         => array( 'Pošalji za provjeru', '#upit' ),
+		'blocks'      => array(
+			array(
+				'type'  => 'deliver',
+				'title' => 'Što <em>točno</em> provjeravamo.',
+				'items' => array(
+					array( 'map-point', 'Google karta', 'Pojavljujete li se za glavne pretrage u svom mjestu i tko je ispred vas.' ),
+					array( 'shield-check', 'Google profil', 'Kategorije, usluge, fotografije, radno vrijeme — i što nedostaje.' ),
+					array( 'star', 'Recenzije', 'Broj i svježina recenzija naspram tri lokalna konkurenta.' ),
+					array( 'smartphone', 'Web i brzina', 'Odgovara li web na pretrage, je li brz i je li kontakt lako naći na mobitelu.' ),
+					array( 'chat-round-dots', 'AI asistenti', 'Spominju li vas ChatGPT i Google AI i jesu li podaci točni.' ),
+					array( 'checklist', '3 konkretna koraka', 'Što napraviti prvo — sami ili s nama.' ),
+				),
+				'cols'  => 3,
+			),
+			array( 'type' => 'audit' ),
+		),
+		'faq'         => array(
+			array( 'Zašto je besplatno?', 'Jer je to najbolji način da vidite kako radimo. Ako se odlučite za suradnju — odlično. Ako ne, izvješće ostaje vaše.' ),
+			array( 'Hoćete li me zvati i nagovarati?', 'Ne. Pošaljemo izvješće na kontakt koji ostavite. Ako imate pitanja, javite se vi.' ),
+			array( 'Koliko traje?', 'Provjeru radimo ručno, obično u roku od nekoliko radnih dana, ovisno o broju zahtjeva.' ),
+		),
+	);
+
+	$r['kontakt'] = array(
+		'type'        => 'contact',
+		'title'       => 'Kontakt',
+		'seo_title'   => 'Kontakt — ZAEC web studio, Osijek',
+		'description' => 'Pošaljite upit ili nazovite. ZAEC, web studio iz Osijeka — web stranice, SEO, AI vidljivost i GA4 mjerenje za obrte i tvrtke diljem Hrvatske.',
+		'kicker'      => 'Kontakt',
+		'h1'          => 'Recite nam čime se <em>bavite</em>.',
+		'lead'        => 'Kratko opišite posao. Javljamo se u radno vrijeme sa smjerom, opsegom i sljedećim korakom — bez obveze i bez prodajnog pritiska.',
+		'image'       => 'world/usluga-kontakt.webp',
+		'image_alt'   => 'Low-poly lebdeći otok s gradićem pri izlasku sunca',
+		'cta'         => array( 'Na formu', '#upit' ),
+		'blocks'      => array( array( 'type' => 'contact', 'title' => '' ) ),
+	);
+
+	$r['o-nama'] = array(
+		'type'        => 'about',
+		'title'       => 'O nama',
+		'seo_title'   => 'O nama — ZAEC web studio iz Osijeka',
+		'description' => 'ZAEC je web studio iz Osijeka koji vodi Filip Zajec: 10+ godina na webu, jedna odgovorna osoba, fiksna cijena u pisanoj ponudi i web koji donosi upite.',
+		'kicker'      => 'O nama',
+		'h1'          => 'Mali studio. <em>Velika</em> odgovornost.',
+		'lead'        => 'ZAEC je web studio iz Osijeka koji vodi Filip Zajec — više od deset godina na webu, s fokusom na WordPress, UX, SEO i mjerenje. Gradimo web stranice za ljude koji grade sve ostalo.',
+		'answer'      => 'ZAEC (obrt za računalne djelatnosti, vl. Filip Zajec) je web studio iz Osijeka koji izrađuje web stranice, webshopove i landing stranice te radi SEO, lokalni SEO, AI vidljivost i GA4 mjerenje za obrte i tvrtke u Hrvatskoj.',
+		'image'       => 'world/usluga-onama.webp',
+		'image_alt'   => 'Low-poly lebdeći otok s gradićem u zoru',
+		'cta'         => array( 'Upoznajmo se', 'kontakt#upit' ),
+		'blocks'      => array( array( 'type' => 'about' ), array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ), array( 'type' => 'guarantees' ) ),
+	);
+
+	$r['hvala'] = array(
+		'type'        => 'thanks',
+		'title'       => 'Hvala',
+		'seo_title'   => 'Hvala — upit je stigao | ZAEC',
+		'description' => 'Vaš upit je zaprimljen. Javljamo se u radno vrijeme.',
+		'noindex'     => true,
+	);
+
+	return $r;
+}
