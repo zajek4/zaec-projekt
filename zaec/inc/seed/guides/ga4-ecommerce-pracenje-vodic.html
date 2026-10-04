@@ -1,0 +1,75 @@
+<p>Webshop bez ispravnog praćenja je kao trgovina bez blagajničkog izvještaja: znate da nešto prodajete, ali ne znate što, kome ni zašto. Google Analytics 4 može odgovoriti na ta pitanja — ali samo ako su e-commerce podaci postavljeni ispravno.</p>
+<h2 id="kratki-odgovor">Kratki odgovor</h2>
+<p>GA4 e-commerce praćenje bilježi ključne korake kupnje kao standardne događaje (<code>view_item</code>, <code>add_to_cart</code>, <code>begin_checkout</code>, <code>purchase</code>) s podacima o proizvodima, vrijednosti i valuti. Najpouzdanije se postavlja preko <strong>dataLayera</strong> iz webshopa i <strong>Google Tag Managera</strong>, uz <strong>Consent Mode v2</strong> zbog privole i provjeru u DebugViewu prije objave.</p>
+<h2 id="koje-dogadaje-pratiti">Koje događaje pratiti</h2>
+<p>Google preporučuje standardni skup e-commerce događaja. Za većinu webshopova dovoljni su ovi:</p>
+<table>
+<thead>
+<tr>
+<th>Događaj</th>
+<th>Kada</th>
+<th>Zašto je važan</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>view_item_list</code></td>
+<td>Prikaz kategorije ili popisa</td>
+<td>Koje kategorije privlače pažnju</td>
+</tr>
+<tr>
+<td><code>view_item</code></td>
+<td>Otvaranje proizvoda</td>
+<td>Koji proizvodi zanimaju kupce</td>
+</tr>
+<tr>
+<td><code>add_to_cart</code></td>
+<td>Dodavanje u košaricu</td>
+<td>Namjera kupnje</td>
+</tr>
+<tr>
+<td><code>begin_checkout</code></td>
+<td>Početak naplate</td>
+<td>Gdje kupci odustaju</td>
+</tr>
+<tr>
+<td><code>add_shipping_info</code> / <code>add_payment_info</code></td>
+<td>Odabir dostave i plaćanja</td>
+<td>Problemi s dostavom ili plaćanjem</td>
+</tr>
+<tr>
+<td><code>purchase</code></td>
+<td>Uspješna narudžba</td>
+<td>Prihod, porez, dostava, artikli</td>
+</tr>
+</tbody></table>
+<p>Važno je da <strong><code>purchase</code> ima jedinstveni <code>transaction_id</code></strong>, vrijednost i valutu (<code>EUR</code>), te popis artikala. Bez toga izvještaji o prihodu nisu pouzdani.</p>
+<h2 id="kako-postaviti-korak-po-korak">Kako postaviti — korak po korak</h2>
+<h3 id="1-plan-mjerenja">1. Plan mjerenja</h3>
+<p>Prije bilo kakvog koda zapišite što želite znati: prihod po kanalu, najprodavanije proizvode, gdje kupci odustaju, koliko vrijedi kupac iz oglasa. Plan određuje koje događaje i parametre trebate.</p>
+<h3 id="2-datalayer-iz-webshopa">2. dataLayer iz webshopa</h3>
+<p>Webshop treba u <code>dataLayer</code> poslati podatke o proizvodima i narudžbi u formatu koji GA4 očekuje. Za WooCommerce postoje provjereni dodaci koji to rade; važno je provjeriti da šalju ispravne cijene (s ili bez PDV-a — dosljedno), valutu i ID-eve proizvoda.</p>
+<h3 id="3-google-tag-manager">3. Google Tag Manager</h3>
+<p>U GTM-u postavite GA4 konfiguraciju i e-commerce oznake koje čitaju podatke iz dataLayera. Prednost GTM-a: kasnije dodajete oglasne oznake (Google Ads, Meta) bez diranja koda webshopa.</p>
+<h3 id="4-consent-mode-v2-i-privola">4. Consent Mode v2 i privola</h3>
+<p>Ako koristite analitičke ili oglasne kolačiće, trebate traku privole. <strong>Consent Mode v2</strong> omogućuje da se oznake ponašaju prema izboru posjetitelja, a Googleu daje signale potrebne za oglase u EU. Postavite zadano stanje „odbijeno” dok posjetitelj ne odluči.</p>
+<h3 id="5-provjera-prije-objave">5. Provjera prije objave</h3>
+<p>U GA4 <strong>DebugViewu</strong> prođite cijeli put kupnje: pregled proizvoda, košarica, naplata, kupnja. Provjerite da se svaki događaj pojavi jednom, s ispravnim vrijednostima. Zatim usporedite nekoliko dana podataka s narudžbama u webshopu.</p>
+<h3 id="6-konverzije-za-oglase">6. Konverzije za oglase</h3>
+<p>Ako oglašavate, označite <code>purchase</code> kao ključni događaj i proslijedite ga Google Ads i Meta (preko GTM-a ili integracija). Kampanje tada optimiziraju za kupnje, a ne za klikove.</p>
+<h2 id="najcesce-greske">Najčešće greške</h2>
+<ol>
+<li><strong>Duplirane kupnje</strong> — stranica zahvale se ponovno učita i <code>purchase</code> se pošalje dvaput. Rješenje: jedinstveni <code>transaction_id</code> i zaštita od ponovnog slanja.</li>
+<li><strong>Nedosljedan PDV</strong> — negdje cijene s PDV-om, negdje bez. Izvještaji ne odgovaraju knjigovodstvu.</li>
+<li><strong>Kriva ili nedostajuća valuta</strong> — vrijednosti bez <code>currency</code> GA4 ne zbraja ispravno.</li>
+<li><strong>Interni promet u podacima</strong> — vaše testne narudžbe kvare brojke. Filtrirajte interni promet.</li>
+<li><strong>Nema privole ili je pogrešno postavljena</strong> — pravni rizik i gubitak podataka za oglase.</li>
+<li><strong>Nikad provjereno</strong> — postavljeno jednom i zaboravljeno. Promjena teme ili dodatka tiho prekine praćenje.</li>
+</ol>
+<h2 id="sto-dobivate-kad-je-ispravno">Što dobivate kad je ispravno</h2>
+<ul>
+<li>Prihod po kanalu: Google, oglasi, društvene mreže, e-mail.</li>
+<li>Najprodavaniji proizvodi i kategorije — i oni koji se gledaju, a ne kupuju.</li>
+<li>Točan korak u kojem kupci odustaju (dostava? plaćanje?).</li>
+<li>Oglasne kampanje koje optimiziraju za stvarne kupnje.</li>
+</ul>
+<p>Ako želite da pregledamo vaše postojeće mjerenje ili ga postavimo ispočetka, pogledajte uslugu <a href="page:usluge/ga4-i-pracenje-konverzija">GA4 i praćenje konverzija</a> ili se <a href="page:kontakt#upit">javite</a>.</p>
