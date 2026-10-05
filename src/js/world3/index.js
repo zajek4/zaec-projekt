@@ -249,7 +249,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
 
   function placeLabels(ctx, visible) {
     for (const L of labels) {
-      let o = visible ? labelWorld(L.key, ctx) : 0;
+      // oznake na karti nestaju u oblaku zajedno sa slikom
+      let o = visible ? labelWorld(L.key, ctx) * (1 - (ctx.cloud || 0)) : 0;
       if (o > 0.01) {
         v3.project(camera);
         if (v3.z > 1 || Math.abs(v3.x) > 1.15 || Math.abs(v3.y) > 1.15) o = 0;
@@ -392,6 +393,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     ctx.globeA = globeA;
     ctx.europeA = europeA;
     ctx.cityA = cityA;
+    ctx.cloud = Math.max(c1, c2);
     placeLabels(ctx, !covered);
 
     renderer.render(scene, camera);

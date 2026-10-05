@@ -39,7 +39,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	<?php foreach ( array( 'Đakovo', 'Vukovar', 'Vinkovci', 'Valpovo', 'Belišće', 'Našice', 'Beli Manastir', 'Donji Miholjac', 'Čepin', 'Tenja', 'Bilje', 'Darda' ) as $i => $t ) : ?>
 		<span class="sl sl--town<?php echo $i < 8 ? ( 4 === $i ? ' sl--m-hide' : '' ) : ' sl--minor'; ?>" data-l="town-<?php echo (int) $i; ?>"><b><?php echo esc_html( $t ); ?></b></span>
 	<?php endforeach; ?>
-	<span class="sl sl--pin" data-l="cath"><b>Konkatedrala<span class="sl-long"> sv. Petra i Pavla</span></b><small>94 m</small></span>
+	<span class="sl sl--pin" data-l="cath"><b>Konkatedrala<span class="sl-long"> sv. Petra i Pavla</span></b><small>toranj 90 m</small></span>
 	<span class="sl sl--soft" data-l="drava"><b>Drava</b></span>
 	<span class="sl sl--pin sl--small" data-l="hotel"><b>Hotel Osijek</b></span>
 	<span class="sl sl--soft sl--trg" data-l="trg"><b>Trg Ante Starčevića</b></span>

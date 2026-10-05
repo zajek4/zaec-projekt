@@ -9,7 +9,7 @@ export const GLOBE_R = 225; // radijus globusa u jedinicama karte (Z = 1)
 
 /* Višerazinski sustav: karta (Z = 1) ima 1 jedinicu = ¼° geografske širine. Grad je u metrima i
    skalira se s kartom (mapScale) pa se svjetla, ceste i zgrade uvijek poklapaju s kartom.
-   Na Z_CITY jedna svjetska jedinica ≈ 7 m (konkatedrala 94 m ≈ 13,4 jedinica). */
+   Na Z_CITY jedna svjetska jedinica ≈ 7 m (toranj konkatedrale ~90 m ≈ 13 jedinica). */
 export const CITY_KX = 1 / 27551; // jedinica karte po metru prema istoku (cos 45,56°)
 export const CITY_KZ = 1 / 27786; // jedinica karte po metru prema sjeveru
 export const M_PER_UNIT_CITY = 7;
