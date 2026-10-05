@@ -547,7 +547,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 </div>
 
 <!-- ═════════ MREŽA SE VRAĆA ═════════ -->
-<section class="cine cine-final" id="kontakt" data-cam="final" data-header-theme="night" aria-labelledby="final-title">
+<section class="cine cine-final" id="kontakt" data-cam="final" data-cam-at="top" data-header-theme="night" aria-labelledby="final-title">
 	<span id="upit" class="anchor-alias" aria-hidden="true"></span>
 	<div class="wrap final-grid">
 		<div class="final-copy">
