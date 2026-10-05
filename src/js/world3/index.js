@@ -112,7 +112,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       .filter((a) => FRAMES[a.id])
       .sort((a, b) => a.y - b.y);
     if (!anchors.length) anchors = [{ id: 'hero', y: 0 }];
-    states = anchors.map((a) => frameState(a.id, mobile));
+    const tablet = mobile && innerWidth >= 600;
+    states = anchors.map((a) => frameState(a.id, mobile, tablet));
     flow.setLayout(mobile);
     labelsRoot?.classList.toggle('is-portrait', mobile);
     covers = [...document.querySelectorAll('[data-cover]')].map((el) => {
@@ -239,8 +240,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
         return st.labFlow;
       case 'layer': {
         layers.anchor(i, v3);
-        const arrive = clamp(st.layers * 8 - i);
-        return st.labLayers * st.layersA * arrive * (0.38 + 0.62 * layers.emphasis(i));
+        return st.labLayers * st.layersA * layers.arrival(i) * (0.38 + 0.62 * layers.emphasis(i));
       }
       default:
         return 0;
@@ -254,6 +254,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
         v3.project(camera);
         if (v3.z > 1 || Math.abs(v3.x) > 1.15 || Math.abs(v3.y) > 1.15) o = 0;
         else {
+          // uz rub ekrana oznaka se gasi umjesto da bude odrezana
+          o *= 1 - smooth(0.8, 0.95, Math.abs(v3.x));
           const x = Math.round((v3.x * 0.5 + 0.5) * vw);
           const y = Math.round((-v3.y * 0.5 + 0.5) * vh);
           if (x !== L.x || y !== L.y) {

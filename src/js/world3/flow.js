@@ -90,8 +90,8 @@ export function createFlow({ lite }) {
 
   function layout(p) {
     portrait = p;
-    channels.forEach((c, i) => (p ? c.set(-4.6 + i * 2.5, 12.4, 0) : c.set(CH_X, chY(i), 0)));
-    outcomes.forEach((o, i) => (p ? o.set(-3.5 + i * 2.6, -2.4, 0) : o.set(OUT_X, outY(i), 0)));
+    channels.forEach((c, i) => (p ? c.set(-4.6 + i * 2.5, 11.4, 0) : c.set(CH_X, chY(i), 0)));
+    outcomes.forEach((o, i) => (p ? o.set(-3.5 + i * 2.6, -1.3, 0) : o.set(OUT_X, outY(i), 0)));
     if (p) exit.set(0.4, -0.4, 0.15);
     else exit.set(8.2, 2.2, 0.15);
     [...channels, ...outcomes].forEach((v, i) => v.toArray(nodes.pos, i * 3));

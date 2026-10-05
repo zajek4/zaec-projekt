@@ -37,7 +37,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 		<span class="sl sl--city<?php echo 'Osijek' === $c ? ' sl--home' : ''; ?>" data-l="city-<?php echo esc_attr( $c ); ?>"><b><?php echo esc_html( $c ); ?></b></span>
 	<?php endforeach; ?>
 	<?php foreach ( array( 'Đakovo', 'Vukovar', 'Vinkovci', 'Valpovo', 'Belišće', 'Našice', 'Beli Manastir', 'Donji Miholjac', 'Čepin', 'Tenja', 'Bilje', 'Darda' ) as $i => $t ) : ?>
-		<span class="sl sl--town<?php echo $i < 8 ? '' : ' sl--minor'; ?>" data-l="town-<?php echo (int) $i; ?>"><b><?php echo esc_html( $t ); ?></b></span>
+		<span class="sl sl--town<?php echo $i < 8 ? ( 4 === $i ? ' sl--m-hide' : '' ) : ' sl--minor'; ?>" data-l="town-<?php echo (int) $i; ?>"><b><?php echo esc_html( $t ); ?></b></span>
 	<?php endforeach; ?>
 	<span class="sl sl--pin" data-l="cath"><b>Konkatedrala<span class="sl-long"> sv. Petra i Pavla</span></b><small>94 m</small></span>
 	<span class="sl sl--soft" data-l="drava"><b>Drava</b></span>
@@ -214,7 +214,12 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 						<button type="button" class="chip-btn" data-path-preset="good">Sve dobro</button>
 					</div>
 				</div>
-				<p class="path-note"><?php echo esc_html( $h( 'path_note' ) ); ?></p>
+				<?php
+				// prva rečenica (napomena "ilustrativni model") uvijek je vidljiva; ostatak se skraćuje na niskim ekranima
+				$zaec_note  = (string) $h( 'path_note' );
+				$zaec_parts = preg_split( '/(?<=\.)\s+/u', $zaec_note, 2 );
+				?>
+				<p class="path-note"><?php echo esc_html( $zaec_parts[0] ); ?><?php if ( ! empty( $zaec_parts[1] ) ) : ?> <span class="path-note-more"><?php echo esc_html( $zaec_parts[1] ); ?></span><?php endif; ?></p>
 			</div>
 		</div>
 	</div>

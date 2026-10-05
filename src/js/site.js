@@ -141,7 +141,8 @@ export function splitWords(el) {
       if (child.nodeType === 3) {
         const parts = child.textContent.split(/(\s+)/);
         const frag = document.createDocumentFragment();
-        parts.forEach((p) => {
+        let glued = null;
+        parts.forEach((p, k) => {
           if (!p) return;
           if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(' ')); return; }
           const w = document.createElement('span');
@@ -151,8 +152,17 @@ export function splitWords(el) {
           inner.textContent = p;
           w.appendChild(inner);
           frag.appendChild(w);
+          if (k === 0) glued = w; // npr. zarez odmah iza <em>riječi</em>
         });
+        const prev = child.previousSibling;
         child.replaceWith(frag);
+        // interpunkcija ne smije pasti u novi red odvojeno od riječi ispred sebe
+        if (glued && prev && prev.nodeType === 1 && prev.tagName !== 'BR') {
+          const nb = document.createElement('span');
+          nb.className = 'split-nb';
+          prev.before(nb);
+          nb.append(prev, glued);
+        }
       } else if (child.nodeType === 1 && child.tagName !== 'BR') {
         walk(child);
       }

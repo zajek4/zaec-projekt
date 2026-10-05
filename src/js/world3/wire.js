@@ -327,7 +327,7 @@ export function createLayers() {
     frame.renderOrder = glyph.renderOrder = 2;
     g.add(plate, frame, glyph);
     group.add(g);
-    return { g, fm, gm, pm, geos: [fg, gg, pg], e: 0 };
+    return { g, fm, gm, pm, geos: [fg, gg, pg], e: 0, arr: 0 };
   });
   const corner = new THREE.Vector3();
 
@@ -342,8 +342,10 @@ export function createLayers() {
       const arrive = s.p * 8;
       const k = 1 - Math.exp(-(s.dt || 0.016) * 7);
       items.forEach((it, i) => {
-        const a = Math.min(1, Math.max(0, arrive - i));
-        const ea = 1 - Math.pow(1 - a, 3);
+        // ploča stiže sa scrollom, a aktivni sloj (i svi iznad njega) uvijek je na mjestu
+        const want = Math.max(Math.min(1, Math.max(0, arrive - i)), s.active >= i ? 1 : 0);
+        it.arr += (want - it.arr) * (s.reduce ? 1 : k);
+        const ea = 1 - Math.pow(1 - it.arr, 3);
         it.e += ((s.active === i ? 1 : 0) - it.e) * (s.reduce ? 1 : k);
         const e = it.e * (1 - asm);
         // aktivni sloj izlazi prema gledatelju i malo se podiže
@@ -359,6 +361,7 @@ export function createLayers() {
       return out.set(-W / 2, 0, D * 0.2).applyMatrix4(items[i].g.matrixWorld);
     },
     emphasis: (i) => items[i].e,
+    arrival: (i) => items[i].arr,
     dispose() {
       items.forEach((it) => { it.geos.forEach((g) => g.dispose()); it.fm.dispose(); it.gm.dispose(); it.pm.dispose(); });
     },

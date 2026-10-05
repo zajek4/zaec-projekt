@@ -111,16 +111,27 @@ const layerEls = [...document.querySelectorAll('[data-layer]')];
 let activeLayer = -1;
 let hoverLayer = -1;
 const syncLayer = () => world?.setLayerHover(hoverLayer >= 0 ? hoverLayer : activeLayer);
-const layerIO = new IntersectionObserver((entries) => {
-  entries.forEach((en) => {
-    if (!en.isIntersecting) return;
-    activeLayer = +en.target.dataset.layer;
-    layerEls.forEach((el, i) => el.classList.toggle('is-active', i === activeLayer));
-    syncLayer();
-  });
-}, { rootMargin: '-46% 0px -46% 0px' });
+// uspravni ekrani: sloj se čita u donjem pojasu (3D stog je iznad teksta); inače u sredini
+const portraitMQ = window.matchMedia('(max-width: 759px), (max-aspect-ratio: 82/100)');
+let layerIO = null;
+function observeLayers() {
+  layerIO?.disconnect();
+  layerIO = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      activeLayer = +en.target.dataset.layer;
+      layerEls.forEach((el, i) => {
+        el.classList.toggle('is-active', i === activeLayer);
+        el.classList.toggle('is-past', i < activeLayer);
+      });
+      syncLayer();
+    });
+  }, { rootMargin: portraitMQ.matches ? '-68% 0px -28% 0px' : '-46% 0px -46% 0px' });
+  layerEls.forEach((el) => layerIO.observe(el));
+}
+observeLayers();
+portraitMQ.addEventListener?.('change', observeLayers);
 layerEls.forEach((el, i) => {
-  layerIO.observe(el);
   el.addEventListener('pointerenter', () => { hoverLayer = i; syncLayer(); });
   el.addEventListener('pointerleave', () => { hoverLayer = -1; syncLayer(); });
   el.addEventListener('focus', () => { hoverLayer = i; syncLayer(); });
