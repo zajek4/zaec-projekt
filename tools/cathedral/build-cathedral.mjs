@@ -46,6 +46,30 @@ function tri(a, b, c) {
 }
 const quad = (a, b, c, d) => { tri(a, b, c); tri(a, c, d); };
 
+/* Sjaj prozora: zasebna mreža (meki prsten oko svakog vitraja, alfa 1 → 0 prema van).
+   Crta se aditivno — izgleda kao "bloom" bez ijednog prolaza naknadne obrade. */
+const hPos = [];
+const hCol = [];
+function haloRing(o, n, outline, grow, off, k = 1) {
+  const [ou, oy, ow] = o, [nu, nw] = n;
+  const ru = -nw, rw = nu;
+  let cs = 0, ct = 0;
+  outline.forEach(([sx, t]) => { cs += sx; ct += t; });
+  cs /= outline.length; ct /= outline.length;
+  const at = (sx, t) => P(ou + ru * sx + nu * off, oy + t, ow + rw * sx + nw * off);
+  const inner = outline.map(([sx, t]) => at(sx, t));
+  const outer = outline.map(([sx, t]) => { const dx = sx - cs, dt = t - ct, L = Math.hypot(dx, dt) || 1; return at(sx + (dx / L) * grow, t + (dt / L) * grow); });
+  const push = (p, a) => { hPos.push(p[0], p[1], p[2]); hCol.push(1, 0.8, 0.38, a * k); };
+  for (let i = 0; i < outline.length; i++) {
+    const j = (i + 1) % outline.length;
+    push(inner[i], 1); push(outer[i], 0); push(outer[j], 0);
+    push(inner[i], 1); push(outer[j], 0); push(inner[j], 1);
+  }
+  // unutrašnjost: blagi sjaj i preko samog stakla (jezgra svjetla)
+  const c = at(cs, ct);
+  for (let i = 0; i < outline.length; i++) { const j = (i + 1) % outline.length; push(c, 0.55); push(inner[i], 1); push(inner[j], 1); }
+}
+
 /* Lokalni okvir: u = duž osi (istok), w = poprečno (sjever), y = gore. Izlaz: x = u, z = 1 − w. */
 const P = (u, y, w) => [u, y, 1 - w];
 
@@ -138,6 +162,7 @@ function window(o, n, w, h, { mull = false, glass = 'glass', frame = 0.32 } = {}
   panel([o[0], o[1] - frame * 0.5, o[2]], n, archPts(w + frame * 2, h + frame * 1.4), 0.05);
   use(glass, 0.12);
   panel(o, n, archPts(w, h), 0.1);
+  if (glass === 'glass') haloRing(o, n, archPts(w, h), Math.min(1.6, 0.45 + w * 0.45), 0.16, Math.min(1, 0.55 + h * 0.04));
   if (mull) { use('stone', 0); const [nu, nw] = n; const c = [o[0] + nu * 0.14, o[1], o[2] + nw * 0.14]; boxC(c[0], c[2], o[1], o[1] + h - w * 0.55, Math.max(0.07, Math.abs(nw) * 0.07 + 0.05), Math.max(0.07, Math.abs(nu) * 0.07 + 0.05)); }
 }
 /** šiljasti (jednakostranični) luk: obris u (s, t), s ∈ [−w/2, w/2], t ∈ [0, h], tjeme u (0, h) */
@@ -154,6 +179,7 @@ function rose(o, n, r) {
   const circ = (rr, seg = 18) => Array.from({ length: seg }, (_, i) => { const a = (i / seg) * Math.PI * 2; return [Math.cos(a) * rr, rr + Math.sin(a) * rr]; });
   use('stone', 0); panel([o[0], o[1] - 0.4, o[2]], n, circ(r + 0.4), 0.05);
   use('glass', 0.12); panel(o, n, circ(r), 0.1);
+  haloRing(o, n, circ(r), 1.5, 0.2, 1);
   use('stone', 0);
   const [nu, nw] = n, ru = -nw, rw = nu;
   for (let i = 0; i < 4; i++) {
@@ -459,25 +485,44 @@ const apsePt = (r, a) => [APSE_U - Math.cos(a) * r, Math.sin(a) * r];
 }
 
 /* ═════════════════════════ izvoz (GLB) ═════════════════════════ */
-const nV = pos.length / 3;
-const position = new Float32Array(pos);
-const color = new Float32Array(col);
-let min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
-for (let i = 0; i < nV; i++) for (let k = 0; k < 3; k++) { min[k] = Math.min(min[k], position[i * 3 + k]); max[k] = Math.max(max[k], position[i * 3 + k]); }
-const bin = Buffer.concat([Buffer.from(position.buffer), Buffer.from(color.buffer)]);
+function bounds(arr) {
+  const min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
+  for (let i = 0; i < arr.length; i += 3) for (let k = 0; k < 3; k++) { min[k] = Math.min(min[k], arr[i + k]); max[k] = Math.max(max[k], arr[i + k]); }
+  return { min, max };
+}
+const parts = [
+  { name: 'konkatedrala', pos: new Float32Array(pos), col: new Float32Array(col), mat: 0 },
+  { name: 'sjaj', pos: new Float32Array(hPos), col: new Float32Array(hCol), mat: 1 },
+];
+const buffers = [];
+const bufferViews = [];
+const accessors = [];
+let offset = 0;
+for (const pt of parts) {
+  for (const [arr, type] of [[pt.pos, 'VEC3'], [pt.col, 'VEC4']]) {
+    const b = Buffer.from(arr.buffer);
+    buffers.push(b);
+    bufferViews.push({ buffer: 0, byteOffset: offset, byteLength: b.length, target: 34962 });
+    const acc = { bufferView: bufferViews.length - 1, componentType: 5126, count: arr.length / (type === 'VEC3' ? 3 : 4), type };
+    if (type === 'VEC3') Object.assign(acc, bounds(arr));
+    accessors.push(acc);
+    offset += b.length;
+  }
+}
+const bin = Buffer.concat(buffers);
 const gltf = {
   asset: { version: '2.0', generator: 'zaec build-cathedral.mjs' },
   scene: 0,
-  scenes: [{ nodes: [0] }],
-  nodes: [{ name: 'konkatedrala', mesh: 0 }],
-  meshes: [{ name: 'konkatedrala', primitives: [{ attributes: { POSITION: 0, COLOR_0: 1 }, material: 0, mode: 4 }] }],
-  materials: [{ name: 'konkatedrala', pbrMetallicRoughness: { baseColorFactor: [1, 1, 1, 1], metallicFactor: 0, roughnessFactor: 0.85 } }],
-  buffers: [{ byteLength: bin.length }],
-  bufferViews: [{ buffer: 0, byteOffset: 0, byteLength: position.byteLength, target: 34962 }, { buffer: 0, byteOffset: position.byteLength, byteLength: color.byteLength, target: 34962 }],
-  accessors: [
-    { bufferView: 0, componentType: 5126, count: nV, type: 'VEC3', min, max },
-    { bufferView: 1, componentType: 5126, count: nV, type: 'VEC4' },
+  scenes: [{ nodes: [0, 1] }],
+  nodes: parts.map((pt, i) => ({ name: pt.name, mesh: i })),
+  meshes: parts.map((pt, i) => ({ name: pt.name, primitives: [{ attributes: { POSITION: i * 2, COLOR_0: i * 2 + 1 }, material: pt.mat, mode: 4 }] })),
+  materials: [
+    { name: 'konkatedrala', pbrMetallicRoughness: { baseColorFactor: [1, 1, 1, 1], metallicFactor: 0, roughnessFactor: 0.85 } },
+    { name: 'sjaj', alphaMode: 'BLEND', pbrMetallicRoughness: { baseColorFactor: [1, 1, 1, 1], metallicFactor: 0, roughnessFactor: 1 } },
   ],
+  buffers: [{ byteLength: bin.length }],
+  bufferViews,
+  accessors,
 };
 const pad = (b, c) => Buffer.concat([b, Buffer.alloc((4 - (b.length % 4)) % 4, c)]);
 const json = pad(Buffer.from(JSON.stringify(gltf)), 0x20);
@@ -486,4 +531,5 @@ const header = Buffer.alloc(12);
 header.writeUInt32LE(0x46546c67, 0); header.writeUInt32LE(2, 4); header.writeUInt32LE(12 + 8 + json.length + 8 + binP.length, 8);
 const chunk = (buf, type) => { const h = Buffer.alloc(8); h.writeUInt32LE(buf.length, 0); h.writeUInt32LE(type, 4); return Buffer.concat([h, buf]); };
 fs.writeFileSync(path.join(OUT, 'konkatedrala-src.glb'), Buffer.concat([header, chunk(json, 0x4e4f534a), chunk(binP, 0x004e4942)]));
-console.log(`konkatedrala: ${nV / 3} trokuta · visina ${max[1].toFixed(1)} m · tlocrt x ${min[0].toFixed(1)}…${max[0].toFixed(1)}, z ${min[2].toFixed(1)}…${max[2].toFixed(1)}`);
+const { min, max } = bounds(parts[0].pos);
+console.log(`konkatedrala: ${pos.length / 9} trokuta + sjaj ${hPos.length / 9} · visina ${max[1].toFixed(1)} m · tlocrt x ${min[0].toFixed(1)}…${max[0].toFixed(1)}, z ${min[2].toFixed(1)}…${max[2].toFixed(1)}`);

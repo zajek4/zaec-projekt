@@ -456,10 +456,12 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     /* Osijek: stvarno mjerilo (metri) vezano uz kartu; lampe se pale kako pada noć */
     city.group.scale.set(s * CITY_KX, s * CITY_KZ, s * CITY_KZ);
     city.group.updateMatrixWorld();
+    // skener kreće tek kad tekst o konkatedrali odlazi (druga polovica prijelaza prema nacrtu)
+    const scanEff = smooth(0.42, 1, st.scan);
     // redoslijed buđenja grada: svjetla ulica → tamni volumeni zgrada → crtež bridova i prozori
     const cityA = smooth(1.72, 2.05, Z);
     const lamps = smooth(1.04, 1.28, Z);
-    city.update({ alpha: cityA, lamps, wake: sunState.night * 1.12, detail: smooth(1.95, 2.25, Z), rise: st.rise, dim: st.dim, lines: st.lines, cath: smooth(0.45, 1, st.cath), glow: st.glow, cathSolid: st.cathSolid, focus: st.focus, scan: st.scan, time, pr: dpr, reduce });
+    city.update({ alpha: cityA, lamps, wake: sunState.night * 1.12, detail: smooth(1.95, 2.25, Z), rise: st.rise, dim: st.dim, lines: st.lines, cath: smooth(0.45, 1, st.cath), glow: st.glow, cathSolid: st.cathSolid, focus: st.focus, scan: scanEff, time, pr: dpr, reduce });
     city.flood.position.copy(city.floodLocal).applyMatrix4(city.group.matrixWorld);
     const osm = lamps > 0.15;
     if (osm !== osmShown) { osmShown = osm; root.classList.toggle('show-osm', osm); }
@@ -471,8 +473,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
 
     /* arhitektura → crtež → mreža → web, tok, slojevi */
     const bad = badFrac * st.flow;
-    const scanY = ((city.spire.y + 2) * (1 - st.scan) - 1.5) * unit;
-    morph.update({ morph: st.morph, opacity: st.wire * cityA, time, bad, scanY, scanOn: st.scan > 0.001 && st.morph < 0.999 ? 1 : 0 });
+    const scanY = ((city.spire.y + 2) * (1 - scanEff) - 1.5) * unit;
+    morph.update({ morph: st.morph, opacity: st.wire * cityA, time, bad, scanY, scanOn: st.wire > 0.001 && st.morph < 0.999 ? 1 : 0 });
     flow.update({ alpha: st.flow, time, dt, pr: dpr, reduce, focusGate });
     layers.update({ p: st.layers, alpha: st.layersA, assemble: st.assemble, active: st.assemble > 0.5 ? -1 : layerHover, dt, reduce });
 

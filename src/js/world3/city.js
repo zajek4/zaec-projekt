@@ -48,6 +48,27 @@ function pip(x, y, r) {
   return inside;
 }
 
+/** Prsten pomaknut prema unutra za d (simetrala kuta, ograničena na oštrim kutovima). Prsten je CCW (x istok, y sjever). */
+function insetRing(r, d) {
+  const n = r.length / 2;
+  const out = new Float32Array(n * 2);
+  for (let i = 0; i < n; i++) {
+    const p = (i + n - 1) % n, q = (i + 1) % n;
+    let e1x = r[i * 2] - r[p * 2], e1y = r[i * 2 + 1] - r[p * 2 + 1];
+    let e2x = r[q * 2] - r[i * 2], e2y = r[q * 2 + 1] - r[i * 2 + 1];
+    const l1 = Math.hypot(e1x, e1y) || 1, l2 = Math.hypot(e2x, e2y) || 1;
+    e1x /= l1; e1y /= l1; e2x /= l2; e2y /= l2;
+    // unutarnje normale (lijevo od smjera za CCW)
+    let mx = -e1y - e2y, my = e1x + e2x;
+    const ml = Math.hypot(mx, my);
+    if (ml < 1e-4) { mx = -e1y; my = e1x; } else { mx /= ml; my /= ml; }
+    const c = Math.max(0.45, mx * -e1y + my * e1x);
+    out[i * 2] = r[i * 2] + (mx * d) / c;
+    out[i * 2 + 1] = r[i * 2 + 1] + (my * d) / c;
+  }
+  return out;
+}
+
 /* ───────────────────────── materijali ───────────────────────── */
 function riseMaterial(params, U) {
   const m = new THREE.MeshStandardMaterial(params);
@@ -149,6 +170,10 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     // dvostrano: model je zatvoren i malen (~6k trokuta), a smjer namatanja ne smije ovisiti o generatoru;
     // ravne normale (flatShading) dolaze iz derivacija pa su uvijek okrenute kameri
     const m = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.84, metalness: 0.02, transparent: true, side: THREE.DoubleSide });
+    // jedan prolaz i stalni zapis dubine: dvostruki prolaz (stražnje pa prednje plohe) bez dubine
+    // bi pustio da stražnji zidovi prekriju prednje — zgrada bi izgledala prozirno
+    m.forceSinglePass = true;
+    m.depthWrite = true;
     m.onBeforeCompile = (sh) => {
       Object.assign(sh.uniforms, cathU);
       sh.vertexShader = sh.vertexShader
@@ -177,26 +202,45 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           vec3 night = mix(vec3(0.36, 0.40, 0.58), vec3(1.08, 0.88, 0.72), lit);
           gl_FragColor.rgb *= mix(vec3(1.0), night, 1.0 - glass);
           gl_FragColor.rgb += vec3(1.0, 0.5, 0.25) * uGlow * 0.05 * flood * (1.0 - glass);
-          // vitraji: unutrašnjost osvijetljena, svaki prozor svoje boje
+          // vitraji: toplo žuto svjetlo iznutra (blaga razlika između prozora); sjaj oko njih je zasebna mreža
           float hw = hh(floor(vLoc * vec3(0.45, 0.2, 0.45)));
-          vec3 sg = mix(vec3(1.0, 0.6, 0.26), vec3(0.95, 0.32, 0.22), step(0.55, hw));
-          sg = mix(sg, vec3(0.38, 0.48, 1.0), step(0.82, hw));
-          gl_FragColor.rgb = mix(gl_FragColor.rgb, sg * (0.18 + 1.05 * uWin), glass);
+          vec3 sg = mix(vec3(1.0, 0.82, 0.38), vec3(1.0, 0.68, 0.26), hw);
+          gl_FragColor.rgb = mix(gl_FragColor.rgb, sg * (0.32 + 1.35 * uWin), glass);
           // vrh tornja hvata svjetlo kad zgrada postane glavni motiv
           gl_FragColor.rgb += vec3(1.0, 0.8, 0.58) * smoothstep(58.0, 90.0, vH) * uFocus * 0.14 * (1.0 - glass);
-          // skener: iznad crte zgrada postaje nacrt (prozirna), na crti tanka svjetla traka
-          float above = smoothstep(uScan - 0.8, uScan + 0.8, vH) * uScanOn;
+          // skener: iznad crte ostaje samo nacrt (linije), zgrada se čisto reže; na crti tanka svjetla traka
+          if (uScanOn > 0.5 && vH > uScan) discard;
           float band = exp(-pow((vH - uScan) / 0.9, 2.0)) * uScanOn;
           gl_FragColor.rgb += vec3(0.45, 0.62, 1.0) * band * 1.2;
-          gl_FragColor.a *= uAlpha * mix(1.0, 0.14, above);`);
+          gl_FragColor.a *= uAlpha;`);
     };
     m.customProgramCacheKey = () => 'zaec-cath-v3';
     return m;
   }
+  // sjaj vitraja: aditivni prsten oko prozora (iz modela), bez naknadne obrade slike
+  const haloU = { uLift: cathU.uLift, uScan: cathU.uScan, uScanOn: cathU.uScanOn, uI: { value: 0 } };
+  const haloMat = track(new THREE.ShaderMaterial({
+    uniforms: haloU,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    side: THREE.DoubleSide,
+    vertexShader: /* glsl */ `attribute vec4 aGlow; uniform float uLift; varying vec4 vG; varying float vH;
+      void main(){ vG = aGlow; vH = position.y; vec3 p = position; p.y = p.y * uLift - (1.0 - uLift) * 3.0;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0); }`,
+    fragmentShader: /* glsl */ `uniform float uI; uniform float uScan; uniform float uScanOn; varying vec4 vG; varying float vH;
+      void main(){
+        float a = vG.a * vG.a * uI;
+        if (uScanOn > 0.5 && vH > uScan) discard;
+        if (a < 0.003) discard;
+        gl_FragColor = vec4(vG.rgb * a, a);
+      }`,
+  }));
+  let halo = null;
   let cath = null, cathMat = null, cathLines = null;
   let cathSeq = 0;
   const spire = new THREE.Vector3(33.8, 90, 1);
-  function setCathedral(geo, isFallback) {
+  function setCathedral(geo, isFallback, haloGeo = null) {
     const seq = ++cathSeq;
     if (!geo.attributes.aKind) geo.setAttribute('aKind', new THREE.BufferAttribute(new Float32Array(geo.attributes.position.count), 1));
     const mat = cathMaterial();
@@ -206,8 +250,10 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     const lines = new THREE.EdgesGeometry(geo, isFallback ? 22 : 30);
     const swap = () => {
       // zakašnjeli rezervni model nikad ne zamjenjuje pravi
-      if (seq !== cathSeq) { geo.dispose(); mat.dispose(); lines.dispose(); return; }
+      if (seq !== cathSeq) { geo.dispose(); mat.dispose(); lines.dispose(); haloGeo?.dispose(); return; }
       if (cath) { group.remove(cath); cath.geometry.dispose(); cathMat.dispose(); cathLines?.dispose(); }
+      if (halo) { group.remove(halo); halo.geometry.dispose(); halo = null; }
+      if (haloGeo) { halo = new THREE.Mesh(haloGeo, haloMat); halo.renderOrder = 5; halo.frustumCulled = false; group.add(halo); }
       // vrh šiljka: najviša točka modela (izvor svjetlosnog snopa)
       const p = geo.attributes.position;
       let top = 0;
@@ -235,32 +281,43 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     const loader = new GLTFLoader();
     loader.setMeshoptDecoder(MeshoptDecoder);
     loader.load(modelUrl, (gltf) => {
-      let mesh = null;
-      gltf.scene.traverse((o) => { if (o.isMesh && !mesh) mesh = o; });
+      // dvije mreže: zgrada i sjaj prozora (imena čvorova iz generatora; gltfpack može dodati roditelje)
+      const named = (o) => { for (let p = o; p; p = p.parent) if (p.name === 'konkatedrala' || p.name === 'sjaj') return p.name; return ''; };
+      let mesh = null, glow = null;
+      gltf.scene.updateMatrixWorld(true);
+      gltf.scene.traverse((o) => { if (!o.isMesh) return; if (named(o) === 'sjaj') glow = glow || o; else mesh = mesh || o; });
       if (!mesh) return;
-      mesh.updateWorldMatrix(true, false);
       // gltfpack kvantizira atribute (KHR_mesh_quantization): prije primjene matrice čvora pretvori u float.
       // COLOR_0.a nosi vrstu materijala (0 cigla, 1 kamen, 2 škriljevac, 3 vitraj, 4 metal).
-      const src = mesh.geometry;
-      const geo = new THREE.BufferGeometry();
-      const P = src.getAttribute('position');
-      const pos = new Float32Array(P.count * 3);
-      for (let i = 0; i < P.count; i++) { pos[i * 3] = P.getX(i); pos[i * 3 + 1] = P.getY(i); pos[i * 3 + 2] = P.getZ(i); }
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      const C = src.getAttribute('color');
-      if (C) {
-        const col = new Float32Array(C.count * 3), kind = new Float32Array(C.count);
-        for (let i = 0; i < C.count; i++) {
-          col[i * 3] = C.getX(i); col[i * 3 + 1] = C.getY(i); col[i * 3 + 2] = C.getZ(i);
-          kind[i] = C.itemSize > 3 ? Math.round(C.getW(i) * 4) : 0;
+      const toFloat = (src, withKind) => {
+        const geo = new THREE.BufferGeometry();
+        const P = src.getAttribute('position');
+        const pos = new Float32Array(P.count * 3);
+        for (let i = 0; i < P.count; i++) { pos[i * 3] = P.getX(i); pos[i * 3 + 1] = P.getY(i); pos[i * 3 + 2] = P.getZ(i); }
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        const C = src.getAttribute('color');
+        if (C && withKind) {
+          const col = new Float32Array(C.count * 3), kind = new Float32Array(C.count);
+          for (let i = 0; i < C.count; i++) {
+            col[i * 3] = C.getX(i); col[i * 3 + 1] = C.getY(i); col[i * 3 + 2] = C.getZ(i);
+            kind[i] = C.itemSize > 3 ? Math.round(C.getW(i) * 4) : 0;
+          }
+          geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+          geo.setAttribute('aKind', new THREE.BufferAttribute(kind, 1));
+        } else if (C) {
+          const g4 = new Float32Array(C.count * 4);
+          for (let i = 0; i < C.count; i++) { g4[i * 4] = C.getX(i); g4[i * 4 + 1] = C.getY(i); g4[i * 4 + 2] = C.getZ(i); g4[i * 4 + 3] = C.itemSize > 3 ? C.getW(i) : 1; }
+          geo.setAttribute('aGlow', new THREE.BufferAttribute(g4, 4));
         }
-        geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-        geo.setAttribute('aKind', new THREE.BufferAttribute(kind, 1));
-      }
-      if (src.index) geo.setIndex(src.index.clone());
+        if (src.index) geo.setIndex(src.index.clone());
+        return geo;
+      };
+      const geo = toFloat(mesh.geometry, true);
       geo.applyMatrix4(mesh.matrixWorld);
-      mesh.material.dispose?.();
-      setCathedral(geo, false);
+      let haloGeo = null;
+      if (glow) { haloGeo = toFloat(glow.geometry, false); haloGeo.applyMatrix4(glow.matrixWorld); }
+      gltf.scene.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose?.(); } });
+      setCathedral(geo, false, haloGeo);
     }, undefined, (err) => console.warn('[ZAEC] model konkatedrale nije učitan, koristi se rezervni', err));
   }
   // reflektor: svjetlo je stalno u sceni (dodaje ga engine u korijen), samo mu se mijenja jačina —
@@ -305,13 +362,25 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     const buf = await (await fetch(dataUrl)).arrayBuffer();
     const d = parse(buf);
 
-    // zgrade: zidovi + krovovi (sljeme za manje kuće, ravni krov s vijencem za blokove)
+    // zgrade: zidovi + krovovi
+    //  · kuće (malen tlocrt): dvostrešno/četverostrešno sljeme po najduljem bridu
+    //  · gradski blokovi do ~22 m: četverostrešno krovište (pomak tlocrta prema unutra) s ravnim vrhom
+    //  · visoke, stambene i poslovne zgrade, industrija: ravni krov s atikom i ponekom strojarnicom
     const pos = [], col = [];
     const winList = [];
     const wallCols = [[0.11, 0.13, 0.19], [0.13, 0.145, 0.205], [0.095, 0.11, 0.165], [0.15, 0.15, 0.19]];
     const tile = [[0.42, 0.17, 0.12], [0.36, 0.15, 0.11], [0.47, 0.2, 0.14]];
-    const grey = [[0.17, 0.18, 0.21], [0.14, 0.15, 0.18]];
+    const slate = [[0.2, 0.2, 0.24], [0.17, 0.18, 0.22], [0.23, 0.21, 0.22]];
+    const grey = [[0.15, 0.16, 0.19], [0.13, 0.14, 0.17]];
     const tri = (a, b, c, k) => { pos.push(a[0], a[1], a[2], b[0], b[1], b[2], c[0], c[1], c[2]); col.push(...k, ...k, ...k); };
+    const cap = (ring, y, k) => {
+      // ravna ploha (gleda prema gore); rezervno lepeza iz težišta ako triangulacija ne uspije
+      const contour = toV2(ring);
+      let tris = [];
+      try { tris = THREE.ShapeUtils.triangulateShape(contour, []); } catch (e) { tris = []; }
+      if (tris.length) for (const [i0, i1, i2] of tris) tri([ring[i0 * 2], y, -ring[i0 * 2 + 1]], [ring[i2 * 2], y, -ring[i2 * 2 + 1]], [ring[i1 * 2], y, -ring[i1 * 2 + 1]], k);
+      else { const [qx, qy] = centroid(ring); for (let i = 0, m = ring.length / 2; i < m; i++) { const j = (i + 1) % m; tri([qx, y, -qy], [ring[j * 2], y, -ring[j * 2 + 1]], [ring[i * 2], y, -ring[i * 2 + 1]], k); } }
+    };
     for (const b of d.buildings) {
       const r = b.r;
       const n = r.length / 2;
@@ -321,18 +390,23 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       const h = b.h[0] / 2;
       const kind = b.h[1];
       const area = Math.abs(ringArea(r));
+      let perim = 0;
+      for (let i = 0; i < n; i++) { const j = (i + 1) % n; perim += Math.hypot(r[j * 2] - r[i * 2], r[j * 2 + 1] - r[i * 2 + 1]); }
       const wk = wallCols[(rand() * wallCols.length) | 0].map((c) => c * (0.9 + rand() * 0.2));
       const historic = h <= 15 && (kind === 0 || kind === 1 || kind === 3);
-      const rk = (historic ? tile[(rand() * tile.length) | 0] : grey[(rand() * grey.length) | 0]).map((c) => c * (0.85 + rand() * 0.3));
-      // zidovi (lokalno: x = istok, z = −sjever)
+      const pitched = area < 420 && h <= 13 && n <= 10;
+      const hipped = !pitched && h <= 22 && (kind === 0 || kind === 1 || kind === 3) && area < 6000;
+      const flat = !pitched && !hipped;
+      const parapet = flat && kind !== 4 && area > 120 ? 0.9 : 0;
+      const rk = (historic ? tile[(rand() * tile.length) | 0] : hipped ? slate[(rand() * slate.length) | 0] : grey[(rand() * grey.length) | 0]).map((c) => c * (0.85 + rand() * 0.3));
+      // zidovi (lokalno: x = istok, z = −sjever); kod ravnih krovova zid se nastavlja u atiku
+      const top = h + parapet;
       for (let i = 0; i < n; i++) {
         const j = (i + 1) % n;
         const ax = r[i * 2], az = -r[i * 2 + 1], bx = r[j * 2], bz = -r[j * 2 + 1];
-        tri([ax, 0, az], [bx, 0, bz], [bx, h, bz], wk);
-        tri([ax, 0, az], [bx, h, bz], [ax, h, az], wk);
+        tri([ax, 0, az], [bx, 0, bz], [bx, top, bz], wk);
+        tri([ax, 0, az], [bx, top, bz], [ax, top, az], wk);
       }
-      // krov
-      const pitched = area < 420 && h <= 13 && n <= 10;
       if (pitched) {
         // smjer najduljeg brida → sljeme
         let best = 0, ux = 1, uy = 0;
@@ -351,10 +425,51 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           tri(a, bq, rb, rk);
           tri(a, rb, ra, rk);
         }
+      } else if (hipped) {
+        // četverostrešno: kosine do pomaknutog tlocrta, nagib ~37°, ravni vrh (tipično za gradske blokove)
+        const width = (2 * area) / Math.max(1, perim);
+        const dIn = Math.min(Math.max(2.2, Math.sqrt(area) * 0.2), 7, width * 0.46);
+        const rh = dIn * 0.75;
+        const inn = insetRing(r, dIn);
+        for (let i = 0; i < n; i++) {
+          const j = (i + 1) % n;
+          const a = [r[i * 2], h, -r[i * 2 + 1]], bq = [r[j * 2], h, -r[j * 2 + 1]];
+          const ia = [inn[i * 2], h + rh, -inn[i * 2 + 1]], ib = [inn[j * 2], h + rh, -inn[j * 2 + 1]];
+          tri(a, bq, ib, rk);
+          tri(a, ib, ia, rk);
+        }
+        cap(inn, h + rh, rk.map((c) => c * 0.92));
       } else {
-        const contour = toV2(r);
-        const tris = THREE.ShapeUtils.triangulateShape(contour, []);
-        for (const [i0, i1, i2] of tris) tri([r[i0 * 2], h, -r[i0 * 2 + 1]], [r[i2 * 2], h, -r[i2 * 2 + 1]], [r[i1 * 2], h, -r[i1 * 2 + 1]], rk);
+        // ravni krov; atika: gornji rub i unutarnja strana zida, ploha krova malo niže
+        if (parapet) {
+          const inn = insetRing(r, 0.45);
+          const pk = wk.map((c) => c * 1.25);
+          for (let i = 0; i < n; i++) {
+            const j = (i + 1) % n;
+            const a = [r[i * 2], top, -r[i * 2 + 1]], bq = [r[j * 2], top, -r[j * 2 + 1]];
+            const ia = [inn[i * 2], top, -inn[i * 2 + 1]], ib = [inn[j * 2], top, -inn[j * 2 + 1]];
+            tri(a, ib, bq, pk);
+            tri(a, ia, ib, pk);
+            const ia0 = [inn[i * 2], h, -inn[i * 2 + 1]], ib0 = [inn[j * 2], h, -inn[j * 2 + 1]];
+            tri(ib0, ia0, ia, wk);
+            tri(ib0, ia, ib, wk);
+          }
+          cap(inn, h, rk);
+        } else cap(r, h, rk);
+        // strojarnica / izlaz na krov na većim ravnim krovovima
+        if (parapet && area > 700 && rand() < 0.7) {
+          const sx = 2 + rand() * 3, sy = 2 + rand() * 3, sh = 2.2 + rand() * 1.4;
+          const ox = cx + (rand() - 0.5) * Math.sqrt(area) * 0.25, oy = cy + (rand() - 0.5) * Math.sqrt(area) * 0.25;
+          const box = [ox - sx, oy - sy, ox + sx, oy - sy, ox + sx, oy + sy, ox - sx, oy + sy];
+          const bk = grey[0].map((c) => c * 1.3);
+          for (let i = 0; i < 4; i++) {
+            const j = (i + 1) % 4;
+            const ax = box[i * 2], az = -box[i * 2 + 1], bx = box[j * 2], bz = -box[j * 2 + 1];
+            tri([ax, h, az], [bx, h, bz], [bx, h + sh, bz], bk);
+            tri([ax, h, az], [bx, h + sh, bz], [ax, h + sh, az], bk);
+          }
+          cap(box, h + sh, bk.map((c) => c * 1.15));
+        }
       }
       // obrisi krovova (crtež) i prozori u blizini središta
       if (dist < R_EDGE) for (let i = 0; i < n; i++) { const j = (i + 1) % n; lineSegs.push(r[i * 2], h, -r[i * 2 + 1], r[j * 2], h, -r[j * 2 + 1]); }
@@ -527,7 +642,10 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       cathU.uScanOn.value = scanOn;
       cathU.uScan.value = (spire.y + 2) * (1 - s.scan) - 1.5;
       cathU.uAlpha.value = solid * s.cathSolid;
-      if (cath) { cath.visible = s.cathSolid * solid > 0.01; cathMat.depthWrite = s.cathSolid > 0.6 && !scanOn; }
+      if (cath) cath.visible = s.cathSolid * solid > 0.01;
+      // sjaj prozora raste s isticanjem; iz daljine je tek naslutljiv
+      haloU.uI.value = solid * s.cathSolid * (0.12 + 0.88 * s.focus) * 1.15;
+      if (halo) halo.visible = haloU.uI.value > 0.004;
       flood.intensity = 14 * s.glow * solid * s.cathSolid * (1 - 0.6 * s.scan) * (0.2 + 0.8 * s.focus);
       // Hotel Osijek je sporedno sidro: kad konkatedrala postane motiv, povlači se u pozadinu
       hotelU.uAlpha.value = solid * (1 - 0.45 * s.focus);
