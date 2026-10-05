@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ZAEC_VERSION', '2.2.0' );
+define( 'ZAEC_VERSION', '2.3.0' );
 define( 'ZAEC_THEME_DIR', get_template_directory() );
 define( 'ZAEC_THEME_URI', get_template_directory_uri() );
 

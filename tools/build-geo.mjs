@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import * as THREE from 'three';
 import { feature } from 'topojson-client';
-import { geoContains, geoEquirectangular, geoPath } from 'd3-geo';
+import { geoArea, geoContains, geoEquirectangular, geoPath } from 'd3-geo';
 import sharp from 'sharp';
 
 const require = createRequire(import.meta.url);
@@ -141,6 +141,28 @@ const nodes = [];
   fs.mkdirSync('zaec/assets/img/world', { recursive: true });
   await sharp(Buffer.from(svgTex)).greyscale().png({ compressionLevel: 9, palette: true, colours: 16 }).toFile('zaec/assets/img/world/land.png');
   console.log('land.png', Math.round(fs.statSync('zaec/assets/img/world/land.png').size / 1024), 'kB');
+}
+
+/* ── 6. detaljnija tekstura kopna za Europu (1:10m, lon −30…60, lat 25…75) ──
+   Karta se pri spuštanju "odmata" s kugle i dijeli shader s globusom; ova tekstura drži obalu oštrom
+   do mjerila Hrvatske (≈0,045° po pikselu). Granice: EU_BOX u europe.js. */
+{
+  const land10 = require('world-atlas/land-10m.json');
+  const land10f = feature(land10, land10.objects.land);
+  // pojedini poligoni u 1:10m imaju obrnut sferni smjer (d3 bi crtao komplement) — preokreni ih
+  for (const ft of land10f.features ?? [land10f]) {
+    const g = ft.geometry;
+    const polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+    for (const poly of polys) if (geoArea({ type: 'Polygon', coordinates: poly }) > 2 * Math.PI) poly.forEach((r) => r.reverse());
+  }
+  const [LO0, LA0, LO1, LA1] = [-30, 25, 60, 75];
+  const W = 2048, H = Math.round((W * (LA1 - LA0)) / (LO1 - LO0)); // isto mjerilo po obje osi
+  const k = W / ((LO1 - LO0) * (Math.PI / 180));
+  const proj = geoEquirectangular().scale(k).translate([k * -LO0 * (Math.PI / 180), k * LA1 * (Math.PI / 180)]);
+  const d = geoPath(proj)(land10f);
+  const svgTex = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="#000"/><path d="${d}" fill="#fff"/></svg>`;
+  await sharp(Buffer.from(svgTex)).greyscale().png({ compressionLevel: 9, palette: true, colours: 16 }).toFile('zaec/assets/img/world/land-eu.png');
+  console.log('land-eu.png', Math.round(fs.statSync('zaec/assets/img/world/land-eu.png').size / 1024), 'kB');
 }
 
 const out = {

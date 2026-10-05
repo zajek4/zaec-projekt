@@ -145,19 +145,28 @@ const paper = document.querySelector('.paper');
 const hero = document.getElementById('uvod');
 const finalSec = document.getElementById('kontakt');
 let railTick = false;
+// položaji poglavlja u dokumentu (mjere se pri promjeni rasporeda, ne pri svakom scrollu)
+let railBox = [];
+let paperBox = null, finalBox = null, heroBox = null;
+const docBox = (el) => { if (!el) return null; const r = el.getBoundingClientRect(); return [r.top + window.scrollY, r.bottom + window.scrollY]; };
+function measureRail() {
+  railBox = railTargets.map(docBox);
+  paperBox = docBox(paper);
+  finalBox = docBox(finalSec);
+  heroBox = docBox(hero);
+}
 function updateRail() {
   railTick = false;
-  const mid = innerHeight * 0.5;
+  const y = window.scrollY, vh = innerHeight;
+  const mid = y + vh * 0.5;
   let active = -1;
-  railTargets.forEach((t, i) => {
-    if (!t) return;
-    const r = t.getBoundingClientRect();
-    if (r.top <= mid && r.bottom >= mid) active = i;
-  });
+  railBox.forEach((b, i) => { if (b && b[0] <= mid && b[1] >= mid) active = i; });
   railLinks.forEach((a, i) => a.classList.toggle('is-active', i === active));
-  const inside = (el) => { if (!el) return false; const r = el.getBoundingClientRect(); return r.top < innerHeight * 0.92 && r.bottom > innerHeight * 0.08; };
-  document.body.classList.toggle('rail-hide', active < 0 || inside(paper) || inside(finalSec) || (hero && hero.getBoundingClientRect().bottom > mid));
+  const inside = (b) => !!b && b[0] - y < vh * 0.92 && b[1] - y > vh * 0.08;
+  document.body.classList.toggle('rail-hide', active < 0 || inside(paperBox) || inside(finalBox) || (!!heroBox && heroBox[1] > mid));
 }
+measureRail();
+new ResizeObserver(() => { measureRail(); updateRail(); }).observe(document.body);
 addEventListener('scroll', () => { if (!railTick) { railTick = true; requestAnimationFrame(updateRail); } }, { passive: true });
 updateRail();
 
@@ -318,7 +327,7 @@ async function bootWorld() {
     world = createWorld3({
       canvas,
       labelsRoot: document.querySelector('[data-stage-labels]'),
-      assets: { land: T + 'img/world/land.png' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },
+      assets: { land: T + 'img/world/land.png' + v, landEu: T + 'img/world/land-eu.png' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },
       onReady: () => root.classList.add('stage-ready'),
     });
     world.setGates(gates);

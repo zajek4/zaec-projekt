@@ -1,6 +1,6 @@
 {
   "name": "zaec-wp-theme",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "private": true,
   "type": "module",
   "description": "ZAEC WordPress tema v2 — 3D low-poly svijet, GSAP, Lenis. Izvori i build.",
@@ -10,7 +10,8 @@
     "zip": "node tools/zip-theme.mjs",
     "capture": "node tools/capture-server.mjs",
     "geo": "node tools/build-geo.mjs",
-    "city": "node tools/build-city.mjs"
+    "city": "node tools/build-city.mjs",
+    "cathedral": "node tools/cathedral/build-cathedral.mjs && gltfpack -i tools/cathedral/out/konkatedrala-src.glb -o zaec/assets/models/konkatedrala.glb -cc -kn"
   },
   "devDependencies": {
     "@fontsource-variable/archivo": "^5.3.0",

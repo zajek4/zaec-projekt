@@ -1,3 +1,4 @@
 node_modules/
 zaec/assets/build/capture.js
 *.log
+tools/cathedral/out/

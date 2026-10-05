@@ -1,166 +1,294 @@
-// Scena 02 — Europa → Hrvatska: tamna karta država, Hrvatska kao izdignuti poligon,
-// topološke točke, gradovi i lukovi prema europskim središtima ("tržište bez granica").
+// Scena 02 — Europa → Hrvatska → Slavonija: karta je nastavak globusa, ne nova scena.
+// Teren dijeli jezik planeta (maska kopna, matrica točaka, sunce) i pri prijelazu se "odmata" s kugle
+// (BEND), pa nema skoka mjerila ni stila. Hrvatska se ne izdiže: obris se iscrtava jednim potezom
+// iz Osijeka (scroll vodi pero), vrhunac sjaja dolazi kad se krug zatvori, zatim se smiri.
+// Spuštanjem pada sumrak (SUN_MAP): noć prelazi kartu, a svjetla gradova pale se tek kad je nad njima mrak.
 import * as THREE from 'three';
-import { proj, glowPoints, lineMat, seeded, smooth } from './lib.js';
+import { proj, glowPoints, seeded, smooth, BEND, BEND_GLSL, SUN_MAP, DAY_EDGE, OSIJEK, MAPK, COSLAT } from './lib.js';
 
-function shapeFromRings(rings) {
-  const toV = ([lon, lat]) => {
-    const [x, z] = proj(lon, lat);
-    return new THREE.Vector2(x, -z);
-  };
-  const shape = new THREE.Shape(rings[0].map(toV));
-  for (let i = 1; i < rings.length; i++) shape.holes.push(new THREE.Path(rings[i].map(toV)));
-  return shape;
-}
+const f = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(v));
+// detaljna tekstura kopna (build-geo.mjs, korak 6): lon −30…60, lat 25…75
+const EU_BOX = [-30, 25, 60, 75];
 
-function ringSegments(rings, y, out) {
-  for (const r of rings) {
+/* ───────── debela linija u prostoru zaslona (obris Hrvatske) ─────────
+   Svaki segment je pravokutnik proširen u pikselima; aU je udaljenost duž prstena (0…1) za iscrtavanje. */
+function ribbon(rings) {
+  const P = [], Q = [], side = [], end = [], u = [], isl = [];
+  rings.forEach((r, ri) => {
+    let L = 0;
+    const acc = [0];
+    for (let i = 1; i < r.length; i++) { L += Math.hypot(r[i][0] - r[i - 1][0], r[i][1] - r[i - 1][1]); acc.push(L); }
     for (let i = 0; i < r.length - 1; i++) {
-      const [x1, z1] = proj(r[i][0], r[i][1]);
-      const [x2, z2] = proj(r[i + 1][0], r[i + 1][1]);
-      out.push(x1, y, z1, x2, y, z2);
+      const a = r[i], b = r[i + 1];
+      const ua = acc[i] / L, ub = acc[i + 1] / L;
+      // dva trokuta: (A,−) (A,+) (B,−) · (B,−) (A,+) (B,+)
+      const verts = [[a, b, -1, 0, ua], [a, b, 1, 0, ua], [b, a, -1, 1, ub], [b, a, -1, 1, ub], [a, b, 1, 0, ua], [b, a, 1, 1, ub]];
+      for (const [p, q, sd, e, uu] of verts) {
+        P.push(p[0], 0.05, p[1]); Q.push(q[0], 0.05, q[1]);
+        side.push(sd); end.push(e); u.push(uu); isl.push(ri === 0 ? 0 : 1);
+      }
     }
-  }
+  });
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+  g.setAttribute('aQ', new THREE.Float32BufferAttribute(Q, 3));
+  g.setAttribute('aSide', new THREE.Float32BufferAttribute(side, 1));
+  g.setAttribute('aEnd', new THREE.Float32BufferAttribute(end, 1));
+  g.setAttribute('aU', new THREE.Float32BufferAttribute(u, 1));
+  g.setAttribute('aIsl', new THREE.Float32BufferAttribute(isl, 1));
+  g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 400);
+  return g;
 }
 
-export function createEurope({ geo, lite }) {
+export function createEurope({ geo, lite, landTex, landEuUrl }) {
   const rand = seeded(11);
   const group = new THREE.Group();
   group.name = 'europa';
+  const disposables = [];
+  const track = (o) => { disposables.push(o); return o; };
 
-  /* ── tlo: tehnička mreža (1 jedinica = ¼ stupnja) ── */
-  const gridU = { uOpacity: { value: 1 }, uColor: { value: new THREE.Color('#203057') } };
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(480, 480, 1, 1).rotateX(-Math.PI / 2),
-    new THREE.ShaderMaterial({
-      uniforms: gridU,
+  /* ── 1. teren: nastavak planeta ── */
+  const loader = new THREE.TextureLoader();
+  const tex = (url) => {
+    const t = track(loader.load(url));
+    t.colorSpace = THREE.NoColorSpace;
+    t.format = THREE.RedFormat; // maska: jedan kanal (¼ memorije i prijenosa)
+    t.generateMipmaps = false;
+    t.minFilter = THREE.LinearFilter;
+    return t;
+  };
+  const TU = {
+    uLandW: { value: landTex },
+    uLandE: { value: tex(landEuUrl) },
+    uBend: BEND,
+    uSunMap: SUN_MAP,
+    uDayEdge: DAY_EDGE,
+    uAlpha: { value: 0 },
+    uDots: { value: 1 },
+    uGrat: { value: 0 },
+    uNightL: { value: 1 },
+    uDim: { value: 0 },
+  };
+  const X0 = -140, X1 = 118, Z0 = -118, Z1 = 84;
+  const terrainGeo = track(new THREE.PlaneGeometry(X1 - X0, Z1 - Z0, lite ? 96 : 140, lite ? 76 : 110).rotateX(-Math.PI / 2).translate((X0 + X1) / 2, 0, (Z0 + Z1) / 2));
+  const terrainMat = track(new THREE.ShaderMaterial({
+    uniforms: TU,
+    transparent: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -8,
+    vertexShader: /* glsl */ `
+      ${BEND_GLSL}
+      varying vec2 vXZ; varying vec3 vW;
+      void main(){
+        vXZ = position.xz;
+        vec4 w = modelMatrix * vec4(bendPos(position), 1.0);
+        vW = w.xyz;
+        gl_Position = projectionMatrix * viewMatrix * w;
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform sampler2D uLandW; uniform sampler2D uLandE; uniform vec3 uSunMap; uniform vec2 uDayEdge;
+      uniform float uAlpha; uniform float uDots; uniform float uGrat; uniform float uNightL; uniform float uDim;
+      ${BEND_GLSL}
+      varying vec2 vXZ; varying vec3 vW;
+      float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float dotField(vec2 g, float r){
+        vec2 q = fract(g) - 0.5;
+        float aa = fwidth(length(q)) * 1.2;
+        return 1.0 - smoothstep(r - aa, r + aa, length(q));
+      }
+      void main(){
+        float latD = ${f(OSIJEK[1])} - vXZ.y / ${f(MAPK)};
+        float lonD = ${f(OSIJEK[0])} + vXZ.x / ${f(MAPK * COSLAT)};
+        vec2 uvE = vec2((lonD - ${f(EU_BOX[0])}) / ${f(EU_BOX[2] - EU_BOX[0])}, (latD - ${f(EU_BOX[1])}) / ${f(EU_BOX[3] - EU_BOX[1])});
+        float inE = step(0.0, uvE.x) * step(uvE.x, 1.0) * step(0.0, uvE.y) * step(uvE.y, 1.0);
+        float lw = texture2D(uLandW, vec2((lonD + 180.0) / 360.0, (latD + 90.0) / 180.0)).r;
+        float le = texture2D(uLandE, uvE).r;
+        float land = smoothstep(0.25, 0.75, mix(lw, le, inE));
+        // ista matrica kao na globusu (0,36°); kako se kamera spušta, ulaze 4× i 16× gušće razine,
+        // pa točke na zaslonu ostaju sitne — detalj raste sa spuštanjem umjesto da se točke napuhuju
+        float lat = latD * 0.0174533, lon = lonD * 0.0174533;
+        vec2 g = vec2(lon * cos(lat), lat) / (0.36 * 0.0174533);
+        float cellPx = 1.0 / max(length(fwidth(g)), 1e-5);
+        float lev = clamp(log2(cellPx / 7.0) * 0.5, 0.0, 2.0);
+        float l0 = floor(lev);
+        float k0 = exp2(l0 * 2.0);
+        float fr = smoothstep(0.55, 1.0, lev - l0);
+        float rr = mix(0.17, 0.12, clamp(lev, 0.0, 1.0));
+        float dots = mix(dotField(g * k0, rr), dotField(g * k0 * 4.0, rr), fr) * land * uDots;
+        vec3 n = sphereNormal(vXZ);
+        vec3 v = normalize(cameraPosition - vW);
+        float ndl = dot(n, uSunMap);
+        float day = smoothstep(uDayEdge.x, uDayEdge.y, ndl);
+        vec3 ocean = mix(vec3(0.006, 0.013, 0.036), vec3(0.012, 0.024, 0.058), pow(max(dot(n, v), 0.0), 2.0));
+        vec3 landC = vec3(0.036, 0.055, 0.085) + dots * vec3(0.10, 0.2, 0.42);
+        vec3 col = mix(ocean, landC, land);
+        col *= 0.2 + 1.35 * day;
+        // sumrak: topla traka koja putuje preko karte
+        float mid = (uDayEdge.x + uDayEdge.y) * 0.5, wid = (uDayEdge.y - uDayEdge.x) * 0.32;
+        float term = exp(-pow((ndl - mid) / wid, 2.0));
+        col += vec3(0.40, 0.16, 0.10) * term * (0.25 + 0.75 * land) * 0.26;
+        // noćna strana (kao na globusu): tiha matrica i rijetka svjetla dok je pogled kontinentalan
+        float night = 1.0 - day;
+        col += dots * vec3(0.08, 0.16, 0.38) * night * 0.45;
+        float lit = step(0.9, h21(floor(g))) * dots;
+        col += vec3(1.0, 0.6, 0.26) * lit * night * 0.55 * uNightL;
+        // geografska mreža (1°) — tanka, samo dok je pogled regionalan
+        vec2 gl = vec2(lonD, latD);
+        vec2 gd = abs(fract(gl - 0.5) - 0.5) / fwidth(gl);
+        col += vec3(0.10, 0.16, 0.34) * (1.0 - min(min(gd.x, gd.y), 1.0)) * uGrat;
+        float fres = pow(1.0 - max(dot(n, v), 0.0), 2.6);
+        col += vec3(0.16, 0.42, 1.0) * fres * (0.14 + 1.05 * smoothstep(-0.2, 0.6, ndl)) * (1.0 - uDim);
+        col *= 1.0 - uDim * 0.55;
+        // rubovi terena nestaju meko (nikad se ne vidi kraj karte)
+        float r = length(vXZ * vec2(1.0, 1.15));
+        float edge = 1.0 - smoothstep(85.0, 128.0, r);
+        gl_FragColor = vec4(col, uAlpha * edge);
+      }`,
+  }));
+  const terrain = new THREE.Mesh(terrainGeo, terrainMat);
+  terrain.renderOrder = 1;
+  terrain.frustumCulled = false;
+  group.add(terrain);
+
+  /* ── 2. granice država (savijaju se s kartom) ── */
+  const lineShader = (color, additive = true) => {
+    const U = { uColor: { value: new THREE.Color(color) }, uOpacity: { value: 0 }, uBend: BEND };
+    const m = new THREE.ShaderMaterial({
+      uniforms: U,
       transparent: true,
       depthWrite: false,
-      vertexShader: /* glsl */ `varying vec2 vP; void main(){ vP = position.xz; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
-      fragmentShader: /* glsl */ `
-        uniform float uOpacity; uniform vec3 uColor; varying vec2 vP;
-        float grid(vec2 p, float s, float w){ vec2 g = abs(fract(p / s - 0.5) - 0.5) / fwidth(p / s); return 1.0 - min(min(g.x, g.y) / w, 1.0); }
-        void main(){
-          float d = length(vP + vec2(6.0, -4.0));
-          float fade = 1.0 - smoothstep(30.0, 150.0, d);
-          float g = grid(vP, 1.0, 1.0) * 0.25 + grid(vP, 4.0, 1.2) * 0.6;
-          gl_FragColor = vec4(uColor, g * fade * uOpacity * 0.75);
-        }`,
-    }),
-  );
-  ground.position.y = -0.02;
-  ground.renderOrder = -1;
-  group.add(ground);
-
-  /* ── države Europe ── */
-  const shapes = [];
-  const colors = [];
+      depthTest: false,
+      blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
+      vertexShader: /* glsl */ `${BEND_GLSL}
+        void main(){ gl_Position = projectionMatrix * modelViewMatrix * vec4(bendPos(position), 1.0); }`,
+      fragmentShader: /* glsl */ `uniform vec3 uColor; uniform float uOpacity; void main(){ gl_FragColor = vec4(uColor, uOpacity); }`,
+    });
+    return { m: track(m), U };
+  };
   const borderSeg = [];
-  const palette = ['#0d1528', '#101a30', '#0f182c', '#121c33'];
   for (const country of geo.europe) {
-    const g = new THREE.ShapeGeometry(shapeFromRings(country.rings), 1);
-    const col = new THREE.Color(palette[(rand() * palette.length) | 0]);
-    const n = g.attributes.position.count;
-    const arr = new Float32Array(n * 3);
-    for (let i = 0; i < n; i++) col.toArray(arr, i * 3);
-    g.setAttribute('color', new THREE.BufferAttribute(arr, 3));
-    shapes.push(g);
-    ringSegments(country.rings, 0.03, borderSeg);
-  }
-  const landGeo = mergeShapes(shapes);
-  landGeo.rotateX(-Math.PI / 2);
-  const landMat = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false });
-  const land = new THREE.Mesh(landGeo, landMat);
-  group.add(land);
-  const borderGeo = new THREE.BufferGeometry();
-  borderGeo.setAttribute('position', new THREE.Float32BufferAttribute(borderSeg, 3));
-  const borderMat = lineMat('#33497f', 0.7);
-  group.add(new THREE.LineSegments(borderGeo, borderMat));
-
-  /* ── Hrvatska: ekstrudirani poligon ── */
-  const cro = new THREE.Group();
-  cro.name = 'hrvatska';
-  const croGeos = geo.croatia.map((ring) => new THREE.ExtrudeGeometry(shapeFromRings([ring]), { depth: 1, bevelEnabled: false, curveSegments: 1 }));
-  const croGeo = mergeShapes(croGeos, false);
-  croGeo.rotateX(-Math.PI / 2);
-  const topMat = new THREE.MeshStandardMaterial({ color: '#13224f', emissive: new THREE.Color('#1a2f9e'), emissiveIntensity: 0.3, roughness: 0.6, metalness: 0.2, flatShading: true, transparent: true });
-  const sideMat = new THREE.MeshStandardMaterial({ color: '#2347ff', emissive: new THREE.Color('#2347ff'), emissiveIntensity: 0.9, roughness: 0.4, transparent: true });
-  const croMesh = new THREE.Mesh(croGeo, [topMat, sideMat]);
-  cro.add(croMesh);
-  const topLine = [];
-  const baseLine = [];
-  ringSegments(geo.croatia, 1.002, topLine);
-  ringSegments(geo.croatia, 0.04, baseLine);
-  const outlineMat = lineMat('#9fb6ff', 1, true);
-  const topOutline = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(topLine, 3)), outlineMat);
-  cro.add(topOutline);
-  group.add(cro);
-  const baseOutlineMat = lineMat('#5f80ff', 0.9, true);
-  const baseOutline = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(baseLine, 3)), baseOutlineMat);
-  group.add(baseOutline);
-
-  // topološke točke unutar Hrvatske (na vrhu reljefa)
-  const inside = [];
-  const mainland = geo.croatia[0];
-  const poly = mainland.map(([lon, lat]) => proj(lon, lat));
-  const minX = Math.min(...poly.map((p) => p[0])), maxX = Math.max(...poly.map((p) => p[0]));
-  const minZ = Math.min(...poly.map((p) => p[1])), maxZ = Math.max(...poly.map((p) => p[1]));
-  const stepD = lite ? 0.42 : 0.28;
-  for (let x = minX; x < maxX; x += stepD) {
-    for (let z = minZ; z < maxZ; z += stepD) {
-      if (pip(x, z, poly)) inside.push([x + (rand() - 0.5) * 0.08, z + (rand() - 0.5) * 0.08]);
+    for (const r of country.rings) {
+      for (let i = 0; i < r.length - 1; i++) {
+        const [x1, z1] = proj(r[i][0], r[i][1]);
+        const [x2, z2] = proj(r[i + 1][0], r[i + 1][1]);
+        borderSeg.push(x1, 0.04, z1, x2, 0.04, z2);
+      }
     }
   }
-  const topo = glowPoints({ count: inside.length, color: '#4f7bff', core: '#cfe0ff', size: 0.16 });
-  inside.forEach(([x, z], i) => {
-    topo.pos[i * 3] = x; topo.pos[i * 3 + 1] = 1.02; topo.pos[i * 3 + 2] = z;
-    topo.alpha[i] = 0.2 + rand() * 0.5;
-  });
-  cro.add(topo.points);
+  const borders = lineShader('#4d68c4');
+  const borderLines = new THREE.LineSegments(track(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(borderSeg, 3))), borders.m);
+  borderLines.renderOrder = 2;
+  borderLines.frustumCulled = false;
+  group.add(borderLines);
 
-  /* ── Slavonija noću: svjetla okolnih mjesta (Osijek sam donosi stvarna ulična svjetla iz city.js) ── */
-  const LN = lite ? 1200 : 2400;
-  const lights = glowPoints({ count: LN, color: '#ffb35a', core: '#fff0d0', size: 0.24, depthTest: false });
-  lights.uniforms.uMax.value = 9;
-  lights.uniforms.uMin.value = 1.3;
-  lights.points.renderOrder = 2;
-  // stvarna mjesta oko Osijeka (ime, lon, lat, težina)
-  const TOWNS = [['Đakovo', 18.41, 45.31, 1], ['Vukovar', 19.0, 45.35, 1], ['Vinkovci', 18.8, 45.29, 0.95], ['Valpovo', 18.42, 45.66, 0.6], ['Belišće', 18.4, 45.68, 0.5], ['Našice', 18.1, 45.49, 0.6], ['Beli Manastir', 18.6, 45.77, 0.6], ['Donji Miholjac', 18.17, 45.76, 0.5], ['Čepin', 18.565, 45.524, 0.45], ['Tenja', 18.749, 45.497, 0.35], ['Bilje', 18.743, 45.606, 0.35], ['Darda', 18.692, 45.627, 0.35]];
-  const towns = TOWNS.map(([, lon, lat, w]) => [...proj(lon, lat), w]);
-  const gauss = () => Math.sqrt(-2 * Math.log(rand() + 1e-6)) * Math.cos(rand() * Math.PI * 2);
-  for (let i = 0; i < LN; i++) {
-    let x, z;
-    if (rand() < 0.3) {
-      // raspršena prigradska naselja — ne u samom gradu (tamo su stvarna ulična svjetla)
-      do { x = gauss() * 0.32; z = gauss() * 0.24; } while (Math.hypot(x, z * 1.4) < 0.12);
-    } else {
-      const t = towns[(rand() * towns.length) | 0];
-      const sp = 0.012 + t[2] * 0.028;
-      x = t[0] + gauss() * sp; z = t[1] + gauss() * sp;
-    }
-    lights.pos[i * 3] = x; lights.pos[i * 3 + 1] = 1.03; lights.pos[i * 3 + 2] = z;
-    lights.alpha[i] = 0.2 + rand() * 0.8;
-    lights.size[i] = 0.5 + rand() * rand() * 1.8;
+  /* ── 3. Hrvatska: blaga ispuna + obris koji se iscrtava ── */
+  const croRings = geo.croatia.map((ring) => ring.map(([lon, lat]) => proj(lon, lat)));
+  // glavni prsten počinje u točki najbližoj Osijeku i ide prema sjeveru (uz Dravu), pa niz obalu i natrag
+  {
+    const main = croRings[0].slice(0, -1);
+    let area = 0;
+    for (let i = 0; i < main.length; i++) { const a = main[i], b = main[(i + 1) % main.length]; area += a[0] * b[1] - b[0] * a[1]; }
+    if (area > 0) main.reverse(); // z = −sjever: negativna površina = smjer suprotan kazaljci (sjever → zapad → jug)
+    let k = 0, best = Infinity;
+    main.forEach(([x, z], i) => { const d = x * x + z * z; if (d < best) { best = d; k = i; } });
+    const rot = main.slice(k).concat(main.slice(0, k));
+    rot.push(rot[0]);
+    croRings[0] = rot;
   }
-  cro.add(lights.points);
-  const topBase = new THREE.Color('#13224f');
-  const topDark = new THREE.Color('#070b1a');
+  const RU = { uBend: BEND, uRes: { value: new THREE.Vector2(1, 1) }, uWidth: { value: 6 }, uCore: { value: 0.2 }, uTrace: { value: 0 }, uHL: { value: 0 }, uOpacity: { value: 0 }, uTime: { value: 0 } };
+  const outlineMat = track(new THREE.ShaderMaterial({
+    uniforms: RU,
+    transparent: true,
+    depthWrite: false,
+    depthTest: false,
+    side: THREE.DoubleSide,
+    blending: THREE.CustomBlending,
+    blendEquation: THREE.MaxEquation,
+    blendSrc: THREE.OneFactor,
+    blendDst: THREE.OneFactor,
+    vertexShader: /* glsl */ `
+      ${BEND_GLSL}
+      attribute vec3 aQ; attribute float aSide; attribute float aEnd; attribute float aU; attribute float aIsl;
+      uniform vec2 uRes; uniform float uWidth;
+      varying float vS; varying float vU; varying float vIsl;
+      void main(){
+        vec4 cp = projectionMatrix * modelViewMatrix * vec4(bendPos(position), 1.0);
+        vec4 cq = projectionMatrix * modelViewMatrix * vec4(bendPos(aQ), 1.0);
+        vec2 sp = cp.xy / cp.w * uRes, sq = cq.xy / cq.w * uRes;
+        float dirS = aEnd < 0.5 ? 1.0 : -1.0;
+        vec2 dir = normalize((sq - sp) * dirS + vec2(1e-6, 0.0));
+        vec2 nrm = vec2(-dir.y, dir.x);
+        vec2 off = nrm * aSide * uWidth - dir * dirS * uWidth * 0.35;
+        gl_Position = cp;
+        gl_Position.xy += off / uRes * cp.w;
+        vS = aSide; vU = aU; vIsl = aIsl;
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform float uCore; uniform float uTrace; uniform float uHL; uniform float uOpacity; uniform float uTime;
+      varying float vS; varying float vU; varying float vIsl;
+      void main(){
+        // otoci se iscrtavaju u drugoj polovici poteza, svi zajedno
+        float tr = vIsl > 0.5 ? smoothstep(0.4, 0.98, uTrace) : uTrace;
+        float drawn = smoothstep(tr + 0.0015, tr - 0.0015, vU) * step(0.0005, tr);
+        float d = abs(vS);
+        float aa = fwidth(d) * 1.2;
+        float core = 1.0 - smoothstep(uCore - aa, uCore + aa, d);
+        float halo = exp(-d * d * 7.0);
+        // vrh pera: kratak svijetli rep dok potez putuje
+        float live = (1.0 - smoothstep(0.96, 1.0, uTrace)) * step(vIsl, 0.5);
+        float head = exp(-pow((tr - vU) * 70.0, 2.0)) * live;
+        float tail = exp(-max(tr - vU, 0.0) * 18.0) * live;
+        float glow = uHL * (0.55 + 0.45 * tail) + head * 1.6;
+        vec3 cCore = mix(vec3(0.62, 0.72, 1.0), vec3(1.0, 0.92, 0.8), head);
+        vec3 cHalo = vec3(0.18, 0.32, 1.0);
+        vec3 c = cCore * core * (0.45 + 0.55 * glow) + cHalo * halo * glow * 0.5;
+        gl_FragColor = vec4(c * drawn * uOpacity, 1.0);
+      }`,
+  }));
+  const outline = new THREE.Mesh(track(ribbon(croRings)), outlineMat);
+  outline.renderOrder = 6;
+  outline.frustumCulled = false;
+  group.add(outline);
+  // vrh pera: točka koja putuje obrisom
+  const mainRing = croRings[0];
+  const mainAcc = [0];
+  for (let i = 1; i < mainRing.length; i++) mainAcc.push(mainAcc[i - 1] + Math.hypot(mainRing[i][0] - mainRing[i - 1][0], mainRing[i][1] - mainRing[i - 1][1]));
+  const mainLen = mainAcc[mainAcc.length - 1];
+  const pen = glowPoints({ count: 1, color: '#9cb4ff', core: '#ffffff', size: 0.5, depthTest: false, bend: true });
+  pen.uniforms.uMin.value = 7;
+  pen.uniforms.uMax.value = 22;
+  pen.points.renderOrder = 7;
+  group.add(pen.points);
+  // ispuna: Hrvatska se nježno "upali" kad se obris zatvori
+  const shape = (ring) => new THREE.Shape(ring.map(([x, z]) => new THREE.Vector2(x, -z)));
+  const fillGeo = track(new THREE.ShapeGeometry(croRings.map(shape), 1).rotateX(-Math.PI / 2));
+  fillGeo.translate(0, 0.02, 0);
+  const fill = lineShader('#1d3bd6');
+  fill.m.side = THREE.DoubleSide;
+  const fillMesh = new THREE.Mesh(fillGeo, fill.m);
+  fillMesh.renderOrder = 3;
+  fillMesh.frustumCulled = false;
+  group.add(fillMesh);
 
-  /* ── gradovi + lukovi prema Europi ── */
-  const cityPts = glowPoints({ count: geo.cities.length, color: '#6f93ff', core: '#ffffff', size: 0.11 });
+  /* ── 4. gradovi i lukovi prema Europi ── */
+  const cityPts = glowPoints({ count: geo.cities.length, color: '#6f93ff', core: '#ffffff', size: 0.11, bend: true, depthTest: false });
   geo.cities.forEach(([, lon, lat, big], i) => {
     const [x, z] = proj(lon, lat);
-    cityPts.pos[i * 3] = x; cityPts.pos[i * 3 + 1] = 1.08; cityPts.pos[i * 3 + 2] = z;
+    cityPts.pos[i * 3] = x; cityPts.pos[i * 3 + 1] = 0.06; cityPts.pos[i * 3 + 2] = z;
     cityPts.size[i] = i === 0 ? 2.6 : big ? 1.3 : 0.8;
   });
-  cro.add(cityPts.points);
+  cityPts.uniforms.uMin.value = 2;
+  cityPts.points.renderOrder = 8;
+  group.add(cityPts.points);
 
   const arcs = [];
   const arcSeg = [];
   geo.capitals.forEach(([, lon, lat]) => {
     const [x, z] = proj(lon, lat);
-    const a = new THREE.Vector3(0, 1.08, 0);
-    const b = new THREE.Vector3(x, 0.1, z);
+    const a = new THREE.Vector3(0, 0.06, 0);
+    const b = new THREE.Vector3(x, 0.06, z);
     const h = 2 + a.distanceTo(b) * 0.22;
     const pts = [];
     for (let i = 0; i <= 36; i++) {
@@ -172,110 +300,171 @@ export function createEurope({ geo, lite }) {
     for (let i = 0; i < pts.length - 1; i++) arcSeg.push(...pts[i].toArray(), ...pts[i + 1].toArray());
     arcs.push({ pts, t: rand(), speed: 0.18 + rand() * 0.12, dir: rand() < 0.5 ? 1 : -1 });
   });
-  const arcMat = lineMat('#4a6ff0', 0.4, true);
-  const arcLines = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(arcSeg, 3)), arcMat);
+  const arcLine = lineShader('#4a6ff0');
+  const arcLines = new THREE.LineSegments(track(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(arcSeg, 3))), arcLine.m);
+  arcLines.frustumCulled = false;
+  arcLines.renderOrder = 4;
   group.add(arcLines);
-  const capPts = glowPoints({ count: geo.capitals.length, color: '#4f7bff', core: '#dfe7ff', size: 0.32 });
+  const capPts = glowPoints({ count: geo.capitals.length, color: '#4f7bff', core: '#dfe7ff', size: 0.32, bend: true });
   geo.capitals.forEach(([, lon, lat], i) => {
     const [x, z] = proj(lon, lat);
-    capPts.pos[i * 3] = x; capPts.pos[i * 3 + 1] = 0.1; capPts.pos[i * 3 + 2] = z;
+    capPts.pos[i * 3] = x; capPts.pos[i * 3 + 1] = 0.08; capPts.pos[i * 3 + 2] = z;
   });
+  capPts.uniforms.uMin.value = 1.5;
   group.add(capPts.points);
   const TRAIL = 5;
-  const pulses = glowPoints({ count: arcs.length * TRAIL, color: '#7f9fff', core: '#ffffff', size: 0.36 });
+  const pulses = glowPoints({ count: arcs.length * TRAIL, color: '#7f9fff', core: '#ffffff', size: 0.36, bend: true });
+  pulses.uniforms.uMin.value = 1.2;
   group.add(pulses.points);
 
-  const all = [topo, cityPts, capPts, pulses, lights];
+  /* ── 5. noćna svjetla: gradovi, mjesta Slavonije i sela uz ceste između njih ──
+     Pale se tek kad sumrak prijeđe preko njih (nightOnly), a svako ima svoj prag (aWake). */
+  const TOWNS = [['Đakovo', 18.41, 45.31, 1], ['Vukovar', 19.0, 45.35, 1], ['Vinkovci', 18.8, 45.29, 0.95], ['Valpovo', 18.42, 45.66, 0.6], ['Belišće', 18.4, 45.68, 0.5], ['Našice', 18.1, 45.49, 0.6], ['Beli Manastir', 18.6, 45.77, 0.6], ['Donji Miholjac', 18.17, 45.76, 0.5], ['Čepin', 18.565, 45.524, 0.45], ['Tenja', 18.749, 45.497, 0.35], ['Bilje', 18.743, 45.606, 0.35], ['Darda', 18.692, 45.627, 0.35]];
+  const towns = TOWNS.map(([, lon, lat, w]) => [...proj(lon, lat), w]);
+  // ostali hrvatski gradovi (pale se redom kako noć putuje preko zemlje)
+  const BIG = geo.cities.slice(1).map(([, lon, lat, big]) => [...proj(lon, lat), big ? 1.6 : 0.8]);
+  // ceste kao lanci sela: Osijek prema okolnim mjestima i mjesta međusobno
+  const T = Object.fromEntries(TOWNS.map((t, i) => [t[0], towns[i]]));
+  const O = [0, 0];
+  const ROADS = [[O, T['Đakovo']], [O, T['Vinkovci']], [O, T['Vukovar']], [O, T['Valpovo']], [T['Valpovo'], T['Donji Miholjac']], [O, T['Našice']], [O, T['Beli Manastir']], [T['Vinkovci'], T['Vukovar']], [T['Đakovo'], T['Vinkovci']], [T['Đakovo'], T['Našice']], [T['Našice'], T['Donji Miholjac']]];
+  const LN = lite ? 1700 : 3200;
+  const lights = glowPoints({ count: LN, color: '#ffae58', core: '#fff0d0', size: 0.24, depthTest: false, nightOnly: true });
+  lights.uniforms.uMin.value = 1.1;
+  lights.uniforms.uFall.value = 1;
+  lights.uniforms.uMax.value = 9;
+  lights.points.renderOrder = 9;
+  const gauss = () => Math.sqrt(-2 * Math.log(rand() + 1e-6)) * Math.cos(rand() * Math.PI * 2);
+  for (let i = 0; i < LN; i++) {
+    let x, z, bright = 1, size = 1;
+    const r = rand();
+    if (r < 0.2) {
+      // prigradska naselja oko Osijeka (u samom gradu su stvarna ulična svjetla iz city.js)
+      do { x = gauss() * 0.3; z = gauss() * 0.22; } while (Math.hypot(x, z * 1.4) < 0.12);
+      bright = 0.7;
+    } else if (r < 0.62) {
+      const t = towns[(rand() * towns.length) | 0];
+      const sp = 0.012 + t[2] * 0.028;
+      x = t[0] + gauss() * sp; z = t[1] + gauss() * sp;
+    } else if (r < 0.86) {
+      // sela uz ceste: nakupine od nekoliko svjetala, malo odmaknute od pravca
+      const [a, b] = ROADS[(rand() * ROADS.length) | 0];
+      const t = 0.08 + rand() * 0.84;
+      const nx = -(b[1] - a[1]), nz = b[0] - a[0], nl = Math.hypot(nx, nz) || 1;
+      const off = Math.sin(t * 9 + a[0]) * 0.03 + gauss() * 0.012;
+      x = a[0] + (b[0] - a[0]) * t + (nx / nl) * off + gauss() * 0.006;
+      z = a[1] + (b[1] - a[1]) * t + (nz / nl) * off + gauss() * 0.006;
+      bright = 0.55; size = 0.75;
+    } else {
+      const c = BIG[(rand() * BIG.length) | 0];
+      const sp = 0.03 + c[2] * 0.05;
+      x = c[0] + gauss() * sp; z = c[1] + gauss() * sp;
+      size = 1.4;
+    }
+    lights.pos[i * 3] = x; lights.pos[i * 3 + 1] = 0.05; lights.pos[i * 3 + 2] = z;
+    lights.alpha[i] = (0.2 + rand() * 0.8) * bright;
+    lights.size[i] = (0.5 + rand() * rand() * 1.8) * size;
+    lights.wake[i] = rand() * 0.9;
+  }
+  group.add(lights.points);
+
+  /* ── 6. svjetlosna kupola nad Osijekom: grad se vidi kao topli sjaj prije nego što se razaznaju ulice ── */
+  const DU = { uOpacity: { value: 0 }, uR: { value: 1 } };
+  const dome = new THREE.Mesh(
+    track(new THREE.PlaneGeometry(2, 2).rotateX(-Math.PI / 2)),
+    track(new THREE.ShaderMaterial({
+      uniforms: DU,
+      transparent: true,
+      depthWrite: false,
+      depthTest: false,
+      blending: THREE.AdditiveBlending,
+      vertexShader: /* glsl */ `uniform float uR; varying vec2 vP; void main(){ vP = position.xz; gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x * uR, 0.03, position.z * uR, 1.0); }`,
+      fragmentShader: /* glsl */ `uniform float uOpacity; varying vec2 vP;
+        void main(){ float r = length(vP * vec2(1.0, 1.25)); float a = exp(-r * r * 5.5) * 0.8 + exp(-r * r * 26.0) * 0.6;
+          gl_FragColor = vec4(vec3(1.0, 0.56, 0.24) * a * uOpacity, 1.0); }`,
+    })),
+  );
+  dome.renderOrder = 5;
+  dome.frustumCulled = false;
+  group.add(dome);
+
   const tmp = new THREE.Vector3();
+  const allPts = [cityPts, capPts, pulses, lights, pen];
 
   return {
     group,
-    cro,
     towns: TOWNS.map((t) => t[0]),
     townWorld(i, out = new THREE.Vector3()) {
-      return out.set(towns[i][0], 1.05, towns[i][1]).applyMatrix4(cro.matrixWorld);
+      return out.set(towns[i][0], 0.06, towns[i][1]).applyMatrix4(group.matrixWorld);
     },
     cityWorld(i, out = new THREE.Vector3()) {
-      return out.fromArray(cityPts.pos, i * 3).applyMatrix4(cro.matrixWorld);
+      return out.fromArray(cityPts.pos, i * 3).applyMatrix4(group.matrixWorld);
     },
+    /** s: { alpha, Z, time, dt, pr, reduce, net, trace, hl, dusk, night, mapFade, res } */
     update(s) {
       group.visible = s.alpha > 0.002;
       if (!group.visible) return;
       const a = s.alpha;
-      gridU.uOpacity.value = a;
-      landMat.opacity = a * (1 - s.cityFade * 0.7);
-      borderMat.opacity = 0.7 * a * (1 - s.cityFade);
-      const lift = Math.max(0.001, s.lift);
-      cro.scale.y = lift * (1 - s.cityFade * 0.985);
-      topMat.opacity = sideMat.opacity = a;
-      const zoomIn = smooth(1.05, 1.5, s.Z || 1);
-      topMat.emissiveIntensity = (0.22 + 0.18 * s.lift) * (1 - 0.85 * zoomIn);
-      topMat.color.lerpColors(topBase, topDark, zoomIn);
-      lights.uniforms.uOpacity.value = a * smooth(1.08, 1.4, s.Z || 1) * (1 - smooth(1.75, 1.95, s.Z || 1));
-      outlineMat.opacity = a * smooth(0.02, 0.4, s.lift) * (1 - s.cityFade);
-      baseOutlineMat.opacity = a * (1 - s.cityFade);
-      arcMat.opacity = 0.42 * a * s.net * (1 - s.cityFade);
-      all.forEach((p) => { p.uniforms.uPR.value = s.pr; });
-      topo.uniforms.uOpacity.value = a * smooth(0.3, 1, s.lift) * (1 - s.cityFade);
-      cityPts.uniforms.uOpacity.value = a * smooth(0.2, 0.9, s.lift) * (1 - s.cityFade);
-      capPts.uniforms.uOpacity.value = a * s.net * (1 - s.cityFade);
-      pulses.uniforms.uOpacity.value = a * s.net * (1 - s.cityFade);
-      for (let i = 0; i < topo.alpha.length; i += 7) topo.alpha[i] = 0.25 + 0.5 * (Math.sin(s.time * 2 + i) * 0.5 + 0.5);
-      topo.geometry.attributes.aAlpha.needsUpdate = true;
+      const Z = s.Z;
+      const fade = 1 - s.mapFade;
+      TU.uAlpha.value = a;
+      // matrica je jezik globusa: puna pri prijelazu, tiha nad Hrvatskom, nestaje prije Slavonije
+      TU.uDots.value = 1 - 0.55 * smooth(0.9, 1.0, Z) - 0.45 * smooth(1.0, 1.3, Z);
+      TU.uGrat.value = smooth(0.94, 1.05, Z) * (1 - smooth(1.3, 1.6, Z)) * 0.5;
+      TU.uNightL.value = 1 - smooth(0.9, 0.99, Z);
+      TU.uDim.value = smooth(1.5, 1.9, Z);
+      borders.U.uOpacity.value = 0.55 * a * fade * (1 - 0.5 * s.hl);
+      // obris Hrvatske
+      RU.uRes.value.set(s.res[0] / 2, s.res[1] / 2);
+      RU.uWidth.value = 7 * s.pr;
+      RU.uCore.value = 0.16;
+      RU.uTrace.value = s.trace;
+      RU.uHL.value = s.hl;
+      // obris se nakon vrhunca smiri, a prije bliskog pogleda na Slavoniju nestane (pojednostavljena granica)
+      RU.uOpacity.value = a * (1 - smooth(1.12, 1.42, Z));
+      RU.uTime.value = s.time;
+      const live = s.trace > 0.002 && s.trace < 0.985;
+      if (live) {
+        const d = s.trace * mainLen;
+        let j = 1;
+        while (j < mainAcc.length - 1 && mainAcc[j] < d) j++;
+        const t = (d - mainAcc[j - 1]) / Math.max(1e-6, mainAcc[j] - mainAcc[j - 1]);
+        pen.pos[0] = mainRing[j - 1][0] + (mainRing[j][0] - mainRing[j - 1][0]) * t;
+        pen.pos[1] = 0.06;
+        pen.pos[2] = mainRing[j - 1][1] + (mainRing[j][1] - mainRing[j - 1][1]) * t;
+        pen.geometry.attributes.position.needsUpdate = true;
+      }
+      pen.uniforms.uOpacity.value = live ? a * Math.min(1, s.trace * 30, (0.985 - s.trace) * 30) : 0;
+      fill.U.uOpacity.value = a * (0.05 + 0.1 * s.hl) * smooth(0.82, 1, s.trace) * (1 - smooth(1.25, 1.6, Z));
+      // gradovi i Europa
+      cityPts.uniforms.uOpacity.value = a * smooth(0.5, 0.95, s.trace) * fade;
+      arcLine.U.uOpacity.value = 0.42 * a * s.net * fade;
+      capPts.uniforms.uOpacity.value = a * s.net * fade;
+      pulses.uniforms.uOpacity.value = a * s.net * fade;
+      // noćna svjetla i kupola
+      lights.uniforms.uOpacity.value = a * (1 - smooth(1.78, 1.97, Z));
+      lights.uniforms.uWake.value = 0.15 + s.night * 1.0;
+      // kupola je fizički sjaj nad gradom (≈15 km): ne raste sa zoomom i nestaje prije poniranja u ulice
+      DU.uR.value = 0.6;
+      DU.uOpacity.value = a * s.night * smooth(1.05, 1.35, Z) * (1 - smooth(1.6, 1.8, Z)) * 0.5;
+      allPts.forEach((p) => { p.uniforms.uPR.value = s.pr; });
       arcs.forEach((arc, i) => {
         if (!s.reduce) arc.t = (arc.t + s.dt * arc.speed) % 1;
         for (let k = 0; k < TRAIL; k++) {
           const t = arc.dir > 0 ? arc.t - k * 0.02 : 1 - arc.t + k * 0.02;
-          const f = Math.min(arc.pts.length - 1.001, Math.max(0, t * (arc.pts.length - 1)));
-          const j = Math.floor(f);
-          tmp.copy(arc.pts[j]).lerp(arc.pts[j + 1], f - j).toArray(pulses.pos, (i * TRAIL + k) * 3);
+          const ff = Math.min(arc.pts.length - 1.001, Math.max(0, t * (arc.pts.length - 1)));
+          const j = Math.floor(ff);
+          tmp.copy(arc.pts[j]).lerp(arc.pts[j + 1], ff - j).toArray(pulses.pos, (i * TRAIL + k) * 3);
           pulses.alpha[i * TRAIL + k] = (1 - k / TRAIL) * Math.min(1, arc.t * 6) * Math.min(1, (1 - arc.t) * 6);
         }
       });
-      pulses.geometry.attributes.position.needsUpdate = true;
-      pulses.geometry.attributes.aAlpha.needsUpdate = true;
+      if (s.net * fade > 0.01) {
+        pulses.geometry.attributes.position.needsUpdate = true;
+        pulses.geometry.attributes.aAlpha.needsUpdate = true;
+      }
     },
     dispose() {
-      group.traverse((o) => {
-        o.geometry?.dispose();
-        (Array.isArray(o.material) ? o.material : o.material ? [o.material] : []).forEach((m) => m.dispose());
-      });
+      disposables.forEach((o) => o.dispose());
+      allPts.forEach((p) => { p.geometry.dispose(); p.material.dispose(); });
     },
   };
-}
-
-function pip(x, z, poly) {
-  let inside = false;
-  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-    const [xi, zi] = poly[i], [xj, zj] = poly[j];
-    if (zi > z !== zj > z && x < ((xj - xi) * (z - zi)) / (zj - zi) + xi) inside = !inside;
-  }
-  return inside;
-}
-
-/** Spoji geometrije (ne-indeksirano) zadržavajući grupe za ekstrudirane oblike. */
-function mergeShapes(geos, color = true) {
-  const parts = geos.map((g) => (g.index ? g.toNonIndexed() : g));
-  let total = 0;
-  parts.forEach((g) => (total += g.attributes.position.count));
-  const pos = new Float32Array(total * 3);
-  const nor = new Float32Array(total * 3);
-  const col = color ? new Float32Array(total * 3) : null;
-  const out = new THREE.BufferGeometry();
-  let o = 0;
-  // grupe: 0 = vrh/dno, 1 = stranice (ExtrudeGeometry redoslijed)
-  const groups = [];
-  parts.forEach((g) => {
-    pos.set(g.attributes.position.array, o * 3);
-    if (g.attributes.normal) nor.set(g.attributes.normal.array, o * 3);
-    if (col && g.attributes.color) col.set(g.attributes.color.array, o * 3);
-    (g.groups.length ? g.groups : [{ start: 0, count: g.attributes.position.count, materialIndex: 0 }]).forEach((gr) => groups.push({ start: o + gr.start, count: gr.count, materialIndex: gr.materialIndex }));
-    o += g.attributes.position.count;
-    g.dispose();
-  });
-  out.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  out.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
-  if (col) out.setAttribute('color', new THREE.BufferAttribute(col, 3));
-  if (!color) groups.forEach((g) => out.addGroup(g.start, g.count, g.materialIndex));
-  return out;
 }

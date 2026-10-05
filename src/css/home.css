@@ -114,6 +114,8 @@
 
 /* ═════════ KINO ═════════ */
 .cine { position: relative; z-index: 2; color: var(--cine-fg); min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--header-h) + 40px) 80px; }
+/* zatamnjenje iza teksta (::before) izlazi izvan stupca; clip (ne hidden) ne lomi sticky i ne širi mobilni viewport */
+.cine { overflow-x: clip; }
 .cine--duo { display: block; padding: 0; }
 .cine-beat { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--header-h) + 40px) 80px; }
 .cine-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); width: 100%; }

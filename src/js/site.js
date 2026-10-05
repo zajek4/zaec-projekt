@@ -72,6 +72,17 @@ let ticking = false;
 const nightZones = [...document.querySelectorAll('[data-header-theme="night"]')];
 const defaultNight = header?.dataset.themeDefault === 'night';
 const callBar = document.querySelector('[data-call-bar]');
+// granice "noćnih" zona i visina zaglavlja mjere se samo kad se raspored promijeni — scroll ne čita DOM
+// (čitanje getBoundingClientRect nakon što je 3D engine upisao stilove oznaka prisiljava raspored svaku sličicu)
+let zones = [];
+let probe = 36;
+function measureZones() {
+  const sy = window.scrollY;
+  zones = nightZones.map((z) => { const r = z.getBoundingClientRect(); return [r.top + sy, r.bottom + sy]; });
+  probe = (header?.offsetHeight || 72) * 0.5;
+}
+measureZones();
+new ResizeObserver(() => { measureZones(); onScrollFrame(); }).observe(document.body);
 
 function onScrollFrame() {
   ticking = false;
@@ -82,12 +93,9 @@ function onScrollFrame() {
     const goingUp = y < lastY - 4;
     if (goingDown && y > 280 && !root.classList.contains('menu-open')) header.classList.add('is-hidden');
     else if (goingUp || y < 280) header.classList.remove('is-hidden');
-    const probe = (header.offsetHeight || 72) * 0.5;
     let night = defaultNight;
-    for (const z of nightZones) {
-      const r = z.getBoundingClientRect();
-      if (r.top <= probe && r.bottom >= probe) { night = true; break; }
-    }
+    const p = y + probe;
+    for (const [t, b] of zones) if (t <= p && b >= p) { night = true; break; }
     header.classList.toggle('is-night', night);
   }
   if (callBar) callBar.classList.toggle('is-visible', y > window.innerHeight * 0.45);

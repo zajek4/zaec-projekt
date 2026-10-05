@@ -157,6 +157,8 @@ export function createMorph(edges, { max = 6000 } = {}) {
     uGridCol: { value: new THREE.Color('#7f9bff') },
     uBadCol: { value: new THREE.Color('#ff7a66') },
     uBad: { value: 0 },
+    uScanY: { value: 1e4 },
+    uScanOn: { value: 0 },
   };
   const mat = new THREE.ShaderMaterial({
     uniforms,
@@ -165,7 +167,8 @@ export function createMorph(edges, { max = 6000 } = {}) {
     blending: THREE.AdditiveBlending,
     vertexShader: /* glsl */ `
       attribute vec3 aFrom; attribute vec3 aGrid; attribute vec3 aTo; attribute vec3 aBad; attribute float aDelay; attribute float aSeed;
-      uniform float uMorph; uniform float uTime; uniform float uBad; varying float vS1; varying float vS2; varying float vFly;
+      uniform float uMorph; uniform float uTime; uniform float uBad; uniform float uScanY; uniform float uScanOn;
+      varying float vS1; varying float vS2; varying float vFly; varying float vScan;
       float ease(float t){ return t < 0.5 ? 4.0 * t * t * t : 1.0 - pow(-2.0 * t + 2.0, 3.0) / 2.0; }
       void main(){
         // 0 → 1: rubovi zgrade se odvajaju (najviši prvi) i slažu u mjernu mrežu
@@ -183,15 +186,20 @@ export function createMorph(edges, { max = 6000 } = {}) {
         p += vec3(sin(uTime * 0.9 + aSeed * 30.0), cos(uTime * 0.7 + aSeed * 20.0), 0.0) * 0.03 * (fly1 + fly2);
         p.z += sin(b * 3.14159) * (0.5 + aSeed);
         vS1 = e1; vS2 = e2; vFly = max(fly1, fly2);
+        // skener: crte nacrta postoje samo iznad crte koja se spušta niz zgradu; uz samu crtu su najsvjetlije
+        float above = smoothstep(uScanY - 0.06, uScanY + 0.06, aFrom.y);
+        float fresh = exp(-pow((aFrom.y - uScanY) / 0.35, 2.0));
+        vScan = mix(1.0, above * (1.0 + fresh * 1.5), uScanOn);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
       }`,
     fragmentShader: /* glsl */ `
       uniform float uOpacity; uniform vec3 uWarm; uniform vec3 uCool; uniform vec3 uGridCol; uniform vec3 uBadCol; uniform float uBad;
-      varying float vS1; varying float vS2; varying float vFly;
+      varying float vS1; varying float vS2; varying float vFly; varying float vScan;
       void main(){
         vec3 site = mix(uCool, uBadCol, uBad * 0.8);
         vec3 c = mix(mix(uWarm, uGridCol, vS1), site, vS2);
-        float a = uOpacity * (0.52 + 0.33 * vS1 + 0.15 * vS2 + vFly * 0.45);
+        float a = uOpacity * (0.52 + 0.33 * vS1 + 0.15 * vS2 + vFly * 0.45) * vScan;
+        if (a < 0.003) discard;
         gl_FragColor = vec4(c + vFly * 0.3, a);
       }`,
   });
@@ -260,6 +268,8 @@ export function createMorph(edges, { max = 6000 } = {}) {
       uniforms.uOpacity.value = s.opacity;
       uniforms.uTime.value = s.time;
       uniforms.uBad.value = s.bad || 0;
+      uniforms.uScanY.value = s.scanY ?? 1e4;
+      uniforms.uScanOn.value = s.scanOn || 0;
     },
     dispose() {
       lines.geometry.dispose();

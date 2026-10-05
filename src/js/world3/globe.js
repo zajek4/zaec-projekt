@@ -1,9 +1,9 @@
 // Scena 01 — planet iz niske orbite: kopno iz stvarne maske (2048×1024), digitalna matrica točaka,
-// osvjetljenje sunca s gornje desne strane, odsjaj oceana, proceduralni oblaci i tanka atmosfera.
+// osvjetljenje sunca s gornje desne strane, odsjaj oceana, topli rub sumraka, rijetka noćna svjetla
+// na tamnoj strani i tanka atmosfera. Bez oblaka: čista silueta, a fragment shader ostaje jeftin.
 // Mreža komunikacija je zaseban modul (network.js) u istom koordinatnom sustavu (jedinična sfera).
 import * as THREE from 'three';
 import { ll2v, OSIJEK, DEG, glowPoints, lineMat } from './lib.js';
-import { SNOISE } from './noise.glsl.js';
 
 export function createGlobe({ geo, lite, landUrl }) {
   const group = new THREE.Group();
@@ -23,6 +23,7 @@ export function createGlobe({ geo, lite, landUrl }) {
   /* ── planet ── */
   const land = new THREE.TextureLoader().load(landUrl);
   land.colorSpace = THREE.NoColorSpace;
+  land.format = THREE.RedFormat; // maska kopna: jedan kanal (¼ memorije i prijenosa na GPU)
   land.minFilter = THREE.LinearFilter; // bez mipmapa → nema šava na antimeridijanu
   land.generateMipmaps = false;
   land.wrapS = THREE.RepeatWrapping;
@@ -31,9 +32,8 @@ export function createGlobe({ geo, lite, landUrl }) {
     uSun: { value: new THREE.Vector3(0.78, 0.46, -0.95).normalize() },
     uTime: { value: 0 },
     uAlpha: { value: 1 },
-    uCloud: { value: 1 },
     uDots: { value: 1 },
-    uOct: { value: lite ? 3 : 5 },
+    uNight: { value: 1 },
   };
   const planetMat = new THREE.ShaderMaterial({
     uniforms: U,
@@ -48,16 +48,18 @@ export function createGlobe({ geo, lite, landUrl }) {
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform sampler2D uLand; uniform vec3 uSun; uniform float uTime; uniform float uAlpha; uniform float uCloud; uniform float uDots; uniform int uOct;
+      uniform sampler2D uLand; uniform vec3 uSun; uniform float uTime; uniform float uAlpha; uniform float uDots; uniform float uNight;
       varying vec3 vObj; varying vec3 vN; varying vec3 vW;
-      ${SNOISE}
+      float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
       void main(){
         vec3 o = normalize(vObj);
         float lat = asin(clamp(o.y, -1.0, 1.0));
         float lon = atan(o.x, o.z);
         vec2 uv = vec2((lon + 3.14159265) / 6.2831853, (lat + 1.5707963) / 3.14159265);
         float land = smoothstep(0.25, 0.75, texture2D(uLand, uv).r);
-        // digitalna matrica točaka na kopnu (razmak ~0,5°, ispravljen za širinu)
+        // obala: kopno uz more (dva dodatna uzorka) — tamo su gradovi gušći
+        float coast = land * (1.0 - smoothstep(0.25, 0.75, min(texture2D(uLand, uv + vec2(0.004, 0.0)).r, texture2D(uLand, uv - vec2(0.0, 0.006)).r)));
+        // digitalna matrica točaka na kopnu (razmak ~0,36°, ispravljen za širinu)
         vec2 g = vec2(lon * cos(lat), lat) / (0.36 * 0.0174533);
         vec2 f = fract(g) - 0.5;
         float aa = fwidth(length(f)) * 1.5;
@@ -66,21 +68,21 @@ export function createGlobe({ geo, lite, landUrl }) {
         vec3 v = normalize(cameraPosition - vW);
         float ndl = dot(n, uSun);
         float day = smoothstep(-0.12, 0.38, ndl);
-        // oblaci: tanki slojevi, sporo putuju
-        float cl = fbm3(o * 3.1 + vec3(uTime * 0.004, 0.0, uTime * 0.002), uOct) * 0.5 + 0.5;
-        float wisp = fbm3(o * 9.0 - vec3(0.0, uTime * 0.006, 0.0), uOct > 3 ? 3 : 2) * 0.5 + 0.5;
-        float clouds = smoothstep(0.56, 0.86, cl * 0.85 + wisp * 0.25) * uCloud;
-        vec3 ocean = vec3(0.008, 0.016, 0.04);
+        vec3 ocean = mix(vec3(0.006, 0.013, 0.036), vec3(0.012, 0.024, 0.058), pow(max(dot(n, v), 0.0), 2.0));
         vec3 landC = vec3(0.036, 0.055, 0.085) + dots * uDots * vec3(0.10, 0.2, 0.42);
         vec3 col = mix(ocean, landC, land);
-        col *= 0.22 + 1.35 * day;
+        col *= 0.2 + 1.35 * day;
+        // rub sumraka: tanka topla traka gdje sunce zalazi
+        float term = exp(-pow((ndl - 0.03) / 0.08, 2.0));
+        col += vec3(0.26, 0.12, 0.05) * term * (0.25 + 0.75 * land) * 0.4;
         // odsjaj sunca na moru
         vec3 h = normalize(uSun + v);
         col += vec3(0.55, 0.62, 0.8) * pow(max(dot(n, h), 0.0), 60.0) * (1.0 - land) * day * 0.55;
-        // noćna strana: slabašan sjaj točaka (gradovi kao matrica)
+        // noćna strana: matrica i rijetka topla svjetla (gušća uz obalu)
+        float night = 1.0 - smoothstep(-0.06, 0.2, ndl);
         col += dots * uDots * vec3(0.08, 0.16, 0.38) * (1.0 - day) * 0.45;
-        // oblaci osvijetljeni suncem, tamni na noćnoj strani
-        col = mix(col, vec3(0.62, 0.68, 0.8) * (0.05 + 0.85 * day), clouds * 0.8);
+        float lit = step(1.0 - (0.07 + 0.38 * coast), h21(floor(g))) * dots;
+        col += vec3(1.0, 0.6, 0.26) * lit * night * 0.6 * uNight;
         // atmosferska izmaglica prema rubu (jače na osunčanoj strani)
         float fres = pow(1.0 - max(dot(n, v), 0.0), 2.6);
         col += vec3(0.16, 0.42, 1.0) * fres * (0.14 + 1.05 * smoothstep(-0.2, 0.6, ndl));
@@ -143,6 +145,7 @@ export function createGlobe({ geo, lite, landUrl }) {
     group,
     spin,
     sun: U.uSun.value,
+    land,
     /** s: { alpha, spin, net, finale, dive, time, pr, reduce } */
     update(s) {
       group.visible = s.alpha > 0.002;
@@ -150,6 +153,7 @@ export function createGlobe({ geo, lite, landUrl }) {
       spin.rotation.y = s.spin;
       U.uTime.value = s.time;
       U.uAlpha.value = s.alpha;
+      U.uNight.value = 1 - s.dive;
       planetMat.depthWrite = s.alpha > 0.5;
       U.uDots.value = 0.7 + 0.3 * s.net;
       atmoU.uAlpha.value = s.alpha * (1 - s.dive * 0.85);
