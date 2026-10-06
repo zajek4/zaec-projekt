@@ -35,7 +35,14 @@ function zaec_asset( $path ) {
 }
 
 function zaec_img( $file ) {
-	return zaec_asset( 'img/' . ltrim( $file, '/' ) );
+	// verzija iz vremena izmjene datoteke: zamijenjena slika s istim imenom ne ostaje u predmemoriji
+	static $ver = array();
+	$file = ltrim( (string) $file, '/' );
+	if ( ! isset( $ver[ $file ] ) ) {
+		$path         = ZAEC_THEME_DIR . '/assets/img/' . $file;
+		$ver[ $file ] = file_exists( $path ) ? base_convert( (string) filemtime( $path ), 10, 36 ) : ZAEC_VERSION;
+	}
+	return zaec_asset( 'img/' . $file ) . '?v=' . $ver[ $file ];
 }
 
 /** srcset za kadrove podstranica koji imaju manju inačicu (<ime>-800.webp, tools/art/derive.mjs); inače ''. */

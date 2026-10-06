@@ -3,7 +3,7 @@
   "version": "2.3.0",
   "private": true,
   "type": "module",
-  "description": "ZAEC WordPress tema v2 — 3D low-poly svijet, GSAP, Lenis. Izvori i build.",
+  "description": "ZAEC WordPress tema v2 — 3D putovanje od orbite do Osijeka (Three.js), GSAP, Lenis. Izvori i build.",
   "scripts": {
     "build": "node tools/build-guides.mjs && vite build && node tools/build-icons.mjs",
     "watch": "vite build --watch",

@@ -509,3 +509,75 @@ export const brzina = {
     motes(st, { n: 120, box: [-6, 0.2, -3, 6, 6, 6], seed: 29, size: [0.01, 0.05] });
   },
 };
+
+export const ai = {
+  file: 'world/usluga-ai.webp',
+  fov: 34,
+  async build(st) {
+    const { scene, camera } = st;
+    camera.position.set(-4.6, 1.6, 9.2);
+    camera.lookAt(1.0, 2.25, 0.6);
+    st.sky.uAz.value = 2.3;
+    st.addFloor({ cell: 0.5, gridI: 0.45, refl: 0.55, fall: 0.08 });
+    nightLights(scene, { key: [10, 7, -8], keyI: 1.0, fill: [-8, 5, 8], fillI: 0.3, target: [0, 2, 0], shadow: 8 });
+    // razgovor s AI asistentom: pitanje (nacrt) i odgovor (papir) u kojem je vaš obrt istaknut
+    const tex = canvasTex(900, 1200, (x, w, h) => {
+      x.fillStyle = '#efebe3'; x.fillRect(0, 0, w, h);
+      // pitanje: plavi oblačić desno
+      x.fillStyle = '#2347ff'; x.beginPath(); x.roundRect(w * 0.3, h * 0.06, w * 0.62, h * 0.12, 36); x.fill();
+      x.fillStyle = 'rgba(255,255,255,0.9)'; x.fillRect(w * 0.36, h * 0.1, w * 0.46, 16); x.fillRect(w * 0.36, h * 0.135, w * 0.3, 16);
+      // odgovor: kartica
+      x.fillStyle = '#f7f4ee'; x.beginPath(); x.roundRect(w * 0.08, h * 0.24, w * 0.84, h * 0.7, 36); x.fill();
+      x.strokeStyle = 'rgba(20,20,20,0.12)'; x.lineWidth = 3; x.stroke();
+      x.fillStyle = '#141414'; x.fillRect(w * 0.14, h * 0.29, w * 0.55, 22); x.fillStyle = '#9b958a'; x.fillRect(w * 0.14, h * 0.33, w * 0.68, 14); x.fillRect(w * 0.14, h * 0.355, w * 0.5, 14);
+      const items = [true, false, false];
+      items.forEach((hl, i) => {
+        const y = h * (0.42 + i * 0.16);
+        if (hl) { x.fillStyle = '#ffffff'; x.beginPath(); x.roundRect(w * 0.12, y - 14, w * 0.76, h * 0.13, 22); x.fill(); x.fillStyle = '#2347ff'; x.fillRect(w * 0.12, y - 14, 10, h * 0.13); }
+        x.fillStyle = hl ? '#2347ff' : '#c9c2b6'; x.beginPath(); x.arc(w * 0.2, y + 30, 22, 0, 7); x.fill();
+        x.fillStyle = hl ? '#141414' : '#b8b1a5'; x.fillRect(w * 0.27, y + 6, w * 0.4, 20);
+        x.fillStyle = hl ? '#7a756c' : '#d3cdc2'; x.fillRect(w * 0.27, y + 42, w * 0.5, 12); x.fillRect(w * 0.27, y + 64, w * 0.34, 12);
+        if (hl) { x.fillStyle = '#ffb23f'; x.beginPath(); x.roundRect(w * 0.72, y + 8, w * 0.12, 34, 17); x.fill(); }
+      });
+    });
+    const panel = new THREE.Group();
+    panel.position.set(0, 2.3, 0);
+    panel.rotation.y = -0.28;
+    scene.add(panel);
+    const body = new THREE.Mesh(new RoundedBoxGeometry(2.6, 3.5, 0.1, 4, 0.14), mat({ color: '#14161c', rough: 0.3, metal: 0.6, env: 1.2 }));
+    body.castShadow = true;
+    panel.add(body);
+    const scr = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 3.2), mat({ color: '#000', emissive: '#ffffff', ei: 0.75, emissiveMap: tex, rough: 0.15 }));
+    scr.position.z = 0.053;
+    panel.add(scr);
+    panel.updateMatrixWorld(true);
+    const at = (u, v) => V(-1.2 + u * 2.4, 1.6 - v * 3.2, 0.06).applyMatrix4(panel.matrixWorld);
+    // izvori signala (nacrt): web stranica, karta s oznakom, recenzije — svjetlo teče u istaknuti odgovor
+    const bp = createBlueprint(null, { width: 1.4, opacity: 0.85, ghost: 0 });
+    const tile = (cx, cy, cz, ry, draw) => {
+      const g = new THREE.Group(); g.position.set(cx, cy, cz); g.rotation.y = ry; scene.add(g); g.updateMatrixWorld(true);
+      const P = (x, y) => V(x, y, 0).applyMatrix4(g.matrixWorld);
+      bp.poly([P(-0.6, -0.42), P(0.6, -0.42), P(0.6, 0.42), P(-0.6, 0.42)], true);
+      draw(P);
+      return P(0, 0);
+    };
+    const s1 = tile(3.0, 3.75, 1.2, -0.75, (P) => { bp.line(P(-0.5, 0.3), P(0.1, 0.3)); bp.line(P(-0.5, 0.18), P(0.3, 0.18)); bp.poly([P(0.15, -0.3), P(0.5, -0.3), P(0.5, 0.05), P(0.15, 0.05)], true); bp.poly([P(-0.5, -0.3), P(-0.2, -0.3), P(-0.2, -0.18), P(-0.5, -0.18)], true); });
+    const s2 = tile(3.5, 2.35, 2.1, -0.8, (P) => { for (let k = -2; k <= 2; k++) { bp.line(P(-0.6, k * 0.16), P(0.6, k * 0.16 + 0.05)); bp.line(P(k * 0.22, -0.42), P(k * 0.22 + 0.06, 0.42)); } const c = []; for (let k = 0; k <= 20; k++) { const a = (k / 20) * Math.PI * 2; c.push(P(0.08 * Math.cos(a), 0.12 + 0.08 * Math.sin(a))); } bp.poly(c); bp.line(P(-0.06, 0.07), P(0, -0.08)); bp.line(P(0.06, 0.07), P(0, -0.08)); });
+    const s3 = tile(3.0, 0.95, 2.9, -0.85, (P) => { for (let k = 0; k < 5; k++) { const cx = -0.4 + k * 0.2; const st5 = []; for (let j = 0; j <= 10; j++) { const a = Math.PI / 2 + (j * Math.PI * 2) / 10; const r = j % 2 ? 0.035 : 0.08; st5.push(P(cx + r * Math.cos(a), 0.15 + r * Math.sin(a))); } bp.poly(st5); } bp.line(P(-0.5, -0.1), P(0.4, -0.1)); bp.line(P(-0.5, -0.22), P(0.2, -0.22)); });
+    const hit = at(0.5, 0.47);
+    const R = rng(9);
+    [s1, s2, s3].forEach((s, i) => {
+      for (let k = 0; k < 3; k++) {
+        const a = s.clone().add(V((R() - 0.5) * 0.3, (R() - 0.5) * 0.3, 0));
+        const mid = a.clone().lerp(hit, 0.5).add(V(0, 0.3 + R() * 0.5, 0.9));
+        trail(scene, new THREE.QuadraticBezierCurve3(a, mid, hit), { r: 0.014, color: k === 0 && i === 1 ? '#ffc070' : '#7f9bff', hot: k === 0 && i === 1 ? '#ffd9a0' : '#b8c7ff', i: 1.3, tail: 0.5, from: 0.1 + R() * 0.2, to: 0.86 + R() * 0.05, seg: 100 });
+      }
+      st.dots([{ p: s.toArray(), c: '#a9bbff', s: 0.25, k: 1.6 }]);
+    });
+    light(scene, 'point', '#fff3e6', 1.2, [-0.5, 0.4, 2.4], null, { dist: 5 });
+    bp.build(scene, st);
+    horizon(st, { a0: -0.6, a1: 2.9, seed: 61, r0: 60, r1: 180 });
+    motes(st, { n: 110, box: [-4, 0.2, -2, 5, 5, 6], seed: 61, size: [0.01, 0.04] });
+    bokeh(st, [{ p: [-4.6, 1.1, 7.0], c: '#ffb45e', s: 0.3, a: 0.3 }, { p: [-4.8, 2.1, 6.8], c: '#5f7dff', s: 0.22, a: 0.25 }]);
+  },
+};

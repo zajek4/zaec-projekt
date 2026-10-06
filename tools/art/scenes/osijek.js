@@ -3,7 +3,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
-import { createBlueprint, motes, bokeh, light, rng, V } from '../kit.js';
+import { createBlueprint, motes, bokeh, light, rng, trail, pool, V } from '../kit.js';
 import { nightLights } from './common.js';
 import { createBeam } from '../../../src/js/world3/beam.js';
 
@@ -127,6 +127,7 @@ function cityBlueprint(st, city, { r0 = 30, r1 = 450, solidR = 0, c = [10, 0], a
 }
 
 async function buildOsijek(st, o) {
+  o.city.c = o.city.c || [10, 0];
   const { scene, camera } = st;
   const [city, cath] = await Promise.all([loadCity(), loadCathedral()]);
   camera.position.set(...o.cam);
@@ -136,7 +137,7 @@ async function buildOsijek(st, o) {
   scene.fog.density = o.fog;
   st.sky.uAz.value = o.az ?? -2.2;
   st.sky.uGlowI.value = 0.45;
-  st.addFloor({ size: 6000, cell: o.cell, gridI: 0.22, refl: 0.35, fall: o.fall, fog: o.floorFog, center: [10, 0] });
+  st.addFloor({ size: 6000, cell: o.cell, gridI: 0.22, refl: o.refl ?? 0.35, fall: o.fall, fog: o.floorFog, center: [10, 0] });
   nightLights(scene, { key: [-160, 120, -140], keyI: 0.7, fill: [150, 90, 160], fillI: 0.25, hemi: 0.35, target: [10, 20, 0], shadow: 140 });
   const c = cathedralMesh(cath.geo, cath.haloGeo, { win: o.win ?? 1.6, halo: o.halo ?? 1.3 });
   scene.add(c.group);
@@ -204,5 +205,51 @@ export const kontakt = {
       motes: [-400, 20, -200, 300, 200, 400], moteS: [1, 3],
     });
     bokeh(st, [{ p: [-330, 190, 470], c: '#ffb45e', s: 6, a: 0.25 }]);
+  },
+};
+
+export const lokalno = {
+  file: 'world/usluga-lokalno.webp',
+  q: 72,
+  blur: 0,
+  fov: 34,
+  async build(st) {
+    const { scene } = st;
+    await buildOsijek(st, {
+      cam: [-40, 165, 500], look: [-110, 8, 40], fog: 0.0011, cell: 40, fall: 0.002, floorFog: 0.0006, win: 1.4, halo: 0.8, az: -2.4, water: true, refl: 0.18,
+      floods: [[-10, 50, 30, 50, 0, 16000], [50, 46, 34, 70, 0, 16000]],
+      city: { r0: 38, r1: 900, ground: 0.2, vert: 0.3, c: [-150, -60] }, lampR: 900, lampS: 4,
+      motes: [-300, 10, 0, 100, 160, 400], moteS: [0.8, 2.4],
+    });
+    // oznaka na karti: vaš obrt (kapljica u signalno plavoj, bijelo središte) + krug područja rada
+    const P = V(-170, 0, 70);
+    const pinM = new THREE.MeshPhysicalMaterial({ color: '#2347ff', roughness: 0.18, metalness: 0.1, clearcoat: 1, envMapIntensity: 1.6, emissive: '#2347ff', emissiveIntensity: 0.35 });
+    const head = new THREE.Mesh(new THREE.SphereGeometry(17, 48, 32), pinM);
+    head.position.set(P.x, 64, P.z);
+    scene.add(head);
+    const tip = new THREE.Mesh(new THREE.ConeGeometry(14.8, 40, 48, 1, true).rotateX(Math.PI), pinM);
+    tip.position.set(P.x, 40, P.z);
+    scene.add(tip);
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(6.8, 32, 16), new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: '#ffffff', emissiveIntensity: 0.15, roughness: 0.4 }));
+    dot.position.set(P.x, 64, P.z + 13);
+    scene.add(dot);
+    light(scene, 'point', '#9fb3ff', 1800, [P.x + 30, 90, P.z + 60], null, { dist: 260 });
+    // krug područja rada na tlu i toplo svjetlo pod oznakom
+    const ring = new THREE.Mesh(new THREE.RingGeometry(150, 153, 160), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffb23f').multiplyScalar(1.6), transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.set(P.x, 0.6, P.z);
+    scene.add(ring);
+    pool(scene, P.x, P.z, 70, { i: 0.7, color: '#ffb46a' });
+    pool(scene, P.x, P.z, 155, { i: 0.18, color: '#ffb46a' });
+    // upiti iz okolice stižu do oznake
+    const R = rng(77);
+    for (let k = 0; k < 12; k++) {
+      const a = R() * Math.PI * 2, rr = 140 + R() * 220;
+      const s = V(P.x + Math.cos(a) * rr, 6, P.z + Math.sin(a) * rr);
+      const e = V(P.x, 46, P.z);
+      const mid = s.clone().lerp(e, 0.5).add(V(0, 60 + R() * 40, 0));
+      trail(scene, new THREE.QuadraticBezierCurve3(s, mid, e), { r: 0.9, color: k % 3 === 0 ? '#ffc070' : '#7f9bff', i: 2.2, tail: 0.5, from: 0.25 + R() * 0.3, to: 0.96, seg: 120 });
+      st.dots([{ p: s.toArray(), c: k % 3 === 0 ? '#ffd29a' : '#a9bbff', s: 7, k: 2 }]);
+    }
   },
 };

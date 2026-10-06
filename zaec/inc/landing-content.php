@@ -300,8 +300,8 @@ function zaec_registry_services() {
 		'h1'           => 'Da vas nađu ljudi iz <em>vašeg</em> grada — kad vas trebaju.',
 		'lead'         => 'Kad netko upiše „električar Osijek”, Google prvo pokaže kartu s tri tvrtke. O tome tko je tamo najviše odlučuju profil, recenzije i web. Radimo na sva tri — redom kojim donose najviše.',
 		'answer'       => 'Lokalni SEO je optimizacija za pretrage s lokalnom namjerom („usluga + grad”, „u blizini”). Uključuje Google Business profil, sustav za recenzije, stranice za usluge i mjesta, dosljedne podatke (naziv, adresa, telefon) i mjerenje poziva s karte i weba.',
-		'image'        => 'world/usluga-seo.webp',
-		'image_alt'    => 'Grad u plavom nacrtu i jedna stvarna, osvijetljena zgrada pod povećalom: lokalni obrt koji se vidi u pretrazi.',
+		'image'        => 'world/usluga-lokalno.webp',
+		'image_alt'    => 'Osijek u plavom nacrtu: oznaka na karti s krugom područja rada, prema kojoj iz okolice stižu upiti; desno osvijetljena konkatedrala.',
 		'cta'          => array( 'Besplatna provjera vidljivosti', 'provjera-vidljivosti' ),
 		'blocks'       => array(
 			array(
@@ -349,8 +349,8 @@ function zaec_registry_services() {
 		'h1'           => 'Google Business profil koji vas stavlja na <em>kartu</em>.',
 		'lead'         => 'Za većinu lokalnih usluga profil na Google karti donosi više poziva od same web stranice. Postavimo ga ispravno, povežemo s webom i održavamo ga živim.',
 		'answer'       => 'Google Business profil (bivši Google Moja tvrtka) je besplatni profil tvrtke na Google pretrazi i Kartama. ZAEC ga postavlja ili popravlja: primarna i sporedne kategorije, usluge, područje rada, fotografije, objave, poveznica na pravu stranicu weba i sustav za prikupljanje stvarnih recenzija.',
-		'image'        => 'world/usluga-seo.webp',
-		'image_alt'    => 'Povećalo izdvaja vaš obrt na karti grada: osvijetljena zgrada među blokovima u nacrtu.',
+		'image'        => 'world/usluga-lokalno.webp',
+		'image_alt'    => 'Oznaka vašeg obrta na karti Osijeka u nacrtu, s krugom područja rada i svjetlosnim tragovima upita iz okolice.',
 		'cta'          => array( 'Želim uređen profil', 'kontakt#upit' ),
 		'blocks'       => array(
 			array(
@@ -397,8 +397,8 @@ function zaec_registry_services() {
 		'h1'           => 'Kad netko pita <em>ChatGPT</em> za preporuku — spominje li vas?',
 		'lead'         => 'Sve više ljudi pita AI asistente „tko je dobar vodoinstalater u Osijeku”. Google AI odgovori prikazuju se i u Hrvatskoj. Provjeravamo što AI zna o vama, ispravljamo pogrešne podatke i jačamo signale koje AI stvarno koristi.',
 		'answer'       => 'AI vidljivost (GEO — Generative Engine Optimization) znači da vas AI asistenti poput ChatGPT-a, Geminija, Perplexityja i Google AI odgovora mogu pronaći, točno opisati i preporučiti. Temelji su isti kao kod SEO-a — jasan sadržaj, schema, dosljedni podaci i recenzije — uz redovitu provjeru što AI stvarno odgovara.',
-		'image'        => 'world/usluga-procjena.webp',
-		'image_alt'    => 'Nacrt otoka u plavom blueprint prikazu, rastavljen na slojeve',
+		'image'        => 'world/usluga-ai.webp',
+		'image_alt'    => 'Odgovor AI asistenta u kojem je istaknut vaš obrt; svjetlo do njega teče iz tri izvora u nacrtu: web stranice, karte i recenzija.',
 		'cta'          => array( 'Provjeri kako me AI vidi', 'provjera-vidljivosti' ),
 		'blocks'       => array(
 			array(
