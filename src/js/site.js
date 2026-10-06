@@ -138,7 +138,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && root.cla
 menu?.addEventListener('click', (e) => { if (e.target.closest('a')) closeMenu(); });
 window.matchMedia('(min-width: 1101px)').addEventListener('change', (e) => e.matches && closeMenu());
 
-/* ───────── razdvajanje naslova po riječima (pristupačno) ───────── */
+/* ───────── razdvajanje naslova po riječima (pristupačno, bez dupliciranja teksta) ───────── */
 export function splitWords(el) {
   if (!el || el.dataset.splitDone) return;
   el.dataset.splitDone = '1';
@@ -176,14 +176,10 @@ export function splitWords(el) {
       }
     });
   };
-  const visual = document.createElement('span');
-  visual.setAttribute('aria-hidden', 'true');
-  while (el.firstChild) visual.appendChild(el.firstChild);
-  walk(visual);
-  const sr = document.createElement('span');
-  sr.className = 'sr-only';
-  sr.textContent = label;
-  el.append(sr, visual);
+  // riječi se razdvajaju na mjestu (tekst ostaje jednom u DOM-u — tražilice ne vide dvostruki naslov),
+  // a čitači zaslona dobivaju cijeli naslov kao jedan izraz preko aria-label
+  walk(el);
+  el.setAttribute('aria-label', label);
   el.classList.add('split');
 }
 
