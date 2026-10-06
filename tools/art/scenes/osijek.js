@@ -194,8 +194,9 @@ export const onama = {
 
 export const kontakt = {
   file: 'world/usluga-kontakt.webp',
-  q: 72,
-  blur: 0.55,
+  // gusta mreža crta: blago omekšavanje prije kodiranja (~110 kB umjesto ~160 kB)
+  q: 70,
+  blur: 0.8,
   fov: 34,
   async build(st) {
     await buildOsijek(st, {
@@ -210,8 +211,8 @@ export const kontakt = {
 
 export const lokalno = {
   file: 'world/usluga-lokalno.webp',
-  q: 72,
-  blur: 0,
+  q: 70,
+  blur: 0.8,
   fov: 34,
   async build(st) {
     const { scene } = st;
