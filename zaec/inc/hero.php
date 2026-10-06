@@ -22,7 +22,7 @@ function zaec_hero_kind( $l ) {
 	if ( ! empty( $l['hero'] ) ) {
 		return (string) $l['hero'];
 	}
-	return in_array( $l['type'] ?? '', array( 'service', 'industry', 'local', 'hub-services', 'hub-industries', 'check', 'pricing', 'projects' ), true ) ? 'editorial' : 'quiet';
+	return in_array( $l['type'] ?? '', array( 'service', 'industry', 'local', 'hub', 'hub-industries', 'check', 'pricing', 'projects' ), true ) ? 'editorial' : 'quiet';
 }
 
 /** Metapodaci kadra (položaji u postocima slike) iz alata za kadrove (tools/art). */

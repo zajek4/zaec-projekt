@@ -321,3 +321,122 @@
   .kt-ways { grid-column: auto; }
   .kt-ways-list { grid-template-columns: 1fr; }
 }
+
+/* ═════════ Razina 2 — urednički hero ═════════ */
+/* Kadar izlazi preko desnog ruba; naslov je jedan tekst koji prelazi s papira u kadar.
+   mix-blend-mode: difference — bijeli tekst na papiru (#efebe3) daje tamnu tintu, u noćnom kadru svijetli;
+   istaknuta riječ (#c7a31b) je na papiru signalno plava, u kadru zlatna. */
+.eh {
+  --wl: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+  --edge: 43vw;
+  position: relative; isolation: isolate; background: var(--paper); overflow: clip;
+  padding: calc(var(--header-h) + clamp(18px, 2.4vw, 34px)) 0 clamp(36px, 4.5vw, 64px);
+}
+.eh::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 70% at 25% 40%, #000 15%, transparent 75%); mask-image: radial-gradient(ellipse 60% 70% at 25% 40%, #000 15%, transparent 75%);
+}
+.eh-stage { position: relative; min-height: clamp(520px, calc(100svh - var(--header-h) - 90px), 860px); display: grid; align-items: center; }
+.eh-copy { display: grid; gap: 22px; align-content: center; padding-block: clamp(16px, 3vw, 48px); }
+.eh-head { display: grid; gap: 16px; max-width: calc(var(--edge) - var(--wl) - 2vw); }
+.eh-frame {
+  position: absolute; z-index: 0; top: 0; bottom: 0; right: 0; left: var(--edge); margin: 0;
+  border-radius: 26px 0 0 26px; overflow: hidden; background: var(--night);
+  box-shadow: 0 60px 120px -60px rgba(8, 12, 30, 0.7);
+}
+.eh-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; transform-origin: 70% 50%; }
+.eh-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(4, 6, 12, 0.35), rgba(4, 6, 12, 0) 30%), linear-gradient(0deg, rgba(4, 6, 12, 0.55), rgba(4, 6, 12, 0) 26%); }
+.eh-slate {
+  position: absolute; z-index: 1; left: clamp(18px, 2vw, 28px); bottom: clamp(16px, 1.8vw, 24px); right: 22%;
+  display: flex; align-items: baseline; gap: 14px; margin: 0;
+  font-size: 0.68rem; line-height: 1.5; letter-spacing: 0.04em; color: rgba(225, 230, 248, 0.72);
+}
+.eh-slate b { flex: none; font-weight: 500; letter-spacing: 0.14em; color: #fff; padding: 2px 7px; border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 3px; }
+.eh-slate span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.eh-title {
+  position: relative; z-index: 1; margin: 0;
+  max-width: calc(var(--edge) + 11vw - var(--wl));
+  font-size: clamp(2.8rem, 6vw, 7.2rem); line-height: 0.96;
+  color: #fff; mix-blend-mode: difference;
+}
+.eh-title em { color: #c7a31b; }
+.eh-body { display: grid; gap: 22px; max-width: min(calc(var(--edge) - var(--wl) - 3vw), 560px); }
+.eh-body .lead { max-width: 44ch; }
+.eh--noimg .eh-title { max-width: 16ch; }
+.eh--noimg .eh-body { max-width: 640px; }
+
+/* tamna inačica (npr. održavanje): ista logika, noćni papir */
+.eh--dark { background: var(--night); color: var(--on-night); }
+.eh--dark::before { background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px); }
+.eh--dark .crumbs, .eh--dark .kicker { color: var(--on-night-muted); }
+.eh--dark .crumbs a:hover { color: #fff; }
+.eh--dark .lead { color: #c9cee0; }
+.eh--dark .btn--ghost { --btn-fg: var(--on-night); --btn-fill: var(--paper); --btn-fill-fg: var(--ink); }
+.eh--dark .btn--ghost::before { box-shadow: inset 0 0 0 1.5px rgba(238, 240, 247, 0.5); }
+.eh--dark .phero-trust { color: #b9c4ea; }
+.eh--dark .phero-trust .icon { color: var(--amber); }
+
+/* hubovi: kontaktni arak — kadrovi stranica ispod */
+.eh-sheet { position: relative; margin-top: clamp(22px, 3vw, 40px); }
+.eh-sheet-list {
+  list-style: none; margin: 0; padding: 4px var(--wl) 14px; display: flex; gap: 14px;
+  overflow-x: auto; scroll-snap-type: x proximity; scroll-padding-inline: var(--wl); scrollbar-width: none;
+}
+.eh-sheet-list::-webkit-scrollbar { display: none; }
+.eh-sheet-list li { flex: none; width: clamp(150px, 12.5vw, 196px); scroll-snap-align: start; }
+.eh-sheet-list a { display: grid; grid-template-columns: auto 1fr; gap: 8px 10px; align-items: baseline; text-decoration: none; color: var(--ink); }
+.eh-sheet-img { grid-column: 1 / -1; display: block; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: var(--night); box-shadow: 0 0 0 1px var(--line); }
+.eh-sheet-img img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease-out), filter 0.5s var(--ease-out); filter: saturate(0.85) brightness(0.92); }
+.eh-sheet-n { font-size: 0.66rem; letter-spacing: 0.1em; color: var(--ink-3); }
+.eh-sheet-list b { font-size: 0.9rem; font-weight: 640; line-height: 1.25; }
+.eh-sheet-list a:hover .eh-sheet-img img, .eh-sheet-list a:focus-visible .eh-sheet-img img { transform: scale(1.06); filter: none; }
+.eh-sheet-list a:hover .eh-sheet-n { color: var(--signal); }
+.eh-answer { padding-top: clamp(28px, 4vw, 56px); }
+.eh--hub .eh-stage { min-height: clamp(440px, calc(100svh - var(--header-h) - 300px), 760px); }
+.eh--hub .eh-title { font-size: clamp(2.8rem, 5.4vw, 6.4rem); }
+
+/* između uspravnog i uskog desktopa: kadar uži, naslov manji */
+@media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 4/5) {
+  .eh { --edge: 47vw; }
+  .eh-title { font-size: clamp(2.6rem, 5.4vw, 4.4rem); }
+}
+/* mobitel: kadar od ruba do ruba, naslov sjeda na njegov donji rub (prvi redak u kadru, ostatak na papiru) */
+@media (max-aspect-ratio: 4/5), (max-width: 760px) {
+  .eh { padding-top: calc(var(--header-h) + 8px); }
+  .eh-stage { min-height: 0; display: block; }
+  .eh-copy { gap: 18px; padding-block: 0; }
+  .eh-head { max-width: none; gap: 10px; }
+  .eh .crumbs { display: none; }
+  .eh-frame { position: relative; inset: auto; width: 100vw; margin-left: calc(var(--gutter) * -1); aspect-ratio: 4 / 3.3; border-radius: 0; }
+  .eh-slate { top: 14px; bottom: auto; left: var(--gutter); right: var(--gutter); }
+  .eh-slate span { -webkit-line-clamp: 1; }
+  .eh-frame::after { background: linear-gradient(180deg, rgba(4, 6, 12, 0.55), rgba(4, 6, 12, 0) 30%), linear-gradient(0deg, rgba(4, 6, 12, 0.82), rgba(4, 6, 12, 0.5) 14%, rgba(4, 6, 12, 0) 34%); }
+  .eh-title { max-width: none; font-size: clamp(2.5rem, 11vw, 4.2rem); margin-top: -1.22em; }
+  .eh-body { max-width: none; }
+  .eh-sheet-list li { width: 148px; }
+}
+
+/* ═════════ Razina 3 — tihi hero (vodiči, pomoćne stranice) ═════════ */
+/* bez slike: naslov, uvod i kotna crta nacrta s metapodacima — ista crta kao na nacrtima zgrada */
+.qh { position: relative; padding: calc(var(--header-h) + clamp(34px, 6vw, 96px)) 0 clamp(36px, 5vw, 72px); }
+.qh-in { display: grid; gap: 22px; }
+.qh-title { max-width: 14ch; font-size: clamp(2.6rem, 6.4vw, 7rem); line-height: 0.96; }
+.qh-title em { color: var(--signal); }
+.qh .lead { max-width: 52ch; }
+.qh-rule { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; margin-top: clamp(10px, 2vw, 26px); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+.qh-rule i { position: relative; height: 1px; background: var(--signal); opacity: 0.55; transform-origin: 0 50%; }
+.qh-rule i::before, .qh-rule i::after { content: ''; position: absolute; top: -5px; width: 1px; height: 11px; background: inherit; }
+.qh-rule i::before { left: 0; }
+.qh-rule i::after { right: 0; }
+.qh .phero-cta { margin-top: 4px; }
+html.motion-ok .qh-rule i { animation: qh-draw 1.4s var(--ease-out) 0.25s both; }
+@keyframes qh-draw { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { html.motion-ok .qh-rule i { animation: none; } }
+@media (max-width: 760px) {
+  .qh .crumbs { display: none; }
+  .qh-title { font-size: clamp(2.4rem, 11vw, 4.2rem); }
+  .qh-rule { grid-template-columns: 1fr; gap: 8px; }
+  .qh-rule span:last-child { display: none; }
+}

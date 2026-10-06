@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 $zaec_landing     = is_page() ? zaec_get_landing() : null;
 $zaec_dark_header = $zaec_landing && ! empty( $zaec_landing['dark'] );
+// potpisni heroji su noćni kadrovi: zaglavlje kreće tamno već u HTML-u (prvi prikaz i bez JS-a); dalje ga vodi site.js
+$zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_kind( $zaec_landing ), ZAEC_SIGNATURE_HEROES, true ) );
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?> class="no-js">
@@ -26,7 +28,7 @@ $zaec_dark_header = $zaec_landing && ! empty( $zaec_landing['dark'] );
 <?php endif; ?>
 <a class="skip-link" href="#sadrzaj">Preskoči na sadržaj</a>
 
-<header class="site-header<?php echo $zaec_dark_header ? ' is-night' : ''; ?>" data-header data-theme-default="<?php echo $zaec_dark_header ? 'night' : 'light'; ?>">
+<header class="site-header<?php echo $zaec_night_top ? ' is-night' : ''; ?>" data-header data-theme-default="<?php echo $zaec_dark_header ? 'night' : 'light'; ?>">
 	<div class="wrap header-inner">
 		<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="ZAEC — naslovnica">
 			<?php echo zaec_logo(); // phpcs:ignore ?>

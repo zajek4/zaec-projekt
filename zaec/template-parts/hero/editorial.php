@@ -1,6 +1,10 @@
 <?php
 /**
- * Hero podstranice (landing). Koristi podatke iz registra.
+ * Urednički hero (razina 2): usluge, djelatnosti, hubovi, Osijek, provjera, cijene, radovi.
+ * Kadar je prevelik za rešetku i izlazi preko desnog ruba ekrana (na mobitelu: kadar od ruba do ruba na vrhu).
+ * Naslov je jedan tekst koji prelazi s papira u kadar: mix-blend-mode: difference ga na papiru crta tamno,
+ * a u noćnom kadru svijetlo (istaknuta riječ: plava na papiru, zlatna u kadru). Uz kadar ide "slate" —
+ * oznaka kadra i opis scene. Hubovi umjesto niza jamstava dobivaju kontaktni arak: kadrove svojih stranica.
  *
  * @package ZAEC
  * @var array $args { landing }
@@ -14,37 +18,72 @@ $dark  = ! empty( $l['dark'] );
 $cta   = $l['cta'] ?? array( 'Složite svoj projekt', 'cijene#konfigurator' );
 $href  = 0 === strpos( $cta[1], '#' ) ? $cta[1] : zaec_url( $cta[1] );
 $title = $l['h1'] ?? $l['title'];
+$img   = $l['image'] ?? '';
+$kick  = (string) ( $l['kicker'] ?? $l['title'] );
+// oznaka kadra: "U.04" iz kickera ("Usluga · U.04"), inače naziv stranice
+$code = preg_match( '~([A-ZČĆŽŠĐ]\.\d{2})~u', $kick, $zaec_m ) ? $zaec_m[1] : $kick;
+
+// kontaktni arak za hubove: kadrovi podstranica iz registra
+$sheet = array();
+if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! empty( $l['key'] ) ) {
+	foreach ( zaec_landing_registry() as $zaec_k => $zaec_r ) {
+		if ( 0 === strpos( $zaec_k, $l['key'] . '/' ) && ! empty( $zaec_r['image'] ) ) {
+			$sheet[ $zaec_k ] = $zaec_r;
+		}
+	}
+}
 ?>
-<section class="phero<?php echo $dark ? ' phero--dark' : ''; ?>"<?php echo $dark ? ' data-header-theme="night"' : ''; ?>>
-	<div class="wrap phero-grid">
-		<div class="phero-copy">
-			<?php zaec_render_breadcrumbs(); ?>
-			<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?></p>
-			<?php zaec_heading( $title, 'h1', 'h1 phero-title' ); ?>
-			<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead" data-reveal><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
-			<div class="phero-cta" data-reveal>
-				<?php echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore ?>
-				<a class="btn btn--ghost" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
+<section class="eh<?php echo $dark ? ' eh--dark' : ''; ?><?php echo $img ? '' : ' eh--noimg'; ?><?php echo $sheet ? ' eh--hub' : ''; ?>" data-hero="editorial"<?php echo $dark ? ' data-header-theme="night"' : ''; ?> aria-labelledby="eh-title">
+	<div class="eh-stage">
+		<div class="wrap eh-copy">
+			<div class="eh-head">
+				<?php zaec_render_breadcrumbs(); ?>
+				<p class="kicker"><?php echo esc_html( $kick ); ?></p>
 			</div>
-			<ul class="phero-trust mono" role="list" data-reveal>
-				<li><?php zaec_the_icon( 'document', 16 ); ?> Fiksna cijena u ponudi</li>
-				<li><?php zaec_the_icon( 'key', 16 ); ?> Sve na vaše ime</li>
-				<li><?php zaec_the_icon( 'chat-round-dots', 16 ); ?> Prvi razgovor besplatno</li>
-			</ul>
+			<?php if ( $img ) : ?>
+				<figure class="eh-frame">
+					<?php $zaec_srcset = zaec_img_srcset( $img ); ?>
+					<img class="eh-img" src="<?php echo esc_url( zaec_img( $img ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-aspect-ratio: 4/5) 100vw, (max-width: 760px) 100vw, 58vw"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
+					<?php if ( ! empty( $l['image_alt'] ) ) : ?>
+						<figcaption class="eh-slate mono" aria-hidden="true"><b><?php echo esc_html( $code ); ?></b><span><?php echo esc_html( $l['image_alt'] ); ?></span></figcaption>
+					<?php endif; ?>
+				</figure>
+			<?php endif; ?>
+			<h1 class="h1 eh-title" id="eh-title"><?php echo zaec_kses_title( $title ); // phpcs:ignore ?></h1>
+			<div class="eh-body">
+				<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
+				<div class="phero-cta">
+					<?php echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore ?>
+					<a class="btn btn--ghost" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
+				</div>
+				<?php if ( ! $sheet ) : ?>
+					<ul class="phero-trust mono" role="list">
+						<li><?php zaec_the_icon( 'document', 16 ); ?> Fiksna cijena u ponudi</li>
+						<li><?php zaec_the_icon( 'key', 16 ); ?> Sve na vaše ime</li>
+						<li><?php zaec_the_icon( 'chat-round-dots', 16 ); ?> Prvi razgovor besplatno</li>
+					</ul>
+				<?php endif; ?>
+			</div>
 		</div>
-		<?php if ( ! empty( $l['image'] ) ) : ?>
-			<figure class="phero-art<?php echo ( ! empty( $l['image_card'] ) || $dark ) ? ' is-card' : ''; ?>" data-parallax>
-				<?php $zaec_srcset = zaec_img_srcset( $l['image'] ); ?>
-				<img src="<?php echo esc_url( zaec_img( $l['image'] ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-width: 900px) min(560px, 92vw), min(46vw, 680px)"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
-			</figure>
-		<?php endif; ?>
 	</div>
-	<?php if ( ! empty( $l['answer'] ) ) : ?>
-		<div class="wrap">
-			<div class="answer" data-reveal>
-				<p class="mono answer-k"><?php zaec_the_icon( 'lightbulb', 16 ); ?> Kratki odgovor</p>
-				<p><?php echo esc_html( $l['answer'] ); ?></p>
-			</div>
-		</div>
+	<?php if ( $sheet ) : ?>
+		<nav class="eh-sheet" aria-label="<?php echo esc_attr( $l['title'] ); ?>">
+			<ol class="eh-sheet-list" role="list">
+				<?php
+				$zaec_i = 0;
+				foreach ( $sheet as $zaec_k => $zaec_r ) :
+					$zaec_i++;
+					?>
+					<li>
+						<a href="<?php echo esc_url( zaec_url( $zaec_k ) ); ?>">
+							<span class="eh-sheet-img"><img src="<?php echo esc_url( zaec_img( preg_replace( '/\.webp$/', '-800.webp', $zaec_r['image'] ) ) ); ?>" alt="" width="800" height="600" loading="lazy" decoding="async"></span>
+							<span class="eh-sheet-n mono"><?php echo esc_html( zaec_pad( $zaec_i ) ); ?></span>
+							<b><?php echo esc_html( $zaec_r['title'] ); ?></b>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			</ol>
+		</nav>
 	<?php endif; ?>
 </section>
+<?php zaec_hero_answer( $l, 'eh-answer' ); ?>

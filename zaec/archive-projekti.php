@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 get_header();
 $hero = array(
+	'hero'      => 'editorial',
+	'type'      => 'projects',
 	'kicker'    => 'Radovi',
 	'h1'        => 'Stvarni projekti. <em>Stvarni</em> ljudi.',
 	'lead'      => 'Bez izmišljenih klijenata i lažnih brojki. Svaki rad možete otvoriti i provjeriti — a rezultate objavljujemo samo uz potvrdu i dopuštenje klijenta.',
