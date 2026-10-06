@@ -10,7 +10,7 @@ import { createBeam } from '../../../src/js/world3/beam.js';
 /* global __ROOT__ */
 const FS = (p) => `/@fs${__ROOT__}/${p}`;
 
-async function loadCity() {
+export async function loadCity() {
   const buf = await (await fetch(FS('zaec/assets/data/osijek-city.bin'))).arrayBuffer();
   const H = new Int32Array(buf, 0, 13);
   const D = new Int16Array(buf, 52);
@@ -30,7 +30,7 @@ async function loadCity() {
   return { buildings: read(H[1], 2), roads: read(H[3], 1), water: read(H[5], 1) };
 }
 
-async function loadCathedral() {
+export async function loadCathedral() {
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
   const gltf = await loader.loadAsync(FS('zaec/assets/models/konkatedrala.glb'));
@@ -63,7 +63,7 @@ async function loadCathedral() {
   return { geo, haloGeo };
 }
 
-function cathedralMesh(geo, haloGeo, { win = 1.6, halo = 1.3 } = {}) {
+export function cathedralMesh(geo, haloGeo, { win = 1.6, halo = 1.3 } = {}) {
   const m = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.82, metalness: 0.02, side: THREE.DoubleSide, envMapIntensity: 0.7 });
   m.forceSinglePass = true;
   m.onBeforeCompile = (sh) => {
@@ -102,7 +102,7 @@ function cathedralMesh(geo, haloGeo, { win = 1.6, halo = 1.3 } = {}) {
   return { group: out, spire: V(p.getX(top), p.getY(top), p.getZ(top)) };
 }
 
-function cityBlueprint(st, city, { r0 = 30, r1 = 450, solidR = 0, c = [10, 0], avoid = null, ground = 0.6, vert = 0.45 } = {}) {
+export function cityBlueprint(st, city, { r0 = 30, r1 = 450, solidR = 0, c = [10, 0], avoid = null, ground = 0.6, vert = 0.45 } = {}) {
   const bp = createBlueprint(null, { width: 1.0, opacity: 0.55, ghost: 0 });
   const solids = [];
   for (const b of city.buildings) {

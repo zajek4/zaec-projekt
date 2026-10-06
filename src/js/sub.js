@@ -23,6 +23,7 @@ if (art && motionOK) {
 
 /* ───────── heroji podstranica (potpisni + urednički) ───────── */
 import izrada from './hero/izrada.js';
+import onama from './hero/onama.js';
 
-const HEROES = { izrada };
+const HEROES = { izrada, onama };
 document.querySelectorAll('[data-hero]').forEach((el) => HEROES[el.dataset.hero]?.(el));
