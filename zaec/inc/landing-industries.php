@@ -429,6 +429,7 @@ function zaec_registry_special() {
 
 	$r['kontakt'] = array(
 		'type'        => 'contact',
+		'hero'        => 'kontakt',
 		'title'       => 'Kontakt',
 		'seo_title'   => 'Kontakt — ZAEC web studio, Osijek',
 		'description' => 'Pošaljite upit ili nazovite. ZAEC, web studio iz Osijeka — web stranice, SEO, AI vidljivost i GA4 mjerenje za obrte i tvrtke diljem Hrvatske.',

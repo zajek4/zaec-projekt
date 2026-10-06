@@ -112,7 +112,9 @@ function init(form) {
         window.zaecTrack?.('generate_lead', { form: form.id, type: form.dataset.kind || 'upit' });
         try { sessionStorage.removeItem('zaec-config'); } catch (err) {}
         setStatus((json.data && json.data.message) || 'Upit je stigao.', 'ok');
-        if (CFG.thanks) setTimeout(() => (location.href = CFG.thanks), 500);
+        // hero može odigrati završni trenutak (npr. Kontakt pali zgradu) prije prelaska na zahvalu
+        form.dispatchEvent(new CustomEvent('zaec:sent', { bubbles: true }));
+        if (CFG.thanks) setTimeout(() => (location.href = CFG.thanks), +form.dataset.sentDelay || 500);
         else form.reset();
         return;
       }

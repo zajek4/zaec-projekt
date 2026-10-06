@@ -16,7 +16,7 @@ function project(camera, p) {
   return { x: +(((v.x + 1) / 2) * 100).toFixed(2), y: +(((1 - v.y) / 2) * 100).toFixed(2) };
 }
 
-function cityMass(scene, city, { r = 380, cx = 10, cy = 0, skip = 46, avoid = null, corridor = null, depthOnly = false } = {}) {
+export function cityMass(scene, city, { r = 380, cx = 10, cy = 0, skip = 46, avoid = null, corridor = null, depthOnly = false, dens = 1 } = {}) {
   // stvarni tlocrti Osijeka (OSM) kao tamne mase s rijetkim upaljenim prozorima
   const R = rng(14);
   const geos = [];
@@ -43,14 +43,14 @@ function cityMass(scene, city, { r = 380, cx = 10, cy = 0, skip = 46, avoid = nu
     geos.push(g);
     // prozori: nekoliko toplih točaka na pročeljima
     for (let i = 0; i < n; i++) {
-      if (R() > 0.35) continue;
+      if (R() > 0.35 * dens) continue;
       const j = (i + 1) % n;
       const ax = r0[i * 2], ay = r0[i * 2 + 1], bx = r0[j * 2], by = r0[j * 2 + 1];
       const L = Math.hypot(bx - ax, by - ay);
       if (L < 6) continue;
       const nx = (by - ay) / L, ny = -(bx - ax) / L;
       for (let f = 1.6; f < h - 1; f += 3.2) {
-        if (R() > 0.22) continue;
+        if (R() > 0.22 * dens) continue;
         const t = 0.15 + R() * 0.7;
         lights.push({ p: [ax + (bx - ax) * t + nx * 0.25, f, -(ay + (by - ay) * t + ny * 0.25)], c: R() < 0.85 ? '#ffc27a' : '#cfd8ff', s: 0.9, k: 1.6, a: 0.75 });
       }
