@@ -1,9 +1,11 @@
 <?php
 /**
- * Potpisni hero: Kontakt — "Vaše svjetlo je sljedeće".
- * Na naslovnici svako svjetlo u gradu je nečiji posao. Ovdje je u nizu osvijetljenih kuća jedna tamna — vaša.
- * Forma je dio kadra: svako ispunjeno polje pali jednu etažu (maska po etažama nad osvijetljenim izrezom iste
- * kamere), slanje pali krunu na krovu i signal. Bez JS-a forma radi klasično, a kuća ostaje tamna — obećanje.
+ * Potpisni hero: Kontakt — zgrada je forma.
+ * Pročelje kuće snimljeno je sprijeda; svaka etaža ima jednu traku prozora i u njoj stoji polje forme (ime na
+ * vrhu … poruka na prvom katu). Vrata u prizemlju su gumb za slanje. Naslov je neonski natpis na krovu (živi
+ * SVG tekst poravnat na čeličnu konstrukciju iz kadra) koji se pali nakon slanja. Susjedi u nizu već svijetle —
+ * svako ispunjeno polje pali svoj prozor (maska po etažama nad osvijetljenim izrezom iste kamere).
+ * Forma je ista kao drugdje (template-parts/contact-form.php): radi bez JS-a, a raspored je samo CSS.
  *
  * @package ZAEC
  * @var array $args { landing }
@@ -18,96 +20,119 @@ $mm = zaec_hero_meta( 'kontakt-m' );
 $o  = zaec_get_options();
 $h1 = (string) ( $l['h1'] ?? $l['title'] );
 
-// etaže odozdo prema gore = polja forme redom
-$floors = array(
-	array( 'ime', 'Ime' ),
-	array( 'kontakt', 'Kontakt' ),
-	array( 'djelatnost', 'Djelatnost' ),
-	array( 'usluga', 'Usluga' ),
-	array( 'poruka', 'O poslu' ),
-);
-
-/**
- * Maska osvijetljenog izreza: vodoravne trake po etažama (gore kruna), prozirnost svake trake je varijabla
- * (--f0…--f4, --fc) koju pali forma. Granice su u postocima izreza, s mekim prijelazom od ±0,35 %.
- */
+/** Maska osvijetljenog izreza: traka po etaži (--f0…--f4, odozgo), prizemlje (--fg), krov (--fc). */
 $zaec_mask = static function ( $m ) {
-	$c   = $m['crop'];
-	$y   = static fn( $v ) => round( ( $v - $c['y'] ) / $c['h'] * 100, 2 );
-	$e   = 0.35;
-	$top = $y( $m['levels'][4]['top'] );
-	$st  = array( 'rgb(0 0 0/var(--fc,0)) 0%', 'rgb(0 0 0/var(--fc,0)) ' . ( $top - $e ) . '%' );
-	for ( $i = 4; $i >= 0; $i-- ) {
-		$t    = $y( $m['levels'][ $i ]['top'] );
-		$b    = $y( $m['levels'][ $i ]['bottom'] );
-		$st[] = "rgb(0 0 0/var(--f{$i},0)) " . ( $t + $e ) . '%';
-		$st[] = "rgb(0 0 0/var(--f{$i},0)) " . ( 0 === $i ? 100 : $b - $e ) . '%';
+	$c  = $m['crop'];
+	$y  = static fn( $v ) => round( ( $v - $c['y'] ) / $c['h'] * 100, 2 );
+	$e  = 0.3;
+	$st = array( 'rgb(0 0 0/var(--fc,0)) 0%', 'rgb(0 0 0/var(--fc,0)) ' . ( $y( $m['floors'][0]['top'] ) - $e ) . '%' );
+	foreach ( $m['floors'] as $i => $f ) {
+		$st[] = "rgb(0 0 0/var(--f{$i},0)) " . ( $y( $f['top'] ) + $e ) . '%';
+		$st[] = "rgb(0 0 0/var(--f{$i},0)) " . ( $y( $f['bottom'] ) - $e ) . '%';
 	}
-	$g = 'linear-gradient(180deg,' . implode( ',', $st ) . ')';
+	$st[] = 'rgb(0 0 0/var(--fg,0)) ' . ( $y( $m['ground']['top'] ) + $e ) . '%';
+	$st[] = 'rgb(0 0 0/var(--fg,0)) 100%';
+	$g    = 'linear-gradient(180deg,' . implode( ',', $st ) . ')';
 	return sprintf( 'left:%s%%;top:%s%%;width:%s%%;height:%s%%;-webkit-mask-image:%s;mask-image:%s', $c['x'], $c['y'], $c['w'], $c['h'], $g, $g );
 };
 
-$vars = $md && $mm ? sprintf(
-	'--hl:%s;--hr:%s;--cx:%s;--cy:%s;--hlm:%s;--hrm:%s;--cxm:%s;--cym:%s',
-	$md['left'],
-	$md['right'],
-	$md['crown']['x'],
-	$md['crown']['top'],
-	$mm['left'],
-	$mm['right'],
-	$mm['crown']['x'],
-	$mm['crown']['top']
-) : '';
+/** Neonski natpis (H1) jedne kompozicije: dva retka poravnata na konstrukciju na krovu. */
+$zaec_sign = static function ( $c, $m ) use ( $h1 ) {
+	$s     = $m['sign'];
+	$plain = trim( wp_strip_all_tags( $h1 ) );
+	// "Recite nam čime se <em>bavite</em>." → 1. redak "Recite nam čime", 2. "se " + "bavite."
+	$line1 = 'Recite nam čime';
+	$rest  = trim( mb_substr( $plain, mb_strlen( $line1 ) ) );
+	if ( 0 !== strpos( $plain, $line1 ) || ! preg_match( '~^(\S+\s)(.+)$~u', $rest, $zaec_r ) ) {
+		$zaec_r = array( '', '', $rest );
+		$line1  = '';
+	}
+	printf(
+		'<svg class="kt-sign kt-sign--%1$s" viewBox="0 0 %2$d %3$d" preserveAspectRatio="none" aria-hidden="true" focusable="false">%4$s<text class="kt-neon" x="%5$s" y="%6$s" font-size="%7$s" textLength="%8$s" lengthAdjust="spacing"><tspan class="kt-neon-s">%9$s</tspan><tspan class="kt-neon-em">%10$s</tspan></text></svg>',
+		esc_attr( $c ),
+		(int) $m['w'],
+		(int) $m['h'],
+		$line1 ? sprintf( '<text class="kt-neon kt-neon-s" x="%1$s" y="%2$s" font-size="%3$s" textLength="%4$s" lengthAdjust="spacing">%5$s</text>', esc_attr( $s['x'] ), esc_attr( $s['lines'][0]['base'] ), esc_attr( $s['lines'][0]['fs'] ), esc_attr( $s['w'] ), esc_html( $line1 ) ) : '', // phpcs:ignore
+		esc_attr( $s['x'] ),
+		esc_attr( $s['lines'][1]['base'] ),
+		esc_attr( $s['lines'][1]['fs'] ),
+		esc_attr( $s['w'] ),
+		esc_html( $zaec_r[1] ),
+		esc_html( $zaec_r[2] )
+	);
+};
+
+$vars = array();
+foreach ( array( '' => $md, 'm' => $mm ) as $zaec_k => $zaec_m ) {
+	if ( ! $zaec_m ) {
+		continue;
+	}
+	foreach ( $zaec_m['floors'] as $i => $f ) {
+		$vars[] = "--w{$i}t{$zaec_k}:{$f['wtop']}";
+		$vars[] = "--w{$i}b{$zaec_k}:{$f['wbottom']}";
+	}
+	$vars[] = "--wl{$zaec_k}:{$zaec_m['win']['left']}";
+	$vars[] = "--wr{$zaec_k}:{$zaec_m['win']['right']}";
+	$vars[] = "--dl{$zaec_k}:{$zaec_m['door']['left']}";
+	$vars[] = "--dr{$zaec_k}:{$zaec_m['door']['right']}";
+	$vars[] = "--dt{$zaec_k}:{$zaec_m['door']['top']}";
+	$vars[] = "--db{$zaec_k}:{$zaec_m['door']['bottom']}";
+	$vars[] = "--gt{$zaec_k}:{$zaec_m['ground']['top']}";
+	$vars[] = "--gb{$zaec_k}:{$zaec_m['ground']['bottom']}";
+	$vars[] = "--hl{$zaec_k}:{$zaec_m['left']}";
+	$vars[] = "--hr{$zaec_k}:{$zaec_m['right']}";
+}
+$zaec_direct = static function () use ( $o ) {
+	?>
+	<ul class="kt-direct" role="list">
+		<li><a href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <span><b><?php echo esc_html( $o['phone_display'] ); ?></b><small><?php echo esc_html( $o['hours'] ); ?></small></span></a></li>
+		<?php if ( zaec_whatsapp_href() ) : ?>
+			<li><a href="<?php echo esc_url( zaec_whatsapp_href() ); ?>" target="_blank" rel="noopener" data-track="click_whatsapp"><?php zaec_the_icon( 'chat-round-dots', 18 ); ?> <span><b>WhatsApp</b><small>Poruka ili fotografija</small></span></a></li>
+		<?php endif; ?>
+		<li><a href="<?php echo esc_url( zaec_maps_href() ); ?>" target="_blank" rel="noopener"><?php zaec_the_icon( 'map-point', 18 ); ?> <span><b><?php echo esc_html( $o['address'] ); ?></b><small><?php echo esc_html( $o['postal_code'] . ' ' . $o['city'] ); ?></small></span></a></li>
+	</ul>
+	<?php
+};
 ?>
-<section class="sh sh-kontakt" data-hero="kontakt" data-header-theme="night" aria-labelledby="sh-title" style="<?php echo esc_attr( $vars ); ?>">
+<section class="sh sh-kontakt" data-hero="kontakt" data-header-theme="night" aria-labelledby="sh-title" style="<?php echo esc_attr( implode( ';', $vars ) ); ?>">
 	<div class="sh-stage kt-stage">
 		<div class="sh-frame">
-			<div class="sh-scene">
+			<div class="sh-scene" id="upit">
 				<?php zaec_hero_picture( 'kontakt-bg', array( 'class' => 'sh-layer sh-bg', 'priority' => true ) ); ?>
 				<?php if ( $md && $mm ) : ?>
 					<?php foreach ( array( 'd' => $md, 'm' => $mm ) as $zaec_c => $zaec_m ) : ?>
 						<div class="kt-lit kt-lit--<?php echo esc_attr( $zaec_c ); ?>" style="<?php echo esc_attr( $zaec_mask( $zaec_m ) ); ?>" aria-hidden="true">
-							<img src="<?php echo esc_url( zaec_img( "hero/kontakt-lit-{$zaec_c}.webp" ) ); ?>" alt="" width="<?php echo 'd' === $zaec_c ? 477 : 486; ?>" height="<?php echo 'd' === $zaec_c ? 992 : 1071; ?>" loading="lazy" decoding="async">
+							<img src="<?php echo esc_url( zaec_img( "hero/kontakt-lit-{$zaec_c}.webp" ) ); ?>" alt="" width="<?php echo 'd' === $zaec_c ? 502 : 629; ?>" height="<?php echo 'd' === $zaec_c ? 871 : 1165; ?>" loading="lazy" decoding="async">
 						</div>
 					<?php endforeach; ?>
-					<ol class="kt-floors" aria-hidden="true">
-						<?php foreach ( $floors as $zaec_i => $zaec_f ) : ?>
-							<li class="kt-floor" data-floor="<?php echo esc_attr( $zaec_f[0] ); ?>" style="<?php echo esc_attr( sprintf( '--t:%s;--b:%s;--tm:%s;--bm:%s', $md['levels'][ $zaec_i ]['top'], $md['levels'][ $zaec_i ]['bottom'], $mm['levels'][ $zaec_i ]['top'], $mm['levels'][ $zaec_i ]['bottom'] ) ); ?>"><i><?php echo esc_html( zaec_pad( $zaec_i + 1 ) ); ?></i><b><?php echo esc_html( $zaec_f[1] ); ?></b></li>
-						<?php endforeach; ?>
-					</ol>
-					<p class="kt-pin mono" aria-hidden="true"><span data-pin>Vaš obrt · svjetlo je sljedeće</span></p>
-					<span class="kt-beacon" aria-hidden="true"></span>
+					<h1 class="kt-title" id="sh-title">
+						<span class="sr-only"><?php echo esc_html( wp_strip_all_tags( $h1 ) ); ?></span>
+						<?php
+						$zaec_sign( 'd', $md );
+						$zaec_sign( 'm', $mm );
+						?>
+					</h1>
 				<?php endif; ?>
+				<div class="kt-form">
+					<?php get_template_part( 'template-parts/contact-form', null, array( 'id' => 'upit-forma-kontakt', 'theme' => 'dark', 'rows' => 2 ) ); ?>
+				</div>
 			</div>
 		</div>
-		<div class="kt-grid">
-			<div class="kt-copy">
-				<div class="kt-head">
-					<?php zaec_render_breadcrumbs(); ?>
-					<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?> · <?php echo esc_html( $o['city'] ); ?></p>
-					<h1 class="h1 sh-title kt-title" id="sh-title"><?php echo zaec_kses_title( $h1 ); // phpcs:ignore ?></h1>
-				</div>
-				<div class="kt-more">
-				<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead kt-lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
-				<ul class="kt-direct" role="list">
-					<li><a href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <span><b><?php echo esc_html( $o['phone_display'] ); ?></b><small><?php echo esc_html( $o['hours'] ); ?></small></span></a></li>
-					<?php if ( zaec_whatsapp_href() ) : ?>
-						<li><a href="<?php echo esc_url( zaec_whatsapp_href() ); ?>" target="_blank" rel="noopener" data-track="click_whatsapp"><?php zaec_the_icon( 'chat-round-dots', 18 ); ?> <span><b>WhatsApp</b><small>Poruka ili fotografija</small></span></a></li>
-					<?php endif; ?>
-				</ul>
-				</div>
-			</div>
-			<div class="kt-card" id="upit">
-				<div class="kt-card-head">
-					<div>
-						<h2 class="h3">Upit</h2>
-						<p class="kt-note" data-meter-note>Dva obavezna polja. Ostalo po želji.</p>
-					</div>
-					<span class="kt-meter" aria-hidden="true"><i class="c"></i><i></i><i></i><i></i><i></i><i class="g"></i></span>
-				</div>
-				<?php get_template_part( 'template-parts/contact-form', null, array( 'id' => 'upit-forma-kontakt', 'theme' => 'dark', 'rows' => 3 ) ); ?>
-			</div>
+		<div class="kt-side kt-side--l">
+			<?php zaec_render_breadcrumbs(); ?>
+			<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?> · <?php echo esc_html( $o['city'] ); ?></p>
+			<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
+			<p class="kt-how mono">Svaki prozor je jedno polje. Dva su obavezna. Vrata šalju upit.</p>
 		</div>
+		<div class="kt-side kt-side--r">
+			<?php $zaec_direct(); ?>
+		</div>
+	</div>
+	<div class="wrap kt-below">
+		<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?> · <?php echo esc_html( $o['city'] ); ?></p>
+		<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
+		<?php $zaec_direct(); ?>
+		<p class="kt-privacy">Podatke koristimo samo za odgovor. Bez newslettera i ustupanja trećima. <a href="<?php echo esc_url( zaec_url( 'privatnost' ) ); ?>">Privatnost</a></p>
 	</div>
 </section>
 <?php zaec_hero_answer( $l, 'sh-answer' ); ?>

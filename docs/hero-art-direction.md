@@ -70,6 +70,30 @@ stvarni redoslijed stranice koja zove (iz sekcije "Kako izgleda stranica koja zo
   zahvalu čeka da se taj trenutak odigra (`zaec:sent` u `form.js`). Mjerač u zaglavlju forme ponavlja stanje.
 - Sekcija 2 ostaje u istoj noći: koraci nakon upita pale se redom, ispod su izravni kontakti.
 
+## Ključni vizuali razine 1 (v2-hero-kv)
+Prva verzija je i dalje bila "naslov + lijepa pozadina". Sva tri heroja sada su jedna ideja: **tipografija kao
+arhitektura**, svaki put drukčije. Kadar je režiran *za* tekst: kamera, položaj predmeta i prazan prostor računaju
+se iz mjera teksta ili polja, a tekst je živ (SVG `<text>` s `textLength`, H1 je cijela rečenica za čitače).
+
+- **Izrada web stranica — naslov je zgrada.** Svaka riječ naslova je etaža; riječ ispunjava širinu pročelja, a
+  visina etaže je visina te riječi izmjerena iz fonta stranice (WEB je dvorana, STRANICA uski kat). Zgrada je
+  izgrađena iz tih mjera. Iznad skenera riječ je obris (nacrt), ispod natpis tintom na toplom staklu. Gumb stoji
+  u ulazu. *Trenutak:* sagrađena kula u kojoj se naslov čita kao natpisi na prozorima.
+  *Odbačeno:* naslov pored zgrade (stara verzija), riječi kao neonski natpisi na krovu.
+- **O nama — tipografija kao mjera.** "Velika odgovornost." stoji okomito i dugačka je točno kao toranj
+  konkatedrale od tla do vrha šiljka: pomoćne crte s tornja, kotna crta i 90 m. "Mali studio." visok je kao
+  jedini upaljeni prozor na istom trgu. Omjer veličina slova je poruka. Špica: prozor se upali, pa kotna crta
+  raste od tla do šiljka i za sobom ispisuje naslov.
+  *Odbačeno:* projekcija slova na toranj (nepoštovanje prema crkvi), naslov ispred/iza tornja (stara verzija).
+- **Kontakt — zgrada je forma.** Pročelje sprijeda; svaka etaža ima jednu traku prozora i u njoj stoji polje
+  forme. Ispunjeno polje pali svoj prozor (tekst postaje tinta na toplom staklu), vrata su gumb, a naslov je
+  neonski natpis na krovu koji se pali nakon slanja. Forma je ista kao drugdje — raspored je samo CSS.
+  *Odbačeno:* forma u kartici pored zgrade (stara verzija), mjerač napretka.
+
+Higgsfield i dalje nije upotrebljiv: CDN s generiranim datotekama (cdn.higgsfield.ai, *.cloudfront.net)
+blokiran je mrežnim pravilima okruženja. Kadrovi su zato renderirani iz koda — što ovim konceptima ionako treba
+(piksel-točne mjere iz kamere, zasebne mobilne kompozicije).
+
 ## Razina 2 — urednički hero
 - Kadar (postojeći renderi `world/*`) izlazi preko desnog ruba ekrana; na mobitelu je od ruba do ruba na vrhu.
 - Naslov je jedan tekst: bijel s `mix-blend-mode: difference` daje tamnu tintu na papiru i svijetla slova u kadru;
