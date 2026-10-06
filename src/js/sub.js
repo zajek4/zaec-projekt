@@ -20,3 +20,9 @@ if (art && motionOK) {
     }, { passive: true });
   }
 }
+
+/* ───────── heroji podstranica (potpisni + urednički) ───────── */
+import izrada from './hero/izrada.js';
+
+const HEROES = { izrada };
+document.querySelectorAll('[data-hero]').forEach((el) => HEROES[el.dataset.hero]?.(el));

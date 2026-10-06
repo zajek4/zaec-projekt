@@ -22,6 +22,7 @@ $zaec_includes = array(
 	'landing-industries',
 	'landings',
 	'blocks',
+	'hero',
 	'projects',
 	'guides',
 	'navigation',

@@ -1,0 +1,151 @@
+/* ═══════════════════════════════════════════════════════════════
+   Heroji podstranica (v2-hero) — vidi docs/hero-art-direction.md
+   Infrastruktura: pozornica, "cover" kutija scene (kadar i HTML dijele
+   isti koordinatni sustav), slojevi, skener. Režija po stranici ispod.
+   ═══════════════════════════════════════════════════════════════ */
+
+.sh {
+  --void: #04060c;
+  --sh-fg: #eef0f7;
+  --sh-muted: #a3abc4;
+  --sh-line: rgba(178, 192, 255, 0.16);
+  --sh-blue: #9fb4ff;
+  position: relative;
+  background: var(--void);
+  color: var(--sh-fg);
+  isolation: isolate;
+}
+.sh .crumbs, .sh .crumbs a { color: #8f98b6; }
+.sh .crumbs a:hover { color: #fff; }
+.sh .kicker { color: var(--sh-blue); }
+.sh .lead { color: #c8cee2; }
+.sh .btn--ghost { --btn-fg: var(--sh-fg); --btn-fill: var(--paper); --btn-fill-fg: var(--ink); }
+.sh .btn--ghost::before { box-shadow: inset 0 0 0 1.5px rgba(238, 240, 247, 0.45); }
+
+/* pozornica i "cover" kutija: scena uvijek prekriva ekran, a sve unutar nje (oznake etaža, isticanje)
+   pozicionira se u postocima kadra — kao da je dio slike */
+.sh-stage { position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; }
+.sh-frame { position: absolute; inset: 0; overflow: hidden; }
+.sh-scene {
+  position: absolute; left: 50%; top: 50%;
+  width: max(100%, calc(max(100svh, 560px) * 16 / 9)); aspect-ratio: 16 / 9;
+  translate: -50% -50%;
+  container-type: size;
+}
+@media (max-aspect-ratio: 4/5) {
+  .sh-scene { width: max(100%, calc(max(100svh, 560px) * 9 / 16)); aspect-ratio: 9 / 16; }
+}
+.sh-layer, .sh-layer img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+
+/* ═════════ Izrada web stranica — "Od nacrta do zgrade" ═════════ */
+.sh-real { clip-path: inset(calc(var(--cut, 0) * 1%) 0 0 0); }
+.sh-floors { position: absolute; inset: 0; }
+.sh-floor {
+  position: absolute;
+  left: calc(var(--br) * 1% + 1.3%);
+  top: calc((var(--b) + var(--t)) * 0.5%);
+  translate: 0 -50%;
+  display: flex; align-items: center; gap: 0.9cqw;
+  font: 500 max(10px, 0.56cqw) / 1 var(--font-mono);
+  letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+  color: #f6dcb1;
+  transition: color 0.5s var(--ease-out), opacity 0.5s var(--ease-out);
+}
+.sh-floor::before { content: ''; width: 2.4cqw; height: 1px; background: currentColor; opacity: 0.55; }
+.sh-floor i { font-style: normal; opacity: 0.65; }
+.sh-hl {
+  position: absolute; pointer-events: none;
+  left: calc(var(--bl) * 1% - 0.35%); width: calc((var(--br) - var(--bl)) * 1% + 0.7%);
+  top: calc(var(--hlt, 50) * 1%); height: calc((var(--hlb, 50) - var(--hlt, 50)) * 1%);
+  border: 1px solid rgba(255, 178, 63, 0.9);
+  background: rgba(255, 178, 63, 0.07);
+  box-shadow: 0 0 34px rgba(255, 178, 63, 0.35), inset 0 0 22px rgba(255, 178, 63, 0.18);
+  opacity: 0;
+  transition: top 0.7s var(--ease-out), height 0.7s var(--ease-out), opacity 0.5s var(--ease-out);
+}
+.sh-hl.is-on { opacity: 1; }
+@media (max-aspect-ratio: 4/5) {
+  .sh-floor { left: calc(var(--brm) * 1% + 1.6%); top: calc((var(--bm) + var(--tm)) * 0.5%); font-size: max(10px, 1.5cqw); gap: 1.4cqw; }
+  .sh-floor::before { width: 3cqw; }
+  .sh-floor b { display: none; }
+  .sh-hl { left: calc(var(--blm) * 1% - 0.6%); width: calc((var(--brm) - var(--blm)) * 1% + 1.2%); }
+}
+
+/* skener: ista crta reže zgradu i naslov */
+.sh-scan { position: absolute; left: 0; right: 0; top: 0; height: 0; z-index: 3; pointer-events: none; display: none; will-change: transform; }
+.sh-scan::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -0.5px; height: 1px;
+  background: linear-gradient(90deg, rgba(207, 224, 255, 0) 0%, rgba(207, 224, 255, 0.85) 14%, #fff 62%, rgba(207, 224, 255, 0.85) 90%, rgba(207, 224, 255, 0));
+  box-shadow: 0 0 10px 1px rgba(130, 160, 255, 0.85), 0 0 46px 6px rgba(35, 71, 255, 0.32);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--scan-x, 1));
+}
+.sh-scan::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 22vh; background: linear-gradient(0deg, rgba(90, 120, 255, 0.11), rgba(90, 120, 255, 0)); opacity: var(--scan-x, 1); }
+
+.sh-copy { position: absolute; inset: 0; z-index: 4; display: grid; align-content: center; gap: 22px; padding-top: calc(var(--header-h) + 24px); padding-bottom: 72px; pointer-events: none; }
+.sh-copy > * { pointer-events: auto; max-width: min(47vw, 660px); }
+.sh-top, .sh-bottom { display: grid; gap: 22px; }
+.sh-title { font-size: clamp(2.8rem, 5.5vw, 6.5rem); line-height: 0.95; color: #fff; max-width: 10.5ch; }
+.sh-title em { color: var(--amber); }
+.sh-lead { max-width: 44ch; }
+.sh-hint { position: absolute; left: var(--gutter); bottom: 26px; display: none; align-items: center; gap: 12px; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8f98b6; }
+.sh-hint b { font-weight: 500; }
+.sh-izrada.is-building .sh-hint { color: #f6dcb1; }
+.sh-izrada.is-building .sh-hint span { animation: none; background: var(--amber); }
+/* tiha tama iza teksta: linije nacrta ne smiju presijecati uvod */
+.sh-copy::before { content: ''; position: absolute; z-index: -1; left: 0; top: 0; bottom: 0; width: min(62vw, 900px); background: radial-gradient(ellipse 70% 55% at 22% 58%, rgba(4, 6, 12, 0.72), rgba(4, 6, 12, 0) 72%); pointer-events: none; }
+.sh-hint span { width: 42px; height: 1px; background: currentColor; transform-origin: 0 50%; animation: sh-hint 2.4s var(--ease-io) infinite; }
+@keyframes sh-hint { 0% { transform: scaleX(0); } 55% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
+
+/* živo stanje (JS + kretanje): pinanje, skener, naslov u obrisu iznad crte i ispunjen ispod nje */
+.sh-izrada.is-live .sh-stage { position: sticky; top: 0; }
+.sh-izrada.is-live .sh-scan { display: block; transform: translateY(var(--scan-y, 100vh)); }
+.sh-izrada.is-live .sh-hint { display: inline-flex; }
+.sh-izrada.is-live .sh-title,
+.sh-izrada.is-live .sh-title em {
+  color: transparent;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-stroke: 1px rgba(159, 180, 255, 0.78);
+}
+.sh-izrada.is-live .sh-title { background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) var(--fill, 100%), #fff var(--fill, 100%)); }
+.sh-izrada.is-live .sh-title em { -webkit-text-stroke-color: rgba(255, 190, 90, 0.8); background-image: linear-gradient(180deg, rgba(255, 178, 63, 0) var(--fill-em, 100%), var(--amber) var(--fill-em, 100%)); }
+.sh-izrada.is-live .sh-floor:not(.is-built) { color: rgba(159, 180, 255, 0.7); }
+.sh-izrada.is-live .sh-plan { opacity: 0; transition: opacity 1.1s var(--ease-out); }
+.sh-izrada.is-live.is-in .sh-plan { opacity: 1; }
+.sh-izrada.is-live .sh-floor { opacity: 0; }
+.sh-izrada.is-live.is-in .sh-floor { opacity: 1; transition-delay: calc(0.6s + var(--k, 0) * 70ms); }
+
+/* nastavak scene: sedam dijelova stranice prolazi pored zgrade */
+.sh-anat { position: relative; z-index: 5; padding-block: 12vh 18vh; }
+.sh-anat-col { display: grid; gap: 22px; max-width: 46%; }
+.sh-anat .h2 { color: #fff; }
+.sh-anat .h2 em { color: var(--amber); }
+.sh-anat-list { list-style: none; margin: 6px 0 0; padding: 0; border-top: 1px solid var(--sh-line); }
+.sh-anat-list li { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 22px 0; border-bottom: 1px solid var(--sh-line); transition: opacity 0.5s var(--ease-out); }
+.sh-anat-list b { font-size: 1.12rem; font-weight: 680; color: #fff; }
+.sh-anat-list p { color: var(--sh-muted); font-size: 0.96rem; margin-top: 4px; }
+.sh-anat-list .anat-n { background: rgba(35, 71, 255, 0.9); }
+.sh-izrada.is-live .sh-anat { margin-top: 145vh; }
+.sh-izrada.is-live .sh-anat-list li { opacity: 0.38; }
+.sh-izrada.is-live .sh-anat-list li.is-on { opacity: 1; }
+.sh-izrada.is-live .sh-anat-list li.is-on .anat-n { background: var(--amber); color: var(--ink); }
+.sh-answer { background: var(--paper); padding-top: clamp(40px, 6vw, 80px); }
+
+@media (max-aspect-ratio: 4/5), (max-width: 760px) {
+  /* mobitel: naslov na nebu, zgrada u sredini, uvod i gumbi na mokroj ulici */
+  .sh-copy { align-content: space-between; padding-top: calc(var(--header-h) + 14px); padding-bottom: 22px; gap: 16px; }
+  .sh-copy > * { max-width: none; }
+  .sh-top, .sh-bottom { gap: 14px; }
+  .sh-bottom { position: relative; }
+  .sh-bottom::before { content: ''; position: absolute; inset: -30px -40px -30px; z-index: -1; background: linear-gradient(180deg, rgba(4, 6, 12, 0), rgba(4, 6, 12, 0.7) 50%); }
+  .sh-copy::before { display: none; }
+  .sh-bottom .phero-cta { flex-wrap: nowrap; gap: 10px; }
+  .sh-bottom .phero-cta .btn--ghost { display: none; }
+  .sh-anat-intro .lead { margin-top: 4px; }
+  .sh-title { font-size: clamp(2.4rem, 11vw, 4.4rem); max-width: 9.5ch; }
+  .sh-lead { font-size: 0.98rem; }
+  .sh .sh-copy .crumbs { display: none; }
+  .sh-hint { display: none !important; }
+  .sh-anat-col { max-width: none; }
+  .sh-izrada.is-live .sh-anat { margin-top: 125vh; }
+}

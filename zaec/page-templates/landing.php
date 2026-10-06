@@ -44,6 +44,7 @@ if ( 'thanks' === $l['type'] ) :
 	return;
 endif;
 
+$l = zaec_hero_prepare( $l );
 get_template_part( 'template-parts/page-hero', null, array( 'landing' => $l ) );
 zaec_render_blocks( $l );
 

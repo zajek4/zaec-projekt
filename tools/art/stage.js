@@ -161,8 +161,8 @@ const DOTS = {
     }`,
 };
 
-export function createStage({ canvas, w = 1400, h = 1050, pr = 2, fov = 32 }) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+export function createStage({ canvas, w = 1400, h = 1050, pr = 2, fov = 32, alpha = false }) {
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance', alpha, premultipliedAlpha: false });
   renderer.setPixelRatio(pr);
   renderer.setSize(w, h, false);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -259,7 +259,7 @@ export function createStage({ canvas, w = 1400, h = 1050, pr = 2, fov = 32 }) {
   composer.addPass(grade);
 
   return {
-    renderer, scene, camera, composer, bloom, grade, sky: skyU, envMap, W, H, pr,
+    renderer, scene, camera, composer, bloom, grade, sky: skyU, skyMesh: sky, envMap, W, H, pr,
     addFloor, dots,
     get floor() { return floor; },
     render() {

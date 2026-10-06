@@ -10,5 +10,6 @@ import vodoinstalateri from './scenes/vodoinstalateri.js';
 import { web, webshop, landing, seo, odrzavanje, procjena, ga4, brzina, ai } from './scenes/web.js';
 import { onama, kontakt, lokalno } from './scenes/osijek.js';
 import nf from './scenes/nf.js';
+import { izradaScenes } from './scenes/hero-izrada.js';
 
-export const SCENES = { elektricari, gradevina, klima, krovopokrivaci, saloni, trgovine, ugostiteljstvo, vodoinstalateri, web, webshop, landing, seo, odrzavanje, procjena, ga4, brzina, ai, onama, kontakt, lokalno, nf };
+export const SCENES = { elektricari, gradevina, klima, krovopokrivaci, saloni, trgovine, ugostiteljstvo, vodoinstalateri, web, webshop, landing, seo, odrzavanje, procjena, ga4, brzina, ai, onama, kontakt, lokalno, nf, ...izradaScenes };
