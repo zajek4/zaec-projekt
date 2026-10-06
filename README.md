@@ -15,7 +15,7 @@ Projekti → polja *Izjava*, *Metrika prije/poslije*, *Screenshot dokaza*, *Izvo
 npm install
 npm run build      # vodiči (content/vodici/*.md) → seed, Vite → zaec/assets/build, ikone
 ```
-3D renderi za podstranice: `CAPTURE=1 npx vite build`, `node tools/capture-server.mjs`, otvorite `http://127.0.0.1:4399/tools/capture.html`.
+Kadrovi podstranica (`zaec/assets/img/world/djelatnost-*.webp`, `usluga-*.webp`, `nacrt-404.webp`) renderiraju se iz koda: `npm run art`, zatim `http://127.0.0.1:5174/?s=<kadar>` (popis kadrova je na vrhu stranice; `&save=1` sprema WebP 1400×1050, renderiran 2× i smanjen). Izvori su u `tools/art/` — pozornica (`stage.js`: noćno nebo, mokri pod-zrcalo s mrežom nacrta, magla, bloom, filmski grade), alati (`kit.js`: rez "stvarno ↔ nacrt" s crtama i svjetlećim rubom, svjetlosni tragovi, rešetke, snopovi) i po jedan kadar za svaku djelatnost/uslugu u `scenes/`. Osijek i konkatedrala koriste iste podatke i model kao naslovnica.
 
 ## Naslovnica: Zemlja → Osijek (world3)
 Jedan Three.js svijet kojim upravlja nativni scroll (`src/js/world3/`, kadrovi u `keyframes.js`; `m` = uspravni ekrani, `t` = uspravni tablet).

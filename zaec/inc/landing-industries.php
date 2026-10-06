@@ -30,7 +30,7 @@ function zaec_registry_industries() {
 		'lead'        => 'Kod kvara se zove odmah, salon se bira po fotografijama, krov po povjerenju. Svaka djelatnost ima svoja pitanja — i svoj put do poziva. Odaberite svoju.',
 		'answer'      => 'ZAEC slaže web stranice i Google profile prilagođene djelatnosti: hitni poziv za vodoinstalatere, upit za termin za klima servise, galerije radova za krovopokrivače, rezervacije za smještaj i salone, webshop za trgovine.',
 		'image'       => 'world/usluga-web.webp',
-		'image_alt'   => 'Low-poly gradić na lebdećem otoku s vašim obrtom u središtu',
+		'image_alt'   => 'Web stranica kao svijetleći ekran u noći: pola gotov dizajn, pola plavi nacrt; tragovi upita vode do gumba za kontakt.',
 		'cta'         => array( 'Besplatna provjera vidljivosti', 'provjera-vidljivosti' ),
 		'blocks'      => array( array( 'type' => 'trades', 'title' => '', 'full' => true ) ),
 		'faq'         => array(
@@ -241,7 +241,20 @@ function zaec_registry_industries() {
 		),
 	);
 
+	// Po djelatnosti: opis kadra (alt) i podnaslovi s nazivom zanata (umjesto istih H2 na svih osam stranica).
+	$copy = array(
+		'klima-i-grijanje'          => array( 'Vanjska jedinica dizalice topline noću: topli i hladni tok zraka izlaze iz ventilatora, pola uređaja je tehnički nacrt.', 'Gdje klima servisi <em>gube</em> pozive.', 'Što web klima servisa <em>mora</em> imati.' ),
+		'vodoinstalateri'           => array( 'Bakrene cijevi s ventilima, manometrom i razdjelnikom podnog grijanja; topla i hladna voda teku kao svjetlo, bojler je nacrt.', 'Gdje vodoinstalateri <em>gube</em> pozive.', 'Što web vodoinstalatera <em>mora</em> imati.' ),
+		'elektricari'               => array( 'Kuća sa solarnim panelima i punjačem za auto noću; dalekovod iza nje je plavi nacrt, a impulsi struje putuju do kuće.', 'Gdje električari <em>gube</em> pozive.', 'Što web električara <em>mora</em> imati.' ),
+		'krovopokrivaci'            => array( 'Krov u tri faze: položen crijep, letve i rogovi s ljestvama te plavi nacrt krovišta s kotom nagiba.', 'Gdje krovopokrivači <em>gube</em> pozive.', 'Što web krovopokrivača <em>mora</em> imati.' ),
+		'gradevina-i-adaptacije'    => array( 'Zgrada u gradnji noću: gotovi donji katovi, betonski skelet s iskrama zavarivanja, gornji katovi kao nacrt i toranjski kran.', 'Gdje izvođači radova <em>gube</em> upite.', 'Što web izvođača radova <em>mora</em> imati.' ),
+		'ugostiteljstvo-i-smjestaj' => array( 'Kuća za odmor s osvijetljenim bazenom i terasom pod lampicama; krilo sa sobama je tlocrt do kojeg stižu tragovi rezervacija.', 'Gdje restorani i smještaj <em>gube</em> goste.', 'Što web restorana i smještaja <em>mora</em> imati.' ),
+		'trgovine-i-webshop'        => array( 'Osvijetljeni izlog trgovine s plavom tendom; paketi odlijeću svjetlosnim lukovima prema kupcima, dio dućana je nacrt webshopa.', 'Gdje trgovine <em>gube</em> kupce.', 'Što web trgovine <em>mora</em> imati.' ),
+		'saloni-ljepote'            => array( 'Salon noću: stolica i okruglo ogledalo s prstenastim svjetlom; sljedeća radna mjesta su nacrt, a tragovi rezervacija stižu do ogledala.', 'Gdje saloni <em>gube</em> termine.', 'Što web salona <em>mora</em> imati.' ),
+	);
+
 	foreach ( $industries as $slug => $d ) {
+		$c = $copy[ $slug ] ?? array( $d['title'] . ': noćni kadar djelatnosti, pola stvarno, pola tehnički nacrt.', 'Gdje se <em>gube</em> pozivi.', 'Što vaš web <em>mora</em> imati.' );
 		$r[ 'djelatnosti/' . $slug ] = array(
 			'type'         => 'industry',
 			'parent'       => 'djelatnosti',
@@ -261,12 +274,12 @@ function zaec_registry_industries() {
 			'sign'         => $d['sign'],
 			'onweb'        => $d['onweb'],
 			'image'        => 'world/djelatnost-' . $slug . '.webp',
-			'image_alt'    => 'Low-poly ilustracija: vaš obrt s natpisom ' . $d['sign'] . ' i opremom djelatnosti',
+			'image_alt'    => $c[0],
 			'cta'          => array( 'Složite svoj projekt', 'cijene?djelatnost=' . rawurlencode( $d['tab'] ) . '#konfigurator' ),
 			'blocks'       => array(
 				array( 'type' => 'searches', 'items' => $d['searches'] ),
-				array( 'type' => 'problems', 'title' => 'Gdje se <em>gube</em> pozivi.', 'items' => $d['problems'] ),
-				array( 'type' => 'deliver', 'title' => 'Što vaš web <em>mora</em> imati.', 'items' => array_map( static fn( $x ) => array( '', $x[0], $x[1] ), $d['deliver'] ), 'cols' => 2, 'numbered' => true ),
+				array( 'type' => 'problems', 'title' => $c[1], 'items' => $d['problems'] ),
+				array( 'type' => 'deliver', 'title' => $c[2], 'items' => array_map( static fn( $x ) => array( '', $x[0], $x[1] ), $d['deliver'] ), 'cols' => 2, 'numbered' => true ),
 				array( 'type' => 'anatomy', 'title' => 'Struktura koja vodi do <em>poziva</em>.', 'lead' => 'Predložak redoslijeda za naslovnicu — prilagođavamo ga vašim uslugama, ali logika ostaje.', 'label' => 'nacrt — ' . $slug . '.pdf', 'parts' => array_map( null, $d['structure'] ) ),
 			),
 			'faq'          => array_merge( $d['faq'], zaec_industry_common_faq() ),
@@ -293,7 +306,7 @@ function zaec_registry_special() {
 		'lead'         => 'ZAEC je web studio iz Osijeka. Radimo web stranice, SEO i Google profile za obrte i tvrtke u Osijeku, Osječko-baranjskoj županiji i Slavoniji — uživo, za istim stolom. Za ostatak Hrvatske radimo na daljinu.',
 		'answer'       => 'ZAEC je web studio sa sjedištem u Osijeku (Čvrsnička ulica 29 A). Izrađuje web stranice, webshopove i landing stranice te radi SEO, Google Business profil i GA4 mjerenje za tvrtke u Osijeku, Osječko-baranjskoj županiji i cijeloj Hrvatskoj.',
 		'image'        => 'world/usluga-kontakt.webp',
-		'image_alt'    => 'Low-poly gradić na lebdećem otoku uz rijeku i slavonska polja',
+		'image_alt'    => 'Osijek noću: konkatedrala sv. Petra i Pavla osvijetljena među krovovima starog grada.',
 		'cta'          => array( 'Dogovorimo kratak razgovor', 'kontakt#upit' ),
 		'blocks'       => array(
 			array(
@@ -335,7 +348,7 @@ function zaec_registry_special() {
 		'lead'        => 'Odaberite što trebate i odmah vidite razinu opsega i okvirni rok. Pošaljite konfiguraciju — dobivate pisanu ponudu s fiksnom cijenom, bez obveze.',
 		'answer'      => 'Cijena izrade web stranice ovisi o opsegu: broju stranica, funkcijama (rezervacije, webshop, više jezika, integracije) i tome imate li tekstove i fotografije. ZAEC ne objavljuje paušalne „od” cijene; nakon kratkog razgovora šalje pisanu ponudu s fiksnom cijenom i rokom. Plaćanje je 50 % na početku i 50 % prije objave.',
 		'image'       => 'world/usluga-procjena.webp',
-		'image_alt'   => 'Nacrt otoka rastavljen na pet slojeva weba u plavom blueprint prikazu',
+		'image_alt'   => 'Svjetlosni skener prolazi kroz web stranicu: iza njega ostaje plavi nacrt s mjernim oznakama i pet slojeva provjere.',
 		'cta'         => array( 'Na procjenu', '#konfigurator' ),
 		'blocks'      => array(
 			array( 'type' => 'configurator' ),
@@ -362,7 +375,7 @@ function zaec_registry_special() {
 		'lead'        => 'Pošaljite naziv tvrtke i grad. Ručno provjeravamo Google profil, recenzije, web, brzinu i što o vama kažu ChatGPT i Google AI — uz usporedbu s tri konkurenta i tri koraka koja najviše donose.',
 		'answer'      => 'Besplatna provjera vidljivosti uključuje ručnu analizu Google Business profila, recenzija, web stranice (sadržaj, brzina, mobitel, mjerenje) i odgovora AI asistenata o vašoj tvrtki, usporedbu s tri lokalna konkurenta i kratko izvješće s tri prioritetna koraka.',
 		'image'       => 'world/usluga-seo.webp',
-		'image_alt'   => 'Low-poly toranj pretrage s povećalom iznad gradića',
+		'image_alt'   => 'Povećalo iznad grada u nacrtu izdvaja jednu osvijetljenu zgradu — vaš obrt — prema kojoj stižu upiti.',
 		'cta'         => array( 'Pošalji za provjeru', '#upit' ),
 		'blocks'      => array(
 			array(
@@ -396,7 +409,7 @@ function zaec_registry_special() {
 		'h1'          => 'Recite nam čime se <em>bavite</em>.',
 		'lead'        => 'Kratko opišite posao. Javljamo se u radno vrijeme sa smjerom, opsegom i sljedećim korakom — bez obveze i bez prodajnog pritiska.',
 		'image'       => 'world/usluga-kontakt.webp',
-		'image_alt'   => 'Low-poly lebdeći otok s gradićem pri izlasku sunca',
+		'image_alt'   => 'Osijek noću: konkatedrala sv. Petra i Pavla osvijetljena među krovovima starog grada.',
 		'cta'         => array( 'Na formu', '#upit' ),
 		'blocks'      => array( array( 'type' => 'contact', 'title' => '' ) ),
 	);
@@ -411,7 +424,7 @@ function zaec_registry_special() {
 		'lead'        => 'ZAEC je web studio iz Osijeka koji vodi Filip Zajec — više od deset godina na webu, s fokusom na WordPress, UX, SEO i mjerenje. Gradimo web stranice za ljude koji grade sve ostalo.',
 		'answer'      => 'ZAEC (obrt za računalne djelatnosti, vl. Filip Zajec) je web studio iz Osijeka koji izrađuje web stranice, webshopove i landing stranice te radi SEO, lokalni SEO, AI vidljivost i GA4 mjerenje za obrte i tvrtke u Hrvatskoj.',
 		'image'       => 'world/usluga-onama.webp',
-		'image_alt'   => 'Low-poly lebdeći otok s gradićem u zoru',
+		'image_alt'   => 'Konkatedrala sv. Petra i Pavla u Osijeku noću, s osvijetljenim vitrajima i svjetlosnim signalom s tornja.',
 		'cta'         => array( 'Upoznajmo se', 'kontakt#upit' ),
 		'blocks'      => array( array( 'type' => 'about' ), array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ), array( 'type' => 'guarantees' ) ),
 	);

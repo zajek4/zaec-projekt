@@ -8,7 +8,7 @@
     "build": "node tools/build-guides.mjs && vite build && node tools/build-icons.mjs",
     "watch": "vite build --watch",
     "zip": "node tools/zip-theme.mjs",
-    "capture": "node tools/capture-server.mjs",
+    "art": "vite --config tools/art/vite.config.mjs",
     "geo": "node tools/build-geo.mjs",
     "city": "node tools/build-city.mjs",
     "cathedral": "node tools/cathedral/build-cathedral.mjs && gltfpack -i tools/cathedral/out/konkatedrala-src.glb -o zaec/assets/models/konkatedrala.glb -cc -kn"
