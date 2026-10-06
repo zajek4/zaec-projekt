@@ -9,6 +9,7 @@
     "watch": "vite build --watch",
     "zip": "node tools/zip-theme.mjs",
     "art": "vite --config tools/art/vite.config.mjs",
+    "art:derive": "node tools/art/derive.mjs",
     "geo": "node tools/build-geo.mjs",
     "city": "node tools/build-city.mjs",
     "cathedral": "node tools/cathedral/build-cathedral.mjs && gltfpack -i tools/cathedral/out/konkatedrala-src.glb -o zaec/assets/models/konkatedrala.glb -cc -kn"

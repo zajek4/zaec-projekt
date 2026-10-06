@@ -38,6 +38,16 @@ function zaec_img( $file ) {
 	return zaec_asset( 'img/' . ltrim( $file, '/' ) );
 }
 
+/** srcset za kadrove podstranica koji imaju manju inačicu (<ime>-800.webp, tools/art/derive.mjs); inače ''. */
+function zaec_img_srcset( $file ) {
+	$file  = ltrim( (string) $file, '/' );
+	$small = preg_replace( '/\.webp$/', '-800.webp', $file );
+	if ( $small === $file || ! file_exists( ZAEC_THEME_DIR . '/assets/img/' . $small ) ) {
+		return '';
+	}
+	return zaec_img( $small ) . ' 800w, ' . zaec_img( $file ) . ' 1400w';
+}
+
 /** URL stranice prema putanji (landing ključu) s fallbackom na home_url(putanja). */
 function zaec_url( $path ) {
 	$path = trim( (string) $path, '/' );
