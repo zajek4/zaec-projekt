@@ -1,0 +1,54 @@
+{
+ "w": 2400,
+ "h": 1350,
+ "levels": [
+  {
+   "i": 1,
+   "label": "Kratki upit i poziv",
+   "bottom": 90.91,
+   "top": 76.79
+  },
+  {
+   "i": 2,
+   "label": "Česta pitanja",
+   "bottom": 76.79,
+   "top": 66.97
+  },
+  {
+   "i": 3,
+   "label": "Područje rada",
+   "bottom": 66.97,
+   "top": 57.16
+  },
+  {
+   "i": 4,
+   "label": "Radovi",
+   "bottom": 57.16,
+   "top": 47.34
+  },
+  {
+   "i": 5,
+   "label": "Dokazi",
+   "bottom": 47.34,
+   "top": 37.52
+  },
+  {
+   "i": 6,
+   "label": "Usluge jezikom kupca",
+   "bottom": 37.52,
+   "top": 27.7
+  },
+  {
+   "i": 7,
+   "label": "Hero",
+   "bottom": 27.7,
+   "top": 17.26
+  }
+ ],
+ "crown": 7.44,
+ "roof": 17.26,
+ "ground": 90.91,
+ "left": 54.14,
+ "right": 74.86,
+ "horizon": 86
+}

@@ -70,6 +70,7 @@ function zaec_registry_services() {
 
 	$r['usluge/izrada-web-stranica'] = array(
 		'type'         => 'service',
+		'hero'         => 'izrada',
 		'parent'       => 'usluge',
 		'title'        => 'Izrada web stranica',
 		'service_type' => 'Izrada web stranica',

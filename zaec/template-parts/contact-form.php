@@ -3,7 +3,7 @@
  * Forma za upit ili provjeru vidljivosti. Radi i bez JS-a (admin-post.php).
  *
  * @package ZAEC
- * @var array $args { id, kind: upit|provjera, theme: light|dark }
+ * @var array $args { id, kind: upit|provjera, theme: light|dark, rows }
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,6 +14,7 @@ $kind  = $args['kind'] ?? 'upit';
 $dark  = 'dark' === ( $args['theme'] ?? 'light' );
 $state = isset( $_GET['zaec_form'] ) ? sanitize_key( wp_unslash( $_GET['zaec_form'] ) ) : ''; // phpcs:ignore
 $audit = 'provjera' === $kind;
+$rows  = max( 2, (int) ( $args['rows'] ?? 4 ) );
 ?>
 <form class="cform<?php echo $dark ? ' cform--dark' : ''; ?>" id="<?php echo esc_attr( $fid ); ?>" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" novalidate data-contact-form data-kind="<?php echo esc_attr( $kind ); ?>">
 	<?php if ( ! $audit ) : ?>
@@ -87,7 +88,7 @@ $audit = 'provjera' === $kind;
 		<?php endif; ?>
 		<div class="field field--full">
 			<label for="<?php echo esc_attr( $fid ); ?>-poruka"><?php echo $audit ? 'Što vas najviše zanima?' : 'Kratko o poslu'; ?> <span class="opt">(opcionalno)</span></label>
-			<textarea class="textarea" id="<?php echo esc_attr( $fid ); ?>-poruka" name="poruka" rows="4" maxlength="3000" placeholder="<?php echo esc_attr( $audit ? 'npr. zašto nas nema na karti, koliko zaostajemo za konkurencijom…' : 'npr. servis klima u Osijeku i okolici, želim više upita za montažu…' ); ?>"></textarea>
+			<textarea class="textarea" id="<?php echo esc_attr( $fid ); ?>-poruka" name="poruka" rows="<?php echo esc_attr( (string) $rows ); ?>" maxlength="3000" placeholder="<?php echo esc_attr( $audit ? 'npr. zašto nas nema na karti, koliko zaostajemo za konkurencijom…' : 'npr. servis klima u Osijeku i okolici, želim više upita za montažu…' ); ?>"></textarea>
 		</div>
 	</div>
 

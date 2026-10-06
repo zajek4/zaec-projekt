@@ -429,6 +429,7 @@ function zaec_registry_special() {
 
 	$r['kontakt'] = array(
 		'type'        => 'contact',
+		'hero'        => 'kontakt',
 		'title'       => 'Kontakt',
 		'seo_title'   => 'Kontakt — ZAEC web studio, Osijek',
 		'description' => 'Pošaljite upit ili nazovite. ZAEC, web studio iz Osijeka — web stranice, SEO, AI vidljivost i GA4 mjerenje za obrte i tvrtke diljem Hrvatske.',
@@ -443,6 +444,7 @@ function zaec_registry_special() {
 
 	$r['o-nama'] = array(
 		'type'        => 'about',
+		'hero'        => 'onama',
 		'title'       => 'O nama',
 		'seo_title'   => 'O nama — ZAEC web studio iz Osijeka',
 		'description' => 'ZAEC je web studio iz Osijeka koji vodi Filip Zajec: 10+ godina na webu, jedna odgovorna osoba, fiksna cijena u pisanoj ponudi i web koji donosi upite.',

@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 get_header();
 $hero = array(
+	'hero'      => 'quiet',
 	'kicker'    => 'Vodiči',
 	'h1'        => 'Znanje koje <em>donosi</em> posao.',
 	'lead'      => 'Bez generičkih savjeta i prodajnih trikova. Konkretni koraci koje obrtnik ili mala tvrtka može napraviti — s nama ili bez nas.',
