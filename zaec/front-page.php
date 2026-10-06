@@ -27,6 +27,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 <div class="stage" aria-hidden="true" style="--poster:url('<?php echo esc_url( zaec_img( 'world/poster.webp' ) ); ?>');--poster-m:url('<?php echo esc_url( zaec_img( 'world/poster-m.webp' ) ); ?>')">
 	<div class="stage-poster"></div>
 	<canvas class="stage-canvas" data-stage-canvas></canvas>
+	<p class="stage-credit">Karta i zgrade Osijeka: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> suradnici</p>
 	<div class="stage-vignette"></div>
 </div>
 <div class="stage-labels" data-stage-labels aria-hidden="true">
@@ -35,9 +36,13 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	<?php foreach ( array( 'Osijek', 'Zagreb', 'Split', 'Rijeka', 'Zadar', 'Dubrovnik', 'Varaždin', 'Pula' ) as $c ) : ?>
 		<span class="sl sl--city<?php echo 'Osijek' === $c ? ' sl--home' : ''; ?>" data-l="city-<?php echo esc_attr( $c ); ?>"><b><?php echo esc_html( $c ); ?></b></span>
 	<?php endforeach; ?>
-	<span class="sl sl--pin" data-l="cath"><b>Konkatedrala<span class="sl-long"> sv. Petra i Pavla</span></b></span>
+	<?php foreach ( array( 'Đakovo', 'Vukovar', 'Vinkovci', 'Valpovo', 'Belišće', 'Našice', 'Beli Manastir', 'Donji Miholjac', 'Čepin', 'Tenja', 'Bilje', 'Darda' ) as $i => $t ) : ?>
+		<span class="sl sl--town<?php echo $i < 8 ? ( 4 === $i ? ' sl--m-hide' : '' ) : ' sl--minor'; ?>" data-l="town-<?php echo (int) $i; ?>"><b><?php echo esc_html( $t ); ?></b></span>
+	<?php endforeach; ?>
+	<span class="sl sl--pin" data-l="cath"><b>Konkatedrala<span class="sl-long"> sv. Petra i Pavla</span></b><small>toranj 90 m</small></span>
 	<span class="sl sl--soft" data-l="drava"><b>Drava</b></span>
-	<span class="sl sl--soft" data-l="hotel"><b>Hotel Osijek</b></span>
+	<span class="sl sl--pin sl--small" data-l="hotel"><b>Hotel Osijek</b></span>
+	<span class="sl sl--soft sl--trg" data-l="trg"><b>Trg Ante Starčevića</b></span>
 	<?php foreach ( $channels as $i => $c ) : ?>
 		<span class="sl sl--ch" data-l="ch-<?php echo (int) $i; ?>"><b><?php echo esc_html( $c ); ?></b></span>
 	<?php endforeach; ?>
@@ -117,12 +122,23 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine" id="osijek" data-cam="osijek" data-header-theme="night" aria-labelledby="os-title">
-	<div class="wrap cine-grid cine-grid--low">
-		<div class="cine-copy">
-			<p class="kicker"><?php echo esc_html( $h( 'os_kicker' ) ); ?></p>
-			<?php zaec_heading( $h( 'os_title' ), 'h2', 'h2', true, 'os-title' ); ?>
-			<p class="lead" data-reveal><?php echo esc_html( $h( 'os_lead' ) ); ?></p>
+<section class="cine cine--duo" id="osijek" data-header-theme="night" aria-labelledby="os-title">
+	<div class="cine-beat" data-cam="slavonia">
+		<div class="wrap cine-grid cine-grid--right">
+			<div class="cine-copy">
+				<p class="kicker"><?php echo esc_html( $h( 'slav_kicker' ) ); ?></p>
+				<?php zaec_heading( $h( 'slav_title' ), 'h2', 'h2 h2--sub', true ); ?>
+				<p class="lead" data-reveal><?php echo esc_html( $h( 'slav_lead' ) ); ?></p>
+			</div>
+		</div>
+	</div>
+	<div class="cine-beat" data-cam="osijek">
+		<div class="wrap cine-grid cine-grid--low">
+			<div class="cine-copy">
+				<p class="kicker"><?php echo esc_html( $h( 'os_kicker' ) ); ?></p>
+				<?php zaec_heading( $h( 'os_title' ), 'h2', 'h2', true, 'os-title' ); ?>
+				<p class="lead" data-reveal><?php echo esc_html( $h( 'os_lead' ) ); ?></p>
+			</div>
 		</div>
 	</div>
 </section>
@@ -144,6 +160,14 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 				<p class="kicker"><?php echo esc_html( $h( 'plan_kicker' ) ); ?></p>
 				<?php zaec_heading( $h( 'plan_title' ), 'h2', 'h2', true, 'plan-title' ); ?>
 				<p class="lead" data-reveal><?php echo esc_html( $h( 'plan_lead' ) ); ?></p>
+			</div>
+		</div>
+	</div>
+	<div class="cine-beat" data-cam="grid">
+		<div class="wrap cine-grid">
+			<div class="cine-copy">
+				<?php zaec_heading( $h( 'plan_grid_title' ), 'h3', 'h2 h2--sub', true ); ?>
+				<p class="lead" data-reveal><?php echo esc_html( $h( 'plan_grid_lead' ) ); ?></p>
 			</div>
 		</div>
 	</div>
@@ -190,7 +214,12 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 						<button type="button" class="chip-btn" data-path-preset="good">Sve dobro</button>
 					</div>
 				</div>
-				<p class="path-note"><?php echo esc_html( $h( 'path_note' ) ); ?></p>
+				<?php
+				// prva rečenica (napomena "ilustrativni model") uvijek je vidljiva; ostatak se skraćuje na niskim ekranima
+				$zaec_note  = (string) $h( 'path_note' );
+				$zaec_parts = preg_split( '/(?<=\.)\s+/u', $zaec_note, 2 );
+				?>
+				<p class="path-note"><?php echo esc_html( $zaec_parts[0] ); ?><?php if ( ! empty( $zaec_parts[1] ) ) : ?> <span class="path-note-more"><?php echo esc_html( $zaec_parts[1] ); ?></span><?php endif; ?></p>
 			</div>
 		</div>
 	</div>
@@ -401,15 +430,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 					</article>
 				<?php endforeach; ?>
 			</div>
-			<div class="work-report">
-				<div class="work-report-copy" data-reveal>
-					<p class="kicker">Što dobivate nakon objave</p>
-					<h3 class="h3">Brojke umjesto dojma.</h3>
-					<p>Svaki mjesec znate koliko je bilo poziva, upita i prodaje — i s kojeg kanala. Primjer desno je ilustrativan; vaš izvještaj gradi se iz vaših podataka u GA4.</p>
-					<a class="link-arrow" href="<?php echo esc_url( (string) get_post_type_archive_link( 'projekti' ) ); ?>">Svi radovi <?php zaec_the_icon( 'arrow-right', 16 ); ?></a>
-				</div>
-				<?php get_template_part( 'template-parts/report' ); ?>
-			</div>
+			<p class="work-more" data-reveal><a class="link-arrow" href="<?php echo esc_url( (string) get_post_type_archive_link( 'projekti' ) ); ?>">Svi radovi <?php zaec_the_icon( 'arrow-right', 16 ); ?></a></p>
 		</div>
 	</section>
 
@@ -526,7 +547,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 </div>
 
 <!-- ═════════ MREŽA SE VRAĆA ═════════ -->
-<section class="cine cine-final" id="kontakt" data-cam="final" data-header-theme="night" aria-labelledby="final-title">
+<section class="cine cine-final" id="kontakt" data-cam="final" data-cam-at="top" data-header-theme="night" aria-labelledby="final-title">
 	<span id="upit" class="anchor-alias" aria-hidden="true"></span>
 	<div class="wrap final-grid">
 		<div class="final-copy">

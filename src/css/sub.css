@@ -15,9 +15,9 @@
 .phero-cta { display: flex; flex-wrap: wrap; gap: 14px 18px; margin-top: 6px; }
 .phero-note { color: var(--muted); }
 .phero-art { margin: 0; position: relative; aspect-ratio: 4 / 3; }
-.phero-art img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 40px 40px rgba(20, 20, 20, 0.12)); -webkit-mask-image: radial-gradient(ellipse 78% 74% at 50% 46%, #000 62%, transparent 100%); mask-image: radial-gradient(ellipse 78% 74% at 50% 46%, #000 62%, transparent 100%); }
-.phero-art.is-card img { -webkit-mask-image: none; mask-image: none; }
-.phero-art.is-card img { object-fit: cover; border-radius: var(--r-l); filter: none; box-shadow: 0 40px 80px -40px rgba(10, 14, 30, 0.6); }
+/* kadar: noćna scena kao kartica — tamni ekran na papiru, isti jezik kao naslovnica */
+.phero-art img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-l); background: var(--night); box-shadow: 0 50px 90px -45px rgba(8, 12, 30, 0.75), 0 0 0 1px rgba(20, 20, 20, 0.06); }
+.phero--dark .phero-art img { box-shadow: 0 50px 90px -45px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08); }
 .phero--dark { background: var(--night); color: var(--on-night); }
 .phero--dark .crumbs, .phero--dark .kicker { color: var(--on-night-muted); }
 .phero--dark .crumbs a:hover { color: #fff; }
@@ -28,7 +28,7 @@
 .phero--dark::before { background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); }
 @media (max-width: 900px) {
   .phero-grid { grid-template-columns: 1fr; }
-  .phero-art { order: -1; max-width: 560px; width: 100%; margin-inline: auto; margin-bottom: -10px; }
+  .phero-art { order: -1; max-width: 560px; width: 100%; margin-inline: auto; margin-bottom: 4px; }
   .phero { padding-top: calc(var(--header-h) + 10px); }
 }
 
@@ -161,9 +161,9 @@
 .trade-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .trade-card { display: grid; gap: 10px; text-decoration: none; padding: 0 0 22px; border-radius: var(--r-l); background: var(--card); border: 1px solid var(--line); overflow: hidden; transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); height: 100%; }
 .trade-card:hover { transform: translateY(-5px); box-shadow: 0 30px 50px -30px rgba(20, 20, 20, 0.35); }
-.trade-card figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: linear-gradient(180deg, #e9e3d8, var(--card)); }
-.trade-card img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.18) translateY(4%); transition: transform 0.8s var(--ease-out); }
-.trade-card:hover img { transform: scale(1.26) translateY(3%); }
+.trade-card figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: var(--night); }
+.trade-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease-out); }
+.trade-card:hover img { transform: scale(1.05); }
 .trade-card h3, .trade-card p, .trade-card .go { padding-inline: 22px; }
 .trade-card h3 { font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
 .trade-card h3 .icon { color: var(--signal); }
@@ -228,8 +228,7 @@
 
 /* 404 */
 .nf { min-height: 100svh; display: grid; place-items: center; text-align: center; padding: calc(var(--header-h) + 40px) var(--gutter) 80px; }
-.nf img { width: min(420px, 80vw); margin: 0 auto 10px; animation: bob 6s var(--ease-io) infinite alternate; }
-@keyframes bob { from { transform: translateY(-10px) rotate(-2deg); } to { transform: translateY(10px) rotate(2deg); } }
+.nf img { width: min(420px, 80vw); margin: 0 auto 26px; border-radius: var(--r-l); background: var(--night); box-shadow: 0 50px 90px -45px rgba(8, 12, 30, 0.75); }
 .nf h1 { font-size: clamp(2.4rem, 6vw, 5rem); }
 .nf p { max-width: 46ch; margin: 18px auto 28px; color: var(--ink-3); }
 .nf .links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }

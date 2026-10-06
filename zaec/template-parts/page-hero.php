@@ -34,7 +34,8 @@ $title = $l['h1'] ?? $l['title'];
 		</div>
 		<?php if ( ! empty( $l['image'] ) ) : ?>
 			<figure class="phero-art<?php echo ( ! empty( $l['image_card'] ) || $dark ) ? ' is-card' : ''; ?>" data-parallax>
-				<img src="<?php echo esc_url( zaec_img( $l['image'] ) ); ?>" alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
+				<?php $zaec_srcset = zaec_img_srcset( $l['image'] ); ?>
+				<img src="<?php echo esc_url( zaec_img( $l['image'] ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-width: 900px) min(560px, 92vw), min(46vw, 680px)"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
 			</figure>
 		<?php endif; ?>
 	</div>

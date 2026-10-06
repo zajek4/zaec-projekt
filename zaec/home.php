@@ -14,7 +14,7 @@ $hero = array(
 	'h1'        => 'Znanje koje <em>donosi</em> posao.',
 	'lead'      => 'Bez generičkih savjeta i prodajnih trikova. Konkretni koraci koje obrtnik ili mala tvrtka može napraviti — s nama ili bez nas.',
 	'image'     => 'world/usluga-procjena.webp',
-	'image_alt' => 'Nacrt otoka u plavom blueprint prikazu',
+	'image_alt' => 'Svjetlosni skener prolazi kroz web stranicu i iza sebe ostavlja plavi nacrt s mjernim oznakama.',
 	'cta'       => array( 'Besplatna provjera vidljivosti', 'provjera-vidljivosti' ),
 	'title'     => 'Vodiči',
 );

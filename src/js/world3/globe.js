@@ -1,22 +1,13 @@
-// Scena 01 — poligonalni svijet: fasetirani globus, kopno kao podignuta lica,
-// granice Europe, čvorovi (tvrtke) i lukovi (pretrage) s putujućim signalima.
+// Scena 01 — planet iz niske orbite: kopno iz stvarne maske (2048×1024), digitalna matrica točaka,
+// osvjetljenje sunca s gornje desne strane, odsjaj oceana, topli rub sumraka, rijetka noćna svjetla
+// na tamnoj strani i tanka atmosfera. Bez oblaka: čista silueta, a fragment shader ostaje jeftin.
+// Mreža komunikacija je zaseban modul (network.js) u istom koordinatnom sustavu (jedinična sfera).
 import * as THREE from 'three';
-import { ll2v, OSIJEK, DEG, glowPoints, lineMat, arcPoints, seeded } from './lib.js';
+import { ll2v, OSIJEK, DEG, glowPoints, lineMat } from './lib.js';
 
-function decodeMask(b64) {
-  const bin = atob(b64);
-  const out = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-  return out;
-}
-
-export function createGlobe({ geo, lite }) {
-  const rand = seeded(7);
-  const detail = lite ? 30 : 48;
-  const mask = decodeMask(lite ? geo.globe.d30 : geo.globe.d48);
-
+export function createGlobe({ geo, lite, landUrl }) {
   const group = new THREE.Group();
-  group.name = 'globus';
+  group.name = 'planet';
   const spin = new THREE.Group();
   group.add(spin);
 
@@ -27,204 +18,160 @@ export function createGlobe({ geo, lite }) {
   const east = new THREE.Vector3().crossVectors(north, up).normalize();
   const src = new THREE.Matrix4().makeBasis(east, up, north);
   const tgt = new THREE.Matrix4().makeBasis(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, -1));
-  const align = new THREE.Matrix4().multiplyMatrices(tgt, src.clone().transpose());
-  group.quaternion.setFromRotationMatrix(align);
+  group.quaternion.setFromRotationMatrix(new THREE.Matrix4().multiplyMatrices(tgt, src.clone().transpose()));
 
-  /* ── ocean + kopno (lica ikosaedra) ── */
-  const ico = new THREE.IcosahedronGeometry(1, detail);
-  const P = ico.attributes.position;
-  const faces = P.count / 3;
-  const oceanCol = new Float32Array(P.count * 3);
-  const landPos = [];
-  const landCol = [];
-  const centroids = [];
-  const c = new THREE.Color();
-  const v = new THREE.Vector3();
-  for (let f = 0; f < faces; f++) {
-    const isLand = (mask[f >> 3] >> (f & 7)) & 1;
-    const shade = 0.9 + rand() * 0.2;
-    c.setRGB(0.028 * shade, 0.045 * shade, 0.085 * shade);
-    for (let k = 0; k < 3; k++) c.toArray(oceanCol, (f * 3 + k) * 3);
-    if (isLand) {
-      v.set(0, 0, 0);
-      const lc = new THREE.Color().setRGB(0.055 * shade, 0.085 * shade, 0.17 * shade);
-      for (let k = 0; k < 3; k++) {
-        const x = P.getX(f * 3 + k), y = P.getY(f * 3 + k), z = P.getZ(f * 3 + k);
-        landPos.push(x * 1.006, y * 1.006, z * 1.006);
-        landCol.push(lc.r, lc.g, lc.b);
-        v.x += x; v.y += y; v.z += z;
-      }
-      centroids.push(v.clone().normalize());
-    }
-  }
-  ico.setAttribute('color', new THREE.BufferAttribute(oceanCol, 3));
-  const globeMat = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.82, metalness: 0.15, transparent: true });
-  const ocean = new THREE.Mesh(ico, globeMat);
-  spin.add(ocean);
+  /* ── planet ── */
+  const land = new THREE.TextureLoader().load(landUrl);
+  land.colorSpace = THREE.NoColorSpace;
+  land.format = THREE.RedFormat; // maska kopna: jedan kanal (¼ memorije i prijenosa na GPU)
+  land.minFilter = THREE.LinearFilter; // bez mipmapa → nema šava na antimeridijanu
+  land.generateMipmaps = false;
+  land.wrapS = THREE.RepeatWrapping;
+  const U = {
+    uLand: { value: land },
+    uSun: { value: new THREE.Vector3(0.78, 0.46, -0.95).normalize() },
+    uTime: { value: 0 },
+    uAlpha: { value: 1 },
+    uDots: { value: 1 },
+    uNight: { value: 1 },
+  };
+  const planetMat = new THREE.ShaderMaterial({
+    uniforms: U,
+    transparent: true,
+    vertexShader: /* glsl */ `
+      varying vec3 vObj; varying vec3 vN; varying vec3 vW;
+      void main(){
+        vObj = position;
+        vN = normalize(mat3(modelMatrix) * position);
+        vec4 w = modelMatrix * vec4(position, 1.0);
+        vW = w.xyz;
+        gl_Position = projectionMatrix * viewMatrix * w;
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform sampler2D uLand; uniform vec3 uSun; uniform float uTime; uniform float uAlpha; uniform float uDots; uniform float uNight;
+      varying vec3 vObj; varying vec3 vN; varying vec3 vW;
+      float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      void main(){
+        vec3 o = normalize(vObj);
+        float lat = asin(clamp(o.y, -1.0, 1.0));
+        float lon = atan(o.x, o.z);
+        vec2 uv = vec2((lon + 3.14159265) / 6.2831853, (lat + 1.5707963) / 3.14159265);
+        float land = smoothstep(0.25, 0.75, texture2D(uLand, uv).r);
+        // obala: kopno uz more (dva dodatna uzorka) — tamo su gradovi gušći
+        float coast = land * (1.0 - smoothstep(0.25, 0.75, min(texture2D(uLand, uv + vec2(0.004, 0.0)).r, texture2D(uLand, uv - vec2(0.0, 0.006)).r)));
+        // digitalna matrica točaka na kopnu (razmak ~0,36°, ispravljen za širinu)
+        vec2 g = vec2(lon * cos(lat), lat) / (0.36 * 0.0174533);
+        vec2 f = fract(g) - 0.5;
+        float aa = fwidth(length(f)) * 1.5;
+        float dots = (1.0 - smoothstep(0.17 - aa, 0.17 + aa, length(f))) * land;
+        vec3 n = normalize(vN);
+        vec3 v = normalize(cameraPosition - vW);
+        float ndl = dot(n, uSun);
+        float day = smoothstep(-0.12, 0.38, ndl);
+        vec3 ocean = mix(vec3(0.006, 0.013, 0.036), vec3(0.012, 0.024, 0.058), pow(max(dot(n, v), 0.0), 2.0));
+        vec3 landC = vec3(0.036, 0.055, 0.085) + dots * uDots * vec3(0.10, 0.2, 0.42);
+        vec3 col = mix(ocean, landC, land);
+        col *= 0.2 + 1.35 * day;
+        // rub sumraka: tanka topla traka gdje sunce zalazi
+        float term = exp(-pow((ndl - 0.03) / 0.08, 2.0));
+        col += vec3(0.26, 0.12, 0.05) * term * (0.25 + 0.75 * land) * 0.4;
+        // odsjaj sunca na moru
+        vec3 h = normalize(uSun + v);
+        col += vec3(0.55, 0.62, 0.8) * pow(max(dot(n, h), 0.0), 60.0) * (1.0 - land) * day * 0.55;
+        // noćna strana: matrica i rijetka topla svjetla (gušća uz obalu)
+        float night = 1.0 - smoothstep(-0.06, 0.2, ndl);
+        col += dots * uDots * vec3(0.08, 0.16, 0.38) * (1.0 - day) * 0.45;
+        float lit = step(1.0 - (0.07 + 0.38 * coast), h21(floor(g))) * dots;
+        col += vec3(1.0, 0.6, 0.26) * lit * night * 0.6 * uNight;
+        // atmosferska izmaglica prema rubu (jače na osunčanoj strani)
+        float fres = pow(1.0 - max(dot(n, v), 0.0), 2.6);
+        col += vec3(0.16, 0.42, 1.0) * fres * (0.14 + 1.05 * smoothstep(-0.2, 0.6, ndl));
+        gl_FragColor = vec4(col, uAlpha);
+      }`,
+  });
+  const planet = new THREE.Mesh(new THREE.SphereGeometry(1, lite ? 96 : 160, lite ? 64 : 112), planetMat);
+  planet.renderOrder = 0;
+  spin.add(planet);
 
-  const landGeo = new THREE.BufferGeometry();
-  landGeo.setAttribute('position', new THREE.Float32BufferAttribute(landPos, 3));
-  landGeo.setAttribute('color', new THREE.Float32BufferAttribute(landCol, 3));
-  landGeo.computeVertexNormals();
-  const landMat = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 0.7, metalness: 0.1, emissive: new THREE.Color('#0d1a3a'), emissiveIntensity: 0.35, transparent: true });
-  const landMesh = new THREE.Mesh(landGeo, landMat);
-  spin.add(landMesh);
-
-  // točkice kopna (podatkovna tekstura)
-  const step = lite ? 2 : 1;
-  const dotCount = Math.ceil(centroids.length / step);
-  const dots = glowPoints({ count: dotCount, color: '#5f7fd6', core: '#bcd0ff', size: 0.016, additive: true });
-  for (let i = 0, j = 0; i < centroids.length; i += step, j++) {
-    centroids[i].clone().multiplyScalar(1.009).toArray(dots.pos, j * 3);
-    dots.alpha[j] = 0.25 + rand() * 0.35;
-  }
-  spin.add(dots.points);
-
-  /* ── granice Europe ── */
-  const seg = [];
-  const a = new THREE.Vector3(), b = new THREE.Vector3();
-  for (const country of geo.europe) {
-    for (const ring of country.rings) {
-      for (let i = 0; i < ring.length - 1; i++) {
-        ll2v(ring[i][0], ring[i][1], 1.0075, a);
-        ll2v(ring[i + 1][0], ring[i + 1][1], 1.0075, b);
-        seg.push(a.x, a.y, a.z, b.x, b.y, b.z);
-      }
-    }
-  }
-  for (const ring of geo.croatia) {
-    for (let i = 0; i < ring.length - 1; i++) {
-      ll2v(ring[i][0], ring[i][1], 1.0085, a);
-      ll2v(ring[i + 1][0], ring[i + 1][1], 1.0085, b);
-      seg.push(a.x, a.y, a.z, b.x, b.y, b.z);
-    }
-  }
-  const borderGeo = new THREE.BufferGeometry();
-  borderGeo.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
-  const borderMat = lineMat('#4a66b8', 0.55);
-  const borders = new THREE.LineSegments(borderGeo, borderMat);
-  spin.add(borders);
-
-  /* ── atmosfera ── */
-  const atmoUniforms = { uColor: { value: new THREE.Color('#3b6bff') }, uOpacity: { value: 1 } };
+  /* ── atmosfera: tanka ljuska, osvijetljena sa stražnje strane ── */
+  const atmoU = { uSun: U.uSun, uAlpha: { value: 1 } };
   const atmo = new THREE.Mesh(
-    new THREE.SphereGeometry(1.2, 64, 32),
+    new THREE.SphereGeometry(1.028, 96, 64),
     new THREE.ShaderMaterial({
-      uniforms: atmoUniforms,
+      uniforms: atmoU,
       side: THREE.BackSide,
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
-      vertexShader: /* glsl */ `varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }`,
-      fragmentShader: /* glsl */ `uniform vec3 uColor; uniform float uOpacity; varying vec3 vN; varying vec3 vV; void main(){ float f = pow(clamp(-dot(vN, vV), 0.0, 1.0), 1.7); gl_FragColor = vec4(uColor, f * 0.95 * uOpacity); }`,
+      vertexShader: /* glsl */ `varying vec3 vN; varying vec3 vW; void main(){ vN = normalize(mat3(modelMatrix) * position); vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+      fragmentShader: /* glsl */ `uniform vec3 uSun; uniform float uAlpha; varying vec3 vN; varying vec3 vW;
+        void main(){
+          vec3 n = normalize(vN); vec3 v = normalize(cameraPosition - vW);
+          float rim = pow(clamp(-dot(n, v), 0.0, 1.0), 0.55);
+          float edge = smoothstep(0.0, 0.35, 1.0 - rim);
+          float sun = smoothstep(-0.35, 0.7, dot(n, uSun));
+          float fwd = pow(max(dot(normalize(-v), uSun), 0.0), 6.0); // naspramno svjetlo uz rub
+          vec3 c = mix(vec3(0.10, 0.22, 0.75), vec3(0.45, 0.7, 1.0), sun);
+          float a = rim * edge * (0.12 + 0.9 * sun + 0.8 * fwd);
+          gl_FragColor = vec4(c * a, a * uAlpha);
+        }`,
     }),
   );
-  group.add(atmo); // ne vrti se
+  group.add(atmo);
 
-  /* ── čvorovi i lukovi ── */
+  /* ── granice Europe i Hrvatske (tanke, digitalne) ── */
+  const seg = [];
+  const a = new THREE.Vector3(), b = new THREE.Vector3();
+  const pushRings = (rings, r) => {
+    for (const ring of rings) for (let i = 0; i < ring.length - 1; i++) {
+      ll2v(ring[i][0], ring[i][1], r, a); ll2v(ring[i + 1][0], ring[i + 1][1], r, b);
+      seg.push(a.x, a.y, a.z, b.x, b.y, b.z);
+    }
+  };
+  geo.europe.forEach((c) => pushRings(c.rings, 1.0012));
+  pushRings(geo.croatia, 1.0016);
+  const borderGeo = new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+  const borderMat = lineMat('#5b7bd8', 0.3, true);
+  spin.add(new THREE.LineSegments(borderGeo, borderMat));
+
+  /* ── čvor Osijek (jak u finalu: "vaša tvrtka") ── */
   const osijek = ll2v(OSIJEK[0], OSIJEK[1]);
-  const nodes = [osijek.clone()];
-  geo.capitals.forEach(([, lon, lat]) => nodes.push(ll2v(lon, lat)));
-  geo.cities.forEach(([, lon, lat]) => nodes.push(ll2v(lon, lat)));
-  const extra = lite ? 70 : 140;
-  for (let i = 0; i < extra; i++) nodes.push(centroids[(rand() * centroids.length) | 0].clone());
-  const nodePts = glowPoints({ count: nodes.length, color: '#4f7bff', core: '#e8eeff', size: 0.065 });
-  const nodeBase = new Float32Array(nodes.length);
-  nodes.forEach((n, i) => {
-    n.clone().multiplyScalar(1.012).toArray(nodePts.pos, i * 3);
-    nodeBase[i] = i === 0 ? 2.4 : i < 1 + geo.capitals.length ? 1.2 : 0.55 + rand() * 0.5;
-    nodePts.size[i] = nodeBase[i];
-  });
-  spin.add(nodePts.points);
-
-  const arcs = [];
-  const arcSeg = [];
-  const pairs = [];
-  // 1/3 lukova vodi u Osijek (lokalno sidro, mreža bez granica)
-  const arcCount = lite ? 34 : 64;
-  for (let i = 0; i < arcCount; i++) {
-    const toOsijek = i % 3 === 0;
-    const ia = 1 + ((rand() * (nodes.length - 1)) | 0);
-    const ib = toOsijek ? 0 : 1 + ((rand() * (nodes.length - 1)) | 0);
-    if (ia === ib || nodes[ia].angleTo(nodes[ib]) < 0.03) continue;
-    pairs.push([ia, ib, toOsijek]);
-  }
-  pairs.forEach(([ia, ib, toO]) => {
-    const pts = arcPoints(nodes[ia], nodes[ib], 40, 0.22).map((p) => p.multiplyScalar(1.012));
-    arcs.push({ pts, toO, t: rand(), speed: 0.12 + rand() * 0.18 });
-    for (let i = 0; i < pts.length - 1; i++) arcSeg.push(pts[i].x, pts[i].y, pts[i].z, pts[i + 1].x, pts[i + 1].y, pts[i + 1].z);
-  });
-  const arcGeo = new THREE.BufferGeometry();
-  arcGeo.setAttribute('position', new THREE.Float32BufferAttribute(arcSeg, 3));
-  const arcMat = lineMat('#3d63e0', 0.22, true);
-  const arcLines = new THREE.LineSegments(arcGeo, arcMat);
-  spin.add(arcLines);
-
-  const TRAIL = 6;
-  const pulses = glowPoints({ count: arcs.length * TRAIL, color: '#6f93ff', core: '#ffffff', size: 0.06 });
-  spin.add(pulses.points);
-  const tmp = new THREE.Vector3();
-
-  function sampleArc(pts, t, out) {
-    const f = Math.min(pts.length - 1.001, Math.max(0, t * (pts.length - 1)));
-    const i = Math.floor(f);
-    return out.copy(pts[i]).lerp(pts[i + 1], f - i);
-  }
-
-  const materials = [globeMat, landMat, dots.material, borderMat, nodePts.material, arcMat, pulses.material];
+  const hub = glowPoints({ count: 1, color: '#ffb23f', core: '#fff3d6', size: 0.05 });
+  osijek.clone().multiplyScalar(1.004).toArray(hub.pos, 0);
+  hub.uniforms.uMin.value = 4;
+  spin.add(hub.points);
 
   return {
     group,
     spin,
-    /**
-     * @param {object} s  { alpha, spin, net, finale, time, dt, pr }
-     */
+    sun: U.uSun.value,
+    land,
+    /** s: { alpha, spin, net, finale, dive, time, pr, reduce } */
     update(s) {
       group.visible = s.alpha > 0.002;
       if (!group.visible) return;
       spin.rotation.y = s.spin;
-      globeMat.opacity = landMat.opacity = s.alpha;
-      globeMat.transparent = landMat.transparent = s.alpha < 0.999;
-      globeMat.depthWrite = landMat.depthWrite = s.alpha > 0.5;
-      dots.uniforms.uOpacity.value = s.alpha;
-      borderMat.opacity = 0.5 * s.alpha * (0.6 + s.net * 0.4);
-      atmoUniforms.uOpacity.value = s.alpha * (1 - s.dive * 0.9);
-      nodePts.uniforms.uOpacity.value = s.alpha;
-      arcMat.opacity = (0.22 + 0.22 * s.net + 0.25 * s.finale) * s.alpha;
-      pulses.uniforms.uOpacity.value = s.alpha;
-      [dots, nodePts, pulses].forEach((p) => (p.uniforms.uPR.value = s.pr));
-      // čvorovi pulsiraju; Osijek (ili "vaša tvrtka") jače u finalu
-      for (let i = 0; i < nodes.length; i++) {
-        const w = Math.sin(s.time * 1.6 + i * 1.7) * 0.5 + 0.5;
-        nodePts.size[i] = nodeBase[i] * (0.75 + 0.5 * w) * (i === 0 ? 1 + s.finale * 2.2 : 1);
-        nodePts.alpha[i] = i === 0 ? 1 : 0.55 + 0.45 * w;
-      }
-      nodePts.geometry.attributes.aSize.needsUpdate = true;
-      nodePts.geometry.attributes.aAlpha.needsUpdate = true;
-      // signali putuju lukovima
-      const speedK = 0.6 + s.net * 0.8 + s.finale;
-      arcs.forEach((arc, i) => {
-        if (!s.reduce) arc.t = (arc.t + s.dt * arc.speed * speedK) % 1;
-        const vis = arc.toO ? 0.55 + s.finale * 0.45 : 0.6 * (1 - s.finale * 0.6);
-        for (let k = 0; k < TRAIL; k++) {
-          sampleArc(arc.pts, Math.max(0, arc.t - k * 0.018), tmp);
-          tmp.toArray(pulses.pos, (i * TRAIL + k) * 3);
-          pulses.alpha[i * TRAIL + k] = vis * (1 - k / TRAIL) * Math.min(1, arc.t * 8) * Math.min(1, (1 - arc.t) * 10);
-          pulses.size[i * TRAIL + k] = k === 0 ? 1.4 : 0.9 - k * 0.1;
-        }
-      });
-      pulses.geometry.attributes.position.needsUpdate = true;
-      pulses.geometry.attributes.aAlpha.needsUpdate = true;
-      pulses.geometry.attributes.aSize.needsUpdate = true;
+      U.uTime.value = s.time;
+      U.uAlpha.value = s.alpha;
+      U.uNight.value = 1 - s.dive;
+      planetMat.depthWrite = s.alpha > 0.5;
+      U.uDots.value = 0.7 + 0.3 * s.net;
+      atmoU.uAlpha.value = s.alpha * (1 - s.dive * 0.85);
+      borderMat.opacity = s.alpha * (0.12 + 0.3 * s.dive + 0.1 * s.net) * (1 - s.finale * 0.5);
+      hub.uniforms.uPR.value = s.pr;
+      hub.uniforms.uOpacity.value = s.alpha * (0.35 + 0.65 * Math.max(s.finale, s.net * 0.6));
+      hub.size[0] = (1 + s.finale * 1.8) * (0.85 + 0.15 * Math.sin(s.time * 2.2));
+      hub.geometry.attributes.aSize.needsUpdate = true;
     },
     /** Svjetska pozicija Osijeka (za oznake). */
     osijekWorld(out = new THREE.Vector3()) {
       return out.copy(osijek).multiplyScalar(1.02).applyMatrix4(spin.matrixWorld);
     },
     dispose() {
-      materials.forEach((m) => m.dispose());
-      [ico, landGeo, dots.geometry, borderGeo, nodePts.geometry, arcGeo, pulses.geometry, atmo.geometry].forEach((g) => g.dispose());
-      atmo.material.dispose();
+      planet.geometry.dispose(); planetMat.dispose(); land.dispose();
+      atmo.geometry.dispose(); atmo.material.dispose();
+      borderGeo.dispose(); borderMat.dispose();
+      hub.geometry.dispose(); hub.material.dispose();
     },
   };
 }

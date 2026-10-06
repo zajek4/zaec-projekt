@@ -1,15 +1,18 @@
 {
   "name": "zaec-wp-theme",
-  "version": "2.1.0",
+  "version": "2.3.0",
   "private": true,
   "type": "module",
-  "description": "ZAEC WordPress tema v2 — 3D low-poly svijet, GSAP, Lenis. Izvori i build.",
+  "description": "ZAEC WordPress tema v2 — 3D putovanje od orbite do Osijeka (Three.js), GSAP, Lenis. Izvori i build.",
   "scripts": {
     "build": "node tools/build-guides.mjs && vite build && node tools/build-icons.mjs",
     "watch": "vite build --watch",
     "zip": "node tools/zip-theme.mjs",
-    "capture": "node tools/capture-server.mjs",
-    "geo": "node tools/build-geo.mjs"
+    "art": "vite --config tools/art/vite.config.mjs",
+    "art:derive": "node tools/art/derive.mjs",
+    "geo": "node tools/build-geo.mjs",
+    "city": "node tools/build-city.mjs",
+    "cathedral": "node tools/cathedral/build-cathedral.mjs && gltfpack -i tools/cathedral/out/konkatedrala-src.glb -o zaec/assets/models/konkatedrala.glb -cc -kn"
   },
   "devDependencies": {
     "@fontsource-variable/archivo": "^5.3.0",
@@ -18,6 +21,7 @@
     "@iconify-json/solar": "^1.2.13",
     "archiver": "^8.0.0",
     "d3-geo": "^3.1.1",
+    "gltfpack": "^1.3.0",
     "gsap": "^3.15.0",
     "lenis": "^1.3.26",
     "marked": "^18.0.14",

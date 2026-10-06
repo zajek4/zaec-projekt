@@ -353,7 +353,7 @@ function zaec_block_trades( $b, $l, $alt ) {
 	}
 	echo '<ul class="trade-cards" role="list" data-stagger="0.05">';
 	foreach ( zaec_industries() as $t ) {
-		echo '<li data-reveal><a class="trade-card" href="' . esc_url( zaec_url( $t['key'] ) ) . '"><figure><img src="' . esc_url( zaec_img( $t['image'] ) ) . '" alt="" width="1400" height="1050" loading="lazy" decoding="async"></figure><h3>' . zaec_icon( $t['icon'], 18 ) . ' ' . esc_html( $t['title'] ) . '</h3><p>' . esc_html( implode( ' · ', $t['onweb'] ) ) . '</p><span class="go">Pogledajte ' . zaec_icon( 'arrow-right', 16 ) . '</span></a></li>'; // phpcs:ignore
+		echo '<li data-reveal><a class="trade-card" href="' . esc_url( zaec_url( $t['key'] ) ) . '"><figure><img src="' . esc_url( zaec_img( $t['image'] ) ) . '"' . ( zaec_img_srcset( $t['image'] ) ? ' srcset="' . esc_attr( zaec_img_srcset( $t['image'] ) ) . '" sizes="(max-width: 560px) 92vw, (max-width: 1100px) 46vw, 340px"' : '' ) . ' alt="" width="1400" height="1050" loading="lazy" decoding="async"></figure><h3>' . zaec_icon( $t['icon'], 18 ) . ' ' . esc_html( $t['title'] ) . '</h3><p>' . esc_html( implode( ' · ', $t['onweb'] ) ) . '</p><span class="go">Pogledajte ' . zaec_icon( 'arrow-right', 16 ) . '</span></a></li>'; // phpcs:ignore
 	}
 	echo '</ul>';
 	zaec_block_close();

@@ -1,8 +1,8 @@
-// Scena 04 — arhitektura → web: rubovi konkatedrale lete i slažu se u žičani okvir web stranice.
+// Scena 04 — arhitektura → crtež → mreža → web: stvarni rubovi modela konkatedrale odvajaju se,
+// slažu u mjernu mrežu i zatim u žičani okvir web stranice.
 // Scena 05 — ista stranica u "lošoj" i "dobroj" strukturi (morph uBad).
 // Scena 06 — web kao infrastruktura: 7 slojeva koji se slažu u jedan sustav.
 import * as THREE from 'three';
-import { cathedralEdges } from './cathedral.js';
 import { seeded } from './lib.js';
 
 /* ── geometrija preglednika (normalizirano u,v ∈ [0,1], v = 1 je vrh) ── */
@@ -77,60 +77,88 @@ function piecesOf(layout, n) {
   return pieces.sort((p, q) => q.y - p.y || p.x - q.x);
 }
 
+
+/**
+ * Mjerna mreža iz same zgrade: okomice na x-položajima gdje model ima najviše okomitih bridova
+ * (kontrafori, rubovi tornja, zabati), vodoravnice na visinama s najviše vodoravnih bridova
+ * (sokl, vijenac, sljeme lađe, katovi tornja). Svaki brid se "zalijepi" na najbližu mjernu liniju.
+ * Vraća za svaki segment (istim redom) ciljni komadić { a, b }.
+ */
+function measuredGrid(segs) {
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity, zc = 0;
+  for (const s of segs) {
+    x0 = Math.min(x0, s.a.x, s.b.x); x1 = Math.max(x1, s.a.x, s.b.x);
+    y0 = Math.min(y0, s.a.y, s.b.y); y1 = Math.max(y1, s.a.y, s.b.y);
+    zc += s.a.z + s.b.z;
+  }
+  zc /= segs.length * 2;
+  const W = x1 - x0 || 1, H = y1 - y0 || 1, NB = 128;
+  const hv = new Float32Array(NB), hh = new Float32Array(NB);
+  const bin = (t) => Math.min(NB - 1, Math.max(0, Math.floor(t * NB)));
+  const vert = [], hor = [];
+  segs.forEach((s, i) => {
+    const dx = Math.abs(s.b.x - s.a.x), dy = Math.abs(s.b.y - s.a.y);
+    if (dy >= dx) { vert.push(i); hv[bin((s.x - x0) / W)] += dy; } else { hor.push(i); hh[bin((s.y - y0) / H)] += dx; }
+  });
+  const peaks = (h, k, gap) => {
+    const order = [...h.keys()].sort((p, q) => h[q] - h[p]);
+    const out = [0, NB - 1];
+    for (const i of order) {
+      if (out.length >= k + 2 || h[i] <= 0) break;
+      if (out.every((j) => Math.abs(j - i) >= gap)) out.push(i);
+    }
+    return out.map((i) => (i + 0.5) / NB).sort((p, q) => p - q);
+  };
+  const us = peaks(hv, 10, 7), vs = peaks(hh, 8, 7);
+  const out = new Array(segs.length);
+  // svaki brid ide na najbližu mjernu liniju; na liniji se bridovi slažu redom (po visini / po x)
+  const assign = (ids, lines, pos, along, key) => {
+    const buckets = lines.map(() => []);
+    for (const id of ids) {
+      const t = pos(segs[id]);
+      let best = 0;
+      for (let k = 1; k < lines.length; k++) if (Math.abs(lines[k] - t) < Math.abs(lines[best] - t)) best = k;
+      buckets[best].push(id);
+    }
+    // linija se proteže samo koliko i njezini bridovi → mreža zadržava obris zgrade (toranj visok, lađa niska)
+    buckets.forEach((b, li) => {
+      if (!b.length) return;
+      b.sort((p, q) => key(segs[p]) - key(segs[q]));
+      let lo = Infinity, hi = -Infinity;
+      for (const id of b) { const r = span(segs[id]); lo = Math.min(lo, r[0]); hi = Math.max(hi, r[1]); }
+      b.forEach((id, j) => { out[id] = along(lines[li], lo + (hi - lo) * j / b.length, lo + (hi - lo) * (j + 1) / b.length); });
+    });
+  };
+  let span = (s) => [Math.min(s.a.y, s.b.y), Math.max(s.a.y, s.b.y)];
+  assign(vert, us, (s) => (s.x - x0) / W, (u, ya, yb) => ({
+    a: new THREE.Vector3(x0 + u * W, ya, zc), b: new THREE.Vector3(x0 + u * W, yb, zc),
+  }), (s) => s.y);
+  span = (s) => [Math.min(s.a.x, s.b.x), Math.max(s.a.x, s.b.x)];
+  assign(hor, vs, (s) => (s.y - y0) / H, (v, xa, xb) => ({
+    a: new THREE.Vector3(xa, y0 + v * H, zc), b: new THREE.Vector3(xb, y0 + v * H, zc),
+  }), (s) => s.x);
+  return out;
+}
+
 /* ─────────────────────────── MORPH ─────────────────────────── */
 
-export function createMorph(cathGeo) {
+/**
+ * @param {THREE.BufferGeometry} edges  rubovi modela konkatedrale (LineSegments geometrija) u svjetskim jedinicama
+ * @param {{ max: number }} opts  najveći broj linija (najdulje = najvažnije arhitektonske linije)
+ */
+export function createMorph(edges, { max = 6000 } = {}) {
   const rand = seeded(303);
-  const edges = cathedralEdges(cathGeo, 22);
-  const ep = edges.attributes.position.array;
-  const nSeg = ep.length / 6;
-
-  // izvor: rubovi konkatedrale, sortirani odozgo prema dolje
-  const src = [];
-  for (let i = 0; i < nSeg; i++) {
-    const a = new THREE.Vector3(ep[i * 6], ep[i * 6 + 1], ep[i * 6 + 2]);
-    const b = new THREE.Vector3(ep[i * 6 + 3], ep[i * 6 + 4], ep[i * 6 + 5]);
-    src.push({ a, b, y: (a.y + b.y) / 2, x: (a.x + b.x) / 2 });
-  }
-  src.sort((p, q) => q.y - p.y || p.x - q.x);
-
-  // cilj: dobra i loša verzija stranice, svaka podijeljena na nSeg komadića
-  const good = piecesOf(SITE, nSeg);
-  const bad = piecesOf(SITE_BAD, nSeg);
-
-  const from = new Float32Array(nSeg * 6);
-  const to = new Float32Array(nSeg * 6);
-  const toBad = new Float32Array(nSeg * 6);
-  const delay = new Float32Array(nSeg * 2);
-  const seed = new Float32Array(nSeg * 2);
-  for (let i = 0; i < nSeg; i++) {
-    from.set([...src[i].a.toArray(), ...src[i].b.toArray()], i * 6);
-    to.set([...good[i].a.toArray(), ...good[i].b.toArray()], i * 6);
-    toBad.set([...bad[i].a.toArray(), ...bad[i].b.toArray()], i * 6);
-    const d = (i / nSeg) * 0.55 + rand() * 0.12;
-    const sd = rand();
-    delay[i * 2] = delay[i * 2 + 1] = d;
-    seed[i * 2] = seed[i * 2 + 1] = sd;
-  }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(from.slice(), 3));
-  geo.setAttribute('aFrom', new THREE.BufferAttribute(from, 3));
-  geo.setAttribute('aTo', new THREE.BufferAttribute(to, 3));
-  geo.setAttribute('aBad', new THREE.BufferAttribute(toBad, 3));
-  geo.setAttribute('aDelay', new THREE.BufferAttribute(delay, 1));
-  geo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
-  geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 5, 0), 30);
-  edges.dispose();
-
   const uniforms = {
     uMorph: { value: 0 },
     uOpacity: { value: 0 },
     uTime: { value: 0 },
-    uWarm: { value: new THREE.Color('#ffc9a3') },
+    uWarm: { value: new THREE.Color('#ffc6a0') },
     uCool: { value: new THREE.Color('#b8c8ff') },
+    uGridCol: { value: new THREE.Color('#7f9bff') },
     uBadCol: { value: new THREE.Color('#ff7a66') },
-    uFocus: { value: 0 },
     uBad: { value: 0 },
+    uScanY: { value: 1e4 },
+    uScanOn: { value: 0 },
   };
   const mat = new THREE.ShaderMaterial({
     uniforms,
@@ -138,122 +166,214 @@ export function createMorph(cathGeo) {
     depthWrite: false,
     blending: THREE.AdditiveBlending,
     vertexShader: /* glsl */ `
-      attribute vec3 aFrom; attribute vec3 aTo; attribute vec3 aBad; attribute float aDelay; attribute float aSeed;
-      uniform float uMorph; uniform float uTime; uniform float uBad; varying float vT;
+      attribute vec3 aFrom; attribute vec3 aGrid; attribute vec3 aTo; attribute vec3 aBad; attribute float aDelay; attribute float aSeed;
+      uniform float uMorph; uniform float uTime; uniform float uBad; uniform float uScanY; uniform float uScanOn;
+      varying float vS1; varying float vS2; varying float vFly; varying float vScan;
+      float ease(float t){ return t < 0.5 ? 4.0 * t * t * t : 1.0 - pow(-2.0 * t + 2.0, 3.0) / 2.0; }
       void main(){
-        float t = clamp((uMorph - aDelay) / 0.42, 0.0, 1.0);
-        float e = t < 0.5 ? 4.0 * t * t * t : 1.0 - pow(-2.0 * t + 2.0, 3.0) / 2.0;
+        // 0 → 1: rubovi zgrade se odvajaju (najviši prvi) i slažu u mjernu mrežu
+        float e1 = ease(clamp((uMorph - aDelay) / 0.4, 0.0, 1.0));
+        // 1 → 2: mreža postaje okvir web stranice
+        float e2 = ease(clamp((uMorph - 1.0 - aSeed * 0.45) / 0.45, 0.0, 1.0));
         float b = clamp(uBad * 1.5 - aSeed * 0.5, 0.0, 1.0);
         b = b * b * (3.0 - 2.0 * b);
-        vec3 p = mix(aFrom, mix(aTo, aBad, b), e);
-        float arc = sin(e * 3.14159);
-        p += vec3((aSeed - 0.5) * 2.2, (aSeed - 0.3) * 1.6, 1.4 + aSeed * 2.6) * arc;
-        p += vec3(sin(uTime * 0.9 + aSeed * 30.0), cos(uTime * 0.7 + aSeed * 20.0), 0.0) * 0.04 * arc;
+        vec3 site = mix(aTo, aBad, b);
+        vec3 p = mix(mix(aFrom, aGrid, e1), site, e2);
+        float fly1 = sin(e1 * 3.14159);
+        float fly2 = sin(e2 * 3.14159);
+        p += vec3((aSeed - 0.5) * 0.5, (aSeed - 0.3) * 0.35, 0.5 + aSeed * 1.6) * fly1;
+        p += vec3(0.0, 0.0, 0.6 + aSeed) * fly2 * 0.6;
+        p += vec3(sin(uTime * 0.9 + aSeed * 30.0), cos(uTime * 0.7 + aSeed * 20.0), 0.0) * 0.03 * (fly1 + fly2);
         p.z += sin(b * 3.14159) * (0.5 + aSeed);
-        vT = e;
+        vS1 = e1; vS2 = e2; vFly = max(fly1, fly2);
+        // skener: crte nacrta postoje samo iznad crte koja se spušta niz zgradu; uz samu crtu su najsvjetlije
+        float above = smoothstep(uScanY - 0.06, uScanY + 0.06, aFrom.y);
+        float fresh = exp(-pow((aFrom.y - uScanY) / 0.35, 2.0));
+        vScan = mix(1.0, above * (1.0 + fresh * 1.5), uScanOn);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uOpacity; uniform vec3 uWarm; uniform vec3 uCool; uniform vec3 uBadCol; uniform float uFocus; uniform float uBad; varying float vT;
+      uniform float uOpacity; uniform vec3 uWarm; uniform vec3 uCool; uniform vec3 uGridCol; uniform vec3 uBadCol; uniform float uBad;
+      varying float vS1; varying float vS2; varying float vFly; varying float vScan;
       void main(){
-        vec3 c = mix(uWarm, mix(uCool, uBadCol, uBad * 0.8), vT);
-        float flare = sin(vT * 3.14159);
-        gl_FragColor = vec4(c + flare * 0.35, uOpacity * (0.55 + 0.45 * vT + flare * 0.4) * (1.0 - uFocus * 0.55));
+        vec3 site = mix(uCool, uBadCol, uBad * 0.8);
+        vec3 c = mix(mix(uWarm, uGridCol, vS1), site, vS2);
+        float a = uOpacity * (0.52 + 0.33 * vS1 + 0.15 * vS2 + vFly * 0.45) * vScan;
+        if (a < 0.003) discard;
+        gl_FragColor = vec4(c + vFly * 0.3, a);
       }`,
   });
-  const lines = new THREE.LineSegments(geo, mat);
+  const lines = new THREE.LineSegments(new THREE.BufferGeometry(), mat);
   lines.frustumCulled = false;
   lines.renderOrder = 3;
 
+  function build(src) {
+    const ep = src.attributes.position.array;
+    let segs = [];
+    for (let i = 0; i < ep.length; i += 6) {
+      const a = new THREE.Vector3(ep[i], ep[i + 1], ep[i + 2]);
+      const b = new THREE.Vector3(ep[i + 3], ep[i + 4], ep[i + 5]);
+      const L = a.distanceTo(b);
+      if (L > 0.02) segs.push({ a, b, L });
+    }
+    // najdulje linije nose arhitekturu (bridovi, kontrafori, krov, toranj); sitni šum otpada
+    segs.sort((p, q) => q.L - p.L);
+    segs = segs.slice(0, max);
+    segs.forEach((s) => { s.y = (s.a.y + s.b.y) / 2; s.x = (s.a.x + s.b.x) / 2; });
+    // faza 1: odozgo prema dolje (vrh tornja se prvi odvaja)
+    segs.sort((p, q) => q.y - p.y || p.x - q.x);
+    const n = segs.length;
+    const grid = measuredGrid(segs);
+    // faza 2: mreža → stranica, opet odozgo (po visini komadića na mreži)
+    const order = segs.map((_, i) => i).sort((p, q) => {
+      const gp = grid[p], gq = grid[q];
+      return (gq.a.y + gq.b.y) - (gp.a.y + gp.b.y) || (gp.a.x + gp.b.x) - (gq.a.x + gq.b.x);
+    });
+    const goodP = piecesOf(SITE, n), badP = piecesOf(SITE_BAD, n);
+    const good = new Array(n), bad = new Array(n);
+    order.forEach((id, k) => { good[id] = goodP[k]; bad[id] = badP[k]; });
+    const F = new Float32Array(n * 6), G = new Float32Array(n * 6), T = new Float32Array(n * 6), B = new Float32Array(n * 6);
+    const delay = new Float32Array(n * 2), seed = new Float32Array(n * 2);
+    for (let i = 0; i < n; i++) {
+      F.set([...segs[i].a.toArray(), ...segs[i].b.toArray()], i * 6);
+      G.set([...grid[i].a.toArray(), ...grid[i].b.toArray()], i * 6);
+      T.set([...good[i].a.toArray(), ...good[i].b.toArray()], i * 6);
+      B.set([...bad[i].a.toArray(), ...bad[i].b.toArray()], i * 6);
+      delay[i * 2] = delay[i * 2 + 1] = (i / n) * 0.5 + rand() * 0.08;
+      seed[i * 2] = seed[i * 2 + 1] = rand();
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(F.slice(), 3));
+    geo.setAttribute('aFrom', new THREE.BufferAttribute(F, 3));
+    geo.setAttribute('aGrid', new THREE.BufferAttribute(G, 3));
+    geo.setAttribute('aTo', new THREE.BufferAttribute(T, 3));
+    geo.setAttribute('aBad', new THREE.BufferAttribute(B, 3));
+    geo.setAttribute('aDelay', new THREE.BufferAttribute(delay, 1));
+    geo.setAttribute('aSeed', new THREE.BufferAttribute(seed, 1));
+    geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 5, 0), 40);
+    lines.geometry.dispose();
+    lines.geometry = geo;
+    return n;
+  }
+  let count = edges ? build(edges) : 0;
+
   return {
     object: lines,
-    count: nSeg,
+    get count() { return count; },
+    /** Zamijeni izvor (npr. kad se učita pravi model konkatedrale). */
+    setSource(src) { count = build(src); },
     update(s) {
-      lines.visible = s.opacity > 0.002;
+      lines.visible = s.opacity > 0.002 && count > 0;
       uniforms.uMorph.value = s.morph;
       uniforms.uOpacity.value = s.opacity;
       uniforms.uTime.value = s.time;
-      uniforms.uFocus.value = s.focus || 0;
       uniforms.uBad.value = s.bad || 0;
+      uniforms.uScanY.value = s.scanY ?? 1e4;
+      uniforms.uScanOn.value = s.scanOn || 0;
     },
     dispose() {
-      geo.dispose();
+      lines.geometry.dispose();
       mat.dispose();
     },
   };
 }
 
-/* ─────────────────────────── SLOJEVI ─────────────────────────── */
+/* ─────────────────────────── SLOJEVI ───────────────────────────
+   Eksplodirani aksonometrijski stog: svaki sloj je vodoravna ploča na svojoj visini.
+   Samo aktivni sloj je u fokusu (kontrast, sadržaj, pomak prema gledatelju); ostali su prigušeni.
+   Na kraju se ploče poravnaju i sklope u jedan sustav. */
 
 export const LAYER_DEFS = [
-  { code: '01', name: 'Poruka', color: '#4f73ff' },
-  { code: '02', name: 'Struktura', color: '#5a7cff' },
-  { code: '03', name: 'UX', color: '#6f84ff' },
-  { code: '04', name: 'Tehnologija', color: '#8c8bf2' },
-  { code: '05', name: 'SEO', color: '#b98ed8' },
-  { code: '06', name: 'Mjerenje', color: '#e3999a' },
+  { code: '01', name: 'Poruka', color: '#6f8cff' },
+  { code: '02', name: 'Struktura', color: '#7d93ff' },
+  { code: '03', name: 'UX', color: '#8f9bff' },
+  { code: '04', name: 'Tehnologija', color: '#a39cf5' },
+  { code: '05', name: 'SEO', color: '#c39bdc' },
+  { code: '06', name: 'Mjerenje', color: '#e3a3a0' },
   { code: '07', name: 'Konverzija', color: '#ffb23f' },
 ];
 
+// sadržaj ploča (u, v ∈ [0, 1]) — jednostavni, čitljivi simboli onoga što sloj donosi
 function glyphs(i) {
   switch (i) {
-    case 0: return [...R(0.08, 0.62, 0.7, 0.76), ...R(0.08, 0.46, 0.55, 0.58), ...L(0.08, 0.36, 0.6, 0.36), ...L(0.08, 0.3, 0.5, 0.3)];
-    case 1: return [...R(0.42, 0.78, 0.58, 0.88), ...L(0.5, 0.78, 0.5, 0.68), ...L(0.2, 0.68, 0.8, 0.68), ...[0.2, 0.5, 0.8].flatMap((u) => [...L(u, 0.68, u, 0.6), ...R(u - 0.08, 0.5, u + 0.08, 0.6), ...L(u, 0.5, u, 0.42), ...R(u - 0.05, 0.34, u + 0.05, 0.42)])];
-    case 2: return [...L(0.1, 0.75, 0.35, 0.75), ...L(0.35, 0.75, 0.35, 0.5), ...L(0.35, 0.5, 0.65, 0.5), ...L(0.65, 0.5, 0.65, 0.25), ...L(0.65, 0.25, 0.88, 0.25), ...L(0.84, 0.29, 0.88, 0.25), ...L(0.84, 0.21, 0.88, 0.25), ...C(0.1, 0.75, 0.02), ...C(0.35, 0.5, 0.02), ...C(0.65, 0.25, 0.02)];
-    case 3: return [...L(0.25, 0.65, 0.15, 0.5), ...L(0.15, 0.5, 0.25, 0.35), ...L(0.75, 0.65, 0.85, 0.5), ...L(0.85, 0.5, 0.75, 0.35), ...L(0.56, 0.7, 0.44, 0.3), ...[0, 1, 2, 3].flatMap((k) => R(0.32 + k * 0.1, 0.12, 0.4 + k * 0.1, 0.2))];
-    case 4: return [...R(0.1, 0.74, 0.9, 0.84), ...C(0.85, 0.79, 0.018), ...[0, 1, 2, 3].flatMap((k) => [...L(0.1, 0.62 - k * 0.13, 0.45, 0.62 - k * 0.13), ...L(0.1, 0.58 - k * 0.13, 0.75, 0.58 - k * 0.13)])];
-    case 5: return [...L(0.1, 0.15, 0.9, 0.15), ...L(0.1, 0.15, 0.1, 0.85), ...[0.25, 0.4, 0.33, 0.55, 0.48, 0.7].flatMap((h, k) => R(0.16 + k * 0.12, 0.15, 0.24 + k * 0.12, 0.15 + h))];
-    default: return [...R(0.3, 0.42, 0.7, 0.58), ...L(0.42, 0.5, 0.48, 0.45), ...L(0.48, 0.45, 0.58, 0.55), ...L(0.15, 0.85, 0.85, 0.85), ...L(0.15, 0.85, 0.4, 0.6), ...L(0.85, 0.85, 0.6, 0.6), ...L(0.4, 0.25, 0.6, 0.25)];
+    case 0: return [...R(0.1, 0.62, 0.78, 0.78), ...R(0.1, 0.46, 0.6, 0.56), ...L(0.1, 0.36, 0.66, 0.36), ...L(0.1, 0.3, 0.52, 0.3), ...R(0.1, 0.12, 0.34, 0.22)];
+    case 1: return [...R(0.42, 0.78, 0.58, 0.9), ...L(0.5, 0.78, 0.5, 0.68), ...L(0.18, 0.68, 0.82, 0.68), ...[0.18, 0.5, 0.82].flatMap((u) => [...L(u, 0.68, u, 0.6), ...R(u - 0.09, 0.48, u + 0.09, 0.6), ...L(u, 0.48, u, 0.38), ...R(u - 0.06, 0.26, u + 0.06, 0.38)])];
+    case 2: return [...L(0.1, 0.78, 0.36, 0.78), ...L(0.36, 0.78, 0.36, 0.5), ...L(0.36, 0.5, 0.64, 0.5), ...L(0.64, 0.5, 0.64, 0.22), ...L(0.64, 0.22, 0.88, 0.22), ...L(0.83, 0.27, 0.88, 0.22), ...L(0.83, 0.17, 0.88, 0.22), ...C(0.1, 0.78, 0.025), ...C(0.36, 0.5, 0.025), ...C(0.64, 0.22, 0.025)];
+    case 3: return [...L(0.3, 0.7, 0.16, 0.5), ...L(0.16, 0.5, 0.3, 0.3), ...L(0.7, 0.7, 0.84, 0.5), ...L(0.84, 0.5, 0.7, 0.3), ...L(0.57, 0.76, 0.43, 0.24)];
+    case 4: return [...R(0.1, 0.72, 0.9, 0.86), ...C(0.84, 0.79, 0.022), ...R(0.1, 0.5, 0.9, 0.62), ...[0, 1].flatMap((k) => [...L(0.14, 0.42 - k * 0.16, 0.6, 0.42 - k * 0.16), ...L(0.14, 0.37 - k * 0.16, 0.8, 0.37 - k * 0.16)])];
+    case 5: return [...L(0.12, 0.16, 0.88, 0.16), ...L(0.12, 0.16, 0.12, 0.84), ...[0.22, 0.34, 0.3, 0.46, 0.42, 0.6].flatMap((h, k) => R(0.18 + k * 0.115, 0.16, 0.25 + k * 0.115, 0.16 + h))];
+    default: return [...R(0.28, 0.4, 0.72, 0.6), ...L(0.42, 0.5, 0.48, 0.44), ...L(0.48, 0.44, 0.58, 0.56), ...L(0.18, 0.84, 0.82, 0.84), ...L(0.18, 0.84, 0.42, 0.62), ...L(0.82, 0.84, 0.58, 0.62)];
   }
 }
 
 export function createLayers() {
   const group = new THREE.Group();
   group.name = 'slojevi';
-  group.position.copy(toWorld(0.5, 0.5));
+  group.position.copy(toWorld(0.5, 0.42));
+  const W = 11, D = 7;
+  const local = (u, v) => [(u - 0.5) * W, 0, -(v - 0.5) * D];
+  const segGeo = (list) => {
+    const seg = [];
+    list.forEach(([u0, v0, u1, v1]) => seg.push(...local(u0, v0), ...local(u1, v1)));
+    return new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+  };
+  const frameList = (() => {
+    // ploča s malo zaobljenim kutovima (osmerokut) — čitljivija od oštrog pravokutnika
+    const k = 0.035;
+    return [[k, 0, 1 - k, 0], [1 - k, 0, 1, k], [1, k, 1, 1 - k], [1, 1 - k, 1 - k, 1], [1 - k, 1, k, 1], [k, 1, 0, 1 - k], [0, 1 - k, 0, k], [0, k, k, 0]];
+  })();
   const items = LAYER_DEFS.map((d, i) => {
     const g = new THREE.Group();
-    const seg = [];
-    const local = (u, v) => [(u - 0.5) * FRAME.w, (v - 0.5) * FRAME.h, 0];
-    [...R(0, 0, 1, 1), ...glyphs(i)].forEach(([u0, v0, u1, v1]) => seg.push(...local(u0, v0), ...local(u1, v1)));
-    const lg = new THREE.BufferGeometry();
-    lg.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
-    const lm = new THREE.LineBasicMaterial({ color: d.color, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
-    const lines = new THREE.LineSegments(lg, lm);
-    const fg = new THREE.PlaneGeometry(FRAME.w, FRAME.h);
-    const fm = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending });
-    g.add(new THREE.Mesh(fg, fm), lines);
+    const fg = segGeo(frameList);
+    const gg = segGeo(glyphs(i));
+    const fm = new THREE.LineBasicMaterial({ color: d.color, transparent: true, opacity: 0, depthWrite: false });
+    const gm = new THREE.LineBasicMaterial({ color: d.color, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
+    const pg = new THREE.PlaneGeometry(W, D).rotateX(-Math.PI / 2);
+    const pm = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
+    const plate = new THREE.Mesh(pg, pm);
+    plate.renderOrder = 1;
+    const frame = new THREE.LineSegments(fg, fm);
+    const glyph = new THREE.LineSegments(gg, gm);
+    frame.renderOrder = glyph.renderOrder = 2;
+    g.add(plate, frame, glyph);
     group.add(g);
-    return { g, lm, fm, lg, fg };
+    return { g, fm, gm, pm, geos: [fg, gg, pg], e: 0, arr: 0 };
   });
   const corner = new THREE.Vector3();
 
   return {
     group,
-    /** s.p: 0..1 dolazak i slaganje slojeva, s.alpha, s.hover (indeks ili −1) */
+    /** s: { p (0..1 dolazak), assemble (0..1), alpha, active (indeks aktivnog sloja ili −1), dt } */
     update(s) {
       group.visible = s.alpha > 0.002;
       if (!group.visible) return;
-      const p = s.p * 8.2;
-      const compress = Math.min(1, Math.max(0, p - 7.2));
-      const spread = 1.55, tight = 0.22;
+      const asm = s.assemble || 0;
+      const gap = 1.55 + (0.16 - 1.55) * asm;
+      const arrive = s.p * 8;
+      const k = 1 - Math.exp(-(s.dt || 0.016) * 7);
       items.forEach((it, i) => {
-        const a = Math.min(1, Math.max(0, p - i));
-        const e = 1 - Math.pow(1 - a, 3);
-        const z = (3 - i) * (spread + (tight - spread) * compress);
-        it.g.position.set((1 - e) * 9, (1 - e) * 5, z + (1 - e) * 6);
-        it.g.rotation.set((1 - e) * -0.5, (1 - e) * 0.9, (1 - e) * 0.3);
-        const hot = s.hover === i ? 1 : 0;
-        it.lm.opacity = s.alpha * e * (0.7 + hot * 0.3 + compress * 0.2);
-        it.fm.opacity = s.alpha * e * (0.04 + hot * 0.14 + compress * 0.03);
+        // ploča stiže sa scrollom, a aktivni sloj (i svi iznad njega) uvijek je na mjestu
+        const want = Math.max(Math.min(1, Math.max(0, arrive - i)), s.active >= i ? 1 : 0);
+        it.arr += (want - it.arr) * (s.reduce ? 1 : k);
+        const ea = 1 - Math.pow(1 - it.arr, 3);
+        it.e += ((s.active === i ? 1 : 0) - it.e) * (s.reduce ? 1 : k);
+        const e = it.e * (1 - asm);
+        // aktivni sloj izlazi prema gledatelju i malo se podiže
+        it.g.position.set(e * 1.1, (3 - i) * gap + (1 - ea) * -4 + e * 0.35, e * 0.9);
+        const base = s.alpha * ea;
+        it.pm.opacity = base * (0.035 + 0.1 * e + 0.05 * asm);
+        it.fm.opacity = base * (0.22 + 0.78 * e + 0.5 * asm);
+        it.gm.opacity = base * (0.05 + 0.95 * e + 0.3 * asm);
       });
     },
-    /** gornji lijevi kut sloja u svjetskim koordinatama (za DOM oznake) */
+    /** lijevi rub sloja (za DOM oznaku) */
     anchor(i, out = corner) {
-      return out.set(-FRAME.w / 2, FRAME.h * 0.32, 0).applyMatrix4(items[i].g.matrixWorld);
+      return out.set(-W / 2, 0, D * 0.2).applyMatrix4(items[i].g.matrixWorld);
     },
+    emphasis: (i) => items[i].e,
+    arrival: (i) => items[i].arr,
     dispose() {
-      items.forEach((it) => { it.lg.dispose(); it.lm.dispose(); it.fm.dispose(); it.fg.dispose(); });
+      items.forEach((it) => { it.geos.forEach((g) => g.dispose()); it.fm.dispose(); it.gm.dispose(); it.pm.dispose(); });
     },
   };
 }

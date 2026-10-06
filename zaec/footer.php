@@ -67,7 +67,7 @@ $posts_page = (int) get_option( 'page_for_posts' );
 		</div>
 		<div class="foot-legal">
 			<p>© <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php echo esc_html( $o['legal_name'] ); ?><?php echo $legal_bits ? '. ' . esc_html( implode( ' · ', $legal_bits ) ) : ''; ?>. Sjedište: <?php echo esc_html( $o['address'] . ', ' . $o['postal_code'] . ' ' . $o['city'] ); ?>.</p>
-			<p><?php echo $o['gtm_id'] ? 'Analitika samo uz privolu' : 'Bez kolačića za praćenje'; ?> · izrađeno u Osijeku</p>
+			<p><?php echo $o['gtm_id'] ? 'Analitika samo uz privolu' : 'Bez kolačića za praćenje'; ?> · izrađeno u Osijeku<?php if ( is_front_page() ) : ?> · Karta Osijeka: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> suradnici<?php endif; ?></p>
 		</div>
 	</div>
 	<svg class="foot-giant" viewBox="0 0 1000 205" aria-hidden="true" focusable="false"><text x="500" y="186" text-anchor="middle" font-family="Archivo Variable, Archivo, sans-serif" font-weight="900" font-size="250" letter-spacing="-8" style="font-variation-settings:'wdth' 125">ZAEC</text></svg>

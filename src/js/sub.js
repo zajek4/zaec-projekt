@@ -7,7 +7,8 @@ const motionOK = document.documentElement.classList.contains('motion-ok');
 const art = document.querySelector('[data-parallax]');
 if (art && motionOK) {
   const img = art.querySelector('img');
-  gsap.fromTo(img, { y: 40, opacity: 0, scale: 0.96 }, { y: 0, opacity: 1, scale: 1, duration: 1.6, ease: 'expo.out', delay: 0.2 });
+  // samo pomak i mjerilo (bez prozirnosti): slika je LCP i mora biti vidljiva od prvog iscrtavanja
+  gsap.fromTo(img, { y: 28, scale: 0.97 }, { y: 0, scale: 1, duration: 1.4, ease: 'expo.out' });
   gsap.to(img, { yPercent: -10, ease: 'none', scrollTrigger: { trigger: art, start: 'top top', end: 'bottom top', scrub: true } });
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     const rx = gsap.quickTo(img, 'rotationY', { duration: 1.2, ease: 'power3.out' });

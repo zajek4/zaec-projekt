@@ -52,6 +52,8 @@ function zaec_head_early() {
 		'thanks' => zaec_url( 'hvala' ),
 		'phone'  => zaec_option( 'phone_display' ),
 		'home'   => home_url( '/' ),
+		'theme'  => ZAEC_THEME_URI,
+		'ver'    => ZAEC_VERSION,
 	);
 	echo "<script>(function(){var d=document.documentElement;d.classList.remove('no-js');d.classList.add('js');if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion-ok');})();window.ZAEC_CFG=" . wp_json_encode( $cfg ) . ";</script>\n"; // phpcs:ignore
 	$font = glob( ZAEC_THEME_DIR . '/assets/build/assets/archivo-latin-standard-normal-*.woff2' );
@@ -59,7 +61,9 @@ function zaec_head_early() {
 		printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( zaec_build_url( 'assets/' . basename( $font[0] ) ) ) );
 	}
 	if ( is_front_page() ) {
-		printf( '<link rel="preload" href="%s" as="image" type="image/webp" fetchpriority="high">' . "\n", esc_url( zaec_img( 'world/poster.webp' ) ) );
+		// svaki uređaj učitava samo svoj poster (isto pravilo za uspravne ekrane kao u CSS-u i world3)
+		printf( '<link rel="preload" href="%s" as="image" type="image/webp" fetchpriority="high" media="(min-width: 760px) and (min-aspect-ratio: 82/100)">' . "\n", esc_url( zaec_img( 'world/poster.webp' ) ) );
+		printf( '<link rel="preload" href="%s" as="image" type="image/webp" fetchpriority="high" media="(max-width: 759px), (max-aspect-ratio: 82/100)">' . "\n", esc_url( zaec_img( 'world/poster-m.webp' ) ) );
 	}
 	printf( '<meta name="theme-color" content="%s">' . "\n", is_front_page() ? '#04060c' : '#efebe3' );
 	printf( '<link rel="icon" href="%s" type="image/svg+xml">' . "\n", esc_url( zaec_img( 'favicon.svg' ) ) );

@@ -14,7 +14,7 @@ $hero = array(
 	'h1'        => 'Stvarni projekti. <em>Stvarni</em> ljudi.',
 	'lead'      => 'Bez izmišljenih klijenata i lažnih brojki. Svaki rad možete otvoriti i provjeriti — a rezultate objavljujemo samo uz potvrdu i dopuštenje klijenta.',
 	'image'     => 'world/usluga-onama.webp',
-	'image_alt' => 'Low-poly lebdeći otok s gradićem',
+	'image_alt' => 'Konkatedrala sv. Petra i Pavla u Osijeku noću, s osvijetljenim vitrajima i svjetlosnim signalom s tornja.',
 	'cta'       => array( 'Složite svoj projekt', 'cijene#konfigurator' ),
 	'title'     => 'Radovi',
 );
@@ -32,7 +32,7 @@ get_template_part( 'template-parts/page-hero', null, array( 'landing' => $hero )
 		<?php else : ?>
 			<p class="lead">Projekti se uskoro dodaju.</p>
 		<?php endif; ?>
-		<div style="margin-top:60px"><?php get_template_part( 'template-parts/proof', null, array( 'report' => true ) ); ?></div>
+		<div style="margin-top:60px"><?php get_template_part( 'template-parts/proof', null, array( 'report' => false ) ); ?></div>
 	</div>
 </section>
 <?php

@@ -50,9 +50,13 @@ function zaec_og_image() {
 	if ( is_singular() && has_post_thumbnail() ) {
 		return (string) get_the_post_thumbnail_url( null, 'zaec-hero' );
 	}
+	// landing stranice: JPG 1200×630 izrezan iz kadra stranice (tools/art/og.mjs), inače zadana slika
 	$l = zaec_get_landing();
-	if ( $l && ! empty( $l['image'] ) && ( 'industry' === ( $l['type'] ?? '' ) ) ) {
-		return zaec_img( $l['image'] );
+	if ( $l && ! empty( $l['image'] ) ) {
+		$og = 'og/' . pathinfo( (string) $l['image'], PATHINFO_FILENAME ) . '.jpg';
+		if ( file_exists( ZAEC_THEME_DIR . '/assets/img/' . $og ) ) {
+			return zaec_img( $og );
+		}
 	}
 	return zaec_img( 'og/default.png' );
 }
@@ -104,6 +108,11 @@ function zaec_head_meta() {
 		'og:url'         => $url ? $url : home_url( add_query_arg( array() ) ),
 		'og:image'       => $img,
 	);
+	// vlastite slike za dijeljenje su uvijek 1200×630
+	if ( false !== strpos( $img, '/assets/img/og/' ) ) {
+		$og['og:image:width']  = '1200';
+		$og['og:image:height'] = '630';
+	}
 	foreach ( $og as $p => $c ) {
 		if ( $c ) {
 			printf( '<meta property="%s" content="%s">' . "\n", esc_attr( $p ), esc_attr( $c ) );

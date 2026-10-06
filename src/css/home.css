@@ -20,10 +20,17 @@
 .stage-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.4s var(--ease-out); touch-action: pan-y; }
 .stage-ready .stage-canvas { opacity: 1; }
 .stage-poster { position: absolute; inset: 0; background: var(--void) var(--poster, none) 70% 50% / cover no-repeat; transition: opacity 1.4s var(--ease-out); }
-@media (max-width: 759px) { .stage-poster { background-image: var(--poster-m, none); background-position: 50% 0; } }
+@media (max-width: 759px), (max-aspect-ratio: 82/100) { .stage-poster { background-image: var(--poster-m, none); background-position: 50% 0; } }
 .stage-ready .stage-poster { opacity: 0; }
 .no-webgl .stage-canvas, .webgl-lost .stage-canvas { display: none; }
 .no-webgl .stage-poster, .webgl-lost .stage-poster { opacity: 1; }
+.stage-credit { position: absolute; right: 14px; bottom: 10px; margin: 0; font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.04em; color: rgba(190, 200, 230, 0.55); opacity: 0; transition: opacity 0.6s; pointer-events: none; z-index: 1; }
+.stage-credit a { color: inherit; text-decoration: none; }
+.show-osm .stage-credit { opacity: 1; }
+@media (max-width: 759px), (max-aspect-ratio: 82/100) {
+  /* uspravno: zasluga za kartu uz desni rub, okomito — ne prekriva sadržaj */
+  .stage-credit { right: 3px; bottom: auto; top: 38%; writing-mode: vertical-rl; font-size: 0.5rem; color: rgba(190, 200, 230, 0.42); }
+}
 .stage-vignette {
   position: absolute; inset: 0; pointer-events: none;
   background:
@@ -45,6 +52,13 @@
 .sl--city b { font-size: 0.6rem; padding: 3px 7px; }
 .sl--city::after { height: 10px; }
 .sl--home b { background: var(--signal); border-color: var(--signal); color: #fff; }
+.sl--town { translate: -50% calc(-100% - 8px); }
+.sl--town b { font-size: 0.58rem; color: #ffd9a8; letter-spacing: 0.12em; text-shadow: 0 0 12px rgba(255, 170, 80, 0.45); }
+.sl--minor b { font-size: 0.5rem; opacity: 0.75; }
+@media (max-width: 759px), (max-aspect-ratio: 82/100) { .sl--minor, .sl--m-hide { display: none; } }
+.sl--small b { font-size: 0.58rem; padding: 4px 8px; }
+.sl--trg b { letter-spacing: 0.16em; font-size: 0.56rem; }
+.sl--pin small { color: #ffcf9a; }
 .sl--soft { translate: -50% -50%; }
 .sl--soft b { color: rgba(205, 215, 255, 0.75); letter-spacing: 0.3em; font-size: 0.62rem; }
 .sl--you { gap: 4px; }
@@ -69,6 +83,18 @@
 
 /* uspravni raspored toka (mobitel): kanali iznad, ishodi ispod */
 .stage-labels.is-portrait .sl--ch { translate: -50% calc(-100% - 10px); text-align: center; }
+@media (max-width: 400px) {
+  .sl--ch b, .sl--out b { font-size: 0.5rem; letter-spacing: 0.02em; padding-inline: 3px; }
+  /* uski ekran: susjedne oznake kanala i ishoda u dva reda da se ne preklapaju */
+  .stage-labels.is-portrait .sl--ch[data-l="ch-1"], .stage-labels.is-portrait .sl--ch[data-l="ch-3"] { translate: -50% calc(-100% - 30px); }
+  .stage-labels.is-portrait .sl--out[data-l="out-1"], .stage-labels.is-portrait .sl--out[data-l="out-3"] { translate: -50% 28px; }
+  /* niži panel: broj i gumbi u jednom redu */
+  .cine-path .path-out { grid-template-areas: 'of of' 'num presets'; }
+  .cine-path .path-presets { flex-direction: row; }
+  .cine-path .chip-btn { white-space: nowrap; padding-inline: 12px; min-height: 40px; }
+  .cine-path .gate { padding: 6px 9px; }
+}
+@media (max-width: 759px) and (max-height: 700px), (max-aspect-ratio: 82/100) and (max-height: 700px) { .path-note-more { display: none; } }
 .stage-labels.is-portrait .sl--out { translate: -50% 12px; text-align: center; }
 .stage-labels.is-portrait .sl--ch b, .stage-labels.is-portrait .sl--out b { white-space: normal; max-width: 64px; font-size: 0.5rem; line-height: 1.25; letter-spacing: 0.06em; }
 
@@ -88,6 +114,8 @@
 
 /* ═════════ KINO ═════════ */
 .cine { position: relative; z-index: 2; color: var(--cine-fg); min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--header-h) + 40px) 80px; }
+/* zatamnjenje iza teksta (::before) izlazi izvan stupca; clip (ne hidden) ne lomi sticky i ne širi mobilni viewport */
+.cine { overflow-x: clip; }
 .cine--duo { display: block; padding: 0; }
 .cine-beat { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--header-h) + 40px) 80px; }
 .cine-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); width: 100%; }
@@ -465,6 +493,8 @@
   .scroll-cue { display: none; }
   .cine-path { height: auto; }
   .cam-mark { height: 50vh; }
+  /* put do upita: kadar drži dok je ploča prilijepljena na dnu, zatim prepušta slojevima */
+  .cine-path .cam-mark--bottom { height: calc(100vh + 80px); height: calc(100svh + 80px); }
   .path-sticky { position: static; height: auto; display: block; }
   .path-grid { display: block; padding-block: calc(var(--header-h) + 24px) 40px; }
   .path-head { grid-template-columns: 1fr; position: relative; }
@@ -485,9 +515,13 @@
   .sl--soft, .sl-long { display: none; }
   .sys-grid { grid-template-columns: 1fr; }
   .sys-head { padding-top: 0; margin-bottom: 30vh; }
-  .sys-head::before, .sys-layers::before { content: ''; position: absolute; inset: -20px -40px; z-index: -1; background: rgba(4, 6, 12, 0.78); }
+  .sys-head::before { content: ''; position: absolute; inset: -20px -40px; z-index: -1; background: rgba(4, 6, 12, 0.78); }
   .sys-layers { position: relative; }
-  .sys-layer { min-height: 0; padding: 22px 0; opacity: 1; }
+  /* slojevi se čitaju u donjem pojasu ekrana; 3D stog ostaje vidljiv iznad */
+  .sys-layer { min-height: 30vh; align-content: start; padding: 18px 0 0; opacity: 0.32; transition: opacity 0.45s var(--ease-out); }
+  .sys-layer.is-past { opacity: 0.06; }
+  .sys-layer.is-active { opacity: 1; }
+  .sys-layers .sys-layer:last-child { min-height: 46vh; }
   .sys-layers { margin-top: 0; }
   .sys-statement { min-height: 80vh; padding-top: 40vh; }
   .recog-list { grid-template-columns: 1fr; }
