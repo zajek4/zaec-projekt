@@ -145,7 +145,8 @@
 .dtable code { font-family: var(--font-mono); font-size: 0.85rem; color: var(--signal-2); background: var(--signal-soft); padding: 3px 7px; border-radius: 5px; white-space: nowrap; }
 
 /* povezano */
-.block--related { padding-block: 40px 70px; }
+.block--related { padding-block: clamp(36px, 4vw, 56px) clamp(56px, 7vw, 104px); }
+.block:not(.block--paper2):not(.block--ink) + .block--related { padding-top: 0; }
 .related { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .related a { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 20px 22px; border-radius: var(--r-m); border: 1px solid var(--line-2); text-decoration: none; transition: border-color 0.3s, transform 0.4s var(--ease-out), background 0.3s; }
 .related a:hover { border-color: var(--ink); background: var(--card); transform: translateY(-2px); }

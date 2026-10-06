@@ -82,9 +82,6 @@ add_action( 'wp_head', 'zaec_hero_preload', 2 );
 /** Blokovi koje potpisni hero preuzima u svoju scenu (npr. anatomija na Izradi) ne ponavljaju se ispod. */
 function zaec_hero_prepare( $l ) {
 	$kind = zaec_hero_kind( $l );
-	if ( 'izrada' === $kind ) {
-		$l['blocks'] = array_values( array_filter( (array) $l['blocks'], static fn( $b ) => 'anatomy' !== ( $b['type'] ?? '' ) ) );
-	}
 	// Kontakt: forma je u heroju (#upit), blok ispod postaje nastavak — koraci nakon upita i izravni kontakti
 	if ( 'kontakt' === $kind ) {
 		$l['blocks'] = array_map( static fn( $b ) => 'contact' === ( $b['type'] ?? '' ) ? array_merge( $b, array( 'after' => true ) ) : $b, (array) $l['blocks'] );

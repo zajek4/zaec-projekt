@@ -1,46 +1,88 @@
 {
  "w": 1080,
  "h": 1920,
- "left": 15.87,
- "right": 56.1,
- "levels": [
+ "left": 22.885,
+ "right": 77.115,
+ "win": {
+  "left": 27.856,
+  "right": 72.144
+ },
+ "floors": [
   {
-   "bottom": 89.63,
-   "top": 78.44
+   "field": "ime",
+   "top": 29.847,
+   "bottom": 38.235,
+   "wtop": 32.135,
+   "wbottom": 35.821
   },
   {
-   "bottom": 78.44,
-   "top": 70.05
+   "field": "kontakt",
+   "top": 38.235,
+   "bottom": 46.624,
+   "wtop": 40.523,
+   "wbottom": 44.209
   },
   {
-   "bottom": 70.05,
-   "top": 61.66
+   "field": "djelatnost",
+   "top": 46.624,
+   "bottom": 55.013,
+   "wtop": 48.912,
+   "wbottom": 52.598
   },
   {
-   "bottom": 61.66,
-   "top": 53.27
+   "field": "usluga",
+   "top": 55.013,
+   "bottom": 63.401,
+   "wtop": 57.301,
+   "wbottom": 60.986
   },
   {
-   "bottom": 53.27,
-   "top": 44.88
+   "field": "poruka",
+   "top": 63.401,
+   "bottom": 73.315,
+   "wtop": 65.562,
+   "wbottom": 71.282
   }
  ],
- "top": 43.1,
- "crown": {
-  "top": 38.15,
-  "bottom": 43.38,
-  "x": 36.9
+ "ground": {
+  "top": 73.315,
+  "bottom": 84.5
  },
- "base": 89.63,
- "spire": {
-  "x": 85.31,
-  "y": 35.41
+ "shop": {
+  "left": 25.371,
+  "right": 39.38,
+  "top": 75.349,
+  "bottom": 82.721
  },
- "horizon": 43.86,
+ "door": {
+  "left": 43.447,
+  "right": 74.629,
+  "top": 76.238,
+  "bottom": 84.119
+ },
+ "roof": 27.813,
+ "sign": {
+  "top": 12,
+  "bottom": 26.034,
+  "left": 12.943,
+  "right": 87.057,
+  "x": 164.2,
+  "w": 751.6,
+  "lines": [
+   {
+    "base": 313.6,
+    "fs": 80.5
+   },
+   {
+    "base": 475.4,
+    "fs": 186.5
+   }
+  ]
+ },
  "crop": {
-  "x": 13.47,
-  "y": 36.23,
-  "w": 45.03,
-  "h": 55.8
+  "x": 20.885,
+  "y": 25.813,
+  "w": 58.23,
+  "h": 60.687
  }
 }

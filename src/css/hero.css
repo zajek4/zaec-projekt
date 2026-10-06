@@ -37,41 +37,7 @@
 }
 .sh-layer, .sh-layer img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
 
-/* ═════════ Izrada web stranica — "Od nacrta do zgrade" ═════════ */
-.sh-real { clip-path: inset(calc(var(--cut, 0) * 1%) 0 0 0); }
-.sh-floors { position: absolute; inset: 0; }
-.sh-floor {
-  position: absolute;
-  left: calc(var(--br) * 1% + 1.3%);
-  top: calc((var(--b) + var(--t)) * 0.5%);
-  translate: 0 -50%;
-  display: flex; align-items: center; gap: 0.9cqw;
-  font: 500 max(10px, 0.56cqw) / 1 var(--font-mono);
-  letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
-  color: #f6dcb1;
-  transition: color 0.5s var(--ease-out), opacity 0.5s var(--ease-out);
-}
-.sh-floor::before { content: ''; width: 2.4cqw; height: 1px; background: currentColor; opacity: 0.55; }
-.sh-floor i { font-style: normal; opacity: 0.65; }
-.sh-hl {
-  position: absolute; pointer-events: none;
-  left: calc(var(--bl) * 1% - 0.35%); width: calc((var(--br) - var(--bl)) * 1% + 0.7%);
-  top: calc(var(--hlt, 50) * 1%); height: calc((var(--hlb, 50) - var(--hlt, 50)) * 1%);
-  border: 1px solid rgba(255, 178, 63, 0.9);
-  background: rgba(255, 178, 63, 0.07);
-  box-shadow: 0 0 34px rgba(255, 178, 63, 0.35), inset 0 0 22px rgba(255, 178, 63, 0.18);
-  opacity: 0;
-  transition: top 0.7s var(--ease-out), height 0.7s var(--ease-out), opacity 0.5s var(--ease-out);
-}
-.sh-hl.is-on { opacity: 1; }
-@media (max-aspect-ratio: 4/5) {
-  .sh-floor { left: calc(var(--brm) * 1% + 1.6%); top: calc((var(--bm) + var(--tm)) * 0.5%); font-size: max(10px, 1.5cqw); gap: 1.4cqw; }
-  .sh-floor::before { width: 3cqw; }
-  .sh-floor b { display: none; }
-  .sh-hl { left: calc(var(--blm) * 1% - 0.6%); width: calc((var(--brm) - var(--blm)) * 1% + 1.2%); }
-}
-
-/* skener: ista crta reže zgradu i naslov */
+/* skener: vodoravna crta koja gradi (Izrada) */
 .sh-scan { position: absolute; left: 0; right: 0; top: 0; height: 0; z-index: 3; pointer-events: none; display: none; will-change: transform; }
 .sh-scan::before {
   content: ''; position: absolute; left: 0; right: 0; top: -0.5px; height: 1px;
@@ -82,194 +48,162 @@
 }
 .sh-scan::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 22vh; background: linear-gradient(0deg, rgba(90, 120, 255, 0.11), rgba(90, 120, 255, 0)); opacity: var(--scan-x, 1); }
 
+/* tekst preko kadra (O nama) */
 .sh-copy { position: absolute; inset: 0; z-index: 4; display: grid; align-content: center; gap: 22px; padding-top: calc(var(--header-h) + 24px); padding-bottom: 72px; pointer-events: none; }
 .sh-copy > * { pointer-events: auto; max-width: min(47vw, 660px); }
-.sh-top, .sh-bottom { display: grid; gap: 22px; }
-.sh-title { font-size: clamp(2.8rem, 5.5vw, 6.5rem); line-height: 0.95; color: #fff; max-width: 10.5ch; }
-.sh-title em { color: var(--amber); }
-.sh-lead { max-width: 44ch; }
-.sh-hint { position: absolute; left: var(--gutter); bottom: 26px; display: none; align-items: center; gap: 12px; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8f98b6; }
+.sh-hint { position: absolute; left: var(--gutter); bottom: 26px; z-index: 4; display: none; align-items: center; gap: 12px; margin: 0; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8f98b6; }
 .sh-hint b { font-weight: 500; }
-.sh-izrada.is-building .sh-hint { color: #f6dcb1; }
-.sh-izrada.is-building .sh-hint span { animation: none; background: var(--amber); }
-/* tiha tama iza teksta: linije nacrta ne smiju presijecati uvod */
-.sh-copy::before { content: ''; position: absolute; z-index: -1; left: 0; top: 0; bottom: 0; width: min(62vw, 900px); background: radial-gradient(ellipse 70% 55% at 22% 58%, rgba(4, 6, 12, 0.72), rgba(4, 6, 12, 0) 72%); pointer-events: none; }
 .sh-hint span { width: 42px; height: 1px; background: currentColor; transform-origin: 0 50%; animation: sh-hint 2.4s var(--ease-io) infinite; }
 @keyframes sh-hint { 0% { transform: scaleX(0); } 55% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
-
-/* živo stanje (JS + kretanje): pinanje, skener, naslov u obrisu iznad crte i ispunjen ispod nje */
-.sh-izrada.is-live .sh-stage { position: sticky; top: 0; }
-.sh-izrada.is-live .sh-scan { display: block; transform: translateY(var(--scan-y, 100vh)); }
-.sh-izrada.is-live .sh-hint { display: inline-flex; }
-.sh-izrada.is-live .sh-title,
-.sh-izrada.is-live .sh-title em {
-  color: transparent;
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-stroke: 1px rgba(159, 180, 255, 0.78);
-}
-.sh-izrada.is-live .sh-title { background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) var(--fill, 100%), #fff var(--fill, 100%)); }
-.sh-izrada.is-live .sh-title em { -webkit-text-stroke-color: rgba(255, 190, 90, 0.8); background-image: linear-gradient(180deg, rgba(255, 178, 63, 0) var(--fill-em, 100%), var(--amber) var(--fill-em, 100%)); }
-.sh-izrada.is-live .sh-floor:not(.is-built) { color: rgba(159, 180, 255, 0.7); }
-.sh-izrada.is-live .sh-plan { opacity: 0; transition: opacity 1.1s var(--ease-out); }
-.sh-izrada.is-live.is-in .sh-plan { opacity: 1; }
-.sh-izrada.is-live .sh-floor { opacity: 0; }
-.sh-izrada.is-live.is-in .sh-floor { opacity: 1; transition-delay: calc(0.6s + var(--k, 0) * 70ms); }
-
-/* nastavak scene: sedam dijelova stranice prolazi pored zgrade */
-.sh-anat { position: relative; z-index: 5; padding-block: 12vh 18vh; }
-.sh-anat-col { display: grid; gap: 22px; max-width: 46%; }
-.sh-anat .h2 { color: #fff; }
-.sh-anat .h2 em { color: var(--amber); }
-.sh-anat-list { list-style: none; margin: 6px 0 0; padding: 0; border-top: 1px solid var(--sh-line); }
-.sh-anat-list li { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding: 22px 0; border-bottom: 1px solid var(--sh-line); transition: opacity 0.5s var(--ease-out); }
-.sh-anat-list b { font-size: 1.12rem; font-weight: 680; color: #fff; }
-.sh-anat-list p { color: var(--sh-muted); font-size: 0.96rem; margin-top: 4px; }
-.sh-anat-list .anat-n { background: rgba(35, 71, 255, 0.9); }
-.sh-izrada.is-live .sh-anat { margin-top: 145vh; }
-.sh-izrada.is-live .sh-anat-list li { opacity: 0.38; }
-.sh-izrada.is-live .sh-anat-list li.is-on { opacity: 1; }
-.sh-izrada.is-live .sh-anat-list li.is-on .anat-n { background: var(--amber); color: var(--ink); }
 .sh-answer { background: var(--paper); padding-top: clamp(40px, 6vw, 80px); }
 
+/* ═════════ Izrada web stranica — naslov je zgrada ═════════ */
+/* Riječi su etaže: SVG tekst s textLength (širina pročelja) na osnovnoj liniji iz kadra. Iznad skenera obris
+   (nacrt), ispod tinta na toplom staklu — kao natpis na prozorima. */
+.sh-real { clip-path: inset(calc(var(--cut, 0) * 1%) 0 0 0); }
+.it-title { position: absolute; inset: 0; margin: 0; pointer-events: none; }
+.it-type { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.it-type--m { display: none; }
+.it-w { font-family: var(--font-sans); font-weight: 800; font-stretch: 125%; font-variation-settings: 'wdth' 125; }
+.it-w--serif { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-variation-settings: normal; }
+.it-out .it-w { fill: rgba(159, 180, 255, 0.06); stroke: #a9bcff; stroke-width: 1.1px; vector-effect: non-scaling-stroke; }
+.it-ink .it-w { fill: #1b0f06; fill-opacity: 0.93; }
+.it-ink .it-w--serif { fill: #2b1104; }
+.it-door { position: absolute; z-index: 2; left: calc(var(--tx) * 1%); width: calc(var(--tw) * 1%); top: calc(var(--lt) * 1%); height: calc((var(--lb) - var(--lt)) * 1%); display: grid; place-items: center; }
+.it-door .btn { box-shadow: 0 18px 40px -12px rgba(35, 71, 255, 0.8); }
+.it-copy { position: absolute; z-index: 4; left: 0; right: 0; top: 0; height: 100vh; height: 100svh; min-height: 560px; display: grid; align-content: end; justify-items: start; gap: 18px; padding-bottom: clamp(48px, 9vh, 96px); pointer-events: none; }
+.it-copy > * { pointer-events: auto; max-width: min(30vw, 420px); }
+.it-copy .lead { font-size: 1rem; color: #c8cee2; }
+.it-phone { display: inline-flex; align-items: center; gap: 10px; color: #eef0f7; text-decoration: none; font-size: 0.78rem; letter-spacing: 0.08em; }
+.it-phone .icon { color: var(--amber); }
+.it-note { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: #6f7894; }
+.it-copy .crumbs { position: absolute; top: calc(var(--header-h) + 24px); left: var(--gutter); }
+/* živo stanje: pinanje i skener */
+.sh-izrada.is-live .sh-stage { position: sticky; top: 0; }
+.sh-izrada.is-live .it-run { height: 110vh; }
+.sh-izrada.is-live .sh-scan { display: block; transform: translateY(var(--scan-y, 100vh)); }
+.sh-izrada.is-live .sh-hint { display: inline-flex; left: auto; right: var(--gutter); }
+.sh-izrada.is-building .sh-hint { color: #f6dcb1; }
+.sh-izrada.is-building .sh-hint span { animation: none; background: var(--amber); }
+.sh-izrada.is-live .sh-plan { opacity: 0; transition: opacity 1.1s var(--ease-out); }
+.sh-izrada.is-live.is-in .sh-plan { opacity: 1; }
 @media (max-aspect-ratio: 4/5), (max-width: 760px) {
-  /* mobitel: naslov na nebu, zgrada u sredini, uvod i gumbi na mokroj ulici */
-  .sh-copy { align-content: space-between; padding-top: calc(var(--header-h) + 14px); padding-bottom: 22px; gap: 16px; }
-  .sh-copy > * { max-width: none; }
-  .sh-top, .sh-bottom { gap: 14px; }
-  .sh-bottom { position: relative; }
-  .sh-bottom::before { content: ''; position: absolute; inset: -30px -40px -30px; z-index: -1; background: linear-gradient(180deg, rgba(4, 6, 12, 0), rgba(4, 6, 12, 0.7) 50%); }
-  .sh-copy::before { display: none; }
-  .sh-bottom .phero-cta { flex-wrap: nowrap; gap: 10px; }
-  .sh-bottom .phero-cta .btn--ghost { display: none; }
-  .sh-anat-intro .lead { margin-top: 4px; }
-  .sh-title { font-size: clamp(2.4rem, 11vw, 4.4rem); max-width: 9.5ch; }
-  .sh-lead { font-size: 0.98rem; }
-  .sh .sh-copy .crumbs { display: none; }
-  .sh-hint { display: none !important; }
-  .sh-anat-col { max-width: none; }
-  .sh-izrada.is-live .sh-anat { margin-top: 125vh; }
+  .it-type--d { display: none; }
+  .it-type--m { display: block; }
+  .it-door { left: calc(var(--txm) * 1%); width: calc(var(--twm) * 1%); top: calc(var(--ltm) * 1%); height: calc((var(--lbm) - var(--ltm)) * 1%); }
+  .it-door .btn { padding-inline: 18px; }
+  .it-copy { position: relative; height: auto; min-height: 0; padding-block: 36px 8px; }
+  .it-copy > * { max-width: none; }
+  .it-copy .crumbs { display: none; }
+  .sh-izrada.is-live .it-run { height: 90vh; }
+  .sh-izrada.is-live .sh-hint { left: var(--gutter); right: auto; bottom: 16%; }
 }
 
-/* ═════════ O nama — "Mali studio. Velika odgovornost." ═════════ */
-/* između uspravnog i 4:3 kadar se ne reže (naslov je u koordinatama kadra), rubovi se stapaju s noći */
-@media (min-aspect-ratio: 4/5) and (max-aspect-ratio: 4/3) {
-  .sh-onama .sh-scene { width: 100%; -webkit-mask-image: linear-gradient(180deg, transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(180deg, transparent, #000 9%, #000 91%, transparent); }
-}
-.on-title { position: absolute; inset: 0; margin: 0; pointer-events: none; font-family: var(--font-sans); color: #eef0f7; }
-.on-a, .on-b, .on-small { position: absolute; display: block; white-space: nowrap; }
-.on-a { right: 60%; top: 33%; font-size: 12cqw; line-height: 1; z-index: 1; text-align: right; }
-.on-a em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--amber); letter-spacing: -0.01em; }
-.on-b { left: 12.5%; top: 47%; font-size: 9.6cqw; line-height: 1; font-weight: 800; letter-spacing: -0.035em; font-stretch: 112%; z-index: 3; text-shadow: 0 0.04em 0.4em rgba(4, 6, 12, 0.35); }
-.on-small {
-  left: calc(var(--wx) * 1% + 2.6%); top: calc(var(--wy) * 1%); translate: 0 -50%;
-  font: 500 max(11px, 0.78cqw) / 1.2 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; color: #f6dcb1;
-  z-index: 3;
-}
-.on-small::before { content: ''; display: inline-block; vertical-align: middle; width: 2.2cqw; height: 1px; margin-right: 0.8cqw; background: currentColor; opacity: 0.7; }
-.on-window { position: absolute; left: calc(var(--wx) * 1%); top: calc(var(--wy) * 1%); width: 7cqw; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 196, 119, 0.55), rgba(255, 160, 70, 0.12) 40%, rgba(255, 160, 70, 0) 70%); pointer-events: none; mix-blend-mode: screen; }
-.sh-fg { pointer-events: none; z-index: 2; }
-.on-signal { position: absolute; left: calc(var(--sx) * 1%); top: calc(var(--sy) * 1%); width: 1px; height: calc((100 - var(--sy)) * 1%); background: linear-gradient(180deg, rgba(207, 224, 255, 0.95), rgba(255, 178, 63, 0.6)); box-shadow: 0 0 8px rgba(160, 185, 255, 0.8); transform-origin: 50% 0; transform: scaleY(0); }
-.on-copy { align-content: start; }
-.on-copy::before { display: none; }
-.on-caption { position: absolute; right: var(--gutter); bottom: 26px; font-size: 0.62rem; line-height: 1.7; letter-spacing: 0.16em; text-transform: uppercase; color: #6f7894; text-align: right; }
-.on-aside-wrap { position: absolute; z-index: 5; inset: 0 0 auto; height: 0; }
-.on-aside { position: absolute; right: var(--gutter); top: 21vh; width: min(30rem, 33vw); display: grid; gap: 18px; }
+/* ═════════ O nama — "Mali studio. Velika odgovornost." — tipografija kao mjera ═════════ */
+/* kota iz nacrta: pomoćne crte s tornja, kotna crta s kosim crticama, okomit naslov dug kao toranj */
+.on-title { position: absolute; inset: 0; margin: 0; pointer-events: none; }
+.on-type { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.on-type--m { display: none; }
+.on-ext line { stroke: rgba(207, 216, 255, 0.42); stroke-width: 1px; vector-effect: non-scaling-stroke; stroke-dasharray: 3 5; }
+.on-dim { stroke: #d6deff; stroke-width: 1.2px; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.on-ticks line { stroke: #d6deff; stroke-width: 1.4px; vector-effect: non-scaling-stroke; }
+.on-dim-label { fill: #cfd8ff; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.14em; }
+.on-v-em { font-family: var(--font-serif); font-style: italic; font-weight: 400; fill: var(--amber); }
+.on-v-b { font-family: var(--font-sans); font-weight: 800; font-stretch: 112%; font-variation-settings: 'wdth' 112; letter-spacing: -0.02em; fill: #eef0f7; }
+.on-m { font-family: var(--font-sans); font-weight: 700; letter-spacing: 0.01em; fill: #f6dcb1; }
+.on-small-dim { stroke: #f6dcb1; stroke-width: 1px; vector-effect: non-scaling-stroke; }
+.on-window { position: absolute; left: calc(var(--wx) * 1%); top: calc(var(--wy) * 1%); width: 4cqw; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 196, 119, 0.6), rgba(255, 160, 70, 0.14) 40%, rgba(255, 160, 70, 0) 70%); pointer-events: none; mix-blend-mode: screen; }
+.on-copy { position: absolute; inset: 0; z-index: 4; display: grid; grid-template-rows: auto 1fr; padding-top: calc(var(--header-h) + 24px); padding-bottom: 72px; pointer-events: none; }
+.on-copy > * { pointer-events: auto; }
+.on-aside { align-self: center; display: grid; gap: 20px; max-width: min(31vw, 440px); margin-top: -6vh; }
 .on-aside .lead { font-size: 1.02rem; }
+.on-caption { position: absolute; right: var(--gutter); bottom: 26px; margin: 0; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: #6f7894; }
+.sh-onama.is-live .on-window { opacity: 0; }
 @media (max-aspect-ratio: 4/5), (max-width: 760px) {
-  .on-a { right: 58.6%; top: 37%; font-size: 12cqw; }
-  .on-b { left: 13%; top: 49.5%; font-size: 10.3cqw; }
-  .on-small { left: calc(var(--wxm) * 1% + 3.4%); top: calc(var(--wym) * 1%); font-size: max(10px, 2.4cqw); }
-  .on-small::before { width: 4cqw; margin-right: 1.6cqw; }
-  .on-window { left: calc(var(--wxm) * 1%); top: calc(var(--wym) * 1%); width: 18cqw; }
-  .on-signal { left: calc(var(--sxm) * 1%); top: calc(var(--sym) * 1%); height: calc((100 - var(--sym)) * 1%); }
-  .on-caption { display: none; }
-  .on-aside-wrap { position: relative; height: auto; padding-block: 8px 48px; }
-  .on-aside { position: static; width: auto; }
+  .on-type--d { display: none; }
+  .on-type--m { display: block; }
+  .on-window { left: calc(var(--wxm) * 1%); top: calc(var(--wym) * 1%); width: 10cqw; }
+  .sh-onama .sh-stage { height: auto; min-height: 0; overflow: visible; }
+  .sh-onama .sh-frame { position: relative; height: 100vh; height: 100svh; min-height: 560px; }
+  .on-copy { position: relative; inset: auto; display: block; padding: 28px var(--gutter) 40px; }
+  .on-copy .crumbs { display: none; }
+  .on-aside { max-width: none; margin: 0; }
+  .on-caption { position: static; margin-top: 22px; }
 }
-/* špica: grad u mraku → prozor → "Mali studio." → reflektori → iza tornja "Velika odgovornost." */
-.sh-onama.is-live .sh-bg, .sh-onama.is-live .sh-fg { filter: brightness(var(--lit, 1)) saturate(calc(0.5 + var(--lit, 1) * 0.5)); }
-.sh-onama.is-live .on-window, .sh-onama.is-live .on-small, .sh-onama.is-live .on-a, .sh-onama.is-live .on-b, .sh-onama.is-live .on-aside, .sh-onama.is-live .on-caption { opacity: 0; }
-/* nit: signal s tornja nastavlja kroz sekciju "Zašto ZAEC" (između naslova i teksta) */
-.on-thread { position: absolute; top: 0; width: 1px; height: 100%; pointer-events: none; background: linear-gradient(180deg, rgba(255, 178, 63, 0.9), rgba(35, 71, 255, 0.35) 70%, rgba(35, 71, 255, 0)); transform-origin: 50% 0; transform: scaleY(var(--thread, 0)); }
 
-/* ═════════ Kontakt — "Vaše svjetlo je sljedeće" ═════════ */
-/* bez pinanja: kadar je ljepljiva pozadina, forma ostaje gdje jest (i prelazi preko kadra na mobitelu) */
-.kt-stage { height: auto; overflow: clip; }
-.kt-stage > .sh-frame { position: sticky; top: 0; inset: auto; height: 100vh; height: 100svh; min-height: 560px; }
-.kt-stage > .sh-frame::after { content: ''; position: absolute; inset: auto 0 0; height: 5%; background: linear-gradient(180deg, rgba(4, 6, 12, 0), var(--void)); pointer-events: none; }
-/* tama iza uvoda: topli prozori susjeda ne smiju ići kroz tekst */
-.kt-stage > .sh-frame::before { content: ''; position: absolute; z-index: 1; inset: 0; background: radial-gradient(ellipse 38% 36% at 8% 88%, rgba(4, 6, 12, 0.9), rgba(4, 6, 12, 0.55) 45%, rgba(4, 6, 12, 0) 80%); pointer-events: none; }
-.kt-grid {
-  position: relative; z-index: 4;
-  margin-top: calc(-1 * max(100svh, 560px)); min-height: max(100svh, 560px);
-  display: grid; grid-template-columns: minmax(0, 1fr) min(440px, 31vw); column-gap: 6vw; align-items: center;
-  padding: calc(var(--header-h) + 3vh) var(--gutter) 5vh;
-}
-.kt-copy { display: grid; gap: 26px; align-self: stretch; align-content: space-between; padding-block: 2vh 1vh; max-width: min(34vw, 560px); }
-.kt-head, .kt-more { display: grid; gap: 20px; }
-.kt-title { font-size: clamp(2.8rem, 4.7vw, 5.6rem); max-width: 8.6ch; text-shadow: 0 0.05em 0.6em rgba(4, 6, 12, 0.5); }
-.kt-lead { max-width: 40ch; font-size: 1.02rem; }
-.kt-more { position: relative; }
-.kt-more::before { content: ''; position: absolute; z-index: -1; inset: -40px -60px -40px -120px; background: radial-gradient(ellipse 60% 60% at 40% 55%, rgba(4, 6, 12, 0.78), rgba(4, 6, 12, 0) 75%); pointer-events: none; }
-.kt-direct { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; }
-.kt-direct a { display: inline-flex; align-items: center; gap: 12px; color: var(--sh-fg); text-decoration: none; }
-.kt-direct a .icon { color: var(--amber); }
-.kt-direct b { display: block; font-weight: 650; }
-.kt-direct small { display: block; color: var(--sh-muted); font-size: 0.8rem; }
-.kt-direct a:hover b { text-decoration: underline; text-underline-offset: 3px; }
-
-/* forma kao dio kadra: staklo kroz koje se vidi toplo svjetlo iza */
-.kt-card {
-  position: relative; border-radius: 22px; padding: clamp(22px, 2.2vw, 32px);
-  background: rgba(9, 12, 22, 0.66); border: 1px solid rgba(178, 192, 255, 0.16);
-  -webkit-backdrop-filter: blur(18px) saturate(1.15); backdrop-filter: blur(18px) saturate(1.15);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-  scroll-margin-top: calc(var(--header-h) + 12px);
-}
-.kt-card .h3 { color: #fff; }
-.kt-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 20px; }
-.kt-note { color: var(--sh-muted); font-size: 0.9rem; margin-top: 6px; }
-.kt-card .cform { gap: 18px; }
-.kt-card .cform-grid { gap: 12px 14px; }
-.kt-card .cform--dark .field label { color: #c9cfe3; }
-.kt-card .cform--dark .cform-privacy { color: #8e96b2; font-size: 0.76rem; }
-.kt-card .cform-status.is-ok { color: #9ef0b7; }
-.kt-n { font: 500 0.66rem/1 var(--font-mono); letter-spacing: 0.08em; color: #7d87a8; margin-right: 8px; transition: color 0.4s var(--ease-out); }
-.field.is-lit .kt-n { color: var(--amber); }
-/* mjerač: ista kuća u malom (kruna, četiri kata, prizemlje) */
-.kt-meter { flex: none; display: grid; justify-items: center; gap: 3px; padding: 4px 2px 0; }
-.kt-meter i { display: block; width: 22px; height: 7px; border-radius: 1.5px; background: rgba(178, 192, 255, 0.14); box-shadow: inset 0 0 0 1px rgba(178, 192, 255, 0.18); transition: background 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); }
-.kt-meter i.c { width: 14px; height: 4px; margin-bottom: 2px; }
-.kt-meter i.g { width: 26px; height: 9px; }
-.kt-meter i.is-on { background: var(--amber); box-shadow: 0 0 12px rgba(255, 178, 63, 0.6); }
-.kt-meter i.c.is-on { background: #cdd8ff; box-shadow: 0 0 12px rgba(160, 185, 255, 0.8); }
-
-/* scena: osvijetljeni izrez kuće, maskiran po etažama (--f0…--f4, --fc pali forma) */
+/* ═════════ Kontakt — zgrada je forma ═════════ */
+/* Polja stoje u trakama prozora, vrata su gumb, naslov je neon na krovu. Sve se pozicionira u postocima kadra
+   (vrijednosti iz kadra: --w{i}t/b, --wl/wr, --dl/dr/dt/db; mobitel: isto s nastavkom m). */
 .kt-lit { position: absolute; pointer-events: none; }
 .kt-lit img { display: block; width: 100%; height: 100%; }
 .kt-lit--m { display: none; }
-.kt-floors { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; pointer-events: none; }
-.kt-floor {
-  position: absolute; right: calc(100% - var(--hl) * 1% + 0.9%); top: calc((var(--t) + var(--b)) * 0.5%); translate: 0 -50%;
-  display: flex; align-items: center; gap: 0.7cqw; white-space: nowrap;
-  font: 500 max(10px, 0.56cqw) / 1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase;
-  color: rgba(159, 180, 255, 0.62); transition: color 0.5s var(--ease-out);
+.kt-title { position: absolute; inset: 0; margin: 0; pointer-events: none; }
+.kt-sign { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.kt-sign--m { display: none; }
+.kt-neon { fill: rgba(196, 206, 240, 0.05); stroke: rgba(196, 206, 240, 0.62); stroke-width: 1.2px; vector-effect: non-scaling-stroke; transition: fill 0.6s var(--ease-out), stroke 0.6s var(--ease-out); }
+.kt-neon-s { font-family: var(--font-sans); font-weight: 800; font-stretch: 112%; font-variation-settings: 'wdth' 112; }
+.kt-neon-em { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-variation-settings: normal; }
+.sh-kontakt.is-sent .kt-neon { fill: #ffe6c0; stroke: #ffd9a0; filter: drop-shadow(0 0 3px rgba(255, 196, 120, 0.95)) drop-shadow(0 0 14px rgba(255, 150, 50, 0.65)); }
+.sh-kontakt.is-sent .kt-neon-em { fill: #ffbf66; }
+
+.kt-form { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.kt-form .cform { position: absolute; inset: 0; display: block; }
+.kt-form .cform-grid, .kt-form .cform-foot { display: contents; }
+.kt-form .field, .kt-form .cform-submit, .kt-form .cform-privacy, .kt-form .cform-status, .kt-form .cform-config { pointer-events: auto; }
+.kt-form .field { position: absolute; margin: 0; left: calc(var(--wl) * 1%); width: calc((var(--wr) - var(--wl)) * 1%); }
+.kt-form .field:nth-child(1) { top: calc(var(--w0t) * 1%); height: calc((var(--w0b) - var(--w0t)) * 1%); }
+.kt-form .field:nth-child(2) { top: calc(var(--w1t) * 1%); height: calc((var(--w1b) - var(--w1t)) * 1%); }
+.kt-form .field:nth-child(3) { top: calc(var(--w2t) * 1%); height: calc((var(--w2b) - var(--w2t)) * 1%); }
+.kt-form .field:nth-child(4) { top: calc(var(--w3t) * 1%); height: calc((var(--w3b) - var(--w3t)) * 1%); }
+.kt-form .field:nth-child(5) { top: calc(var(--w4t) * 1%); height: calc((var(--w4b) - var(--w4t)) * 1%); }
+/* oznaka polja: natpis na zidu iznad prozora */
+.kt-form .field label { position: absolute; left: 0; bottom: calc(100% + 0.7cqh); margin: 0; font: 500 max(10px, 0.5cqw) / 1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: #b4bcdb; white-space: nowrap; }
+.kt-form .field label .opt { color: #6f7894; text-transform: none; letter-spacing: 0.02em; }
+.kt-form .input, .kt-form .select, .kt-form .textarea {
+  width: 100%; height: 100%; min-height: 0; margin: 0; border: 0; border-radius: 0;
+  background: transparent; color: #eef0f7; box-shadow: none;
+  font-size: max(14px, 0.95cqw); padding: 0 1.1cqw;
+  transition: background 0.3s, box-shadow 0.3s, color 0.6s var(--ease-out);
 }
-.kt-floor::after { content: ''; width: 1.8cqw; height: 1px; background: currentColor; opacity: 0.55; }
-.kt-floor b { font-weight: 500; opacity: 0; transform: translateX(6px); transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out); }
-.kt-floor i { font-style: normal; }
-.kt-floor i, .kt-floor b { text-shadow: 0 0 6px rgba(4, 6, 12, 0.95), 0 0 14px rgba(4, 6, 12, 0.8); }
-.kt-floor.is-on { color: #f6dcb1; }
-.kt-floor.is-on b { opacity: 1; transform: none; }
-.kt-pin {
-  position: absolute; left: calc(var(--cx) * 1%); top: calc(var(--cy) * 1% - 1.6%); translate: -50% -100%;
-  font-size: max(10px, 0.56cqw); letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; color: #c9d2f2;
-  display: flex; flex-direction: column; align-items: center; gap: 0.7cqw; margin: 0;
+.kt-form .select { padding-right: 2.6cqw; background-position: calc(100% - 1.4cqw) 50%, calc(100% - 1cqw) 50%; }
+.kt-form .textarea { resize: none; padding-top: 0.55cqw; line-height: 1.35; }
+.kt-form .input::placeholder, .kt-form .textarea::placeholder { color: rgba(200, 208, 236, 0.38); }
+.kt-form .input:focus, .kt-form .select:focus, .kt-form .textarea:focus { outline: none; background: rgba(255, 178, 63, 0.05); box-shadow: inset 0 0 0 1.5px rgba(255, 178, 63, 0.85); }
+/* upaljen prozor: tekst postaje tinta na toplom staklu */
+.kt-form .field.is-lit .input, .kt-form .field.is-lit .select, .kt-form .field.is-lit .textarea { color: #1d1006; font-weight: 600; }
+.kt-form .field.is-lit label { color: #f6dcb1; }
+.kt-form .field-error { position: absolute; left: 0; top: calc(100% + 0.4cqh); margin: 0; font-size: 11px; color: #ffab9b; white-space: nowrap; }
+.kt-form .cform-submit {
+  position: absolute; left: calc(var(--dl) * 1%); width: calc((var(--dr) - var(--dl)) * 1%); top: calc(var(--dt) * 1%); height: calc((var(--db) - var(--dt)) * 1%);
+  justify-content: center; padding-inline: 8px; border-radius: 4px; font-size: max(14px, 0.9cqw);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15), 0 0 46px -8px rgba(35, 71, 255, 0.9);
 }
-.kt-pin::after { content: ''; width: 1px; height: 2.4cqh; background: linear-gradient(180deg, currentColor, transparent); opacity: 0.6; }
-.kt-beacon { position: absolute; left: calc(var(--cx) * 1%); top: 0; width: 1px; height: calc(var(--cy) * 1%); background: linear-gradient(0deg, #fff, rgba(207, 224, 255, 0.9) 30%, rgba(160, 185, 255, 0)); box-shadow: 0 0 10px 1px rgba(150, 175, 255, 0.85), 0 0 40px 6px rgba(35, 71, 255, 0.3); transform-origin: 50% 100%; transform: scaleY(0); pointer-events: none; }
-.sh-kontakt.is-sent .kt-beacon { transform: scaleY(1); transition: transform 1.6s var(--ease-out) 0.35s; }
-.sh-kontakt.is-sent .kt-pin { color: #f6dcb1; }
+.kt-form .cform-privacy { position: absolute; left: calc(var(--hl) * 1%); width: calc((var(--hr) - var(--hl)) * 1%); top: calc(var(--gb) * 1% + 1.1cqh); margin: 0; max-width: none; font-size: 11px; line-height: 1.4; text-align: center; color: #8e96b2; }
+.kt-form .cform-privacy a { color: #c9cfe3; }
+.kt-form .cform-status { position: absolute; left: calc(var(--hl) * 1% - 6%); width: calc((var(--hr) - var(--hl)) * 1% + 12%); top: calc(var(--gb) * 1% + 5.2cqh); margin: 0; text-align: center; font-size: 13px; color: #eef0f7; }
+.kt-form .cform-status.is-ok { color: #9ef0b7; }
+.kt-form .cform-status.is-error { color: #ffab9b; }
+.kt-form .cform-config { position: absolute; left: calc(var(--hr) * 1% + 2%); top: calc(var(--w4t) * 1%); width: 22%; }
+.kt-n { font: 500 1em/1 var(--font-mono); letter-spacing: 0.08em; color: #7d87a8; margin-right: 8px; }
+.field.is-lit .kt-n { color: var(--amber); }
+
+/* strane: uvod lijevo, izravni kontakti desno (kuća je u sredini kadra) */
+.kt-side { position: absolute; z-index: 4; top: 0; bottom: 0; display: grid; align-content: center; gap: 18px; width: min(27vw, 400px); padding-top: var(--header-h); }
+.kt-side--l { left: var(--gutter); }
+.kt-side--l .crumbs { position: absolute; top: calc(var(--header-h) + 24px); }
+.kt-side--r { right: var(--gutter); justify-items: end; text-align: right; align-content: end; padding-bottom: 12vh; }
+.kt-side .lead { font-size: 1rem; color: #c8cee2; }
+.kt-how { font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: #f6dcb1; line-height: 1.6; }
+.kt-direct { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.kt-direct a { display: inline-flex; align-items: center; gap: 12px; color: #eef0f7; text-decoration: none; }
+.kt-side--r .kt-direct a { flex-direction: row-reverse; }
+.kt-direct a .icon { color: var(--amber); flex: none; }
+.kt-direct b { display: block; font-weight: 650; }
+.kt-direct small { display: block; color: #a3abc4; font-size: 0.8rem; }
+.kt-direct a:hover b { text-decoration: underline; text-underline-offset: 3px; }
+.kt-below { display: none; }
+.kt-privacy { font-size: 0.82rem; color: #8e96b2; }
+.kt-privacy a { color: #c9cfe3; }
 
 /* nastavak: ista noć, koraci nakon upita pale se kao etaže */
 .kt-after { background: #04060c; color: #eef0f7; padding-block: clamp(56px, 9vw, 120px) clamp(64px, 10vw, 140px); }
@@ -294,29 +228,26 @@
 .kt-ways-list b { display: block; font-weight: 650; }
 .kt-ways-list small { display: block; color: #8f98b6; font-size: 0.82rem; }
 
-/* uži ekrani: prvi ekran je kadar s naslovom, uvod i forma prelaze preko njega (staklo) */
-@media (max-width: 1099px), (max-aspect-ratio: 7/5) {
-  .kt-grid { grid-template-columns: minmax(0, 1fr); align-items: start; row-gap: 16px; padding-bottom: 8vh; }
-  .kt-copy { max-width: none; display: contents; }
-  .kt-head { min-height: calc(max(100svh, 560px) - var(--header-h) - 3vh - 6vh); align-content: start; padding-top: 1vh; }
-  .kt-more, .kt-card { max-width: 640px; width: 100%; justify-self: center; }
-  .kt-more { padding: 24px; border-radius: 22px; background: rgba(9, 12, 22, 0.66); border: 1px solid rgba(178, 192, 255, 0.16); -webkit-backdrop-filter: blur(18px) saturate(1.15); backdrop-filter: blur(18px) saturate(1.15); }
-  .kt-more::before, .kt-stage > .sh-frame::before { display: none; }
-  .kt-title { font-size: clamp(2.6rem, 8.4vw, 5rem); max-width: 9ch; }
+@media (max-width: 1100px), (max-aspect-ratio: 5/4) {
+  .kt-side { display: none; }
+  .kt-below { display: grid; gap: 18px; padding-block: 32px 48px; }
 }
 @media (max-aspect-ratio: 4/5), (max-width: 760px) {
-  .kt-lit--d { display: none; }
-  .kt-lit--m { display: block; }
-  .kt-floor { right: auto; left: calc(var(--hrm) * 1% + 1.8%); top: calc((var(--tm) + var(--bm)) * 0.5%); flex-direction: row-reverse; font-size: max(10px, 2.3cqw); gap: 1.6cqw; padding: 4px 7px 4px 0; border-radius: 4px; background: linear-gradient(90deg, rgba(4, 6, 12, 0), rgba(4, 6, 12, 0.78) 22%); }
-  .kt-floor::after { width: 4cqw; }
-  .kt-floor b { opacity: 1; transform: none; color: rgba(159, 180, 255, 0.5); }
-  .kt-floor.is-on b { color: inherit; }
-  .kt-pin { left: calc(var(--cxm) * 1%); top: calc(var(--cym) * 1% - 1%); font-size: max(10px, 2.2cqw); gap: 1.2cqw; }
-  .kt-beacon { left: calc(var(--cxm) * 1%); height: calc(var(--cym) * 1%); }
-  .kt-title { font-size: clamp(2.4rem, 11.4vw, 4.4rem); }
-  .sh-kontakt .crumbs { display: none; }
-  .kt-head { gap: 12px; }
-  .kt-card-head { margin-bottom: 16px; }
+  .kt-lit--d, .kt-sign--d { display: none; }
+  .kt-lit--m, .kt-sign--m { display: block; }
+  .kt-form .field { left: calc(var(--wlm) * 1%); width: calc((var(--wrm) - var(--wlm)) * 1%); }
+  .kt-form .field:nth-child(1) { top: calc(var(--w0tm) * 1%); height: calc((var(--w0bm) - var(--w0tm)) * 1%); }
+  .kt-form .field:nth-child(2) { top: calc(var(--w1tm) * 1%); height: calc((var(--w1bm) - var(--w1tm)) * 1%); }
+  .kt-form .field:nth-child(3) { top: calc(var(--w2tm) * 1%); height: calc((var(--w2bm) - var(--w2tm)) * 1%); }
+  .kt-form .field:nth-child(4) { top: calc(var(--w3tm) * 1%); height: calc((var(--w3bm) - var(--w3tm)) * 1%); }
+  .kt-form .field:nth-child(5) { top: calc(var(--w4tm) * 1%); height: calc((var(--w4bm) - var(--w4tm)) * 1%); }
+  .kt-form .field label { font-size: 10px; letter-spacing: 0.06em; }
+  .kt-form .field label .opt { display: none; }
+  .kt-form .input, .kt-form .select, .kt-form .textarea { font-size: 16px; padding-inline: 10px; }
+  .kt-form .cform-submit { left: calc(var(--dlm) * 1%); width: calc((var(--drm) - var(--dlm)) * 1%); top: calc(var(--dtm) * 1%); height: calc((var(--dbm) - var(--dtm)) * 1%); font-size: 14px; }
+  .kt-form .cform-privacy { display: none; }
+  .kt-form .cform-status { left: 4%; width: 92%; top: calc(var(--gbm) * 1% + 0.6cqh); font-size: 12px; }
+  .kt-form .cform-config { left: 4%; width: 92%; top: calc(var(--gbm) * 1% + 0.6cqh); }
   .kt-after-grid { grid-template-columns: 1fr; }
   .kt-ways { grid-column: auto; }
   .kt-ways-list { grid-template-columns: 1fr; }

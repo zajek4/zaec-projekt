@@ -439,10 +439,11 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(2
 /* ───────── reveal (samo kad JS radi i pokret je dopušten) ───────── */
 .js.motion-ok [data-reveal] { opacity: 0; transform: translateY(26px); }
 .js.motion-ok [data-reveal].is-in { opacity: 1; transform: none; transition: opacity 0.9s var(--ease-out), transform 1s var(--ease-out); transition-delay: var(--d, 0s); }
-.split-w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; padding-right: 0.02em; }
+/* maska riječi mora obuhvatiti kvačice (Č, Š, Ž), silazne poteze (j, g, p) i nagib kurziva — inače ih reže */
+.split-w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.16em 0.1em 0.2em 0.04em; margin: -0.16em -0.1em -0.2em -0.04em; }
 .split-w > span { display: inline-block; will-change: transform; }
 .split-nb { white-space: nowrap; }
-.js.motion-ok .split:not(.is-in) .split-w > span { transform: translateY(108%) rotate(4deg); }
+.js.motion-ok .split:not(.is-in) .split-w > span { transform: translateY(140%) rotate(4deg); }
 .split.is-in .split-w > span { transform: none; transition: transform 1.05s var(--ease-out); transition-delay: calc(var(--i, 0) * 55ms + var(--d, 0s)); }
 
 /* ───────── prose (vodiči, pravne stranice) ───────── */
