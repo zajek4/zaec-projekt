@@ -1,54 +1,65 @@
 {
  "w": 2400,
  "h": 1350,
- "levels": [
+ "left": 39.77,
+ "right": 60.23,
+ "textX": 979,
+ "textW": 441.9,
+ "floors": [
   {
-   "i": 1,
-   "label": "Kratki upit i poziv",
-   "bottom": 90.91,
-   "top": 76.79
+   "word": "IZRADA",
+   "kind": "sans",
+   "top": 14.122,
+   "bottom": 20.549,
+   "base": 265,
+   "fs": 89.8
   },
   {
-   "i": 2,
-   "label": "Česta pitanja",
-   "bottom": 76.79,
-   "top": 66.97
+   "word": "WEB",
+   "kind": "sans",
+   "top": 21.943,
+   "bottom": 32.52,
+   "base": 418.6,
+   "fs": 147.8
   },
   {
-   "i": 3,
-   "label": "Područje rada",
-   "bottom": 66.97,
-   "top": 57.16
+   "word": "STRANICA",
+   "kind": "sans",
+   "top": 33.914,
+   "bottom": 38.767,
+   "base": 513.4,
+   "fs": 65
   },
   {
-   "i": 4,
-   "label": "Radovi",
-   "bottom": 57.16,
-   "top": 47.34
+   "word": "KOJE",
+   "kind": "sans",
+   "top": 40.162,
+   "bottom": 49.654,
+   "base": 650.8,
+   "fs": 127.1
   },
   {
-   "i": 5,
-   "label": "Dokazi",
-   "bottom": 47.34,
-   "top": 37.52
+   "word": "donose",
+   "kind": "serif",
+   "top": 51.048,
+   "bottom": 65.134,
+   "base": 850.4,
+   "fs": 178.7
   },
   {
-   "i": 6,
-   "label": "Usluge jezikom kupca",
-   "bottom": 37.52,
-   "top": 27.7
-  },
-  {
-   "i": 7,
-   "label": "Hero",
-   "bottom": 27.7,
-   "top": 17.26
+   "word": "UPITE.",
+   "kind": "sans",
+   "top": 66.528,
+   "bottom": 74.056,
+   "base": 984.2,
+   "fs": 103.7
   }
  ],
- "crown": 7.44,
- "roof": 17.26,
- "ground": 90.91,
- "left": 54.14,
- "right": 74.86,
- "horizon": 86
+ "ground": 90,
+ "lobby": {
+  "top": 78.33,
+  "bottom": 89.242
+ },
+ "top": 10,
+ "roof": 14.122
 }

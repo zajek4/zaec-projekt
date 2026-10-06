@@ -3,6 +3,9 @@ import { defineConfig } from 'vite';
 import path from 'node:path';
 import fs from 'node:fs';
 import sharp from 'sharp';
+
+// bez predmemorije: dodatne širine (-1600, -720) čitaju upravo spremljenu datoteku, ne stari sadržaj iste putanje
+sharp.cache(false);
 import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));

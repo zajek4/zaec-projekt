@@ -33,13 +33,16 @@
 }
 
 /* zajednički blokovi */
-.block { padding-block: clamp(70px, 9vw, 140px); position: relative; }
-.block + .block { padding-top: 0; }
+/* ritam sekcija: jedna mjera razmaka; razmak se dijeli (gornji = 0) samo između susjeda iste pozadine —
+   blok druge boje uvijek ima vlastiti gornji razmak (inače sadržaj lijepi za rub boje) */
+.block { --pad: clamp(72px, 8.5vw, 132px); padding-block: var(--pad); position: relative; }
+.block:not(.block--paper2):not(.block--ink):not(.kt-after) + .block:not(.block--paper2):not(.block--ink):not(.kt-after),
+.block--paper2 + .block--paper2 { padding-top: 0; }
 .block--paper2 { background: var(--paper-2); }
 .block--ink { background: var(--ink); color: var(--paper); }
 .block--ink .kicker { color: #a9a49a; }
 .block--ink .lead, .block--ink p { color: #d8d3c8; }
-.block--ink + .block { padding-top: clamp(70px, 9vw, 140px); }
+.block--ink + .block { padding-top: var(--pad); }
 .block-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 20px 48px; align-items: end; margin-bottom: clamp(36px, 5vw, 72px); }
 .block-head .h2 { max-width: 15ch; }
 .block-head .h2 em { color: var(--signal); }
@@ -153,6 +156,8 @@
 @media (max-width: 860px) { .cta-grid { grid-template-columns: 1fr; } }
 
 /* FAQ */
+.sub-faq { padding-block: clamp(72px, 8.5vw, 132px); }
+.block:not(.block--paper2):not(.block--ink):not(.kt-after) + .sub-faq { padding-top: 0; }
 .sub-faq-grid { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); gap: clamp(28px, 5vw, 90px); align-items: start; }
 .sub-faq .h2 em { color: var(--signal); }
 @media (max-width: 900px) { .sub-faq-grid { grid-template-columns: 1fr; } }
