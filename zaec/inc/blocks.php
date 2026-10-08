@@ -416,7 +416,6 @@ function zaec_block_contact( $b, $l, $alt ) {
 	echo '<div class="contact-grid"><div class="contact-card"><h2 class="h3" style="margin-bottom:6px">Upit</h2><p class="muted" style="margin-bottom:22px">Dva obavezna polja. Ostalo po želji.</p>';
 	get_template_part( 'template-parts/contact-form', null, array( 'id' => 'upit-forma-' . sanitize_key( $l['key'] ?? 'x' ) ) );
 	echo '</div><div class="contact-aside">';
-	echo '<a class="item" href="' . esc_attr( zaec_phone_href() ) . '" data-track="click_to_call"><span class="ic">' . zaec_icon( 'phone', 20 ) . '</span><div><b>' . esc_html( $o['phone_display'] ) . '</b><span>' . esc_html( $o['hours'] ) . '</span></div></a>'; // phpcs:ignore
 	if ( zaec_whatsapp_href() ) {
 		echo '<a class="item" href="' . esc_url( zaec_whatsapp_href() ) . '" target="_blank" rel="noopener" data-track="click_whatsapp"><span class="ic">' . zaec_icon( 'chat-round-dots', 20 ) . '</span><div><b>WhatsApp</b><span>Pošaljite poruku ili fotografiju</span></div></a>'; // phpcs:ignore
 	}
@@ -424,6 +423,7 @@ function zaec_block_contact( $b, $l, $alt ) {
 		echo '<a class="item" href="mailto:' . esc_attr( $o['email'] ) . '"><span class="ic">' . zaec_icon( 'letter', 20 ) . '</span><div><b>' . esc_html( $o['email'] ) . '</b><span>Email</span></div></a>'; // phpcs:ignore
 	}
 	echo '<a class="item" href="' . esc_url( zaec_maps_href() ) . '" target="_blank" rel="noopener"><span class="ic">' . zaec_icon( 'map-point', 20 ) . '</span><div><b>' . esc_html( $o['address'] ) . '</b><span>' . esc_html( $o['postal_code'] . ' ' . $o['city'] ) . ' · otvori kartu</span></div></a>'; // phpcs:ignore
+	echo '<a class="item" href="' . esc_url( zaec_url( 'kontakt' ) ) . '"><span class="ic">' . zaec_icon( 'phone', 20 ) . '</span><div><b>Telefon i radno vrijeme</b><span>Na stranici Kontakt</span></div></a>'; // phpcs:ignore
 	echo '<div><p class="kicker" style="margin:18px 0 12px">Što se događa nakon upita</p><ol class="anat-notes" role="list">';
 	foreach ( array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i fiksna cijena. Odlučujete bez pritiska.' ) ) as $i => $s ) {
 		echo '<li><span class="anat-n">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $s[0] ) . '</b><p>' . esc_html( $s[1] ) . '</p></div></li>';

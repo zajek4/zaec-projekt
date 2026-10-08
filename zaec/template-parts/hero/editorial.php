@@ -52,10 +52,7 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 			<h1 class="h1 eh-title" id="eh-title"><?php echo zaec_kses_title( $title ); // phpcs:ignore ?></h1>
 			<div class="eh-body">
 				<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
-				<div class="phero-cta">
-					<?php echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore ?>
-					<a class="btn btn--ghost" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
-				</div>
+				<?php zaec_hero_ctas( $cta, $href ); ?>
 				<?php if ( ! $sheet ) : ?>
 					<ul class="phero-trust mono" role="list">
 						<li><?php zaec_the_icon( 'document', 16 ); ?> Fiksna cijena u ponudi</li>

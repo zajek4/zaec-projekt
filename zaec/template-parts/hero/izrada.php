@@ -95,7 +95,6 @@ $style = $md && $mm ? sprintf(
 		<?php zaec_render_breadcrumbs(); ?>
 		<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?></p>
 		<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
-		<a class="it-phone mono" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 16 ); ?> <?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
 		<p class="it-note mono" aria-hidden="true">Etaža = riječ · visina etaže = visina slova</p>
 	</div>
 </section>

@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 $title = $args['title'] ?? 'Spremni za web koji <em>zove</em>?';
-$text  = $args['text'] ?? 'Kratak razgovor bez obveze. Nakon njega znate smjer, opseg i — u pisanoj ponudi — fiksnu cijenu.';
-$label = $args['label'] ?? 'Složite svoj projekt';
-$href  = $args['href'] ?? zaec_url( 'cijene' ) . '#konfigurator';
+$text  = $args['text'] ?? 'Kratko opišite posao. Javljamo se u radno vrijeme sa smjerom, a nakon razgovora šaljemo pisanu ponudu s opsegom, rokom i fiksnom cijenom.';
+$label = $args['label'] ?? 'Pošaljite upit';
+$href  = $args['href'] ?? zaec_url( 'kontakt' ) . '#upit';
 ?>
 <section class="cta-band" data-header-theme="night">
 	<div class="wrap cta-grid">
@@ -24,9 +24,8 @@ $href  = $args['href'] ?? zaec_url( 'cijene' ) . '#konfigurator';
 			<p><?php echo esc_html( $text ); ?></p>
 			<div class="cta-actions">
 				<?php echo zaec_button( $label, $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_band' ) ); // phpcs:ignore ?>
-				<a class="tel-link cta-tel" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><span class="dot" aria-hidden="true"></span><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
 			</div>
-			<p class="mono cta-hours"><?php echo esc_html( zaec_option( 'hours' ) ); ?> · ili <a href="<?php echo esc_url( zaec_url( 'provjera-vidljivosti' ) ); ?>">besplatna provjera vidljivosti</a></p>
+			<p class="mono cta-hours">Ili prvo <a href="<?php echo esc_url( zaec_url( 'cijene' ) . '#konfigurator' ); ?>">procjena projekta</a> · <a href="<?php echo esc_url( zaec_url( 'provjera-vidljivosti' ) ); ?>">besplatna provjera vidljivosti</a></p>
 		</div>
 	</div>
 </section>

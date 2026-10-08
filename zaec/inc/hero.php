@@ -98,3 +98,17 @@ function zaec_hero_answer( $l, $class = '' ) {
 	zaec_the_icon( 'lightbulb', 16 );
 	echo ' Kratki odgovor</p><p>' . esc_html( $l['answer'] ) . '</p></div></div>';
 }
+
+/**
+ * Pozivi u heroju podstranice: glavni (iz registra) + drugi korak "Pošaljite upit". Telefon nije u primarnim
+ * pozicijama (odluka vlasnika 8. 10. 2026: cilj je ispunjen upit); broj je na stranici Kontakt.
+ * Ako glavni poziv već vodi na upit, drugog nema.
+ */
+function zaec_hero_ctas( $cta, $href ) {
+	echo '<div class="phero-cta">';
+	echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore
+	if ( false === strpos( (string) $cta[1], 'kontakt' ) ) {
+		echo '<a class="btn btn--ghost" href="' . esc_url( zaec_url( 'kontakt#upit' ) ) . '" data-track="cta_inquiry">' . zaec_icon( 'letter', 18 ) . ' Pošaljite upit</a>'; // phpcs:ignore
+	}
+	echo '</div>';
+}
