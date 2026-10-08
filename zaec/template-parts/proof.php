@@ -10,6 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 $quotes = zaec_get_testimonials( 6 );
+if ( ! $quotes && empty( $args['report'] ) ) {
+	return; // bez stvarnih izjava nema ni praznog okvira
+}
 ?>
 <div class="proof">
 	<?php foreach ( $quotes as $q ) : ?>

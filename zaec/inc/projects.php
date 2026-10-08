@@ -41,7 +41,7 @@ add_action( 'init', 'zaec_register_projects_cpt' );
 
 function zaec_project_fields() {
 	return array(
-		'code'           => array( 'Oznaka projekta', 'text', 'npr. DGR.03' ),
+		'code'           => array( 'Oznaka projekta', 'text', 'npr. CZA.01' ),
 		'service'        => array( 'Usluga / tip projekta', 'text', 'Web stranica · restoran' ),
 		'location'       => array( 'Lokacija', 'text', 'Osijek' ),
 		'year'           => array( 'Godina', 'text', '2026' ),
@@ -53,7 +53,7 @@ function zaec_project_fields() {
 		'result'         => array( 'Ishod (samo potvrđen)', 'textarea', 'Upisati samo ako je stvarno potvrđen.' ),
 		'quote'          => array( 'Izjava klijenta', 'textarea', 'Doslovno, uz dopuštenje klijenta.' ),
 		'quote_author'   => array( 'Izjava — ime', 'text', 'npr. Dominik' ),
-		'quote_role'     => array( 'Izjava — uloga / tvrtka', 'text', 'npr. vlasnik, Daj Gric' ),
+		'quote_role'     => array( 'Izjava — uloga / tvrtka', 'text', 'npr. vlasnik, naziv tvrtke' ),
 		'metric_label'   => array( 'Metrika — naziv', 'text', 'npr. Upiti mjesečno' ),
 		'metric_before'  => array( 'Metrika — prije', 'text', 'npr. 12' ),
 		'metric_after'   => array( 'Metrika — poslije', 'text', 'npr. 31' ),
@@ -149,6 +149,74 @@ function zaec_get_project_data( $post_id ) {
 	);
 }
 
+/**
+ * Projekti povučeni iz javnog portfelja (po URL-u weba, jer ID-jevi se razlikuju između instalacija).
+ * Ne brišu se: migracija ih jednom prebaci u skicu (wp-admin ih i dalje ima), a do tada ih
+ * filter izbacuje iz svih javnih upita.
+ */
+function zaec_retired_project_hosts() {
+	return array( 'dajgric.com' );
+}
+
+function zaec_retired_project_ids() {
+	static $ids = null;
+	if ( null !== $ids ) {
+		return $ids;
+	}
+	$ids = array(); // postavljeno prije upita: unutarnji get_posts ne smije opet ući u filter
+	$all = get_posts( array( 'post_type' => 'projekti', 'post_status' => 'any', 'posts_per_page' => 200, 'fields' => 'ids', 'meta_key' => '_zaec_project_website_url', 'suppress_filters' => true ) );
+	foreach ( $all as $id ) {
+		$host = (string) wp_parse_url( (string) get_post_meta( $id, '_zaec_project_website_url', true ), PHP_URL_HOST );
+		if ( in_array( preg_replace( '/^www\./', '', strtolower( $host ) ), zaec_retired_project_hosts(), true ) ) {
+			$ids[] = (int) $id;
+		}
+	}
+	return $ids;
+}
+
+/** Javni upiti nad projektima nikad ne vraćaju povučene projekte. */
+function zaec_exclude_retired_projects( $q ) {
+	if ( ( is_admin() && ! wp_doing_ajax() ) || ( defined( 'WP_CLI' ) && WP_CLI ) || ( defined( 'REST_REQUEST' ) && REST_REQUEST && current_user_can( 'edit_posts' ) ) ) {
+		return;
+	}
+	$pt = (array) $q->get( 'post_type' );
+	if ( ! in_array( 'projekti', $pt, true ) && ! $q->is_post_type_archive( 'projekti' ) ) {
+		return;
+	}
+	$ids = zaec_retired_project_ids();
+	if ( $ids ) {
+		$q->set( 'post__not_in', array_merge( (array) $q->get( 'post__not_in' ), $ids ) );
+	}
+}
+add_action( 'pre_get_posts', 'zaec_exclude_retired_projects' );
+
+/** Pojedinačna stranica povučenog projekta: 404 (sadržaj ostaje u bazi). */
+function zaec_retired_project_404() {
+	if ( is_singular( 'projekti' ) && in_array( (int) get_queried_object_id(), zaec_retired_project_ids(), true ) && ! current_user_can( 'edit_post', get_queried_object_id() ) ) {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
+		nocache_headers();
+	}
+}
+add_action( 'template_redirect', 'zaec_retired_project_404', 1 );
+
+/** Jednokratna, reverzibilna migracija: povučeni projekti → skica, bez isticanja na naslovnici. */
+function zaec_retire_projects_migration() {
+	if ( get_option( 'zaec_retired_projects_v1' ) || ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+	foreach ( zaec_retired_project_ids() as $id ) {
+		if ( 'publish' === get_post_status( $id ) ) {
+			wp_update_post( array( 'ID' => $id, 'post_status' => 'draft' ) );
+		}
+		update_post_meta( $id, '_zaec_project_featured', '0' );
+		update_post_meta( $id, '_zaec_project_retired', gmdate( 'Y-m-d' ) );
+	}
+	update_option( 'zaec_retired_projects_v1', '1', false );
+}
+add_action( 'admin_init', 'zaec_retire_projects_migration', 35 );
+
 /** Projekti za naslovnicu/sekcije: istaknuti prvo, zatim najnoviji. */
 function zaec_get_projects( $limit = 3 ) {
 	$args = array(
@@ -199,17 +267,6 @@ function zaec_default_project_seed_data() {
 			'excerpt' => 'Kontrola kvalitete i laboratorijske analize hrane, sirovina i poljoprivrednih proizvoda.',
 			'content' => "Web stranica Eurokontrole razdvaja usluge kontrole kvalitete i laboratorijskih analiza u razumljive cjeline.\n\nPosjetitelj brzo dolazi do relevantne usluge i nastavlja prema kontaktu bez prolaska kroz nevažan sadržaj.",
 		),
-		array(
-			'code' => 'DGR.03', 'title' => 'Daj Gric', 'service' => 'Web stranica · restoran i catering', 'location' => 'Bilje',
-			'technologies' => 'UX · meni · narudžbe · catering', 'website_url' => 'https://dajgric.com/', 'image' => 'assets/img/projects/daj-gric.jpg',
-			'result' => 'Veći promet i prepoznatljivost hrane u lokalnom mjestu.',
-			'challenge' => 'Gost restorana brze hrane treba odmah znati što je na meniju, gdje je restoran i kako naručiti — a catering kupac što dobiva za veći događaj.',
-			'approach' => 'Informacije ispred ukrasa. Svaki ekran vodi prema narudžbi ili kontaktu, bez prolaska kroz nevažan sadržaj.',
-			'solution' => 'Meni, narudžbe, lokacija, catering ponuda i galerija — brzo i konkretno, prvo za mobitel.',
-			'quote' => 'Stvarno sam zadovoljan, svaka čast. Promet je veći nego prije.', 'quote_author' => 'Dominik', 'quote_role' => 'Daj Gric, Bilje',
-			'excerpt' => 'Restoran brze hrane i catering: meni, narudžbe, lokacija i galerija.',
-			'content' => "Daj Gric treba biti brz i konkretan: što je na meniju, gdje se restoran nalazi, kako naručiti i što catering nudi za veće događaje.\n\nStranica te informacije stavlja ispred ukrasa i vodi posjetitelja prema narudžbi ili kontaktu.",
-		),
 	);
 }
 
@@ -240,7 +297,7 @@ function zaec_seed_default_projects() {
 }
 add_action( 'admin_init', 'zaec_seed_default_projects', 30 );
 
-/** v2: postojećem projektu Daj Gric dodaj potvrđenu izjavu ako je još nema. */
+/** v2: postojećim projektima iz seeda dodaj izjavu ako je još nema. */
 function zaec_backfill_project_quotes() {
 	if ( get_option( 'zaec_quotes_backfill' ) ) {
 		return;
