@@ -130,6 +130,7 @@
 .stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .stats li { padding: clamp(22px, 2.6vw, 34px); border-radius: var(--r-l); background: var(--ink); color: var(--paper); display: grid; gap: 6px; }
 .stats b { font-size: clamp(2.4rem, 4.6vw, 4rem); line-height: 1; font-weight: 850; letter-spacing: -0.03em; font-variation-settings: 'wdth' 118; color: #fff; }
+.stats--words b { font-size: var(--fs-d4); line-height: var(--lh-d4); letter-spacing: -0.01em; font-variation-settings: 'wdth' 100; }
 .stats span { font-weight: 650; }
 .stats p { color: #a9a49a; font-size: 0.92rem; }
 .stats-note { margin-top: 18px; font-size: 0.82rem; color: var(--muted); max-width: 80ch; }

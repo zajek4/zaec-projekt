@@ -203,7 +203,8 @@ function zaec_block_report( $b, $l, $alt ) {
 function zaec_block_stats( $b, $l, $alt ) {
 	zaec_block_open( $alt, '', 'block--stats' );
 	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Podaci' );
-	echo '<ul class="stats" role="list" data-stagger="0.08">';
+	$words = ! array_filter( (array) $b['items'], static fn( $s ) => preg_match( '/\d/', $s[0] ) );
+	echo '<ul class="stats' . ( $words ? ' stats--words' : '' ) . '" role="list" data-stagger="0.08">';
 	foreach ( $b['items'] as $s ) {
 		printf( '<li data-reveal><b>%s</b><span>%s</span><p>%s</p></li>', esc_html( $s[0] ), esc_html( $s[1] ), esc_html( $s[2] ) );
 	}
@@ -464,11 +465,17 @@ function zaec_block_audit( $b, $l, $alt ) {
 }
 
 function zaec_block_about( $b, $l, $alt ) {
-	$o = zaec_get_options();
-	echo '<section class="block"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Zašto ZAEC</p>';
-	zaec_heading( 'Obrtnici zaslužuju web koji <em>radi</em>.' );
-	echo '</div><div class="prose" data-reveal><p>Previše majstora platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>ZAEC radi drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom.</p></div></div></section>';
-	echo '<section class="block block--paper2"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Podaci</p><h2 class="h3">Tko stoji iza ZAEC-a</h2></div><div class="prose" data-reveal><table><tbody>';
+	$o    = zaec_get_options();
+	$part = $b['part'] ?? 'all';
+	if ( 'facts' !== $part ) {
+		echo '<section class="block' . esc_attr( $alt ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Zašto ZAEC</p>';
+		zaec_heading( 'Prvo nacrt. Onda <em>sve</em> ostalo.' );
+		echo '</div><div class="prose" data-reveal><p>Previše tvrtki platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>ZAEC radi drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom.</p></div></div></section>';
+	}
+	if ( 'intro' === $part ) {
+		return;
+	}
+	echo '<section class="block' . esc_attr( 'facts' === $part ? $alt : ' block--paper2' ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Podaci</p><h2 class="h3">Tko stoji iza ZAEC-a</h2></div><div class="prose" data-reveal><table><tbody>';
 	$rows = array( 'Naziv' => $o['legal_name'], 'Nositelj' => $o['owner_name'], 'Sjedište' => $o['address'] . ', ' . $o['postal_code'] . ' ' . $o['city'], 'Matični broj' => $o['mb'], 'OIB' => $o['oib'], 'Djelatnost (NKD)' => $o['nkd'] ? $o['nkd'] . ' — računalno programiranje' : '', 'Radno vrijeme' => $o['hours'], 'Iskustvo' => $o['experience'] ? $o['experience'] . ' godina rada na webu' : '' );
 	foreach ( $rows as $k => $v ) {
 		if ( $v ) {
@@ -476,6 +483,21 @@ function zaec_block_about( $b, $l, $alt ) {
 		}
 	}
 	echo '</tbody></table></div></div></section>';
+}
+
+/**
+ * Načela rada (O nama): šest stavki kao članci ugovora — svaka je obećanje koje web već daje negdje drugdje
+ * (strategija 05 §3), ovdje skupljeno na jedno mjesto.
+ */
+function zaec_block_principles( $b, $l, $alt ) {
+	zaec_block_open( $alt, 'kako-radimo', 'block--principles' );
+	zaec_block_head( $b['title'] ?? 'Kako <em>radimo</em>.', $b['lead'] ?? '', 'Načela' );
+	echo '<ol class="principles" role="list" data-stagger="0.06">';
+	foreach ( (array) $b['items'] as $i => $it ) {
+		echo '<li data-reveal><span class="principle-n mono" aria-hidden="true">N.' . esc_html( zaec_pad( $i + 1 ) ) . '</span><h3 class="h4">' . esc_html( $it[0] ) . '</h3><p>' . esc_html( $it[1] ) . '</p></li>';
+	}
+	echo '</ol>';
+	zaec_block_close();
 }
 
 /** Povezane stranice (interno povezivanje). */

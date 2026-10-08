@@ -33,7 +33,7 @@ function zaec_meta_description() {
 		}
 	}
 	if ( is_post_type_archive( 'projekti' ) ) {
-		return 'Radovi ZAEC web studija: web stranice za ustanove, B2B tvrtke i ugostiteljstvo. Stvarni projekti koje možete otvoriti i provjeriti.';
+		return 'Radovi ZAEC web studija: web stranice za ustanove i B2B tvrtke. Stvarni projekti koje možete otvoriti i provjeriti, s problemom, rješenjem i ishodom.';
 	}
 	if ( is_home() ) {
 		return 'Vodiči za obrtnike i male tvrtke: web koji donosi upite, Google Business profil, AI vidljivost, GA4 praćenje i priprema za izradu weba.';

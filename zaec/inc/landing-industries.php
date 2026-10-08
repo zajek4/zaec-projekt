@@ -594,7 +594,26 @@ function zaec_registry_special() {
 		'image'       => 'world/usluga-onama.webp',
 		'image_alt'   => 'Konkatedrala sv. Petra i Pavla u Osijeku noću, s osvijetljenim vitrajima i svjetlosnim signalom s tornja.',
 		'cta'         => array( 'Upoznajmo se', 'kontakt#upit' ),
-		'blocks'      => array( array( 'type' => 'about' ), array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ), array( 'type' => 'guarantees' ) ),
+		'blocks'      => array(
+			array( 'type' => 'about', 'part' => 'intro' ),
+			array(
+				'type'  => 'principles',
+				'title' => 'Kako <em>radimo</em>.',
+				'lead'  => 'Šest pravila koja vrijede za svaki projekt, od jedne stranice do složenog weba.',
+				'items' => array(
+					array( 'Jedna osoba odgovara za cijeli projekt.', 'Razgovor, nacrt, dizajn, kod i mjerenje su u istim rukama. Nema prenošenja poruka između prodaje i razvoja.' ),
+					array( 'Nacrt prije dizajna.', 'Prvo crtamo što posjetitelj mora vidjeti i kojim redom. Boja i animacija dolaze na čvrst temelj.' ),
+					array( 'Dogovor na papiru.', 'Opseg, rok i fiksna cijena prije početka. Sve izvan dogovora prvo dobiva procjenu.' ),
+					array( 'Tehnika koju možete provjeriti.', 'Brzina, mobitel, pristupačnost i mjerenje provjeravaju se prije objave, a popis provjera dobivate i vi.' ),
+					array( 'Sve je vaše.', 'Domena, hosting, pristupi i sadržaj registrirani su na vas. Možete otići kad god želite.' ),
+					array( 'Iskreno, i kad to znači manji posao.', 'Ako vam novi web ne treba, reći ćemo vam prije nego išta potpišete.' ),
+				),
+			),
+			array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ),
+			array( 'type' => 'about', 'part' => 'facts' ),
+			array( 'type' => 'guarantees' ),
+		),
+		'related'     => array( 'usluge/izrada-web-stranica', 'djelatnosti', 'cijene' ),
 	);
 
 	$r['hvala'] = array(

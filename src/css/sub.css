@@ -281,3 +281,13 @@
 .nf h1 { font-size: clamp(2.4rem, 6vw, 5rem); }
 .nf p { max-width: 46ch; margin: 18px auto 28px; color: var(--ink-3); }
 .nf .links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+/* ═════════ O nama: načela rada — članci, ne kartice ═════════ */
+.principles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(24px, 3.4vw, 56px); row-gap: clamp(36px, 4vw, 60px); counter-reset: none; }
+.principles li { position: relative; display: grid; align-content: start; gap: 10px; padding-top: 22px; border-top: 1px solid var(--line-2); }
+.principles li::before { content: ''; position: absolute; left: 0; top: -1px; width: 56px; height: 2px; background: var(--ink); }
+.principle-n { color: var(--signal); letter-spacing: 0.12em; }
+.principles h3 { max-width: 22ch; text-wrap: balance; }
+.principles p { color: var(--ink-3); max-width: 40ch; text-wrap: pretty; }
+@media (max-width: 1000px) { .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .principles { grid-template-columns: 1fr; row-gap: 30px; } }

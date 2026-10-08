@@ -309,12 +309,12 @@ function zaec_registry_services() {
 				'type'       => 'stats',
 				'title'      => 'Što odlučuje tko je na <em>karti</em>.',
 				'items'      => array(
-					array( '≈ 32 %', 'Google Business profil', 'udio u lokalnom rangiranju' ),
-					array( '≈ 20 %', 'recenzije', 'broj, svježina i sadržaj' ),
-					array( '≈ 15 %', 'sadržaj weba', 'stranice za usluge i mjesta' ),
+					array( 'Relevantnost', 'koliko profil odgovara pretrazi', 'kategorije, usluge i opis koji točno kažu što radite' ),
+					array( 'Udaljenost', 'koliko ste blizu onome tko traži', 'na to ne utječete, ali područje rada mora biti točno upisano' ),
+					array( 'Istaknutost', 'koliko ste poznati i provjereni', 'recenzije, spomeni na drugim stranicama i sadržaj weba' ),
 				),
-				'note'       => 'Procjena težine signala za lokalne rezultate prema istraživanju Whitespark Local Search Ranking Factors 2026. Ostatak čine poveznice, ponašanje korisnika i drugi signali.',
-				'sources'    => array( array( 'Whitespark Local Search Ranking Factors 2026 (sažetak)', 'https://blckalpaca.at/en/knowledge-base/seo-geo/local-seo/local-ranking-factors-2026-the-complete-overview' ) ),
+				'note'       => 'Google za lokalne rezultate navodi tri glavna čimbenika: relevantnost, udaljenost i istaknutost. Na prvi i treći možete utjecati.',
+				'sources'    => array( array( 'Google: kako se određuje lokalni poredak', 'https://support.google.com/business/answer/7091?hl=hr' ) ),
 			),
 			array(
 				'type'  => 'deliver',
