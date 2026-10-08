@@ -139,6 +139,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   let anchors = [];
   let states = [];
   let covers = [];
+  // uspravni zaslon: tekst koji prolazi gornjom polovicom gura motiv u slobodni dio ispod sebe (vidi frame)
+  let lensBlocks = [];
   let mobile = false;
   let vw = 0, vh = 0;
   let curve = null;
@@ -189,6 +191,12 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       const r = el.getBoundingClientRect();
       return [r.top + sy, r.bottom + sy];
     });
+    lensBlocks = mobile
+      ? [...document.querySelectorAll('[data-lens] .cine-copy')].map((el) => {
+        const k = el.children;
+        return [k[0].getBoundingClientRect().top + sy, k[k.length - 1].getBoundingClientRect().bottom + sy];
+      })
+      : [];
     covers.sort((a, b) => a[0] - b[0]);
     const merged = [];
     covers.forEach((c) => {
@@ -421,7 +429,15 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     if (Math.abs(camera.fov - st.fov) > 0.01) camera.fov = st.fov;
     camera.near = st.Z > 1.5 ? 0.5 : 0.05;
     camera.far = st.Z > 1.5 ? 2400 : 6000;
-    camera.setViewOffset(vw, vh, -st.sx * vw, st.sy * vh, vw, vh);
+    // uspravno: dok tekst prelazi gornjom polovicom (između dvaju kadrova), motiv se spušta u prostor ispod njega
+    let lensY = st.sy;
+    for (const [a, b] of lensBlocks) {
+      const t0 = (a - y) / vh, t1 = (b - y) / vh;
+      if (t1 < -0.05 || t0 > 1) continue;
+      const w = smooth(0.5, 0.3, (t0 + t1) / 2) * smooth(-0.05, 0.2, t1);
+      if (w > 0) lensY = lerp(lensY, clamp(0.5 - (Math.max(t1, 0) + 1) / 2, -0.3, 0.3), w);
+    }
+    camera.setViewOffset(vw, vh, -st.sx * vw, lensY * vh, vw, vh);
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
 
@@ -463,7 +479,9 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     // redoslijed buđenja grada: svjetla ulica → tamni volumeni zgrada → crtež bridova i prozori
     const cityA = smooth(1.72, 2.05, Z);
     const lamps = smooth(1.04, 1.28, Z);
-    city.update({ alpha: cityA, lamps, wake: sunState.night * 1.12, detail: smooth(1.95, 2.25, Z), rise: st.rise, dim: st.dim, lines: st.lines, cath: smooth(0.45, 1, st.cath), glow: st.glow, cathSolid: st.cathSolid, focus: st.focus, scan: scanEff, time, pr: dpr, reduce });
+    // sjaj ulica (karta svjetla) raste iz svjetla Osijeka na karti Slavonije dok se kamera spušta
+    const streets = smooth(1.3, 1.8, Z);
+    city.update({ alpha: cityA, lamps, streets, wake: sunState.night * 1.12, detail: smooth(1.95, 2.25, Z), rise: st.rise, dim: st.dim, lines: st.lines, cath: smooth(0.45, 1, st.cath), glow: st.glow, cathSolid: st.cathSolid, focus: st.focus, scan: scanEff, time, pr: dpr, reduce, camera });
     city.flood.position.copy(city.floodLocal).applyMatrix4(city.group.matrixWorld);
     const osm = lamps > 0.15;
     if (osm !== osmShown) { osmShown = osm; root.classList.toggle('show-osm', osm); }

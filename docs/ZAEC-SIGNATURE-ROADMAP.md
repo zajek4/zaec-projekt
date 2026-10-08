@@ -79,6 +79,21 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   Europi (`CIVIC`, Z 0,3→0,95) gusta urbana područja pojavljuju kao jantarne točke u plavoj matrici (podatkovni
   sloj, ne fizička svjetla). Sumrak dolazi s istoka: Europa `dusk` 0,1, Hrvatska 0,6 (Slavonija već pali svjetla),
   Slavonija 1. Atribucija u podnožju naslovnice.
+- **Osijek (faza 5):** grad više nije ružičasti volumen nego noćni grad. Temelj je karta uličnog svjetla
+  (`city-look.js`): platno 2048² (1024 na mobitelu) preko ±2,6 km, na koje se crtaju ulice po rangu (širina i jačina),
+  lokve svjetiljki, trgovi, izlozi gradskih kuća i fasade uz Dravu; pojačanje po zonama (Gornji grad i Tvrđa
+  svjetliji). Iz iste karte čitaju tlo (toplo svjetlo ulica, mreža se izdaleka ne gubi), zgrade (topli odsjaj
+  ulice na donjim katovima), trgovi/parkovi i voda (odsjaji). Zgrade: vlastiti shader, ravne normale, mjesečina i
+  nebo hladno, prozori proceduralno po profilu zgrade (kuća, stambena, gradska kuća s izlozima u prizemlju, hala),
+  izdaleka prelaze u prosječan sjaj (bez treperenja), petina prozora se polako pali/gasi. Krovovi: dvostrešni,
+  poluskošeni i četverostrešni (nagib 38–46°), mansarde u središtu, ravni s atikom i strojarnicom, dimnjaci;
+  crijep 88 %, škriljevac ostalo, redovi pokrova nestaju prije nego bi treperili. Drava: voda na −2,4 m s nasipima
+  (9 m kose obale), mostovi samo gdje stvarne OSM ceste prelaze vodu (bez izmišljenih), valići nizvodno, Fresnel,
+  izduženi odsjaji svjetla s obale. Svjetiljke: topla LED-bijela na glavnim, natrijeva na sporednim ulicama.
+  Prije ovoga su voda, trgovi i parkovi bili nevidljivi (trokuti okrenuti naopačke, odbacivani) — popravljeno.
+- **Leća za uspravne zaslone:** sekcije s `data-lens` mjere svoj tekst; dok tekst prolazi gornjom polovicom ekrana,
+  kamera pomiče motiv u slobodni pojas ispod njega. Popravlja crnu sličicu na mobitelu (~4100 px, postojala i prije)
+  gdje je grad bio ispod tamne podloge teksta; podloga je uža i prozirnija.
 
 ## Faze
 
@@ -88,7 +103,7 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 2 Temelji (bugovi, interakcije, tokeni) | djelomično: vrata ✓, procjena ✓, tokeni ✓; tipografska skala i gumbi — otvoreno |
 | 3 Zemlja | ✓ atmosfera, ocean, kopno, kadrovi (desktop + uspravno), posteri |
 | 4 Svjetla Europe | ✓ svjetla iz NASA/NOAA snimke, jantarni dnevni sloj, sumrak s istoka |
-| 5 Osijek (krovovi, rasvjeta, Drava) | otvoreno |
+| 5 Osijek (krovovi, rasvjeta, Drava) | ✓ karta uličnog svjetla, prozori i izlozi, krovovi, Drava s nasipima i mostovima, leća za mobitel |
 | 6 Konkatedrala i nacrt | otvoreno |
 | 7 Naslovnica: urednički dio, prefooter, footer, Daj Gric | djelomično: prefooter ✓, footer ✓, Daj Gric ✓; sekcija "Dobri ste…" — otvoreno |
 | 8 Izrada web stranica | otvoreno |
@@ -113,17 +128,32 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 - Cijena atmosfere izmjerena samo relativno, u softverskom rendereru (swiftshader, CPU): ~60 % vremena sličice
   na kadru heroja. To nije mjera za stvarni GPU; mjerenje na uređajima ostaje za fazu 11.
 - Svjetla: snimke 1440×900 i 390×844 na kadrovima mreža, Europa, Hrvatska, Slavonija i u poniranju (1350–1800 px).
+- Osijek: snimke prije/poslije 1440×900 (prijelaz 4050, Osijek 4500, konkatedrala 5400) i 390×844 (prijelaz,
+  Hrvatska 1941–3200, Osijek 3685–4529, konkatedrala), krupni kadrovi krovova i vode iz debug kamere.
+  `qa/faza-5-prije-poslije.png` u projektnim datotekama.
+- Cijena grada (swiftshader, CPU, 1440×900, DPR 1, sinkronizirano `readPixels`): Osijek 68 → ~120–138 ms/sličici,
+  konkatedrala 121 → ~155–172 ms. Najviše troše shader zgrada (~37–50 ms) i tlo preko cijelog ekrana (~22–31 ms).
+  CPU renderer pretjeruje cijenu fragment shadera; na GPU-u mjeriti u fazi 11. Postojeći regulator spušta DPR
+  kad sličica traje > 24 ms.
+
+## Samokritika (0–10)
+
+| Faza | Dizajn | Kreativnost | Upotrebljivost | Tehnika | Napomena |
+|---|---|---|---|---|---|
+| 5 Osijek | 7,5 | 7 | 8 | 7 | Grad se čita kao noćni Osijek; krovovi izbliza tamni, cijena na CPU-u visoka |
 
 ## Otvoreno
 
 - `registry.npmjs.org` je blokiran mrežnim pravilima okruženja; build je Bunom (vidi gore). Pri prvoj prilici
   pokrenuti `npm ci && npm run build` i usporediti.
 - Sekcija iznad footera na nekim podstranicama (CTA traka) još koristi sivu `--ink`; ujednačiti s `--abyss` (faza 12).
+- Osijek: krovovi izbliza i dalje dosta tamni; Drava na kadru Osijeka tamna (obalne svjetiljke se iz tog kuta
+  fizički ne zrcale). Oznake Slavonije se na mobitelu preklapaju (~3200 px, postojalo i prije) — faza 11.
 - Kategorije djelatnosti u procjeni ("Voda", "Struja"…) — nova nomenklatura (faza 9/10).
 
 ## Sljedeći korak
 
-Faza 5 (Osijek: krovovi, rasvjeta, Drava), zatim 6, 8 i 9.
+Faza 6 (konkatedrala i prijelaz stvarnost → nacrt, provjera "90 metara"), zatim 7, 8 i 9.
 
 ## Commitovi
 
@@ -133,4 +163,5 @@ Faza 5 (Osijek: krovovi, rasvjeta, Drava), zatim 6, 8 i 9.
 - `96168d5` Procjena: popravljen pad blokova, presjek zgrade
 - `b8e4968` Footer u dubokoj noći, tokeni `--abyss`
 - `4644aef` Zemlja: atmosfera s raspršenjem, ocean, kopno, kadrovi
-- (faza 4) Svjetla Europe iz NASA/NOAA snimke
+- `5515519` Svjetla Europe iz NASA/NOAA snimke
+- (faza 5) Osijek: noćni grad, Drava, leća za uspravne zaslone

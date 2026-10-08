@@ -249,19 +249,24 @@ vec3 twilightTone(float ndl, float mid, float wid){
  * točaka iz daljine izgleda kao jedan mekan sjaj, a ne kao tepih jednakih piksela koji naglo iskoči.
  * aWake + uWake: točke se pale pojedinačno (grad se budi), uFlick: sporo paljenje/gašenje (prozori) na GPU-u.
  */
-export function glowPoints({ count, color = '#7fa2ff', core = '#ffffff', size = 1, additive = true, depthTest = true, bend = false, nightOnly = false }) {
+/** Svjetleće točke. tint: { color, core } — druga paleta; svaka točka bira mješavinu preko .tint[i] (0…1). */
+export function glowPoints({ count, color = '#7fa2ff', core = '#ffffff', size = 1, additive = true, depthTest = true, bend = false, nightOnly = false, tint = null }) {
   const g = new THREE.BufferGeometry();
   const pos = new Float32Array(count * 3);
   const a = new Float32Array(count).fill(1);
   const s = new Float32Array(count).fill(1);
   const w = new Float32Array(count);
+  const t = tint ? new Float32Array(count) : null;
   g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   g.setAttribute('aAlpha', new THREE.BufferAttribute(a, 1));
   g.setAttribute('aSize', new THREE.BufferAttribute(s, 1));
   g.setAttribute('aWake', new THREE.BufferAttribute(w, 1));
+  if (t) g.setAttribute('aTint', new THREE.BufferAttribute(t, 1));
   const uniforms = {
     uColor: { value: new THREE.Color(color) },
     uCore: { value: new THREE.Color(core) },
+    uColor2: { value: new THREE.Color(tint?.color || color) },
+    uCore2: { value: new THREE.Color(tint?.core || core) },
     uSize: { value: size },
     uPR: { value: 1 },
     uOpacity: { value: 1 },
@@ -283,11 +288,13 @@ export function glowPoints({ count, color = '#7fa2ff', core = '#ffffff', size = 
     blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending,
     vertexShader: /* glsl */ `
       attribute float aAlpha; attribute float aSize; attribute float aWake;
+      ${t ? 'attribute float aTint; varying float vT;' : ''}
       uniform float uSize; uniform float uPR; uniform float uMax; uniform float uMin; uniform float uFall; uniform float uWake; uniform float uTime; uniform float uFlick;
       varying float vA; varying float vPx;
       ${bend || nightOnly ? BEND_GLSL : ''}
       ${nightOnly ? 'uniform vec3 uSunMap; uniform vec2 uDayEdge;' : ''}
       void main(){
+        ${t ? 'vT = aTint;' : ''}
         vec4 mv = modelViewMatrix * vec4(${bend ? 'bendPos(position)' : 'position'}, 1.0);
         float sc = length(modelMatrix[0].xyz);
         float px = aSize * uSize * uPR * 300.0 * sc / max(0.5, -mv.z);
@@ -307,8 +314,11 @@ export function glowPoints({ count, color = '#7fa2ff', core = '#ffffff', size = 
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader: /* glsl */ `
-      uniform vec3 uColor; uniform vec3 uCore; uniform float uOpacity; varying float vA; varying float vPx;
+      uniform vec3 uColor; uniform vec3 uCore; uniform vec3 uColor2; uniform vec3 uCore2; uniform float uOpacity; varying float vA; varying float vPx;
+      ${t ? 'varying float vT;' : ''}
       void main(){
+        vec3 cA = ${t ? 'mix(uColor, uColor2, vT)' : 'uColor'};
+        vec3 cB = ${t ? 'mix(uCore, uCore2, vT)' : 'uCore'};
         if (vA < 0.004) discard;
         float d = length(gl_PointCoord - 0.5);
         // točka od 1–3 px: profil sjaja bi se uzorkovao izvan središta (svjetlo bi gotovo nestalo) — tada je pun disk
@@ -317,12 +327,12 @@ export function glowPoints({ count, color = '#7fa2ff', core = '#ffffff', size = 
         float halo = pow(max(1.0 - d * 2.0, 0.0), 2.0);
         float core = smoothstep(0.18, 0.0, d);
         float prof = mix(0.85, halo * 0.7 + core, k);
-        gl_FragColor = vec4(mix(uColor, uCore, mix(0.35, core, k)), prof * vA * uOpacity);
+        gl_FragColor = vec4(mix(cA, cB, mix(0.35, core, k)), prof * vA * uOpacity);
       }`,
   });
   const pts = new THREE.Points(g, m);
   pts.frustumCulled = false;
-  return { points: pts, pos, alpha: a, size: s, wake: w, uniforms, geometry: g, material: m };
+  return { points: pts, pos, alpha: a, size: s, wake: w, tint: t, uniforms, geometry: g, material: m };
 }
 
 /** Materijal za linije s globalnom prozirnošću. */

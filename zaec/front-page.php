@@ -102,7 +102,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine cine--duo" id="hrvatska" data-header-theme="night" aria-labelledby="hr-title">
+<section class="cine cine--duo" id="hrvatska" data-header-theme="night" data-lens aria-labelledby="hr-title">
 	<div class="cine-beat" data-cam="europe">
 		<div class="wrap cine-grid">
 			<div class="cine-copy">
@@ -122,7 +122,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine cine--duo" id="osijek" data-header-theme="night" aria-labelledby="os-title">
+<section class="cine cine--duo" id="osijek" data-header-theme="night" data-lens aria-labelledby="os-title">
 	<div class="cine-beat" data-cam="slavonia">
 		<div class="wrap cine-grid cine-grid--right">
 			<div class="cine-copy">
