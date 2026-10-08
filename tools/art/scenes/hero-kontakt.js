@@ -15,7 +15,7 @@ const FS = (p) => `/@fs${__ROOT__}/${p}`;
 const W = 12, D = 11, ZF = D / 2, GROUND = 4.4, CORNICE = 0.8;
 // etaže odozgo prema dolje = polja forme redom; [polje, visina etaže, visina prozora, parapet ispod prozora]
 export const FLOORS = [['ime', 3.3, 1.45, 0.95], ['kontakt', 3.3, 1.45, 0.95], ['djelatnost', 3.3, 1.45, 0.95], ['usluga', 3.3, 1.45, 0.95], ['poruka', 3.9, 2.25, 0.8]];
-const WIN = 9.8; // širina trake prozora
+const WIN_W = 2.3; // širina jednog prozora
 const SIGN = { w: 16.4, pad: 0.5, gap: 0.45, legs: 0.7 }; // natpis širi od kuće (prepust)
 export const SIGN_LINES = [['Recite nam čime', 'sans'], ['se ', 'sans', 'bavite.', 'serif']];
 
@@ -91,21 +91,25 @@ function roomTex(seed) {
 }
 
 /** Zgrada "vaš obrt": uska secesijska kamena kuća, pročelje prema kameri (z = +D/2). */
-/** Kuća: prizemlje (izlog + ulaz), pet etaža s po jednom trakom prozora, vijenac, konstrukcija natpisa. */
+/** Kuća: rustično prizemlje (izlog + ulaz), pet etaža s tri prozora između pilastara, vijenac sa zubcima,
+ *  francuski balkon na prvom katu, konstrukcija natpisa na krovu. */
+const BAYS = [-3.75, 0, 3.75]; // osi prozora
 function buildHouse(lit, L) {
   const g = new THREE.Group();
   const plaster = mat({ color: '#262931', rough: 0.88, metal: 0.02, env: 0.5 });
   const stone = mat({ color: '#3b3c42', rough: 0.8, env: 0.6 });
   const frame = mat({ color: '#121318', rough: 0.45, metal: 0.55 });
   const dark = mat({ color: '#07090f', rough: 0.06, metal: 0.6, env: 1.5 });
+  const iron = mat({ color: '#0e0f13', rough: 0.4, metal: 0.8 });
   g.add(box(W, L.top, D, plaster, 0, 0, 0));
-  // prizemlje: izlog lijevo, dvostruka staklena vrata desno
+  // prizemlje: rustika (vodoravne fuge), izlog lijevo, dvostruka staklena vrata desno
+  for (let k = 1; k <= 4; k++) g.add(box(W + 0.06, 0.05, 0.08, mat({ color: '#15161b', rough: 0.9 }), 0, (GROUND - 0.3) * (k / 5), ZF + 0.01));
   const shopW = L.shop.w, doorW = L.door.w;
   const shop = new THREE.Mesh(new THREE.PlaneGeometry(shopW, 2.9), lit ? mat({ color: '#000', emissive: '#ffffff', ei: 1.0, emissiveMap: shopTex(true), rough: 0.1 }) : dark);
-  shop.position.set(L.shop.cx, 0.7 + 1.45, ZF + 0.02);
+  shop.position.set(L.shop.cx, 0.7 + 1.45, ZF + 0.04);
   g.add(shop);
   const door = new THREE.Mesh(new THREE.PlaneGeometry(doorW, 3.1), lit ? mat({ color: '#000', emissive: '#ffcf96', ei: 0.75, rough: 0.2 }) : dark);
-  door.position.set(L.door.cx, 0.15 + 1.55, ZF + 0.02);
+  door.position.set(L.door.cx, 0.15 + 1.55, ZF + 0.04);
   g.add(door);
   for (const [cx, w, y, h] of [[L.shop.cx, shopW, 0.7, 2.9], [L.door.cx, doorW, 0.15, 3.1]]) {
     g.add(box(w + 0.3, 0.16, 0.22, frame, cx, y - 0.16, ZF + 0.06));
@@ -115,21 +119,35 @@ function buildHouse(lit, L) {
   }
   g.add(box(0.1, 3.1, 0.12, frame, L.door.cx, 0.15, ZF + 0.05)); // sredina dvokrilnih vrata
   g.add(box(W + 0.3, 0.3, D + 0.2, stone, 0, GROUND - 0.3, 0.05));
-  // etaže: vijenac + jedna traka prozora (u njoj stoji polje forme)
+  // pilastri od prizemlja do vijenca: uglovi i između prozora
+  for (const x of [-W / 2 + 0.35, -1.88, 1.88, W / 2 - 0.35]) g.add(box(0.5, L.top - CORNICE - GROUND, 0.16, stone, x, GROUND, ZF + 0.08));
+  // etaže: vijenac + tri prozora (cijela etaža se pali odjednom)
   for (const f of L.floors) {
     g.add(box(W + 0.3, 0.22, D + 0.2, stone, 0, f.y0 - 0.11, 0.05));
-    const glass = new THREE.Mesh(new THREE.PlaneGeometry(WIN, f.wh), lit
-      ? mat({ color: '#000', emissive: '#ffffff', ei: 0.85, emissiveMap: roomTex(f.i * 7 + 3), rough: 0.12 })
-      : dark);
-    glass.position.set(0, f.wy0 + f.wh / 2, ZF + 0.02);
-    g.add(glass);
-    g.add(box(WIN + 0.4, 0.18, 0.3, stone, 0, f.wy0 - 0.18, ZF + 0.1)); // klupčica
-    g.add(box(WIN + 0.24, 0.12, 0.18, frame, 0, f.wy0 + f.wh, ZF + 0.06));
-    g.add(box(0.12, f.wh, 0.18, frame, -WIN / 2 - 0.06, f.wy0, ZF + 0.06));
-    g.add(box(0.12, f.wh, 0.18, frame, WIN / 2 + 0.06, f.wy0, ZF + 0.06));
+    BAYS.forEach((bx, b) => {
+      const glass = new THREE.Mesh(new THREE.PlaneGeometry(WIN_W, f.wh), lit
+        ? mat({ color: '#000', emissive: '#ffffff', ei: 0.85, emissiveMap: roomTex(f.i * 7 + b * 3 + 3), rough: 0.12 })
+        : dark);
+      glass.position.set(bx, f.wy0 + f.wh / 2, ZF + 0.02);
+      g.add(glass);
+      g.add(box(WIN_W + 0.5, 0.16, 0.3, stone, bx, f.wy0 - 0.16, ZF + 0.1)); // klupčica
+      g.add(box(WIN_W + 0.34, 0.26, 0.2, stone, bx, f.wy0 + f.wh + 0.08, ZF + 0.08)); // natprozornik
+      g.add(box(WIN_W + 0.16, 0.08, 0.16, frame, bx, f.wy0 + f.wh, ZF + 0.06));
+      g.add(box(0.08, f.wh, 0.16, frame, bx - WIN_W / 2 - 0.04, f.wy0, ZF + 0.06));
+      g.add(box(0.08, f.wh, 0.16, frame, bx + WIN_W / 2 + 0.04, f.wy0, ZF + 0.06));
+      g.add(box(0.06, f.wh, 0.1, frame, bx, f.wy0, ZF + 0.05)); // srednja prečka
+      g.add(box(WIN_W, 0.06, 0.1, frame, bx, f.wy0 + f.wh * 0.68, ZF + 0.05)); // nadsvjetlo
+    });
+    // francuski balkon (prvi kat, srednji prozor)
+    if (f.field === 'poruka') {
+      g.add(box(WIN_W + 0.9, 0.12, 0.7, stone, 0, f.wy0 - 0.12, ZF + 0.35));
+      g.add(box(WIN_W + 0.9, 0.05, 0.05, iron, 0, f.wy0 + 0.95, ZF + 0.68));
+      for (let k = 0; k <= 12; k++) g.add(box(0.03, 0.95, 0.03, iron, -(WIN_W + 0.9) / 2 + ((WIN_W + 0.9) / 12) * k, f.wy0, ZF + 0.68));
+    }
   }
-  // vijenac i atika
+  // vijenac sa zubcima i atika
   g.add(box(W + 0.7, 0.5, D + 0.5, stone, 0, L.top - CORNICE, 0.1));
+  for (let k = 0; k < 30; k++) g.add(box(0.16, 0.18, 0.2, stone, -W / 2 + 0.2 + (W - 0.4) * (k / 29), L.top - CORNICE - 0.18, ZF + 0.12));
   g.add(box(W + 0.2, CORNICE - 0.5, D, plaster, 0, L.top - CORNICE + 0.5, 0));
   // konstrukcija natpisa na krovu: noge i dvije tanke rešetke (slova su HTML)
   const st = mat({ color: '#1a1c22', rough: 0.5, metal: 0.7 });
@@ -161,37 +179,67 @@ function layout() {
   return { floors, top, sign: { h, lines, SW }, shop: { cx: -W / 2 + 0.55 + 3.1 / 2, w: 3.1 }, door: { cx: W / 2 - 0.55 - 6.9 / 2, w: 6.9 } };
 }
 
-function row(scene, x0, z0, side, st, bp) {
-  const R = rng(side > 0 ? 21 : 22);
-  const walls = ['#1d1f26', '#22232a', '#1a1c22'];
+function row(scene, x0, z0, side, st, bp, { litP = 1, seed = 0, n = 6 } = {}) {
+  const R = rng((side > 0 ? 21 : 22) + seed);
+  const walls = ['#1d1f26', '#22232a', '#1a1c22', '#1f2129'];
   const roof = mat({ color: '#121319', rough: 0.85 });
   const stone = mat({ color: '#2c2d33', rough: 0.85 });
   let x = x0;
-  for (let i = 0; i < 6; i++) {
-    const floors = 2 + Math.floor(R() * 2);
+  for (let i = 0; i < n; i++) {
+    const floors = 2 + Math.floor(R() * 3);
     const w = 7.5 + R() * 5, h = 4 + (floors - 1) * 3.2 + 0.6, d = 10 + R() * 4;
     const cx = x + (side * w) / 2;
     const zc = z0 - d / 2 + D / 2;
-    const m1 = box(w, h, d, mat({ color: walls[i % 3], rough: 0.9, env: 0.4 }), cx, 0, zc);
+    const m1 = box(w, h, d, mat({ color: walls[i % 4], rough: 0.9, env: 0.4 }), cx, 0, zc);
     const m2 = box(w + 0.3, 0.4, d + 0.3, roof, cx, h, zc);
     scene.add(m1, m2);
     bp.edges(m2, 28);
+    // krov: dimnjaci, ponegdje atika ili strojarnica
+    const nc = 1 + Math.floor(R() * 3);
+    for (let c = 0; c < nc; c++) scene.add(box(0.6, 1 + R() * 0.8, 0.6, roof, cx + (R() - 0.5) * (w - 1.5), h + 0.4, zc + (R() - 0.5) * (d - 2)));
+    if (R() < 0.35) scene.add(box(w * 0.4, 1.4, d * 0.4, roof, cx + (R() - 0.5) * w * 0.3, h + 0.4, zc - d * 0.15));
     // vijenac i prozori po etažama; prizemlje: izlog ili vrata
     const g = new THREE.Group();
     g.position.set(cx, 0, z0 + D / 2);
     scene.add(g);
     g.add(box(w + 0.2, 0.18, 0.3, stone, 0, 4 - 0.1, 0.1));
-    const n = Math.max(2, Math.floor(w / 2.6));
+    g.add(box(w + 0.35, 0.3, 0.4, stone, 0, h - 0.35, 0.12));
+    const nw = Math.max(2, Math.floor(w / 2.6));
     const span = w - 1.6;
     for (let f = 0; f < floors; f++) {
       const y = f === 0 ? 1.9 : 4 + (f - 1) * 3.2 + 1.55;
-      for (let k = 0; k < n; k++) {
-        const on = R() < (f === 0 ? 0.45 : 0.38);
+      for (let k = 0; k < nw; k++) {
+        const on = R() < (f === 0 ? 0.45 : 0.38) * litP;
         const lit = on ? 0.22 + R() * 0.3 : 0;
-        addWindow(g, null, { w: f === 0 ? span / n - 0.5 : 1.15, h: f === 0 ? 2.4 : 1.6, x: -span / 2 + (span / n) * (k + 0.5), y, z: 0.01, lit, frame: '#16171c', depth: 0.1, mullion: f > 0 });
+        addWindow(g, null, { w: f === 0 ? span / nw - 0.5 : 1.15, h: f === 0 ? 2.4 : 1.6, x: -span / 2 + (span / nw) * (k + 0.5), y, z: 0.01, lit, frame: '#16171c', depth: 0.1, mullion: f > 0 });
       }
     }
     x += side * (w + 0.05);
+  }
+}
+
+/** Stražnji niz: više zgrade iza krovova, rijetki upaljeni prozori — dubina i silueta grada. */
+function backRow(scene, { from = -140, to = 160, z = -48, seed = 5, litP = 1 } = {}) {
+  const R = rng(seed);
+  const wall = mat({ color: '#15171d', rough: 0.92, env: 0.3 });
+  const roof = mat({ color: '#0f1015', rough: 0.85 });
+  for (let x = from; x < to;) {
+    const w = 9 + R() * 10, floors = 6 + Math.floor(R() * 5), h = floors * 3.1, d = 12;
+    const cx = x + w / 2;
+    scene.add(box(w, h, d, wall, cx, 0, z));
+    scene.add(box(w + 0.3, 0.35, d + 0.3, roof, cx, h, z));
+    if (R() < 0.5) scene.add(box(1.2, 2.2, 1.2, roof, cx + (R() - 0.5) * w * 0.6, h + 0.35, z));
+    const g = new THREE.Group();
+    g.position.set(cx, 0, z + d / 2);
+    scene.add(g);
+    const cols = Math.max(2, Math.floor(w / 2.4));
+    for (let f = 1; f < floors; f++) {
+      for (let k = 0; k < cols; k++) {
+        if (R() > 0.16 * litP) continue;
+        addWindow(g, null, { w: 1.1, h: 1.5, x: -w / 2 + 1.2 + ((w - 2.4) / Math.max(1, cols - 1)) * k, y: f * 3.1 + 1.2, z: 0.01, lit: 0.18 + R() * 0.25, frame: '#121318', depth: 0.06, mullion: false });
+      }
+    }
+    x += w + 0.6 + R() * 2;
   }
 }
 
@@ -213,13 +261,15 @@ function make(mode, comp) {
       const L = layout();
       const crown = L.top + SIGN.legs + L.sign.h;
       // kadar: od natpisa do pločnika; na mobitelu prizemlje iznad donje trake za poziv
-      const dist = desk ? 58 : 52, ch = 1.6, camX = desk ? -9 : -5;
-      const [mTop, mBot] = desk ? [0.115, 0.085] : [0.12, 0.155];
+      // desktop: kuća u lijevoj trećini (desno je forma), mobitel: u sredini, natpis ispod zaglavlja
+      const dist = desk ? 58 : 52, ch = 1.6, camX = desk ? -9 : -5, bx = desk ? 0.3 : 0.5;
+      const [mTop, mBot] = desk ? [0.115, 0.085] : [0.2, 0.08];
       const tTop = (crown - ch) / dist, tBot = -ch / dist;
       const R = (tTop - tBot) / (1 - mTop - mBot);
       const top = tTop + mTop * R, bottom = tBot - mBot * R;
       const half = ((top - bottom) * (WW / HH)) / 2, c0 = -camX / dist;
-      archCamera(camera, WW, HH, { pos: [camX, ch, ZF + dist], top, bottom, left: c0 - half, right: c0 + half });
+      const left = c0 - 2 * half * bx;
+      archCamera(camera, WW, HH, { pos: [camX, ch, ZF + dist], top, bottom, left, right: left + 2 * half });
       st.skyMesh.position.copy(camera.position);
       scene.fog.density = 0.004;
       st.sky.uAz.value = -2.5;
@@ -230,7 +280,7 @@ function make(mode, comp) {
       // konkatedrala daleko iza krovova: vidi se samo signal na nebu
       const cath = await loadCathedral();
       const c = cathedralMesh(cath.geo, cath.haloGeo, { win: 1.2, halo: 0.75 });
-      c.group.position.set(desk ? 330 : 150, 0, -760);
+      c.group.position.set(desk ? -75 : 150, 0, -760); // desktop: signal lijevo od kuće, desno je forma
       scene.add(c.group);
       c.group.updateMatrixWorld(true);
       // na mobitelu natpis zauzima cijelu širinu neba — signal bi presjekao slova, pa ga nema
@@ -240,13 +290,15 @@ function make(mode, comp) {
         beam.update({ b: 1, at: c.spire.clone().applyMatrix4(c.group.matrixWorld), unit: 1, camera, time: 3.2, pr: st.pr, alpha: 0.9 });
       }
       // susjedi u nizu (već svijetle) i kuća
-      row(scene, -W / 2 - 0.05, 0, -1, st, { edges() {} });
-      row(scene, W / 2 + 0.05, 0, 1, st, { edges() {} });
+      // desno od kuće je forma: niz je tamo niži i mirniji
+      row(scene, -W / 2 - 0.05, 0, -1, st, { edges() {} }, { n: 7 });
+      row(scene, W / 2 + 0.05, 0, 1, st, { edges() {} }, { n: 9, litP: desk ? 0.55 : 1 });
+      backRow(scene, { litP: desk ? 0.8 : 1 });
       const house = buildHouse(lit, L);
       scene.add(house);
       house.updateMatrixWorld(true);
       // ulica: svjetiljke uz pločnik
-      for (let k = -3; k <= 3; k++) {
+      for (let k = -3; k <= 6; k++) {
         const x = k * 15 + 8, z = ZF + 4.2;
         scene.add(box(0.16, 6, 0.16, mat({ color: '#15171c', metal: 0.6, rough: 0.4 }), x, 0, z));
         st.dots([{ p: [x, 6.1, z], c: '#ffd6a0', s: 1.4, k: 2.2 }]);
@@ -267,9 +319,10 @@ function make(mode, comp) {
       const sp = pxx(-L.sign.SW / 2, 0), sq = pxx(L.sign.SW / 2, 0), scale = (sq.x - sp.x) / L.sign.SW;
       st.meta = {
         w: WW, h: HH,
+        bx, cx: r3(P(0, 5).x),
         left: r3(P(-W / 2, 5).x), right: r3(P(W / 2, 5).x),
-        win: { left: r3(P(-WIN / 2, 5).x), right: r3(P(WIN / 2, 5).x) },
-        floors: L.floors.map((f) => ({ field: f.field, top: r3(P(0, f.y1).y), bottom: r3(P(0, f.y0).y), wtop: r3(P(0, f.wy0 + f.wh).y), wbottom: r3(P(0, f.wy0).y) })),
+        win: { left: r3(P(BAYS[0] - WIN_W / 2, 5).x), right: r3(P(BAYS[2] + WIN_W / 2, 5).x) },
+        floors: L.floors.map((f) => ({ field: f.field, top: r3(P(0, f.y1).y), bottom: r3(P(0, f.y0).y), wtop: r3(P(0, f.wy0 + f.wh).y), wbottom: r3(P(0, f.wy0).y), mid: r3(P(0, f.wy0 + f.wh / 2).y) })),
         ground: { top: r3(P(0, GROUND).y), bottom: r3(P(0, 0).y) },
         shop: { left: r3(P(L.shop.cx - L.shop.w / 2, 1).x), right: r3(P(L.shop.cx + L.shop.w / 2, 1).x), top: r3(P(0, 3.6).y), bottom: r3(P(0, 0.7).y) },
         door: { left: r3(P(L.door.cx - L.door.w / 2, 1).x), right: r3(P(L.door.cx + L.door.w / 2, 1).x), top: r3(P(0, 3.25).y), bottom: r3(P(0, 0.15).y) },
