@@ -32,7 +32,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 </div>
 <div class="stage-labels" data-stage-labels aria-hidden="true">
 	<span class="sl sl--pin" data-l="osijek"><b>Osijek</b><small>45,55° N · 18,70° E</small></span>
-	<span class="sl sl--you" data-l="you"><i></i><b data-you-name>Vaša tvrtka</b><small>Osijek → cijela Hrvatska</small></span>
+	<span class="sl sl--you" data-l="you"><i></i><b data-you-name>Vaša tvrtka</b></span>
 	<?php foreach ( array( 'Osijek', 'Zagreb', 'Split', 'Rijeka', 'Zadar', 'Dubrovnik', 'Varaždin', 'Pula' ) as $c ) : ?>
 		<span class="sl sl--city<?php echo 'Osijek' === $c ? ' sl--home' : ''; ?>" data-l="city-<?php echo esc_attr( $c ); ?>"><b><?php echo esc_html( $c ); ?></b></span>
 	<?php endforeach; ?>
@@ -203,7 +203,8 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 				</div>
 				<div class="path-out">
 					<p class="mono path-of">Od 1.000 posjetitelja</p>
-					<p class="path-num" aria-live="polite"><b data-path-num>12</b> <span data-path-unit>upita</span></p>
+					<p class="path-num" aria-hidden="true"><b data-path-num>12</b> <span data-path-unit>upita</span></p>
+					<p class="sr-only" aria-live="polite" data-path-live></p>
 					<ol class="path-funnel" role="list" aria-label="Koliko posjetitelja prođe kroz svaka vrata" data-path-funnel>
 						<?php foreach ( $gates as $i => $g ) : ?>
 							<li><span class="mono"><?php echo esc_html( $g[0] ); ?></span><i style="--w:0"></i><b></b></li>
