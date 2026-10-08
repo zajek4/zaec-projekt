@@ -18,18 +18,18 @@ $types  = array(
 	array( 'redesign', 'Redizajn', 'Postojeći web ne donosi upite', 'refresh' ),
 );
 $feats  = array(
-	array( 'galerija', 'Galerija radova / prije-poslije', 'gallery' ),
-	array( 'gbp', 'Google Business profil', 'map-point' ),
-	array( 'ga4', 'GA4 i praćenje konverzija', 'graph-up' ),
-	array( 'ai', 'AI vidljivost (ChatGPT, Google AI)', 'chat-round-dots' ),
-	array( 'booking', 'Online rezervacije / termini', 'calendar' ),
-	array( 'jezici', 'Više jezika', 'translation' ),
-	array( 'blog', 'Blog / vodiči', 'notebook' ),
-	array( 'kartice', 'Plaćanje karticama', 'card' ),
-	array( 'integracije', 'Integracije (CRM, ERP…)', 'routing' ),
-	array( 'tekstovi', 'Pisanje tekstova', 'pen' ),
-	array( 'seo', 'SEO sadržaj za usluge i mjesta', 'magnifer' ),
-	array( 'animacije', 'Premium animacije / 3D', 'layers' ),
+	array( 'galerija', 'Galerija radova / prije-poslije', 'gallery', 'Galerija' ),
+	array( 'gbp', 'Google Business profil', 'map-point', 'Google profil' ),
+	array( 'ga4', 'GA4 i praćenje konverzija', 'graph-up', 'GA4 mjerenje' ),
+	array( 'ai', 'AI vidljivost (ChatGPT, Google AI)', 'chat-round-dots', 'AI vidljivost' ),
+	array( 'booking', 'Online rezervacije / termini', 'calendar', 'Rezervacije' ),
+	array( 'jezici', 'Više jezika', 'translation', 'Više jezika' ),
+	array( 'blog', 'Blog / vodiči', 'notebook', 'Blog' ),
+	array( 'kartice', 'Plaćanje karticama', 'card', 'Plaćanje' ),
+	array( 'integracije', 'Integracije (CRM, ERP…)', 'routing', 'Integracije' ),
+	array( 'tekstovi', 'Pisanje tekstova', 'pen', 'Tekstovi' ),
+	array( 'seo', 'SEO sadržaj za usluge i mjesta', 'magnifer', 'SEO sadržaj' ),
+	array( 'animacije', 'Premium animacije / 3D', 'layers', 'Animacije / 3D' ),
 );
 ?>
 <div class="cfg" id="<?php echo esc_attr( $cid ); ?>" data-configurator data-form-target="<?php echo esc_attr( $target ); ?>">
@@ -77,7 +77,7 @@ $feats  = array(
 			<p class="cfg-included"><?php zaec_the_icon( 'check-circle', 16 ); ?> Uvijek uključeno: mobilna izvedba, poziv jednim dodirom, tehnički SEO, schema, Search Console i mjerenje upita.</p>
 			<div class="cfg-feats">
 				<?php foreach ( $feats as $f ) : ?>
-					<label class="cfg-feat"><input type="checkbox" name="features" value="<?php echo esc_attr( $f[0] ); ?>" data-label="<?php echo esc_attr( $f[1] ); ?>"><span><?php zaec_the_icon( $f[2], 18 ); ?><?php echo esc_html( $f[1] ); ?></span></label>
+					<label class="cfg-feat"><input type="checkbox" name="features" value="<?php echo esc_attr( $f[0] ); ?>" data-label="<?php echo esc_attr( $f[1] ); ?>" data-short="<?php echo esc_attr( $f[3] ); ?>"><span><?php zaec_the_icon( $f[2], 18 ); ?><?php echo esc_html( $f[1] ); ?></span></label>
 				<?php endforeach; ?>
 			</div>
 		</fieldset>
@@ -102,10 +102,11 @@ $feats  = array(
 		</div>
 	</form>
 
-	<aside class="cfg-out" aria-live="polite">
+	<aside class="cfg-out" aria-label="Vaša procjena">
+		<p class="sr-only" aria-live="polite" data-cfg-live></p>
 		<div class="cfg-out-inner">
 			<p class="mono cfg-out-k">Vaša procjena</p>
-			<div class="cfg-stack" aria-hidden="true" data-stack></div>
+			<div class="cfg-stack" aria-hidden="true" data-stack><span class="cfg-ground"></span></div>
 			<div class="cfg-result">
 				<div><p class="cfg-label">Opseg</p><p class="cfg-tier"><b data-tier>M</b> <span data-tier-name>Poslovno</span></p></div>
 				<div><p class="cfg-label">Okvirni rok izrade</p><p class="cfg-weeks" data-weeks>3–5 tjedana</p></div>
