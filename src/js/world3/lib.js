@@ -76,6 +76,124 @@ vec3 bendPos(vec3 p){
 }
 `;
 
+/* ── površina Zemlje: jedan materijalni jezik za globus i kartu ──
+   Polje se izvodi iz iste maske kopna (bez dodatnog preuzimanja): R = udio kopna u krugu ~1,4° (šelf),
+   G = ~6° (kontinentalnost), B = ~0,5° (neposredna obala). Ocean je najdublji daleko od kopna, a uz obalu
+   prelazi u plići, svjetliji šelf; kopno je uz obalu malo svjetlije, u unutrašnjosti dublje, prema polovima
+   hladnije. Globus i karta koriste iste funkcije, pa se pri "odmatanju" karte ništa ne mijenja. */
+export const EARTH_W = 512;
+export const EARTH_H = 256;
+export function createEarthField() {
+  const data = new Uint8Array(EARTH_W * EARTH_H * 4);
+  const texture = new THREE.DataTexture(data, EARTH_W, EARTH_H, THREE.RGBAFormat, THREE.UnsignedByteType);
+  texture.colorSpace = THREE.NoColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.generateMipmaps = false;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.needsUpdate = true;
+  /** Izračun iz učitane maske (~5 ms): umanjenje na 512×256 pa zamućenje okvirom (2 prolaza ≈ Gauss);
+      po geografskoj dužini polumjer raste s 1/cos(širine), pa je zamućenje izotropno na kugli. */
+  function fill(img) {
+    const W = EARTH_W, H = EARTH_H;
+    let src;
+    try {
+      const cv = document.createElement('canvas');
+      cv.width = W; cv.height = H;
+      const cx = cv.getContext('2d', { willReadFrequently: true });
+      cx.imageSmoothingEnabled = true;
+      cx.imageSmoothingQuality = 'high';
+      cx.drawImage(img, 0, 0, W, H);
+      src = cx.getImageData(0, 0, W, H).data;
+    } catch {
+      return;
+    }
+    const a = new Float32Array(W * H);
+    for (let i = 0; i < W * H; i++) a[i] = src[i * 4] / 255;
+    const tmp = new Float32Array(W * H);
+    const blurX = (inp, out, r) => {
+      for (let y = 0; y < H; y++) {
+        const lat = (90 - ((y + 0.5) * 180) / H) * DEG;
+        const rx = Math.min(W >> 2, Math.max(1, Math.round(r / Math.max(Math.cos(lat), 0.18))));
+        const o = y * W;
+        let s = 0;
+        for (let k = -rx; k <= rx; k++) s += inp[o + ((k + W) % W)];
+        for (let x = 0; x < W; x++) {
+          out[o + x] = s / (2 * rx + 1);
+          s += inp[o + ((x + rx + 1) % W)] - inp[o + ((x - rx + W) % W)];
+        }
+      }
+    };
+    const blurY = (inp, out, r) => {
+      for (let x = 0; x < W; x++) {
+        for (let y = 0; y < H; y++) {
+          let s = 0, n = 0;
+          for (let k = Math.max(0, y - r); k <= Math.min(H - 1, y + r); k++) { s += inp[k * W + x]; n++; }
+          out[y * W + x] = s / n;
+        }
+      }
+    };
+    const blur = (r) => {
+      const b = Float32Array.from(a);
+      for (let p = 0; p < 2; p++) { blurX(b, tmp, r); blurY(tmp, b, Math.max(1, Math.round(r))); }
+      return b;
+    };
+    const near = blur(0.7), shelf = blur(2), cont = blur(8);
+    for (let y = 0; y < H; y++) {
+      const row = (H - 1 - y) * W; // slika: sjever gore → tekstura: v = 0 na jugu
+      for (let x = 0; x < W; x++) {
+        const i = y * W + x, o = (row + x) * 4;
+        data[o] = Math.round(shelf[i] * 255);
+        data[o + 1] = Math.round(cont[i] * 255);
+        data[o + 2] = Math.round(near[i] * 255);
+        data[o + 3] = 255;
+      }
+    }
+    texture.needsUpdate = true;
+  }
+  return { texture, fill };
+}
+
+export const EARTH_GLSL = /* glsl */ `
+uniform sampler2D uField;
+float eHash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float eNoise(vec2 p){
+  vec2 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(eHash(i), eHash(i + vec2(1.0, 0.0)), f.x), mix(eHash(i + vec2(0.0, 1.0)), eHash(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+// ocean: dubina iz udaljenosti od kopna; mu = kosinus kuta gledanja (rub je tamniji, središte bistrije)
+vec3 oceanTone(vec4 F, float mu){
+  float shelf = smoothstep(0.02, 0.42, F.r);
+  float coastal = smoothstep(0.04, 0.5, F.b);
+  vec3 c = mix(vec3(0.0042, 0.0095, 0.029), vec3(0.0075, 0.018, 0.048), smoothstep(0.0, 0.3, F.g));
+  c = mix(c, vec3(0.014, 0.046, 0.098), shelf * 0.85);
+  c = mix(c, vec3(0.020, 0.062, 0.118), coastal * 0.35);
+  return c * (0.7 + 0.45 * mu * mu);
+}
+// kopno: obalni pojas, kontinentalna unutrašnjost, hladnije visoke širine, blaga tonska varijacija
+vec3 landTone(vec4 F, float lat, float lon){
+  float inland = smoothstep(0.62, 0.97, F.g);
+  vec3 c = mix(vec3(0.046, 0.067, 0.102), vec3(0.029, 0.044, 0.073), inland);
+  vec2 q = vec2(lon * cos(lat), lat) * 57.29578;
+  float t = eNoise(q * 0.33) * 0.65 + eNoise(q * 1.3) * 0.35;
+  c *= 0.86 + 0.28 * t;
+  c = mix(c, vec3(0.074, 0.092, 0.126), smoothstep(1.03, 1.2, abs(lat)) * 0.75);
+  return c;
+}
+// atmosferska izmaglica nad diskom (ostatak raspršenja koji ljuska atmosfere ne pokriva)
+vec3 hazeTone(float mu, float ndl){
+  float fres = pow(1.0 - mu, 2.6);
+  return vec3(0.16, 0.42, 1.0) * fres * (0.1 + 0.8 * smoothstep(-0.2, 0.6, ndl));
+}
+// sumrak: tanki zlatni rub prelazi u ljubičastoplavu pa u noć
+vec3 twilightTone(float ndl, float mid, float wid){
+  float gold = exp(-pow((ndl - mid) / wid, 2.0));
+  float blue = exp(-pow((ndl - mid + wid * 1.4) / (wid * 1.2), 2.0));
+  return vec3(0.34, 0.15, 0.06) * gold + vec3(0.05, 0.05, 0.13) * blue;
+}
+`;
+
 /**
  * Meke svjetleće točke (veličina, prozirnost i prag "buđenja" po točki).
  * Udaljene točke ne ostaju umjetno velike: ispod uMin piksela gube svjetlinu (uFall), pa gust skup

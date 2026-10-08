@@ -493,7 +493,8 @@
   .cine-grid { grid-template-columns: 1fr; }
   .cine-grid--right .cine-copy { grid-column: 1; justify-self: stretch; }
   .cine-copy { max-width: none; padding-top: 40vh; }
-  .cine-copy::before { inset: 22vh -40px -60px; background: linear-gradient(180deg, transparent, rgba(4, 6, 12, 0.82) 30%, rgba(4, 6, 12, 0.94)); }
+  /* podloga ispod teksta ne završava tvrdim rubom: zadnjih 60 px (ispod teksta) blijedi u prozirno */
+  .cine-copy::before { inset: 22vh -40px -60px; background: linear-gradient(180deg, transparent, rgba(4, 6, 12, 0.82) 30%, rgba(4, 6, 12, 0.94) calc(100% - 60px), transparent); }
   .cine-hero { align-items: flex-end; }
   .hero-copy { padding-top: 44vh; }
   .hero-title { font-size: clamp(2.35rem, 10.5vw, 3.4rem); }

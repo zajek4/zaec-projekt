@@ -72,7 +72,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   const globe = createGlobe({ geo, lite, landUrl: assets.land });
   const network = createNetwork({ geo, lite });
   globe.spin.add(network.group);
-  const europe = createEurope({ geo, lite, landTex: globe.land, landEuUrl: assets.landEu });
+  const europe = createEurope({ geo, lite, landTex: globe.land, fieldTex: globe.field, landEuUrl: assets.landEu });
   const morph = createMorph(null, { max: lite ? 3200 : 6500 });
   // rubovi konkatedrale (metri) → svjetske jedinice na mjerilu grada
   const kCity = mapScale(Z_CITY);

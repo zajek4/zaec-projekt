@@ -26,8 +26,9 @@ const web = { ...city, dim: 0.95, lines: 0, cathSolid: 0, wire: 1, morph: 2, glo
 
 /** Desktop kompozicije + uspravne izmjene (m) + dodatne izmjene za uspravni tablet (t, širina ≥ 600 px). */
 export const FRAMES = {
-  // niska orbita: rub planeta ulazi odozdo/zdesna, sunce gore desno, crni prostor iznad teksta
-  hero: { Z: 0, tx: 0, ty: 0, tz: -2, az: 4, el: 9, dist: 8.6, fov: 44, roll: -19, sx: 0.2, sy: -0.09, idle: 1, net: 0.85, m: { dist: 13, fov: 50, roll: -8, sx: 0, sy: 0.05 } },
+  // niska orbita: rub planeta s atmosferom diže se dijagonalno odozdo prema gore desno, sunce iza ruba,
+  // naslov ostaje na crnom prostoru. Uspravno: obzor Europe u gornjoj polovici, tekst dolje na tamnoj podlozi.
+  hero: { Z: 0, tx: 0, ty: 0, tz: -2, az: 4, el: 9, dist: 8.2, fov: 44, roll: -21, sx: 0.24, sy: -0.03, idle: 1, net: 0.85, m: { dist: 11, fov: 52, roll: -12, el: 14, sx: 0, sy: 0.26 } },
   world: { Z: 0.12, tx: 0, ty: -1.4, tz: -1.5, az: 8, el: 30, dist: 21, fov: 38, roll: -6, sx: -0.2, net: 1, conv: 0.18, labOsijek: 1, fit: 20, m: { dist: 30, sx: 0, sy: 0.2, roll: 0 } },
   // pero obrisa kreće iz Osijeka već na europskom kadru (iskra), a krug se zatvara na hrvatskom
   europe: { Z: 0.94, tx: -6.5, ty: 0, tz: -1, az: 0, el: 62, dist: 50, sx: 0.17, net: 0.7, conv: 0.4, trace: 0.035, hl: 0.35, fit: 36, m: { dist: 76, sx: 0, sy: 0.18 } },

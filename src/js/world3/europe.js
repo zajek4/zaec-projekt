@@ -4,7 +4,7 @@
 // iz Osijeka (scroll vodi pero), vrhunac sjaja dolazi kad se krug zatvori, zatim se smiri.
 // Spuštanjem pada sumrak (SUN_MAP): noć prelazi kartu, a svjetla gradova pale se tek kad je nad njima mrak.
 import * as THREE from 'three';
-import { proj, glowPoints, seeded, smooth, BEND, BEND_GLSL, SUN_MAP, DAY_EDGE, OSIJEK, MAPK, COSLAT } from './lib.js';
+import { proj, glowPoints, seeded, smooth, BEND, BEND_GLSL, SUN_MAP, DAY_EDGE, OSIJEK, MAPK, COSLAT, EARTH_GLSL } from './lib.js';
 
 const f = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(v));
 // detaljna tekstura kopna (build-geo.mjs, korak 6): lon −30…60, lat 25…75
@@ -40,7 +40,7 @@ function ribbon(rings) {
   return g;
 }
 
-export function createEurope({ geo, lite, landTex, landEuUrl }) {
+export function createEurope({ geo, lite, landTex, fieldTex, landEuUrl }) {
   const rand = seeded(11);
   const group = new THREE.Group();
   group.name = 'europa';
@@ -60,6 +60,7 @@ export function createEurope({ geo, lite, landTex, landEuUrl }) {
   const TU = {
     uLandW: { value: landTex },
     uLandE: { value: tex(landEuUrl) },
+    uField: { value: fieldTex },
     uBend: BEND,
     uSunMap: SUN_MAP,
     uDayEdge: DAY_EDGE,
@@ -91,6 +92,7 @@ export function createEurope({ geo, lite, landTex, landEuUrl }) {
       uniform sampler2D uLandW; uniform sampler2D uLandE; uniform vec3 uSunMap; uniform vec2 uDayEdge;
       uniform float uAlpha; uniform float uDots; uniform float uGrat; uniform float uNightL; uniform float uDim;
       ${BEND_GLSL}
+      ${EARTH_GLSL}
       varying vec2 vXZ; varying vec3 vW;
       float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
       float dotField(vec2 g, float r){
@@ -103,7 +105,8 @@ export function createEurope({ geo, lite, landTex, landEuUrl }) {
         float lonD = ${f(OSIJEK[0])} + vXZ.x / ${f(MAPK * COSLAT)};
         vec2 uvE = vec2((lonD - ${f(EU_BOX[0])}) / ${f(EU_BOX[2] - EU_BOX[0])}, (latD - ${f(EU_BOX[1])}) / ${f(EU_BOX[3] - EU_BOX[1])});
         float inE = step(0.0, uvE.x) * step(uvE.x, 1.0) * step(0.0, uvE.y) * step(uvE.y, 1.0);
-        float lw = texture2D(uLandW, vec2((lonD + 180.0) / 360.0, (latD + 90.0) / 180.0)).r;
+        vec2 uvW = vec2((lonD + 180.0) / 360.0, (latD + 90.0) / 180.0);
+        float lw = texture2D(uLandW, uvW).r;
         float le = texture2D(uLandE, uvE).r;
         float land = smoothstep(0.25, 0.75, mix(lw, le, inE));
         // ista matrica kao na globusu (0,36°); kako se kamera spušta, ulaze 4× i 16× gušće razine,
@@ -121,14 +124,14 @@ export function createEurope({ geo, lite, landTex, landEuUrl }) {
         vec3 v = normalize(cameraPosition - vW);
         float ndl = dot(n, uSunMap);
         float day = smoothstep(uDayEdge.x, uDayEdge.y, ndl);
-        vec3 ocean = mix(vec3(0.006, 0.013, 0.036), vec3(0.012, 0.024, 0.058), pow(max(dot(n, v), 0.0), 2.0));
-        vec3 landC = vec3(0.036, 0.055, 0.085) + dots * vec3(0.10, 0.2, 0.42);
-        vec3 col = mix(ocean, landC, land);
+        float mu = max(dot(n, v), 0.0);
+        vec4 F = texture2D(uField, uvW);
+        vec3 landC = landTone(F, lat, lon) + dots * vec3(0.10, 0.2, 0.42);
+        vec3 col = mix(oceanTone(F, mu), landC, land);
         col *= 0.2 + 1.35 * day;
         // sumrak: topla traka koja putuje preko karte
         float mid = (uDayEdge.x + uDayEdge.y) * 0.5, wid = (uDayEdge.y - uDayEdge.x) * 0.32;
-        float term = exp(-pow((ndl - mid) / wid, 2.0));
-        col += vec3(0.40, 0.16, 0.10) * term * (0.25 + 0.75 * land) * 0.26;
+        col += twilightTone(ndl, mid, wid) * (0.3 + 0.7 * land) * 0.3;
         // noćna strana (kao na globusu): tiha matrica i rijetka svjetla dok je pogled kontinentalan
         float night = 1.0 - day;
         col += dots * vec3(0.08, 0.16, 0.38) * night * 0.45;
@@ -138,8 +141,7 @@ export function createEurope({ geo, lite, landTex, landEuUrl }) {
         vec2 gl = vec2(lonD, latD);
         vec2 gd = abs(fract(gl - 0.5) - 0.5) / fwidth(gl);
         col += vec3(0.10, 0.16, 0.34) * (1.0 - min(min(gd.x, gd.y), 1.0)) * uGrat;
-        float fres = pow(1.0 - max(dot(n, v), 0.0), 2.6);
-        col += vec3(0.16, 0.42, 1.0) * fres * (0.14 + 1.05 * smoothstep(-0.2, 0.6, ndl)) * (1.0 - uDim);
+        col += hazeTone(mu, ndl) * (1.0 - uDim);
         col *= 1.0 - uDim * 0.55;
         // rubovi terena nestaju meko (nikad se ne vidi kraj karte)
         float r = length(vXZ * vec2(1.0, 1.15));
