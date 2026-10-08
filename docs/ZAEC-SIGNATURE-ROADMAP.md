@@ -222,5 +222,5 @@ Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; QA nal
 - `5c2d62d` Osijek: noćni grad, Drava, leća za uspravne zaslone
 - `080163d` Nacrt: kota tornja, os, konstrukcijski pravci, mreža stranice
 - `7ffe5f0` Naslovnica: most iz priče u posao
-- (faza 7) Poglavlje 08 — ZAEC prema smjernicama za sadržaj; oznake bez preklapanja; zadrška tornja
-- Tipografska skala i sustav gumba prema smjernicama dizajna
+- `c4b28ae` (faza 7) Poglavlje 08 — ZAEC prema smjernicama za sadržaj; oznake bez preklapanja; zadrška tornja
+- `28d86c2` Tipografska skala i sustav gumba prema smjernicama dizajna
