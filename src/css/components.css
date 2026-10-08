@@ -36,7 +36,7 @@
   .cfg-included b { font-weight: 650; color: var(--ink-2); }
   .cfg-included .icon { color: var(--ok); flex: none; margin-top: 2px; }
   .cfg-group + .cfg-group { margin-top: 18px; }
-  .cfg-group-t { font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .cfg-group-t { font-size: var(--fs-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
   .cfg-feats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .cfg-feat { display: block; min-width: 0; }
   .cfg-feat > span { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 52px; height: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid var(--line-2); font-size: 0.9rem; font-weight: 540; line-height: 1.25; cursor: pointer; transition: border-color 0.25s, background 0.25s; background: rgba(255, 255, 255, 0.35); }
@@ -51,7 +51,7 @@
   .cfg-imp b:nth-child(1) { height: 5px; } .cfg-imp b:nth-child(2) { height: 8px; } .cfg-imp b:nth-child(3) { height: 11px; }
   .cfg-imp[data-imp='1'] b:nth-child(1), .cfg-imp[data-imp='2'] b:nth-child(-n+2), .cfg-imp[data-imp='3'] b { background: var(--ink-3); }
   .cfg-feat input:checked + span .cfg-imp[data-imp='1'] b:nth-child(1), .cfg-feat input:checked + span .cfg-imp[data-imp='2'] b:nth-child(-n+2), .cfg-feat input:checked + span .cfg-imp[data-imp='3'] b { background: var(--signal); }
-  .cfg-legend { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .cfg-legend { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .cfg-legend .cfg-imp + .cfg-imp, .cfg-legend .cfg-imp:nth-of-type(2) { margin-left: 10px; }
   .cfg-range { display: flex; align-items: center; gap: 18px; }
   .cfg-range input { flex: 1; accent-color: var(--signal); height: 44px; }
@@ -62,7 +62,7 @@
   .cfg-out-inner { background: var(--abyss); box-shadow: inset 0 0 0 1px var(--abyss-line), 0 40px 80px -50px rgba(4, 5, 11, 0.9); color: var(--abyss-fg); border-radius: var(--r-l); padding: clamp(22px, 2.4vw, 32px); display: grid; gap: 18px; overflow: hidden; position: relative; }
   .cfg-out-k { color: var(--abyss-muted); }
   .cfg-result { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; border-top: 1px solid var(--abyss-line-2); padding-top: 18px; }
-  .cfg-label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--abyss-muted); margin-bottom: 6px; }
+  .cfg-label { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.1em; text-transform: uppercase; color: var(--abyss-muted); margin-bottom: 6px; }
   .cfg-tier { display: flex; align-items: baseline; gap: 10px; }
   .cfg-tier b { font-size: 2.6rem; line-height: 1; font-weight: 850; font-variation-settings: 'wdth' 120; color: #fff; }
   .cfg-tier span { color: #c9cfe4; font-weight: 600; }
@@ -75,7 +75,7 @@
   .cfg-drivers li { padding: 5px 10px; border-radius: 99px; border: 1px solid var(--abyss-line-2); font-size: 0.82rem; color: var(--abyss-fg); }
   .cfg-sum { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: 0.88rem; color: #c9cfe4; }
   .cfg-sum li { display: grid; grid-template-columns: 96px 1fr; gap: 10px; }
-  .cfg-sum li b { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--abyss-dim); font-weight: 500; padding-top: 3px; }
+  .cfg-sum li b { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--abyss-dim); font-weight: 500; padding-top: 3px; }
   .cfg-sum li.is-empty span { color: var(--abyss-muted); }
   .cfg-fix { margin-left: 6px; padding: 0; border: 0; background: none; color: #9fb4ff; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .cfg-fix:hover { color: #fff; }
@@ -107,13 +107,13 @@
   .cfg-fl { position: relative; flex: none; height: var(--fh); overflow: hidden; border: 1px solid rgba(150, 168, 255, 0.34); border-bottom-width: 0; background: rgba(35, 71, 255, 0.07); opacity: 1;
     transition: height 0.5s var(--ease-out), opacity 0.4s var(--ease-out), background-color 0.9s var(--ease-out), border-color 0.9s var(--ease-out); }
   .cfg-fl::before { content: ''; position: absolute; inset: 22% 10px 22% 46%; background: repeating-linear-gradient(90deg, rgba(150, 168, 255, 0.28) 0 7px, transparent 7px 12px); transition: background 0.9s var(--ease-out); }
-  .cfg-fl b { position: absolute; left: 9px; top: 50%; translate: 0 -50%; max-width: 44%; font: 500 9.5px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--abyss-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cfg-fl b { position: absolute; left: 9px; top: 50%; translate: 0 -50%; max-width: 44%; font: 500 var(--fs-micro)/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--abyss-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cfg-fl--base { height: var(--bh); background: rgba(35, 71, 255, 0.22); border-color: rgba(127, 159, 255, 0.6); }
   .cfg-fl--base::before { inset: 26% 10px 26% 46%; background: repeating-linear-gradient(90deg, rgba(220, 228, 255, 0.5) 0 9px, transparent 9px 14px); }
   .cfg-fl--found { height: 20px; border-bottom-width: 1px; background: repeating-linear-gradient(-45deg, rgba(150, 168, 255, 0.16) 0 1px, transparent 1px 6px), var(--abyss-2); border-color: var(--abyss-line-2); }
   .cfg-fl--found::before { display: none; }
   .cfg-fl--found b { color: var(--abyss-muted); max-width: 90%; }
-  .cfg-stack.is-dense .cfg-fl--feat b { font-size: 8px; }
+  .cfg-stack.is-dense .cfg-fl--feat b { display: none; }
   .cfg-stack.is-dense .cfg-fl--feat::before { inset: 18% 10px 18% 46%; }
   .cfg-fl.is-enter, .cfg-fl.is-leave { height: 0; opacity: 0; border-top-width: 0; }
   .cfg-fl.is-leave { transition-duration: 0.45s, 0.25s; }

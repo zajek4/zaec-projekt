@@ -10,7 +10,7 @@
 }
 .phero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
 .phero-copy { display: grid; gap: 22px; align-content: start; }
-.phero-title { font-size: clamp(2.6rem, 5.6vw, 6.2rem); max-width: 12ch; }
+.phero-title { font-size: min(var(--fs-d2), 10.6vw); max-width: 12ch; }
 .phero-title em { color: var(--signal); }
 .phero-cta { display: flex; flex-wrap: wrap; gap: 14px 18px; margin-top: 6px; }
 .phero-note { color: var(--muted); }
@@ -67,7 +67,7 @@
 .compare-col--feat p, .compare-col--feat li { color: #b9c0d6; }
 .compare-col--feat .best { color: var(--abyss-muted); }
 .compare-col h3 { font-size: clamp(1.5rem, 2.2vw, 2rem); display: flex; align-items: center; gap: 12px; }
-.compare-col .tag { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; background: var(--signal); color: #fff; }
+.compare-col .tag { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; background: var(--signal); color: #fff; }
 .compare-col .best { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .compare-col--feat .best { color: #a9a49a; }
 @media (max-width: 800px) { .compare { grid-template-columns: 1fr; } }
@@ -126,7 +126,7 @@
 .steps-row li:last-child::after { display: none; }
 .steps-row h3 { font-size: 1.12rem; }
 .steps-row p { color: var(--ink-3); font-size: 0.94rem; }
-.steps-row .meta { color: var(--muted); font-size: 0.62rem; }
+.steps-row .meta { color: var(--muted); font-size: var(--fs-label); }
 @media (max-width: 1000px) { .steps-row { grid-template-columns: 1fr 1fr; } .steps-row li::after { display: none; } }
 @media (max-width: 560px) { .steps-row { grid-template-columns: 1fr; } }
 
