@@ -358,6 +358,21 @@ p { text-wrap: pretty; }
 .subnav a small { grid-column: 1; color: var(--muted); font-size: 0.8rem; }
 .subnav a .icon { grid-row: 1 / span 2; grid-column: 2; align-self: center; opacity: 0; transform: translateX(-6px); transition: 0.3s var(--ease-out); }
 .subnav a:hover .icon { opacity: 1; transform: none; }
+/* usluge u tri skupine (Izgradnja → Vidljivost → Rast): ploča se poravnava s desnim rubom zaglavlja, ne s gumbom */
+.header-inner { position: relative; }
+.main-nav > ul > li > a, .main-nav button.nav-trigger { white-space: nowrap; }
+.has-sub--groups { position: static; }
+.subnav.subnav--groups { left: auto; right: var(--gutter); top: calc(100% - 6px); width: min(900px, calc(100vw - 2 * var(--gutter))); padding: 22px 22px 10px; }
+.subnav-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto; gap: 0 18px; }
+/* subgrid: naslovi skupina iste visine, pa prve stavke stoje u istom redu */
+.subnav-col { display: grid; grid-row: span 2; grid-template-rows: subgrid; align-content: start; min-width: 0; }
+.subnav-h { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; align-items: baseline; align-content: start; margin: 0 0 8px; padding: 0 12px 12px; border-bottom: 1px solid var(--line); font-weight: 700; font-size: var(--fs-ui); letter-spacing: -0.005em; font-variation-settings: 'wdth' var(--wdth-head); }
+.subnav-h .mono { color: var(--signal-2); }
+.subnav-h small { grid-column: 2; margin-top: 2px; color: var(--muted); font-size: var(--fs-small); font-weight: 400; letter-spacing: 0; }
+.subnav.subnav--groups ul { display: grid; grid-template-columns: 1fr; align-content: start; gap: 2px; }
+.main-nav .subnav--groups a { display: grid; grid-template-columns: 1fr; gap: 2px; padding: 10px 12px; }
+.subnav--groups a[aria-current='page'] { background: var(--paper-2); }
+.subnav--groups .subnav-all { margin-top: 10px; }
 .header-cta { display: flex; align-items: center; gap: 18px; flex: none; }
 .header-cta .tel-link { font-size: 0.92rem; }
 .menu-toggle {
@@ -386,7 +401,8 @@ p { text-wrap: pretty; }
 .mobile-menu .mm-sub { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
 .mobile-menu .mm-sub a { display: flex; align-items: center; min-height: 46px; padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: var(--fs-ui); font-weight: 550; line-height: var(--lh-ui); text-decoration: none; color: rgba(239, 235, 227, 0.86); }
 .mobile-menu .mm-foot { margin-top: auto; padding-top: 28px; display: grid; gap: 14px; }
-.mobile-menu .mm-foot .btn { width: 100%; }
+.mobile-menu .mm-foot .btn { width: calc(100% - 12px); margin-inline: 6px; }
+.mobile-menu .mm-note { color: rgba(239, 235, 227, 0.6); }
 
 @media (max-width: 1100px) {
   .main-nav, .header-cta .tel-link { display: none; }
@@ -400,22 +416,38 @@ p { text-wrap: pretty; }
   .brand .zaec-logo { width: 40px; }
 }
 
-/* ───────── mobilna traka za poziv ───────── */
+/* ───────── mobilna traka: jedan poziv na upit ─────────
+   Duboka noć, svijetli gumb i jedno toplo svjetlo (prozor koji se upalio). Bez zelenog "Nazovite":
+   primarni cilj je ispunjen upit, telefon je na stranici Kontakt. Skriva se kad je forma ili podnožje u kadru. */
 .call-bar {
-  position: fixed; left: 10px; right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); z-index: 95;
-  display: none; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px;
-  background: rgba(20, 20, 20, 0.92); border-radius: 18px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.45);
-  transform: translateY(140%); transition: transform 0.6s var(--ease-out);
+  position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 95;
+  display: none;
+  border-radius: 16px; background: rgba(4, 5, 11, 0.9); border: 1px solid var(--abyss-line-2);
+  backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 24px 48px -16px rgba(0, 0, 0, 0.6);
+  transform: translateY(calc(100% + 24px)); opacity: 0;
+  transition: transform 0.6s var(--ease-out), opacity 0.4s var(--ease-out);
+  --focus: #9fb4ff;
 }
-.call-bar.is-visible { transform: none; }
-.call-bar a {
-  display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; border-radius: 12px;
-  font-weight: 650; text-decoration: none; color: #fff; font-size: 0.98rem;
+.call-bar.is-visible { transform: none; opacity: 1; }
+.call-bar .cb-form {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 58px; padding: 7px 12px 7px 16px;
+  border-radius: inherit; color: var(--abyss-fg); text-decoration: none; -webkit-tap-highlight-color: transparent;
 }
-.call-bar a.cb-call { background: var(--ok); }
-.call-bar a.cb-form { background: var(--signal); }
-@media (max-width: 760px) { .call-bar { display: grid; } }
+.cb-copy { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.cb-copy small { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--abyss-muted); line-height: 1.3; }
+.cb-lamp { flex: none; width: 7px; height: 9px; border-radius: 1px; background: var(--lamp); box-shadow: 0 0 10px 2px rgba(255, 178, 63, 0.45); }
+.cb-go {
+  position: relative; isolation: isolate; flex: none; display: inline-flex; align-items: center; gap: 0.6em;
+  min-height: 44px; padding: 0 1.15em 0 1.05em; color: var(--ink); font-weight: 680; font-size: 1rem; letter-spacing: -0.005em;
+  font-variation-settings: 'wdth' var(--wdth-ui); white-space: nowrap;
+}
+.cb-go::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--paper); border-radius: 3px; transform: skewX(var(--btn-skew)); transition: transform 0.3s var(--ease-out); }
+.cb-go .icon { transition: transform 0.4s var(--ease-out); }
+.cb-form:active .cb-go::before { transform: skewX(var(--btn-skew)) scale(0.96); }
+.cb-form:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+@media (max-width: 760px) { .call-bar { display: block; } }
+@media (max-width: 340px) { .cb-copy small { display: none; } .call-bar .cb-form { justify-content: flex-end; } }
 
 /* ───────── sekcije ───────── */
 .section { position: relative; padding-block: clamp(80px, 12vw, 180px); }

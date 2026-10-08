@@ -80,7 +80,6 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 			<p class="lead" data-hero-in><?php echo esc_html( $h( 'hero_lead' ) ); ?></p>
 			<div class="hero-cta" data-hero-in>
 				<?php echo zaec_button( $h( 'hero_cta' ), '#kontakt', 'signal', array( 'magnetic' => true, 'track' => 'cta_hero_goal' ) ); // phpcs:ignore ?>
-				<a class="btn btn--ghost-light" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
 			</div>
 			<ul class="hero-trust" role="list" data-hero-in>
 				<li><?php zaec_the_icon( 'document', 18 ); ?><span><?php echo esc_html( $h( 'hero_trust_1' ) ); ?></span></li>
@@ -549,7 +548,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 			<div class="faq-side">
 				<p class="kicker"><?php echo esc_html( $h( 'faq_kicker' ) ); ?></p>
 				<?php zaec_heading( $h( 'faq_title' ), 'h2', 'h2', true, 'faq-title' ); ?>
-				<p class="muted" data-reveal>Nema odgovora koji tražite? Nazovite <a href="<?php echo esc_attr( zaec_phone_href() ); ?>"><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a> — <?php echo esc_html( zaec_option( 'hours' ) ); ?>.</p>
+				<p class="muted" data-reveal>Nema odgovora koji tražite? <a href="#kontakt">Pitajte nas u upitu</a> — javljamo se u radno vrijeme.</p>
 			</div>
 			<div class="faq-list" data-reveal>
 				<?php foreach ( zaec_home_faq() as $i => $f ) : ?>
@@ -574,10 +573,6 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 		</div>
 		<div class="final-form" data-reveal>
 			<?php get_template_part( 'template-parts/goal-form', null, array( 'id' => 'kontakt-forma' ) ); ?>
-		</div>
-		<div class="final-contact" data-reveal>
-			<a class="tel-big" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><span class="dot" aria-hidden="true"></span><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
-			<p class="mono"><?php echo esc_html( zaec_option( 'hours' ) . ' · ' . zaec_option( 'city' ) ); ?></p>
 		</div>
 	</div>
 </section>
