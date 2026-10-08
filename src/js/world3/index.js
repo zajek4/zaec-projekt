@@ -179,6 +179,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
 
   function measure() {
     const sy = window.scrollY;
+    labels.forEach((L) => { L.w = 0; });
     mobile = innerWidth < 760 || innerWidth / innerHeight < 0.82;
     anchors = [...document.querySelectorAll('[data-cam]')]
       .map((el) => {
@@ -288,7 +289,13 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   flow.setStates(gates);
 
   /* ── oznake ── */
-  const labels = labelsRoot ? [...labelsRoot.querySelectorAll('[data-l]')].map((el) => ({ el, key: el.dataset.l, o: -1, x: -1e4, y: -1e4 })) : [];
+  const labels = labelsRoot ? [...labelsRoot.querySelectorAll('[data-l]')].map((el) => ({ el, key: el.dataset.l, o: -1, x: -1e4, y: -1e4, hide: 0, w: 0, h: 0 })) : [];
+  // oznake gradova i mjesta ne smiju se preklapati: kad se karta udaljava, manje važne se povuku
+  // (Osijek prvi, zatim gradovi, pa mjesta redom važnosti)
+  const prio = (L) => (L.el.classList.contains('sl--home') ? 0 : L.key.startsWith('city-') ? 1 : L.key.startsWith('town-') ? 2 + +L.key.slice(5) * 0.01 : -1);
+  labels.forEach((L) => { L.p = prio(L); });
+  const collidable = labels.filter((L) => L.p >= 0).sort((a, b) => a.p - b.p);
+  const boxes = [];
   const v3 = new THREE.Vector3();
   const n3 = new THREE.Vector3();
   const t3 = new THREE.Vector3();
@@ -340,7 +347,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     }
   }
 
-  function placeLabels(ctx, visible) {
+  function placeLabels(ctx, visible, dt = 0.016) {
     for (const L of labels) {
       let o = visible ? labelWorld(L.key, ctx) : 0;
       if (o > 0.01) {
@@ -358,6 +365,22 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
           }
         }
       }
+      L.want = o;
+    }
+    // sudari: oznaka (sidro dolje-sredina) koja bi prekrila važniju se povlači, glatko
+    boxes.length = 0;
+    for (const L of collidable) {
+      let hit = false;
+      if (L.want > 0.05) {
+        if (!L.w) { L.w = L.el.offsetWidth; L.h = L.el.offsetHeight; }
+        const x0 = L.x - L.w / 2 - 3, x1 = L.x + L.w / 2 + 3, y0 = L.y - L.h - 9, y1 = L.y + 2;
+        for (const b of boxes) if (x0 < b[2] && x1 > b[0] && y0 < b[3] && y1 > b[1]) { hit = true; break; }
+        if (!hit) boxes.push([x0, y0, x1, y1]);
+      }
+      L.hide = reduceMQ.matches ? +hit : damp(L.hide, hit ? 1 : 0, 10, dt);
+    }
+    for (const L of labels) {
+      let o = L.want * (1 - L.hide);
       o = Math.round(clamp(o) * 100) / 100;
       if (o !== L.o) {
         L.el.style.opacity = String(o);
@@ -538,7 +561,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     ctx.globeA = globeA;
     ctx.europeA = europeA;
     ctx.cityA = cityA;
-    placeLabels(ctx, !covered);
+    placeLabels(ctx, !covered, dt);
 
     renderer.render(scene, camera);
 
