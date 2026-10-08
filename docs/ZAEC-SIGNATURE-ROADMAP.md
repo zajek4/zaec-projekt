@@ -91,9 +91,31 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   (9 m kose obale), mostovi samo gdje stvarne OSM ceste prelaze vodu (bez izmišljenih), valići nizvodno, Fresnel,
   izduženi odsjaji svjetla s obale. Svjetiljke: topla LED-bijela na glavnim, natrijeva na sporednim ulicama.
   Prije ovoga su voda, trgovi i parkovi bili nevidljivi (trokuti okrenuti naopačke, odbacivani) — popravljeno.
+- **Nacrt (faza 6):** skener sada traje dulje (pola prijelaza katedrala → nacrt), a kad prođe, crtež dobiva
+  arhitektonske oznake (`blueprint.js`): liniju tla, os tornja (crta-točka), kotnu liniju visine s kosim
+  crticama i pomoćnom crtkanom linijom s vrha te oznaku "90 m · visina tornja". U kadru mreže mjerne linije zgrade
+  produljuju se u crtkane konstrukcijske pravce (udesno i gore, lijevo je tekst), a prema kadru weba ti isti pravci
+  legnu na stupce i redove okvira stranice (mreža rasporeda iza žičanog okvira). Zatamnjenje grada u poglavljima
+  nacrta računa se u izlaznom prostoru (kao prije novog shadera), pa grad ne natječe s crtežom.
+- **"Devedeset metara" provjereno:** 90 m navode opis kulturnog dobra (Konzervatorski odjel u Osijeku, preko
+  bus.hr), Lonely Planet i drugi; engleska Wikipedija navodi 94 m. Model konkatedrale visok je 94 m s križem.
+  Tekst ostaje "90 m"; kota se crta do 90 m, križ je iznad nje.
+- **Most iz priče u posao (faza 7):** sekcija "Dobri ste u svom poslu" ostaje prva na papiru (naslov je jak i
+  govori jezikom kupca), ali više nije samo popis boli. Kicker nastavlja numeraciju priče (`08 — Što radimo`).
+  Lijevo, ljepljivo: uvid (tri koraka izbora), tko smo i za koga radimo, u čemu je razlika (prvo nacrt, pa
+  dizajn; mjerimo što web donosi) i prvi korak (razgovor od dvadesetak minuta i pisana procjena) s pozivom na upit.
+  Desno četiri reda: problem → **Radimo** (poveznice na stvarne usluge) → **Dobivate** (isporuka, bez obećanja
+  rezultata). Svaki red ima mali prozor koji se upali kad red uđe u kadar — motiv "svako svjetlo je nečiji posao"
+  prelazi s 3D grada na papir. Sve tvrdnje su iz postojećeg sadržaja (hero, proces, jamstva); novi tekstovi su
+  zadane vrijednosti i mogu se urediti u Izgled → ZAEC naslovnica (uređeni tekstovi imaju prednost).
 - **Leća za uspravne zaslone:** sekcije s `data-lens` mjere svoj tekst; dok tekst prolazi gornjom polovicom ekrana,
   kamera pomiče motiv u slobodni pojas ispod njega. Popravlja crnu sličicu na mobitelu (~4100 px, postojala i prije)
-  gdje je grad bio ispod tamne podloge teksta; podloga je uža i prozirnija.
+  gdje je grad bio ispod tamne podloge teksta; podloga je uža i prozirnija. Leća je dodana i konkatedrali i
+  nacrtu; računa da dno ekrana zauzima traka s pozivima (motiv ide u pojas između teksta i trake).
+- **Organizacija (od faze 6):** ova nit vodi 3D priču, naslovnicu i integraciju grane/PR-a #6. Faze 8–9 (podstranice,
+  cijene, kontakt) radi zasebna nit na vlastitoj grani; SEO/sadržaj, dizajn-istraživanje i QA pišu u
+  `/mnt/project-files/zaec-signature/{strategy,design,qa/audit}`. Grana podstranica spaja se u ovu nakon QA-a,
+  build se radi ovdje. Ništa ne ide u `main` bez odobrenja.
 
 ## Faze
 
@@ -104,10 +126,10 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 3 Zemlja | ✓ atmosfera, ocean, kopno, kadrovi (desktop + uspravno), posteri |
 | 4 Svjetla Europe | ✓ svjetla iz NASA/NOAA snimke, jantarni dnevni sloj, sumrak s istoka |
 | 5 Osijek (krovovi, rasvjeta, Drava) | ✓ karta uličnog svjetla, prozori i izlozi, krovovi, Drava s nasipima i mostovima, leća za mobitel |
-| 6 Konkatedrala i nacrt | otvoreno |
-| 7 Naslovnica: urednički dio, prefooter, footer, Daj Gric | djelomično: prefooter ✓, footer ✓, Daj Gric ✓; sekcija "Dobri ste…" — otvoreno |
-| 8 Izrada web stranica | otvoreno |
-| 9 Djelatnosti, cijene, o nama, kontakt | djelomično: bug procjene ✓ |
+| 6 Konkatedrala i nacrt | ✓ kota 90 m, os, tlo, konstrukcijski pravci → mreža stranice, sporiji skener, leća |
+| 7 Naslovnica: urednički dio, prefooter, footer, Daj Gric | ✓ prefooter, footer, Daj Gric, most "Dobri ste…" (tko/što/za koga/razlika/prvi korak) |
+| 8 Izrada web stranica | predano niti za podstranice |
+| 9 Djelatnosti, cijene, o nama, kontakt | djelomično: bug procjene ✓; ostalo predano niti za podstranice |
 | 10 SEO i sadržaj | otvoreno |
 | 11 Performanse, pristupačnost, QA | otvoreno |
 | 12 Završna art direkcija i PR | otvoreno |
@@ -131,6 +153,10 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 - Osijek: snimke prije/poslije 1440×900 (prijelaz 4050, Osijek 4500, konkatedrala 5400) i 390×844 (prijelaz,
   Hrvatska 1941–3200, Osijek 3685–4529, konkatedrala), krupni kadrovi krovova i vode iz debug kamere.
   `qa/faza-5-prije-poslije.png` u projektnim datotekama.
+- Most "Dobri ste…": PHP lint; snimke 1440×900 (tri pozicije), 1024×768 i 390×844; bez JS grešaka.
+- Nacrt: snimke 1440×900 (5400–8100, svakih 150–450 px) i 390×844 (5429–8300), uključujući sredine prijelaza;
+  oznaka "90 m" ne prekriva naslov ni na jednom. Bez JS grešaka u konzoli. Napomena: u softverskom rendereru kamera
+  kasni za scrollom (sličica traje ~150 ms, korak prigušenja je ograničen), pa snimke na sidrima trebaju ~4 s.
 - Cijena grada (swiftshader, CPU, 1440×900, DPR 1, sinkronizirano `readPixels`): Osijek 68 → ~120–138 ms/sličici,
   konkatedrala 121 → ~155–172 ms. Najviše troše shader zgrada (~37–50 ms) i tlo preko cijelog ekrana (~22–31 ms).
   CPU renderer pretjeruje cijenu fragment shadera; na GPU-u mjeriti u fazi 11. Postojeći regulator spušta DPR
@@ -141,19 +167,24 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | Faza | Dizajn | Kreativnost | Upotrebljivost | Tehnika | Napomena |
 |---|---|---|---|---|---|
 | 5 Osijek | 7,5 | 7 | 8 | 7 | Grad se čita kao noćni Osijek; krovovi izbliza tamni, cijena na CPU-u visoka |
+| 6 Nacrt | 8 | 8 | 8 | 7,5 | Kota i pravci daju nacrtu smisao; na desktopu toranj na trenutak prolazi ispod teksta |
+| 7 Most | 7,5 | 7 | 8,5 | 8 | Odgovara tko/što/za koga/kako početi; ljepljivi stupac ima kratak hod na 1440×900 |
 
 ## Otvoreno
 
 - `registry.npmjs.org` je blokiran mrežnim pravilima okruženja; build je Bunom (vidi gore). Pri prvoj prilici
   pokrenuti `npm ci && npm run build` i usporediti.
 - Sekcija iznad footera na nekim podstranicama (CTA traka) još koristi sivu `--ink`; ujednačiti s `--abyss` (faza 12).
+- Nacrt, desktop: oko 5850 px šiljak tornja na trenutak prolazi ispod teksta o konkatedrali (kamera prelazi s
+  lijeve na desnu stranu dok tekst odlazi).
 - Osijek: krovovi izbliza i dalje dosta tamni; Drava na kadru Osijeka tamna (obalne svjetiljke se iz tog kuta
   fizički ne zrcale). Oznake Slavonije se na mobitelu preklapaju (~3200 px, postojalo i prije) — faza 11.
 - Kategorije djelatnosti u procjeni ("Voda", "Struja"…) — nova nomenklatura (faza 9/10).
 
 ## Sljedeći korak
 
-Faza 6 (konkatedrala i prijelaz stvarnost → nacrt, provjera "90 metara"), zatim 7, 8 i 9.
+Uskladiti most i naslovnicu sa smjernicama iz `strategy/` i `design/` kad stignu; integracija grane podstranica
+nakon QA-a; QA nalazi za vlastite datoteke; 3D dorada (krovovi izbliza, desktopni prolaz tornja ispod teksta).
 
 ## Commitovi
 
@@ -164,4 +195,6 @@ Faza 6 (konkatedrala i prijelaz stvarnost → nacrt, provjera "90 metara"), zati
 - `b8e4968` Footer u dubokoj noći, tokeni `--abyss`
 - `4644aef` Zemlja: atmosfera s raspršenjem, ocean, kopno, kadrovi
 - `5515519` Svjetla Europe iz NASA/NOAA snimke
-- (faza 5) Osijek: noćni grad, Drava, leća za uspravne zaslone
+- `5c2d62d` Osijek: noćni grad, Drava, leća za uspravne zaslone
+- `080163d` Nacrt: kota tornja, os, konstrukcijski pravci, mreža stranice
+- (faza 7) Naslovnica: most iz priče u posao

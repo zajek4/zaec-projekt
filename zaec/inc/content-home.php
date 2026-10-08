@@ -66,10 +66,14 @@ function zaec_home_defaults() {
 		'sys_title'       => 'Sedam slojeva između pretrage i <em>poziva</em>.',
 		'sys_lead'        => 'Svaki sloj ima svoj posao. Ako jedan zakaže, ostali ga ne mogu sakriti.',
 		'sys_statement'   => 'Web koji radi nije jedan lijep ekran. <em>To je sustav.</em>',
-		// Prepoznavanje.
-		'recog_kicker'    => 'Zvuči poznato?',
+		// Prepoznavanje: most iz priče u konkretan posao (tko smo, što radimo, za koga, razlika, prvi korak).
+		'recog_kicker'    => '08 — Što radimo',
 		'recog_title'     => 'Dobri ste u svom poslu. <em>Web</em> to još ne pokazuje.',
 		'recog_lead'      => 'Kupci biraju u tri koraka: pretraga, karta, prvi uvjerljiv web. Ako ispadnete u bilo kojem, posao ode — ne nužno boljem, nego vidljivijem.',
+		'recog_who'       => 'ZAEC je web studio iz Osijeka. Obrtima, servisima, salonima, ugostiteljima, trgovinama i ustanovama projektiramo web, lokalni SEO i mjerenje — da vas kupac nađe, razumije i javi se.',
+		'recog_diff'      => 'Razlika je u redoslijedu: prvo nacrt, onda dizajn. I mjerimo ono što web stvarno donosi.',
+		'recog_cta'       => 'Recite nam što želite postići',
+		'recog_start'     => 'Prvi korak: razgovor od dvadesetak minuta i pisana procjena, bez obveze.',
 		// Lijepo vs učinkovito.
 		'cmp_kicker'      => 'Lijepo vs učinkovito',
 		'cmp_title'       => 'Obje su lijepe. Samo jedna <em>radi</em>.',
@@ -115,12 +119,40 @@ function zaec_home( $key ) {
 	return (string) $v;
 }
 
+/**
+ * Četiri problema → što radimo (poveznice na usluge) → što dobivate (isporuka, ne obećanje rezultata).
+ * [ broj, problem, opis, [ [ putanja, naziv ], … ], dobivate ]
+ */
 function zaec_home_pains() {
 	return array(
-		array( '01', 'Nema vas tamo gdje vas traže.', 'Google karta, pretraga i sve češće ChatGPT. Ako vas ondje nema, ne postojite za kupca koji uslugu treba sada.' ),
-		array( '02', 'Web postoji, telefon šuti.', 'Lijep dizajn bez jasne ponude, poziva na akciju i brzine na mobitelu je skupa posjetnica.' ),
-		array( '03', 'Ne znate što radi.', 'Bez mjerenja ne znate dolaze li upiti s weba, oglasa ili preporuke — pa novac ulažete naslijepo.' ),
-		array( '04', 'Već ste se jednom opekli.', 'Rok probijen, cijena narasla, pristupi kod agencije. Zato kod nas opseg, rok i cijena idu na papir prije početka — i sve je na vaše ime.' ),
+		array(
+			'01',
+			'Nema vas tamo gdje vas traže.',
+			'Google karta, pretraga i sve češće ChatGPT. Ako vas ondje nema, ne postojite za kupca koji uslugu treba sada.',
+			array( array( 'usluge/lokalni-seo', 'Lokalni SEO' ), array( 'usluge/google-business-profil', 'Google Business profil' ), array( 'usluge/ai-vidljivost', 'AI vidljivost' ) ),
+			'Sređen Google profil, stranicu za svaku uslugu i lokaciju te sadržaj koji Google i AI asistenti mogu razumjeti.',
+		),
+		array(
+			'02',
+			'Web postoji, telefon šuti.',
+			'Lijep dizajn bez jasne ponude, poziva na akciju i brzine na mobitelu je skupa posjetnica.',
+			array( array( 'usluge/izrada-web-stranica', 'Izrada web stranica' ), array( 'usluge/landing-stranice', 'Landing stranice' ), array( 'usluge/brzina-web-stranice', 'Brzina web stranice' ) ),
+			'Jasnu ponudu u prvom ekranu, poziv i WhatsApp jednim dodirom i stranicu koja se na mobitelu otvara odmah.',
+		),
+		array(
+			'03',
+			'Ne znate što radi.',
+			'Bez mjerenja ne znate dolaze li upiti s weba, oglasa ili preporuke — pa novac ulažete naslijepo.',
+			array( array( 'usluge/ga4-i-pracenje-konverzija', 'GA4 i praćenje konverzija' ) ),
+			'Svaki poziv, upit i prodaju zabilježene u GA4 i izvještaj koji pokazuje odakle dolaze.',
+		),
+		array(
+			'04',
+			'Već ste se jednom opekli.',
+			'Rok probijen, cijena narasla, a pristupi su ostali kod agencije.',
+			array( array( '#proces', 'Proces u šest koraka' ), array( 'cijene', 'Cijene i procjena' ) ),
+			'Fiksnu cijenu i rok u pisanoj ponudi, domenu, hosting i pristupe na vaše ime te 14 dana jamstva nakon objave.',
+		),
 	);
 }
 

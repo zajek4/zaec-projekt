@@ -40,6 +40,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 		<span class="sl sl--town<?php echo $i < 8 ? ( 4 === $i ? ' sl--m-hide' : '' ) : ' sl--minor'; ?>" data-l="town-<?php echo (int) $i; ?>"><b><?php echo esc_html( $t ); ?></b></span>
 	<?php endforeach; ?>
 	<span class="sl sl--pin" data-l="cath"><b>Konkatedrala<span class="sl-long"> sv. Petra i Pavla</span></b><small>toranj 90 m</small></span>
+	<span class="sl sl--dim" data-l="dim"><b>90 m</b><small>visina tornja</small></span>
 	<span class="sl sl--soft" data-l="drava"><b>Drava</b></span>
 	<span class="sl sl--pin sl--small" data-l="hotel"><b>Hotel Osijek</b></span>
 	<span class="sl sl--soft sl--trg" data-l="trg"><b>Trg Ante Starčevića</b></span>
@@ -143,7 +144,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine" id="konkatedrala" data-cam="cathedral" data-header-theme="night" aria-labelledby="cath-title">
+<section class="cine" id="konkatedrala" data-cam="cathedral" data-header-theme="night" data-lens aria-labelledby="cath-title">
 	<div class="wrap cine-grid cine-grid--right">
 		<div class="cine-copy">
 			<p class="kicker"><?php echo esc_html( $h( 'cath_kicker' ) ); ?></p>
@@ -153,7 +154,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine cine--duo" id="nacrt" data-header-theme="night" aria-labelledby="plan-title">
+<section class="cine cine--duo" id="nacrt" data-header-theme="night" data-lens aria-labelledby="plan-title">
 	<div class="cine-beat" data-cam="arch">
 		<div class="wrap cine-grid">
 			<div class="cine-copy">
@@ -255,15 +256,45 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 <div class="paper" data-cover data-cam="layers-c" data-cam-at="top">
 
 	<section class="sec recog" id="prepoznajete" aria-labelledby="recog-title">
-		<div class="wrap">
-			<div class="sec-head">
+		<div class="wrap recog-grid">
+			<div class="recog-head">
 				<p class="kicker"><?php echo esc_html( $h( 'recog_kicker' ) ); ?></p>
 				<?php zaec_heading( $h( 'recog_title' ), 'h2', 'h2', true, 'recog-title' ); ?>
 				<p class="lead" data-reveal><?php echo esc_html( $h( 'recog_lead' ) ); ?></p>
+				<div class="recog-id" data-reveal>
+					<p class="recog-who"><?php echo esc_html( $h( 'recog_who' ) ); ?></p>
+					<p class="recog-diff"><?php echo esc_html( $h( 'recog_diff' ) ); ?></p>
+					<div class="recog-start">
+						<?php echo zaec_button( $h( 'recog_cta' ), '#kontakt', 'signal', array( 'track' => 'cta_recog_goal' ) ); // phpcs:ignore ?>
+						<p class="recog-note"><?php echo esc_html( $h( 'recog_start' ) ); ?></p>
+					</div>
+				</div>
 			</div>
 			<ol class="recog-list" role="list" data-stagger="0.08">
 				<?php foreach ( zaec_home_pains() as $p ) : ?>
-					<li class="recog-item" data-reveal><span class="recog-n mono"><?php echo esc_html( $p[0] ); ?></span><h3><?php echo esc_html( $p[1] ); ?></h3><p><?php echo esc_html( $p[2] ); ?></p></li>
+					<li class="recog-row" data-reveal>
+						<span class="recog-n mono" aria-hidden="true"><i class="recog-win"></i><?php echo esc_html( $p[0] ); ?></span>
+						<div class="recog-pain">
+							<h3><?php echo esc_html( $p[1] ); ?></h3>
+							<p><?php echo esc_html( $p[2] ); ?></p>
+						</div>
+						<dl class="recog-fix">
+							<div>
+								<dt>Radimo</dt>
+								<dd>
+									<ul class="recog-tags" role="list">
+										<?php foreach ( $p[3] as $l ) : ?>
+											<li><a href="<?php echo esc_url( 0 === strpos( $l[0], '#' ) ? $l[0] : zaec_url( $l[0] ) ); ?>"><?php echo esc_html( $l[1] ); ?></a></li>
+										<?php endforeach; ?>
+									</ul>
+								</dd>
+							</div>
+							<div>
+								<dt>Dobivate</dt>
+								<dd><?php echo esc_html( $p[4] ); ?></dd>
+							</div>
+						</dl>
+					</li>
 				<?php endforeach; ?>
 			</ol>
 		</div>

@@ -72,6 +72,10 @@
 .sl--gate { translate: 22px -50%; }
 .sl--gate b { font-size: 0.58rem; color: rgba(205, 215, 255, 0.8); padding: 2px 6px; border-left: 1px solid rgba(178, 192, 255, 0.5); transition: color 0.45s var(--ease-out), border-color 0.45s var(--ease-out); }
 .sl--gate.is-bad b { color: #ffb3a8; border-color: rgba(255, 111, 94, 0.7); }
+/* kota visine tornja u nacrtu: broj uz kotnu liniju, prema zgradi */
+.sl--dim { translate: 0 -50%; }
+.sl--dim b { font-size: 0.95rem; letter-spacing: 0.04em; color: #dbe3ff; text-transform: none; font-variant-numeric: tabular-nums; }
+.sl--dim small { margin-top: 3px; color: rgba(180, 196, 255, 0.7); letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.54rem; }
 .sl--layer { display: flex; align-items: center; gap: 8px; translate: 10px -50%; }
 .sl--layer em { font-style: normal; font-family: var(--font-mono); font-size: 0.6rem; color: var(--glow); }
 .sl--layer b { font-size: 0.66rem; }
@@ -238,14 +242,40 @@
 .paper .h2 em { color: var(--signal); }
 .paper .sec--night .h2 em { color: var(--glow); }
 
-/* prepoznavanje */
-.recog-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
-.recog-item { padding: 26px 26px 10px 0; display: grid; gap: 12px; align-content: start; border-right: 1px solid var(--line); }
-.recog-item + .recog-item { padding-left: 26px; }
-.recog-item:last-child { border-right: 0; }
-.recog-n { color: var(--signal); font-weight: 600; }
-.recog-item h3 { font-size: clamp(1.2rem, 1.5vw, 1.45rem); }
-.recog-item p { color: var(--ink-3); font-size: 0.98rem; }
+/* prepoznavanje: most iz priče u posao. Lijevo tko smo i prvi korak (ljepljivo), desno problem → što radimo →
+   što dobivate. Svaki red ima "prozor" koji se upali kad red uđe u kadar — svako svjetlo je nečiji posao. */
+.recog-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 104px); align-items: start; }
+.recog-head { position: sticky; top: calc(var(--header-h) + 40px); display: grid; gap: 22px; }
+.recog-head .h2 { max-width: 14ch; font-size: clamp(2.3rem, 3.9vw, 4.1rem); }
+.recog-id { margin-top: 14px; padding-top: 22px; border-top: 1px solid var(--ink); display: grid; gap: 12px; max-width: 46ch; }
+.recog-who { font-size: 1.04rem; line-height: 1.5; color: var(--ink); }
+.recog-diff { color: var(--ink-3); font-size: 0.96rem; }
+.recog-start { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 10px; }
+.recog-note { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.04em; line-height: 1.5; color: var(--ink-3); max-width: 30ch; }
+.recog-list { border-top: 1px solid var(--ink); }
+.recog-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1.08fr); gap: 10px 30px; padding: 30px 0 32px; border-bottom: 1px solid var(--line); }
+.recog-n { display: grid; gap: 12px; align-content: start; justify-items: start; color: var(--signal); font-weight: 600; font-size: 0.72rem; padding-top: 4px; }
+.recog-win {
+  width: 14px; height: 19px; border: 1px solid var(--line-2); border-radius: 1px;
+  background: linear-gradient(90deg, transparent 44%, rgba(20, 20, 20, 0.16) 44% 56%, transparent 56%), linear-gradient(transparent 40%, rgba(20, 20, 20, 0.16) 40% 50%, transparent 50%), var(--paper-2);
+  transition: background-color 0.5s var(--ease-out), border-color 0.5s var(--ease-out), box-shadow 0.9s var(--ease-out);
+}
+.recog-row.is-in .recog-win {
+  background-color: var(--lamp); border-color: #d99a43;
+  background-image: linear-gradient(90deg, transparent 44%, rgba(120, 66, 10, 0.35) 44% 56%, transparent 56%), linear-gradient(transparent 40%, rgba(120, 66, 10, 0.35) 40% 50%, transparent 50%);
+  box-shadow: 0 0 0 3px rgba(255, 178, 63, 0.14), 0 0 22px 4px rgba(255, 170, 60, 0.42);
+  transition-delay: calc(var(--d, 0s) + 0.45s);
+}
+.recog-pain { display: grid; gap: 10px; align-content: start; }
+.recog-pain h3 { font-size: clamp(1.18rem, 1.45vw, 1.42rem); }
+.recog-pain p { color: var(--ink-3); font-size: 0.96rem; }
+.recog-fix { display: grid; gap: 16px; align-content: start; margin: 0; padding-left: 26px; border-left: 1px solid var(--line); }
+.recog-fix dt { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--signal); margin-bottom: 6px; }
+.recog-fix dd { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--ink-2); }
+.recog-tags { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.recog-tags a { display: inline-block; font-size: 0.82rem; font-weight: 550; padding: 4px 10px; border: 1px solid var(--line-2); border-radius: 999px; color: var(--ink); text-decoration: none; transition: border-color 0.25s var(--ease-out), color 0.25s var(--ease-out), background-color 0.25s var(--ease-out); }
+.recog-tags a:hover, .recog-tags a:focus-visible { border-color: var(--signal); color: var(--signal); background: var(--signal-soft); }
+@media (prefers-reduced-motion: reduce) { .recog-win, .recog-row.is-in .recog-win { transition: none; } }
 
 /* lijepo vs učinkovito */
 .cmp-stage { position: relative; margin: 0; border-radius: 18px; overflow: hidden; aspect-ratio: 16 / 7.6; background: #111; box-shadow: 0 50px 80px -50px rgba(20, 20, 20, 0.6); user-select: none; }
@@ -462,10 +492,9 @@
 
 /* ═════════ responzivno ═════════ */
 @media (max-width: 1100px) {
-  .recog-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .recog-item:nth-child(2) { border-right: 0; }
-  .recog-item:nth-child(3) { padding-left: 0; }
-  .recog-item:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .recog-grid { grid-template-columns: 1fr; }
+  .recog-head { position: static; }
+  .recog-head .h2 { max-width: 17ch; }
   .path-panel { grid-template-columns: 1fr; }
   .path-out { grid-template-columns: auto 1fr; grid-template-areas: 'of funnel' 'num funnel' 'presets funnel'; gap: 4px 28px; }
   .path-of { grid-area: of; } .path-num { grid-area: num; } .path-funnel { grid-area: funnel; } .path-presets { grid-area: presets; }
@@ -533,8 +562,8 @@
   .sys-layers .sys-layer:last-child { min-height: 46vh; }
   .sys-layers { margin-top: 0; }
   .sys-statement { min-height: 80vh; padding-top: 40vh; }
-  .recog-list { grid-template-columns: 1fr; }
-  .recog-item, .recog-item + .recog-item { padding: 22px 0; border-right: 0; border-top: 1px solid var(--line); }
+  .recog-row { grid-template-columns: 34px minmax(0, 1fr); gap: 14px 14px; padding: 24px 0 26px; }
+  .recog-fix { grid-column: 2; padding: 16px 0 0; border-left: 0; border-top: 1px dashed var(--line-2); }
   .cmp-stage { aspect-ratio: 9 / 13; }
   .mk { font-size: 2.3vw; }
   .mk--pretty .mk-nav span { display: none; }
