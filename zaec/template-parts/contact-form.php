@@ -3,7 +3,7 @@
  * Forma za upit ili provjeru vidljivosti. Radi i bez JS-a (admin-post.php).
  *
  * @package ZAEC
- * @var array $args { id, kind: upit|provjera, theme: light|dark, rows }
+ * @var array $args { id, kind: upit|provjera, theme: light|dark, rows, inline: potvrda na mjestu umjesto /hvala/ }
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,8 +15,9 @@ $dark  = 'dark' === ( $args['theme'] ?? 'light' );
 $state = isset( $_GET['zaec_form'] ) ? sanitize_key( wp_unslash( $_GET['zaec_form'] ) ) : ''; // phpcs:ignore
 $audit = 'provjera' === $kind;
 $rows  = max( 2, (int) ( $args['rows'] ?? 4 ) );
+$err   = static fn( $f ) => esc_attr( $fid . '-' . $f . '-err' );
 ?>
-<form class="cform<?php echo $dark ? ' cform--dark' : ''; ?>" id="<?php echo esc_attr( $fid ); ?>" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" novalidate data-contact-form data-kind="<?php echo esc_attr( $kind ); ?>">
+<form class="cform<?php echo $dark ? ' cform--dark' : ''; ?>" id="<?php echo esc_attr( $fid ); ?>" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post" novalidate data-contact-form data-kind="<?php echo esc_attr( $kind ); ?>"<?php echo ! empty( $args['inline'] ) ? ' data-inline-success' : ''; ?>>
 	<?php if ( ! $audit ) : ?>
 		<div class="cform-config" data-config-chip hidden>
 			<?php zaec_the_icon( 'clipboard-check', 18 ); ?>
@@ -37,8 +38,8 @@ $rows  = max( 2, (int) ( $args['rows'] ?? 4 ) );
 		<?php if ( $audit ) : ?>
 			<div class="field">
 				<label for="<?php echo esc_attr( $fid ); ?>-tvrtka">Naziv tvrtke ili obrta</label>
-				<input class="input" id="<?php echo esc_attr( $fid ); ?>-tvrtka" name="tvrtka" type="text" autocomplete="organization" required maxlength="120">
-				<p class="field-error">Upišite naziv tvrtke koju provjeravamo.</p>
+				<input class="input" id="<?php echo esc_attr( $fid ); ?>-tvrtka" name="tvrtka" type="text" autocomplete="organization" required aria-required="true" maxlength="120">
+				<p class="field-error" id="<?php echo $err( 'tvrtka' ); // phpcs:ignore ?>">Upišite naziv tvrtke koju provjeravamo.</p>
 			</div>
 			<div class="field">
 				<label for="<?php echo esc_attr( $fid ); ?>-mjesto">Grad / mjesto</label>
@@ -51,13 +52,14 @@ $rows  = max( 2, (int) ( $args['rows'] ?? 4 ) );
 		<?php endif; ?>
 		<div class="field">
 			<label for="<?php echo esc_attr( $fid ); ?>-ime">Ime i prezime</label>
-			<input class="input" id="<?php echo esc_attr( $fid ); ?>-ime" name="ime" type="text" autocomplete="name" required maxlength="80">
-			<p class="field-error">Upišite ime da znamo kako vam se obratiti.</p>
+			<input class="input" id="<?php echo esc_attr( $fid ); ?>-ime" name="ime" type="text" autocomplete="name" required aria-required="true" maxlength="80">
+			<p class="field-error" id="<?php echo $err( 'ime' ); // phpcs:ignore ?>">Upišite ime da znamo kako vam se obratiti.</p>
 		</div>
 		<div class="field">
 			<label for="<?php echo esc_attr( $fid ); ?>-kontakt">Telefon ili email</label>
-			<input class="input" id="<?php echo esc_attr( $fid ); ?>-kontakt" name="kontakt" type="text" inputmode="email" autocomplete="tel" required maxlength="120" placeholder="09x xxx xxxx">
-			<p class="field-error">Trebamo broj telefona ili email za odgovor.</p>
+			<input class="input" id="<?php echo esc_attr( $fid ); ?>-kontakt" name="kontakt" type="text" autocomplete="tel" required aria-required="true" aria-describedby="<?php echo esc_attr( $fid ); ?>-kontakt-hint" maxlength="120" placeholder="09x xxx xxxx ili ime@tvrtka.hr" spellcheck="false" autocapitalize="off">
+			<p class="field-error" id="<?php echo $err( 'kontakt' ); // phpcs:ignore ?>">Trebamo broj telefona ili email za odgovor.</p>
+			<p class="field-hint" id="<?php echo esc_attr( $fid ); ?>-kontakt-hint" data-kontakt-hint></p>
 		</div>
 		<?php if ( ! $audit ) : ?>
 			<div class="field">
@@ -88,7 +90,8 @@ $rows  = max( 2, (int) ( $args['rows'] ?? 4 ) );
 		<?php endif; ?>
 		<div class="field field--full">
 			<label for="<?php echo esc_attr( $fid ); ?>-poruka"><?php echo $audit ? 'Što vas najviše zanima?' : 'Kratko o poslu'; ?> <span class="opt">(opcionalno)</span></label>
-			<textarea class="textarea" id="<?php echo esc_attr( $fid ); ?>-poruka" name="poruka" rows="<?php echo esc_attr( (string) $rows ); ?>" maxlength="3000" placeholder="<?php echo esc_attr( $audit ? 'npr. zašto nas nema na karti, koliko zaostajemo za konkurencijom…' : 'npr. servis klima u Osijeku i okolici, želim više upita za montažu…' ); ?>"></textarea>
+			<textarea class="textarea" id="<?php echo esc_attr( $fid ); ?>-poruka" name="poruka" rows="<?php echo esc_attr( (string) $rows ); ?>" maxlength="3000" placeholder="<?php echo esc_attr( $audit ? 'npr. zašto nas nema na karti, koliko zaostajemo za konkurencijom…' : 'npr. čime se bavite, za koga i što želite da web radi bolje' ); ?>"></textarea>
+			<p class="field-error" id="<?php echo $err( 'poruka' ); // phpcs:ignore ?>">Poruka smije imati najviše tri poveznice.</p>
 		</div>
 	</div>
 

@@ -1,6 +1,8 @@
 // Forma za upit: validacija, priložena konfiguracija, slanje preko admin-ajax (progressive enhancement).
 const PHONE_RE = /^[+()\d\s/-]{6,}$/;
 const MAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const LINK_RE = /(https?:\/\/|www\.)/gi;
+const MAX_LINKS = 3; // isto kao inc/form-handler.php
 const CFG = window.ZAEC_CFG || {};
 
 export function initContactForms() {
@@ -59,14 +61,36 @@ function init(form) {
   const fields = {
     ime: (v) => v.trim().length >= 2,
     kontakt: (v) => PHONE_RE.test(v.trim()) || MAIL_RE.test(v.trim()),
+    poruka: (v) => (v.match(LINK_RE) || []).length <= MAX_LINKS,
   };
+  const NAMES = { ime: 'ime', kontakt: 'telefon ili email', poruka: 'poruka', tvrtka: 'naziv tvrtke' };
+
+  // telefon ili email: kratka potvrda kako ćemo odgovoriti
+  const hint = form.querySelector('[data-kontakt-hint]');
+  const kontakt = form.elements.kontakt;
+  if (hint && kontakt) {
+    const say = () => {
+      const v = kontakt.value.trim();
+      hint.textContent = MAIL_RE.test(v) ? 'Odgovaramo emailom.' : PHONE_RE.test(v) && /\d{6,}/.test(v.replace(/\D/g, '')) ? 'Javljamo se pozivom u radno vrijeme.' : '';
+    };
+    kontakt.addEventListener('input', say);
+    say();
+  }
   if (form.elements.tvrtka && form.elements.tvrtka.required) fields.tvrtka = (v) => v.trim().length >= 2;
   function validate(name) {
     const input = form.elements[name];
     if (!input) return true;
     const ok = fields[name](input.value);
-    input.closest('.field').classList.toggle('has-error', !ok);
+    const field = input.closest('.field');
+    field.classList.toggle('has-error', !ok);
     input.setAttribute('aria-invalid', String(!ok));
+    // opis greške samo dok greška postoji (skriveni opis bi čitač ekrana inače uvijek pročitao)
+    const errId = field.querySelector('.field-error')?.id;
+    if (errId) {
+      const ids = (input.getAttribute('aria-describedby') || '').split(' ').filter((x) => x && x !== errId);
+      if (!ok) ids.unshift(errId);
+      ids.length ? input.setAttribute('aria-describedby', ids.join(' ')) : input.removeAttribute('aria-describedby');
+    }
     return ok;
   }
   Object.keys(fields).forEach((n) => {
@@ -97,10 +121,10 @@ function init(form) {
   form.addEventListener('submit', async (e) => {
     if (!CFG.ajax) return; // bez konfiguracije: klasični POST (admin-post.php)
     e.preventDefault();
-    const okAll = Object.keys(fields).map(validate).every(Boolean);
-    if (!okAll) {
+    const bad = Object.keys(fields).filter((n) => !validate(n));
+    if (bad.length) {
       form.querySelector('.has-error input, .has-error textarea')?.focus();
-      setStatus('Provjerite označena polja.', 'error');
+      setStatus(`Provjerite: ${bad.map((n) => NAMES[n] || n).join(', ')}.`, 'error');
       return;
     }
     btn.classList.add('is-loading');
@@ -112,9 +136,12 @@ function init(form) {
         window.zaecTrack?.('generate_lead', { form: form.id, type: form.dataset.kind || 'upit' });
         try { sessionStorage.removeItem('zaec-config'); } catch (err) {}
         setStatus((json.data && json.data.message) || 'Upit je stigao.', 'ok');
-        // hero može odigrati završni trenutak (npr. Kontakt pali zgradu) prije prelaska na zahvalu
-        form.dispatchEvent(new CustomEvent('zaec:sent', { bubbles: true }));
-        if (CFG.thanks) setTimeout(() => (location.href = CFG.thanks), +form.dataset.sentDelay || 500);
+        // hero može odigrati završni trenutak (npr. Kontakt pali zgradu); s data-inline-success potvrda ostaje
+        // na stranici (Kontakt), inače prelazak na zahvalu
+        const via = MAIL_RE.test((kontakt?.value || '').trim()) ? 'email' : 'phone';
+        form.dispatchEvent(new CustomEvent('zaec:sent', { bubbles: true, detail: { via, name: (form.elements.ime?.value || '').trim() } }));
+        if ('inlineSuccess' in form.dataset) form.classList.add('is-sent');
+        else if (CFG.thanks) setTimeout(() => (location.href = CFG.thanks), +form.dataset.sentDelay || 500);
         else form.reset();
         return;
       }
