@@ -40,6 +40,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 		<span class="sl sl--town<?php echo $i < 8 ? ( 4 === $i ? ' sl--m-hide' : '' ) : ' sl--minor'; ?>" data-l="town-<?php echo (int) $i; ?>"><b><?php echo esc_html( $t ); ?></b></span>
 	<?php endforeach; ?>
 	<span class="sl sl--pin" data-l="cath"><b>Konkatedrala<span class="sl-long"> sv. Petra i Pavla</span></b><small>toranj 90 m</small></span>
+	<span class="sl sl--dim" data-l="dim"><b>90 m</b><small>visina tornja</small></span>
 	<span class="sl sl--soft" data-l="drava"><b>Drava</b></span>
 	<span class="sl sl--pin sl--small" data-l="hotel"><b>Hotel Osijek</b></span>
 	<span class="sl sl--soft sl--trg" data-l="trg"><b>Trg Ante Starčevića</b></span>
@@ -143,7 +144,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine" id="konkatedrala" data-cam="cathedral" data-header-theme="night" aria-labelledby="cath-title">
+<section class="cine" id="konkatedrala" data-cam="cathedral" data-header-theme="night" data-lens aria-labelledby="cath-title">
 	<div class="wrap cine-grid cine-grid--right">
 		<div class="cine-copy">
 			<p class="kicker"><?php echo esc_html( $h( 'cath_kicker' ) ); ?></p>
@@ -153,7 +154,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine cine--duo" id="nacrt" data-header-theme="night" aria-labelledby="plan-title">
+<section class="cine cine--duo" id="nacrt" data-header-theme="night" data-lens aria-labelledby="plan-title">
 	<div class="cine-beat" data-cam="arch">
 		<div class="wrap cine-grid">
 			<div class="cine-copy">

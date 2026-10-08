@@ -221,7 +221,7 @@ export function buildingMaterial(C, { lite }) {
           }
         }
         col = fogIt(col, vP);
-        col *= 1.0 - uDim * 0.8;
+        col *= pow(1.0 - uDim * 0.82, 2.2); // zatamnjenje u izlaznom (percepcijskom) prostoru, kao prije
         gl_FragColor = vec4(toOut(col) + dith(), uAlpha);
       }`,
   });
@@ -275,7 +275,7 @@ export function surfaceMaterial(C) {
       void main(){
         float L = lmAt(vL.xz) * uLamp;
         vec3 c = vC * (0.07 + lampTone(L) * 1.25);
-        c = fogIt(c, vL) * (1.0 - uDim * 0.6);
+        c = fogIt(c, vL) * pow(1.0 - uDim * 0.6, 2.2);
         gl_FragColor = vec4(toOut(c) + dith(), uOpacity);
       }`,
   });
@@ -331,7 +331,7 @@ export function waterMaterial(C, { lite }) {
         col += lampTone(acc * 1.6) * 0.75 * (0.3 + 0.7 * fres) * uLamp;
         col += lampTone(lmAt(p)) * 0.05 * uLamp;
         float fade = 1.0 - smoothstep(2600.0, 3400.0, length(p));
-        col = fogIt(col, vL) * (1.0 - uDim * 0.6);
+        col = fogIt(col, vL) * pow(1.0 - uDim * 0.6, 2.2);
         gl_FragColor = vec4(toOut(col) + dith(), 0.98 * fade * uOpacity);
       }`,
   });

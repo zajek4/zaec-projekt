@@ -16,6 +16,7 @@ import { createEurope } from './europe.js';
 import { createCity } from './city.js';
 import { createBeam } from './beam.js';
 import { createMorph, createLayers, LAYER_DEFS } from './wire.js';
+import { createBlueprint } from './blueprint.js';
 import { createFlow } from './flow.js';
 import { GATES } from './gates.js';
 import { FRAMES, KEYS, frameState } from './keyframes.js';
@@ -82,17 +83,25 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     return out;
   };
   let warmPending = false;
+  // kote, os tornja i konstrukcijski pravci nacrta (lokalni metri grada)
+  const blueprint = createBlueprint();
+  const cityScale = new THREE.Vector3(kCity * CITY_KX, kCity * CITY_KZ, kCity * CITY_KZ);
   const city = createCity({
     lite,
     dataUrl: assets.city,
     modelUrl: assets.model,
-    onLines: (g) => { const w = toWorldLines(g); morph.setSource(w); w.dispose(); },
+    onLines: (g) => {
+      const w = toWorldLines(g); morph.setSource(w); w.dispose();
+      blueprint.setCathedral(g);
+      blueprint.setGrid(morph.gridInfo, cityScale);
+    },
     // novi model konkatedrale se prevodi u pozadini prije nego što zamijeni stari
     prepare: (mesh) => compile(mesh, scene).catch(() => {}),
     onLoaded: () => { warmPending = true; },
   });
   // reflektor konkatedrale živi u korijenu scene (broj svjetala se nikad ne mijenja → nema ponovnog prevođenja)
   scene.add(city.flood);
+  city.group.add(blueprint.group);
   const beam = createBeam();
   // završni kadar: isti signal izlazi iz čvora "Vaša tvrtka" na globusu (zatvara priču konkatedrale)
   const beacon = createBeam();
@@ -310,6 +319,9 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       case 'trg':
         v3.copy(city.anchors[kind]).applyMatrix4(city.group.matrixWorld);
         return st.labCity * ctx.cityA * smooth(Z_CITY - 0.12, Z_CITY - 0.01, st.Z);
+      case 'dim':
+        blueprint.anchor('dim', v3);
+        return bpLabel;
       case 'ch':
         v3.copy(flow.channelWorld(i));
         return st.labFlow;
@@ -385,6 +397,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   const ctx = { globeCenter: new THREE.Vector3(), camPos: new THREE.Vector3(), globeA: 0, europeA: 0, cityA: 0 };
   const exact = {};
   const spireW = new THREE.Vector3();
+  let bpNotesA = 0, bpLabel = 0;
   const beaconAt = new THREE.Vector3();
 
   function frame(now, forcedDt) {
@@ -435,7 +448,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       const t0 = (a - y) / vh, t1 = (b - y) / vh;
       if (t1 < -0.05 || t0 > 1) continue;
       const w = smooth(0.5, 0.3, (t0 + t1) / 2) * smooth(-0.05, 0.2, t1);
-      if (w > 0) lensY = lerp(lensY, clamp(0.5 - (Math.max(t1, 0) + 1) / 2, -0.3, 0.3), w);
+      if (w > 0) lensY = lerp(lensY, clamp(0.5 - (Math.max(t1, 0) + 0.9) / 2, -0.3, 0.3), w); // 0,9: dno zauzima traka s pozivima
     }
     camera.setViewOffset(vw, vh, -st.sx * vw, lensY * vh, vw, vh);
     camera.updateProjectionMatrix();
@@ -475,7 +488,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     city.group.scale.set(s * CITY_KX, s * CITY_KZ, s * CITY_KZ);
     city.group.updateMatrixWorld();
     // skener kreće tek kad tekst o konkatedrali odlazi (druga polovica prijelaza prema nacrtu)
-    const scanEff = smooth(0.42, 1, st.scan);
+    const scanEff = smooth(0.38, 0.88, st.scan);
     // redoslijed buđenja grada: svjetla ulica → tamni volumeni zgrada → crtež bridova i prozori
     const cityA = smooth(1.72, 2.05, Z);
     const lamps = smooth(1.04, 1.28, Z);
@@ -495,6 +508,11 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     const bad = badFrac * st.flow;
     const scanY = ((city.spire.y + 2) * (1 - scanEff) - 1.5) * unit;
     morph.update({ morph: st.morph, opacity: st.wire * cityA, time, bad, scanY, scanOn: st.wire > 0.001 && st.morph < 0.999 ? 1 : 0 });
+    // kote se povlače kad skener završi; mjerne linije zgrade postaju konstrukcijski pravci, pa stupci stranice
+    bpNotesA = st.wire * cityA * (1 - smooth(0.25, 0.7, st.morph));
+    const notes = smooth(0.8, 1, st.scan);
+    bpLabel = bpNotesA * smooth(0.9, 1, notes);
+    blueprint.update({ notes, notesA: bpNotesA, rules: smooth(0.15, 1, st.morph), rulesA: st.wire * cityA * (1 - st.flow), toSite: smooth(1.05, 1.8, st.morph) });
     flow.update({ alpha: st.flow, time, dt, pr: dpr, reduce, focusGate });
     layers.update({ p: st.layers, alpha: st.layersA, assemble: st.assemble, active: st.assemble > 0.5 ? -1 : layerHover, dt, reduce });
 

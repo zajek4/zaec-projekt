@@ -137,6 +137,8 @@ function measuredGrid(segs) {
   assign(hor, vs, (s) => (s.y - y0) / H, (v, xa, xb) => ({
     a: new THREE.Vector3(xa, y0 + v * H, zc), b: new THREE.Vector3(xb, y0 + v * H, zc),
   }), (s) => s.x);
+  // mjerne linije (svjetske jedinice) za konstrukcijske pravce nacrta
+  out.lines = { xs: us.map((u) => x0 + u * W), ys: vs.map((v) => y0 + v * H), z: zc, x0, x1, y0, y1 };
   return out;
 }
 
@@ -224,6 +226,7 @@ export function createMorph(edges, { max = 6000 } = {}) {
     segs.sort((p, q) => q.y - p.y || p.x - q.x);
     const n = segs.length;
     const grid = measuredGrid(segs);
+    gridInfo = grid.lines;
     // faza 2: mreža → stranica, opet odozgo (po visini komadića na mreži)
     const order = segs.map((_, i) => i).sort((p, q) => {
       const gp = grid[p], gq = grid[q];
@@ -255,11 +258,13 @@ export function createMorph(edges, { max = 6000 } = {}) {
     lines.geometry = geo;
     return n;
   }
+  let gridInfo = null;
   let count = edges ? build(edges) : 0;
 
   return {
     object: lines,
     get count() { return count; },
+    get gridInfo() { return gridInfo; },
     /** Zamijeni izvor (npr. kad se učita pravi model konkatedrale). */
     setSource(src) { count = build(src); },
     update(s) {
