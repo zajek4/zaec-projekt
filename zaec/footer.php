@@ -74,9 +74,11 @@ $posts_page = (int) get_option( 'page_for_posts' );
 	<svg class="foot-giant" viewBox="0 0 1000 205" aria-hidden="true" focusable="false"><defs><linearGradient id="foot-giant-fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#96a8ff" stop-opacity="0.11"/><stop offset="1" stop-color="#96a8ff" stop-opacity="0"/></linearGradient></defs><text x="500" y="186" text-anchor="middle" font-family="Archivo Variable, Archivo, sans-serif" font-weight="900" font-size="250" letter-spacing="-8" fill="url(#foot-giant-fade)" style="font-variation-settings:'wdth' 125">ZAEC</text></svg>
 </footer>
 
-<nav class="call-bar" data-call-bar aria-label="Brzi kontakt">
-	<a class="cb-call" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18, '', 'bold' ); ?> Nazovite</a>
-	<a class="cb-form" href="<?php echo esc_url( zaec_url( 'kontakt' ) . '#upit' ); ?>" data-track="cta_callbar"><?php zaec_the_icon( 'letter', 18, '', 'bold' ); ?> Pošaljite upit</a>
+<nav class="call-bar" data-call-bar aria-label="Upit">
+	<a class="cb-form" href="<?php echo esc_url( zaec_inquiry_url() ); ?>" data-track="cta_callbar">
+		<span class="cb-copy"><i class="cb-lamp" aria-hidden="true"></i><small>Pisana procjena, bez obveze</small></span>
+		<span class="cb-go">Pošaljite upit <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?></span>
+	</a>
 </nav>
 <?php wp_footer(); ?>
 </body>
