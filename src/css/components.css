@@ -93,7 +93,6 @@
     .cfg-dock-r b { font-size: 1.5rem; font-weight: 850; font-variation-settings: 'wdth' 120; color: #fff; }
     .cfg-dock-r span { font-size: 0.86rem; color: #c9cfe4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .cfg-dock-btn { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--signal); color: #fff; font: 650 0.9rem/1 var(--font-sans); cursor: pointer; }
-    .cfg-docked .call-bar { transform: translateY(140%); }
   }
 
   /* presjek zgrade: katovi rastu iz tla, nacrt-crte, prozori svijetle kad se kat doda */

@@ -22,7 +22,7 @@ if ( ! $items ) {
 			<?php if ( 'kontakt' === ( $args['page'] ?? '' ) ) : ?>
 				<p class="muted" data-reveal>Niste našli odgovor? Nazovite <a href="<?php echo esc_attr( zaec_phone_href() ); ?>"><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>, <?php echo esc_html( zaec_option( 'hours' ) ); ?>.</p>
 			<?php else : ?>
-				<p class="muted" data-reveal>Niste našli odgovor? <a href="<?php echo esc_url( zaec_url( 'kontakt#upit' ) ); ?>">Pošaljite pitanje</a>, odgovaramo u radno vrijeme.</p>
+				<p class="muted" data-reveal>Niste našli odgovor? <a href="<?php echo esc_url( zaec_inquiry_url() ); ?>">Pošaljite pitanje</a>, odgovaramo u radno vrijeme.</p>
 			<?php endif; ?>
 		</div>
 		<div class="faq-list" data-reveal>

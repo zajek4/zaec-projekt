@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 $title = $args['title'] ?? 'Spremni za web koji <em>zove</em>?';
 $text  = $args['text'] ?? 'Kratko opišite posao. Javljamo se u radno vrijeme sa smjerom, a nakon razgovora šaljemo pisanu ponudu s opsegom, rokom i fiksnom cijenom.';
 $label = $args['label'] ?? 'Pošaljite upit';
-$href  = $args['href'] ?? zaec_url( 'kontakt' ) . '#upit';
+$href  = $args['href'] ?? zaec_inquiry_url();
 ?>
-<section class="cta-band" data-header-theme="night">
+<section class="cta-band" data-header-theme="night" data-callbar-hide>
 	<div class="wrap cta-grid">
 		<div>
 			<p class="kicker">Sljedeći korak</p>
