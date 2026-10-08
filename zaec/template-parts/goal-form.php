@@ -32,7 +32,7 @@ $state = isset( $_GET['zaec_form'] ) ? sanitize_key( wp_unslash( $_GET['zaec_for
 			<?php endforeach; ?>
 		</div>
 		<div class="gform-nav">
-			<button class="btn btn--light gform-next" type="button" data-gform-next>Dalje <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?></button>
+			<button class="btn btn--signal gform-next" type="button" data-gform-next>Dalje <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?></button>
 			<span class="gform-picked mono" data-gform-picked aria-live="polite"></span>
 		</div>
 	</fieldset>

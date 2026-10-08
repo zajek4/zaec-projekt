@@ -118,13 +118,29 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   cijene, kontakt) radi zasebna nit na vlastitoj grani; SEO/sadržaj, dizajn-istraživanje i QA pišu u
   `/mnt/project-files/zaec-signature/{strategy,design,qa/audit}`. Grana podstranica spaja se u ovu nakon QA-a,
   build se radi ovdje. Ništa ne ide u `main` bez odobrenja.
+- **Tipografska skala i gumbi (smjernice `design/01`):** tokeni `--fs-d1…d4`, `--fs-h3/h4/lead/body/ui/small/label/micro`,
+  razmaci, proredi, širine reza i mjere u `:root` u `global.css`; aliasi `--fs-hero/--fs-h2/--fs-mono` drže stari kod.
+  Prored displaya 0,97 (kvačice Č Š Ž Đ više ne diraju silazne poteze). H1 podstranica = `min(--fs-d2, 10.6vw)`;
+  heroji podstranica imaju svoje veličine u `hero.css`/`sub.css` (nit podstranica). Kurziv u naslovu 1,06em s
+  proredom 0; u razdvojenim naslovima maska riječi dobiva vlastiti prored (inače bi kurziv bio odrezan — uhvaćeno
+  na snimci heroja). Filmski naslovi naslovnice (`.h2--sub`, `.h2--path`, `.h2--final`) zadržavaju svoje veličine jer
+  su komponirani s 3D kadrom.
+  Gumbi: hover samo za fini pokazivač; pritisak stisne obje plohe i pokaže ispunu i na dodir; fokus je **outline na
+  kosoj plohi** (`::before`), ne `box-shadow` kao u prijedlogu, jer `hero.css`/`sub.css` postavljaju `box-shadow`
+  obrubu ghost gumba i pregazili bi prsten; u noći primarni se puni papirom, prsten je #9fb4ff, a na papiru signal.
+  Onemogućeno/učitavanje, `.btn-row` (stupac ispod 560 px). Gumbi u heroju naslovnice: optički pomak 6 px i stupac
+  na mobitelu; "Dalje" u formi cilja je primarni (signal). Usluge u mobilnom izborniku su popis poveznica, ne pilule.
+  Ništa ispod 11 px u `global.css`/`home.css`: informacija 12 px (filmska traka, OSM zasluga, lijevak, oznake
+  usporedbe, tablica, koraci forme), dekor 11 px (uputa za scroll, potpis branda), kartografske oznake (aria-hidden)
+  10 px. Naslovi stupaca i pravni red u footeru prešli na `--abyss-muted` (kontrast 6,8 : 1). Natpis usporedbe dobio
+  tamnu podlogu (na mobitelu je prelazio preko svijetle polovice i nije se mogao pročitati).
 
 ## Faze
 
 | Faza | Stanje |
 |---|---|
 | 1 Audit i kreativna inteligencija | ✓ audit, snimke prije; Inspo/SEO Machine — vidi bilješke |
-| 2 Temelji (bugovi, interakcije, tokeni) | djelomično: vrata ✓, procjena ✓, tokeni ✓; tipografska skala i gumbi — otvoreno |
+| 2 Temelji (bugovi, interakcije, tokeni) | ✓ vrata, procjena, tokeni, tipografska skala i gumbi (`global.css`, naslovnica); veličine heroja podstranica — nit podstranica |
 | 3 Zemlja | ✓ atmosfera, ocean, kopno, kadrovi (desktop + uspravno), posteri |
 | 4 Svjetla Europe | ✓ svjetla iz NASA/NOAA snimke, jantarni dnevni sloj, sumrak s istoka |
 | 5 Osijek (krovovi, rasvjeta, Drava) | ✓ karta uličnog svjetla, prozori i izlozi, krovovi, Drava s nasipima i mostovima, leća za mobitel |
@@ -159,6 +175,10 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 - Nacrt: snimke 1440×900 (5400–8100, svakih 150–450 px) i 390×844 (5429–8300), uključujući sredine prijelaza;
   oznaka "90 m" ne prekriva naslov ni na jednom. Bez JS grešaka u konzoli. Napomena: u softverskom rendereru kamera
   kasni za scrollom (sličica traje ~150 ms, korak prigušenja je ograničen), pa snimke na sidrima trebaju ~4 s.
+- Tipografija i gumbi: snimke 1440×900 (heroj, 08, usporedba, usluge, "možda", ulaganje, upit, footer) i 390×844
+  (heroj u dvije pozicije, karta, Slavonija, Osijek, nacrt, put do upita, 08, usporedba, upit, footer, otvoren
+  izbornik); fokus tipkovnicom na sedam gumba/poveznica u noći i na papiru (`:focus-visible` potvrđen, prsten prati
+  kosinu). Bez JS grešaka.
 - Cijena grada (swiftshader, CPU, 1440×900, DPR 1, sinkronizirano `readPixels`): Osijek 68 → ~120–138 ms/sličici,
   konkatedrala 121 → ~155–172 ms. Najviše troše shader zgrada (~37–50 ms) i tlo preko cijelog ekrana (~22–31 ms).
   CPU renderer pretjeruje cijenu fragment shadera; na GPU-u mjeriti u fazi 11. Postojeći regulator spušta DPR
@@ -171,22 +191,24 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 5 Osijek | 7,5 | 7 | 8 | 7 | Grad se čita kao noćni Osijek; krovovi izbliza tamni, cijena na CPU-u visoka |
 | 6 Nacrt | 8 | 8 | 8 | 7,5 | Kota i pravci daju nacrtu smisao; na desktopu toranj na trenutak prolazi ispod teksta |
 | 7 Poglavlje 08 | 8 | 8 | 8,5 | 8 | Motiv filma nastavljen na papiru; odgovara tko/što/za koga/kako početi |
+| 2 Skala i gumbi | 8 | 7 | 8,5 | 8 | Jedan sustav umjesto procjene od slučaja do slučaja; filmski naslovi namjerno izvan skale |
 
 ## Otvoreno
 
 - `registry.npmjs.org` je blokiran mrežnim pravilima okruženja; build je Bunom (vidi gore). Pri prvoj prilici
   pokrenuti `npm ci && npm run build` i usporediti.
 - Sekcija iznad footera na nekim podstranicama (CTA traka) još koristi sivu `--ink`; ujednačiti s `--abyss` (faza 12).
-- Nacrt, desktop: oko 5850 px šiljak tornja na trenutak prolazi ispod teksta o konkatedrali (kamera prelazi s
-  lijeve na desnu stranu dok tekst odlazi).
+- Nacrt, desktop: riješeno zadrškom kanala (`hold`); lađa na ~6000 px još malo dira naslov nacrta.
 - Osijek: krovovi izbliza i dalje dosta tamni; Drava na kadru Osijeka tamna (obalne svjetiljke se iz tog kuta
-  fizički ne zrcale). Oznake Slavonije se na mobitelu preklapaju (~3200 px, postojalo i prije) — faza 11.
+  fizički ne zrcale). Preklapanje oznaka Slavonije na mobitelu riješeno izbjegavanjem sudara.
+- Footer: stupac "Djelatnosti" još navodi stare obrtničke nazive; uskladiti sa sektorima nakon spajanja grane
+  podstranica (PR #7).
 - Kategorije djelatnosti u procjeni ("Voda", "Struja"…) — nova nomenklatura (faza 9/10).
 
 ## Sljedeći korak
 
-Uskladiti most i naslovnicu sa smjernicama iz `strategy/` i `design/` kad stignu; integracija grane podstranica
-nakon QA-a; QA nalazi za vlastite datoteke; 3D dorada (krovovi izbliza, desktopni prolaz tornja ispod teksta).
+Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; QA nalazi za vlastite datoteke;
+3D dorada (krovovi izbliza, cijena shadera grada); faza 12.
 
 ## Commitovi
 
@@ -201,3 +223,4 @@ nakon QA-a; QA nalazi za vlastite datoteke; 3D dorada (krovovi izbliza, desktopn
 - `080163d` Nacrt: kota tornja, os, konstrukcijski pravci, mreža stranice
 - `7ffe5f0` Naslovnica: most iz priče u posao
 - (faza 7) Poglavlje 08 — ZAEC prema smjernicama za sadržaj; oznake bez preklapanja; zadrška tornja
+- Tipografska skala i sustav gumba prema smjernicama dizajna
