@@ -174,7 +174,9 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       }
     });
     for (const ch of CH) m[ch] = tangents(v[ch]);
-    curve = { v, m, n };
+    // zadrška: na dolasku u kadar kanal miruje do udjela h prijelaza (npr. motiv ne prelazi ispod teksta koji odlazi)
+    const hold = anchors.map((a) => FRAMES[a.id]?.hold || null);
+    curve = { v, m, n, hold };
   }
 
   function measure() {
@@ -233,6 +235,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     if (reduceMQ.matches) t = t < 0.5 ? 0 : 1;
     const j = n < 2 ? 0 : i + 1;
     for (const ch of CH) out[ch] = herm(v[ch][i], m[ch][i], v[ch][j], m[ch][j], t);
+    const hold = curve.hold[j];
+    if (hold && t > 0 && t < 1) for (const ch in hold) out[ch] = herm(v[ch][i], m[ch][i], v[ch][j], m[ch][j], clamp((t - hold[ch]) / (1 - hold[ch])));
     // u poniranju meta putuje razmjerno izgubljenoj visini: većina bočnog pomaka dok smo visoko,
     // pa se tlo ispod kamere ne "otima" pri dnu spuštanja
     const LA0 = v.LA[i], LA1 = v.LA[j];
