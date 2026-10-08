@@ -47,11 +47,11 @@
 @media (max-width: 600px) { .guarantees { grid-template-columns: 1fr; } }
 
 /* koraci na tamnoj podlozi */
-.steps-row--ink li { background: #1d1d1c; border-color: rgba(255, 255, 255, 0.1); }
+.steps-row--ink li { background: var(--abyss-3); border-color: var(--abyss-line-2); }
 .steps-row--ink h3 { color: #fff; }
-.steps-row--ink p { color: #cfcabf; }
-.steps-row--ink .code-tag { color: #cfcabf; border-color: rgba(255, 255, 255, 0.25); justify-self: start; }
-.steps-row--ink .meta { color: #8d887e; }
+.steps-row--ink p { color: #b9c0d6; }
+.steps-row--ink .code-tag { color: #b9c0d6; border-color: var(--abyss-line-2); justify-self: start; }
+.steps-row--ink .meta { color: var(--abyss-dim); }
 
 /* projekti */
 .pgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
