@@ -79,7 +79,8 @@ $zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_ki
 				<li><a href="<?php echo esc_url( $item['url'] ); ?>"><small><?php echo esc_html( zaec_pad( $zaec_n ) ); ?></small><?php echo esc_html( $item['label'] ); ?></a></li>
 			<?php endforeach; ?>
 		</ul>
-		<ul class="mm-sub">
+		<p class="mm-h mono" id="mm-usluge">Usluge</p>
+		<ul class="mm-sub" aria-labelledby="mm-usluge">
 			<?php foreach ( zaec_services() as $s ) : ?>
 				<li><a href="<?php echo esc_url( zaec_url( $s['key'] ) ); ?>"><?php echo esc_html( $s['title'] ); ?></a></li>
 			<?php endforeach; ?>

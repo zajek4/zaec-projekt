@@ -37,7 +37,8 @@ export const FRAMES = {
   slavonia: { Z: 1.55, tx: 4.2, ty: 0, tz: 9.5, az: 10, el: 56, dist: 92, sx: -0.16, trace: 1, hl: 0.22, dusk: 1, labTowns: 1, stars: 0.6, fit: 100, m: { sx: 0, sy: 0.16 } },
   osijek: { ...city, tx: 21, ty: 1, tz: -13, az: 30, el: 36, dist: 100, sx: 0.06, glow: 0.3, focus: 0.12, labCity: 1, fit: 62, m: { sx: 0, sy: 0.16 } },
   cathedral: { ...city, tx: 0.6, ty: 7.4, tz: 0.6, az: 52, el: 8, dist: 32, sx: -0.18, glow: 1, dim: 0.35, lines: 0.2, focus: 1, beam: 1, fit: 13, m: { dist: 36, sx: 0, sy: 0.14 } },
-  arch: { ...city, tx: 0, ty: 6.4, tz: 0, az: 0, el: 4, dist: 31, sx: 0.17, glow: 0.4, dim: 0.8, lines: 0, focus: 0.5, beam: 0.3, scan: 1, wire: 1, fit: 14, m: { dist: 44, sx: 0, sy: 0.16 } },
+  // hold.sx: konkatedrala ostaje lijevo dok tekst o njoj (desno) ne ode, tek onda prelazi udesno
+  arch: { ...city, tx: 0, ty: 6.4, tz: 0, az: 0, el: 4, dist: 31, sx: 0.17, hold: { sx: 0.42 }, glow: 0.4, dim: 0.8, lines: 0, focus: 0.5, beam: 0.3, scan: 1, wire: 1, fit: 14, m: { dist: 44, sx: 0, sy: 0.16 } },
   grid: { ...city, tx: 0.2, ty: 6.2, az: 0, el: 2, dist: 30, sx: 0.17, dim: 0.92, lines: 0, cathSolid: 0, scan: 1, wire: 1, morph: 1, glow: 0, fit: 14, m: { dist: 44, sx: 0, sy: 0.16 } },
   web: { ...web, tx: 0.4, ty: 4.7, az: 0, el: 0, dist: 23, sx: 0.15, fit: 13.5, m: { dist: 34, sx: 0, sy: 0.18 } },
   flow: { ...web, fit: 31, tx: 0.3, ty: 4.7, az: 0, el: 0, dist: 42.5, sx: 0, sy: 0.085, flow: 1, labFlow: 1, m: { dist: 57, fit: 15, tx: 0.4, ty: 5, sy: 0.235 }, t: { dist: 43, sy: 0.12 } },
@@ -53,5 +54,6 @@ export function frameState(id, mobile, tablet = false) {
   const out = { ...DEF, ...f, ...(mobile && f.m ? f.m : {}), ...(mobile && tablet && f.t ? f.t : {}) };
   delete out.m;
   delete out.t;
+  delete out.hold;
   return out;
 }

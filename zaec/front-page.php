@@ -255,45 +255,30 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 <!-- ═════════ PAPIR ═════════ -->
 <div class="paper" data-cover data-cam="layers-c" data-cam-at="top">
 
-	<section class="sec recog" id="prepoznajete" aria-labelledby="recog-title">
+	<section class="sec recog" id="zaec" aria-labelledby="recog-title">
 		<div class="wrap recog-grid">
 			<div class="recog-head">
 				<p class="kicker"><?php echo esc_html( $h( 'recog_kicker' ) ); ?></p>
 				<?php zaec_heading( $h( 'recog_title' ), 'h2', 'h2', true, 'recog-title' ); ?>
 				<p class="lead" data-reveal><?php echo esc_html( $h( 'recog_lead' ) ); ?></p>
-				<div class="recog-id" data-reveal>
-					<p class="recog-who"><?php echo esc_html( $h( 'recog_who' ) ); ?></p>
-					<p class="recog-diff"><?php echo esc_html( $h( 'recog_diff' ) ); ?></p>
-					<div class="recog-start">
-						<?php echo zaec_button( $h( 'recog_cta' ), '#kontakt', 'signal', array( 'track' => 'cta_recog_goal' ) ); // phpcs:ignore ?>
-						<p class="recog-note"><?php echo esc_html( $h( 'recog_start' ) ); ?></p>
-					</div>
+				<div class="recog-start" data-reveal>
+					<a class="link-arrow recog-cta" href="#kontakt" data-track="cta_recog_goal"><?php echo esc_html( $h( 'recog_cta' ) ); ?> <?php zaec_the_icon( 'arrow-right', 18 ); ?></a>
+					<p class="recog-note"><?php echo esc_html( $h( 'recog_start' ) ); ?></p>
 				</div>
 			</div>
 			<ol class="recog-list" role="list" data-stagger="0.08">
-				<?php foreach ( zaec_home_pains() as $p ) : ?>
+				<?php foreach ( zaec_home_about_rows() as $r ) : ?>
 					<li class="recog-row" data-reveal>
-						<span class="recog-n mono" aria-hidden="true"><i class="recog-win"></i><?php echo esc_html( $p[0] ); ?></span>
-						<div class="recog-pain">
-							<h3><?php echo esc_html( $p[1] ); ?></h3>
-							<p><?php echo esc_html( $p[2] ); ?></p>
+						<span class="recog-n mono" aria-hidden="true"><i class="recog-win"></i><?php echo esc_html( $r[0] ); ?></span>
+						<h3><?php echo esc_html( $r[1] ); ?></h3>
+						<div class="recog-body">
+							<p><?php echo esc_html( $r[2] ); ?></p>
+							<ul class="recog-tags" role="list">
+								<?php foreach ( $r[3] as $l ) : ?>
+									<li><a href="<?php echo esc_url( 0 === strpos( $l[0], '#' ) ? $l[0] : zaec_url( $l[0] ) ); ?>"><?php echo esc_html( $l[1] ); ?></a></li>
+								<?php endforeach; ?>
+							</ul>
 						</div>
-						<dl class="recog-fix">
-							<div>
-								<dt>Radimo</dt>
-								<dd>
-									<ul class="recog-tags" role="list">
-										<?php foreach ( $p[3] as $l ) : ?>
-											<li><a href="<?php echo esc_url( 0 === strpos( $l[0], '#' ) ? $l[0] : zaec_url( $l[0] ) ); ?>"><?php echo esc_html( $l[1] ); ?></a></li>
-										<?php endforeach; ?>
-									</ul>
-								</dd>
-							</div>
-							<div>
-								<dt>Dobivate</dt>
-								<dd><?php echo esc_html( $p[4] ); ?></dd>
-							</div>
-						</dl>
 					</li>
 				<?php endforeach; ?>
 			</ol>

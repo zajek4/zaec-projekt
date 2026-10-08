@@ -51,13 +51,51 @@
   --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  --fs-hero: clamp(2.9rem, 8.1vw, 9.25rem);
-  --fs-h2: clamp(2.2rem, 5.2vw, 5.4rem);
-  --fs-h3: clamp(1.25rem, 1.65vw, 1.6rem);
-  --fs-lead: clamp(1.1rem, 1.35vw, 1.35rem);
-  --fs-body: 1.0625rem;
-  --fs-small: 0.9rem;
-  --fs-mono: 0.74rem;
+  /* tipografska skala (art direkcija 01): display je fluidan 390→1600 px, tekst ima fiksne korake.
+     Ništa ispod 11 px; informacija najmanje 12 px. Kartografske oznake (aria-hidden) smiju 10 px. */
+  --fs-d1: clamp(2.9rem, 8.1vw, 9.25rem);                     /* samo naslovnica (film) */
+  --fs-d2: clamp(2.5rem, 1.3719rem + 4.6281vw, 6rem);         /* H1 podstranice        40 → 96 */
+  --fs-d3: clamp(2.25rem, 1.2831rem + 3.9669vw, 5.25rem);     /* H2 sekcije            36 → 84 */
+  --fs-d4: clamp(1.75rem, 1.4277rem + 1.3223vw, 2.75rem);     /* izjava, H2 u prozi    28 → 44 */
+  --fs-h3: clamp(1.25rem, 1.1291rem + 0.4959vw, 1.625rem);    /* naslov bloka          20 → 26 */
+  --fs-h4: clamp(1.125rem, 1.0847rem + 0.1653vw, 1.25rem);    /* naslov kartice        18 → 20 */
+  --fs-lead: clamp(1.125rem, 1.0444rem + 0.3306vw, 1.375rem); /* uvod                  18 → 22 */
+  --fs-body: 1.0625rem;  /* 17 */
+  --fs-ui: 0.9375rem;    /* 15 navigacija, čipovi, mali gumb */
+  --fs-small: 0.875rem;  /* 14 pomoćni tekst, pravni red */
+  --fs-label: 0.75rem;   /* 12 mono: kicker, meta, labela */
+  --fs-micro: 0.6875rem; /* 11 mono dekor (aria-hidden), nikad informacija */
+  --tr-d: -0.038em;
+  --tr-d3: -0.034em;
+  --tr-d4: -0.025em;
+  --tr-h3: -0.015em;
+  --tr-h4: -0.01em;
+  --tr-label: 0.08em;
+  --tr-micro: 0.12em;
+  --lh-d: 0.97;   /* 0.92 i 0.94 sudaraju kvačicu Č Š Ž Đ sa silaznim potezom g j p reda iznad */
+  --lh-d4: 1.04;
+  --lh-h: 1.15;
+  --lh-lead: 1.45;
+  --lh-body: 1.6;
+  --lh-ui: 1.35;
+  --wdth-mark: 125;
+  --wdth-display: 112;
+  --wdth-ui: 106;
+  --wdth-head: 104;
+  --measure-lead: 38ch;
+  --measure-body: 66ch;
+  --measure-title: 14ch;
+  /* aliasi za postojeći kod */
+  --fs-hero: var(--fs-d1);
+  --fs-h2: var(--fs-d3);
+  --fs-mono: var(--fs-label);
+
+  /* gumbi i fokus */
+  --btn-h: 54px;
+  --btn-h-sm: 42px;
+  --btn-skew: -12deg;
+  --focus: var(--signal);
+  --focus-gap: var(--paper);
 
   color-scheme: light;
 }
@@ -93,8 +131,9 @@ h1, h2, h3, h4, p, ul, ol, figure, blockquote, dl, dd { margin: 0; }
 ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
 ::selection { background: var(--signal); color: #fff; }
 
-:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 2px; }
-.on-dark :focus-visible, [data-theme='night'] :focus-visible { outline-color: var(--amber); }
+/* noćne površine: prsten fokusa u svijetloj plavoj (signal na noći ima premali kontrast), praznina u tonu noći */
+[data-header-theme='night'], .sheet--night, .sheet--ink, .site-footer, .mobile-menu, .site-header.is-night, .on-dark { --focus: #9fb4ff; --focus-gap: var(--night); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
 
 .skip-link {
   position: fixed; left: 12px; top: -60px; z-index: 1000;
@@ -127,14 +166,17 @@ body::after {
 .display, .h1, .h2, h1, h2 {
   font-family: var(--font-sans);
   font-weight: 800;
-  font-variation-settings: 'wdth' 112;
-  letter-spacing: -0.038em;
-  line-height: 0.92;
+  font-variation-settings: 'wdth' var(--wdth-display);
+  letter-spacing: var(--tr-d);
+  line-height: var(--lh-d);
   text-wrap: balance;
 }
-.h1, h1 { font-size: var(--fs-hero); }
-.h2, h2 { font-size: var(--fs-h2); line-height: 0.95; }
-h3, .h3 { font-size: var(--fs-h3); font-weight: 680; letter-spacing: -0.015em; line-height: 1.15; font-variation-settings: 'wdth' 104; }
+/* jedan H1 za sve podstranice; 10.6vw drži najdulju riječ („vodoinstalatere:“) u stupcu od 320 px */
+.h1, h1 { font-size: min(var(--fs-d2), 10.6vw); }
+.h2, h2 { font-size: var(--fs-d3); letter-spacing: var(--tr-d3); }
+.d4, .statement { font-size: var(--fs-d4); letter-spacing: var(--tr-d4); line-height: var(--lh-d4); }
+h3, .h3 { font-size: var(--fs-h3); font-weight: 680; letter-spacing: var(--tr-h3); line-height: var(--lh-h); font-variation-settings: 'wdth' var(--wdth-head); }
+.h4 { font-size: var(--fs-h4); font-weight: 680; letter-spacing: var(--tr-h4); line-height: 1.2; font-variation-settings: 'wdth' var(--wdth-head); }
 .serif, em.serif {
   font-family: var(--font-serif);
   font-style: italic;
@@ -143,15 +185,20 @@ h3, .h3 { font-size: var(--fs-h3); font-weight: 680; letter-spacing: -0.015em; l
   font-variation-settings: normal;
   padding-right: 0.04em;
 }
-h1 em, h2 em, .h1 em, .h2 em { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.012em; font-variation-settings: normal; }
-.lead { font-size: var(--fs-lead); line-height: 1.45; color: var(--ink-2); max-width: 38ch; text-wrap: pretty; }
+/* kurziv u displayu: Instrument Serif ima manju x-visinu od Archiva 112, pa bez korekcije istaknuta riječ
+   (koja nosi poantu) izgleda manja i lakša od ostatka retka; line-height 0 da se red ne razmiče */
+h1 em, h2 em, .h1 em, .h2 em, .statement em { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 1.06em; line-height: 0; letter-spacing: -0.01em; font-variation-settings: normal; }
+/* razdvojeni naslov: maska riječi je inline-block, pa joj treba vlastiti prored (line-height 0 bi je zgnječio);
+   /1.06 drži istu visinu retka kao ostale riječi */
+:is(h1, h2, .h1, .h2, .statement) em .split-w { line-height: calc(var(--lh-d) / 1.06); }
+.lead { font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--ink-2); max-width: var(--measure-lead); text-wrap: pretty; }
 .muted { color: var(--muted); }
 p { text-wrap: pretty; }
 
 .kicker {
   font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.08em;
+  font-size: var(--fs-label);
+  letter-spacing: var(--tr-label);
   text-transform: uppercase;
   font-weight: 500;
   color: var(--ink-3);
@@ -159,14 +206,17 @@ p { text-wrap: pretty; }
 }
 .kicker::before { content: ''; width: 18px; height: 1px; background: currentColor; opacity: 0.7; }
 .kicker.no-rule::before { display: none; }
-.mono { font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.mono { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: var(--tr-label); text-transform: uppercase; }
+.micro { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tr-micro); text-transform: uppercase; }
 .code-tag {
-  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; font-weight: 600;
+  font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.06em; font-weight: 600;
   padding: 3px 7px; border: 1px solid var(--line-2); border-radius: 3px; color: var(--ink-3);
   display: inline-block; line-height: 1.2; white-space: nowrap;
 }
 
-/* ───────── gumbi (paralelogram kao Z dijagonala) ───────── */
+/* ───────── gumbi (paralelogram kao Z dijagonala) ─────────
+   Paralelogram = radnja (vodi dalje). Pilula = izbor ili oznaka. Pravokutnik = sadržaj ili unos.
+   Jedan primarni gumb po kadru; primarni je uvijek signal plava, na papiru i u noći. Amber nije boja sučelja. */
 .btn {
   --btn-bg: var(--ink);
   --btn-fg: var(--paper);
@@ -174,40 +224,63 @@ p { text-wrap: pretty; }
   --btn-fill-fg: #fff;
   position: relative; isolation: isolate;
   display: inline-flex; align-items: center; justify-content: center; gap: 0.7em;
-  min-height: 54px; padding: 0 1.55em 0 1.35em;
+  min-height: var(--btn-h); padding: 0 1.55em 0 1.35em;
   border: 0; background: none; color: var(--btn-fg);
   font-weight: 650; font-size: 1rem; letter-spacing: -0.005em; text-decoration: none;
-  font-variation-settings: 'wdth' 106;
+  font-variation-settings: 'wdth' var(--wdth-ui);
   white-space: nowrap;
   transition: color 0.35s var(--ease-out);
   -webkit-tap-highlight-color: transparent;
 }
 .btn::before, .btn::after {
   content: ''; position: absolute; inset: 0; z-index: -1;
-  transform: skewX(-12deg); border-radius: 3px;
+  transform: skewX(var(--btn-skew)); border-radius: 3px;
 }
 .btn::before { background: var(--btn-bg); transition: transform 0.45s var(--ease-out); }
 .btn::after {
   background: var(--btn-fill);
-  transform: skewX(-12deg) scaleX(0); transform-origin: left center;
+  transform: skewX(var(--btn-skew)) scaleX(0); transform-origin: left center;
   transition: transform 0.5s var(--ease-out);
 }
-.btn:hover { color: var(--btn-fill-fg); }
-.btn:hover::after { transform: skewX(-12deg) scaleX(1); }
-.btn:active::before, .btn:active::after { transform: skewX(-12deg) scale(0.97); }
 .btn .icon { transition: transform 0.45s var(--ease-out); flex: none; }
-.btn:hover .icon-arrow { transform: translateX(4px); }
+/* hover samo gdje hover postoji: na dodir je ispuna ostajala "zalijepljena" nakon tapa */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { color: var(--btn-fill-fg); }
+  .btn:hover::after { transform: skewX(var(--btn-skew)) scaleX(1); }
+  .btn:hover .icon-arrow { transform: translateX(4px); }
+}
+/* pritisak: obje plohe se stisnu, ispuna se pokaže i na dodir (zato i boja teksta prelazi na ispunu) */
+.btn:active { color: var(--btn-fill-fg); }
+.btn:active::before, .btn:active::after { transform: skewX(var(--btn-skew)) scale(0.97); }
+/* fokus prati paralelogram: obrub na kosoj plohi umjesto pravokutnog outlinea koji ju je presijecao.
+   outline (ne box-shadow) da ga ne pregaze obrubi ghost gumba u pojedinim sekcijama */
+.btn:focus-visible { outline: none; }
+.btn:focus-visible::before { outline: 2px solid var(--focus); outline-offset: 2px; }
 .btn--signal { --btn-bg: var(--signal); --btn-fg: #fff; --btn-fill: var(--ink); }
 .btn--ghost { --btn-bg: transparent; --btn-fg: var(--ink); --btn-fill: var(--ink); --btn-fill-fg: var(--paper); }
 .btn--ghost::before { box-shadow: inset 0 0 0 1.5px var(--ink); }
 .btn--light { --btn-bg: var(--paper); --btn-fg: var(--ink); --btn-fill: var(--signal); }
 .btn--ghost-light { --btn-bg: transparent; --btn-fg: var(--on-night); --btn-fill: var(--paper); --btn-fill-fg: var(--ink); }
 .btn--ghost-light::before { box-shadow: inset 0 0 0 1.5px rgba(238, 240, 247, 0.5); }
-.btn--sm { min-height: 42px; font-size: 0.92rem; padding: 0 1.2em 0 1.05em; }
-.btn[disabled], .btn[aria-disabled='true'] { opacity: 0.55; pointer-events: none; }
+/* noć: primarni se pri hoveru puni papirom (tinta #141414 na noći #0b0e18 imala je kontrast 1,05 : 1) */
+:is([data-header-theme='night'], .sheet--night, .sheet--ink, .site-footer, .mobile-menu) .btn--signal { --btn-fill: var(--paper); --btn-fill-fg: var(--ink); }
+:is([data-header-theme='night'], .sheet--night, .sheet--ink, .site-footer, .mobile-menu) .btn--ghost { --btn-fg: var(--on-night); --btn-fill: var(--paper); --btn-fill-fg: var(--ink); }
+:is([data-header-theme='night'], .sheet--night, .sheet--ink, .site-footer, .mobile-menu) .btn--ghost::before { box-shadow: inset 0 0 0 1.5px rgba(238, 240, 247, 0.5); }
+.btn--sm { min-height: var(--btn-h-sm); font-size: var(--fs-ui); padding: 0 1.2em 0 1.05em; }
+.btn[disabled], .btn[aria-disabled='true'] { opacity: 0.45; cursor: not-allowed; }
+.btn[aria-disabled='true'] { pointer-events: none; }
+.btn[disabled]::after { transform: skewX(var(--btn-skew)) scaleX(0); }
+.btn[disabled] { color: var(--btn-fg); }
+.btn.is-loading { pointer-events: none; cursor: progress; }
 .btn .btn-spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin 0.8s linear infinite; display: none; }
 .btn.is-loading .btn-spin { display: inline-block; }
 .btn.is-loading .icon-arrow { display: none; }
+/* grupa gumba: na mobitelu jedan ispod drugog, iste širine */
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px 14px; align-items: center; }
+@media (max-width: 560px) {
+  .btn-row { flex-direction: column; align-items: stretch; }
+  .btn-row > .btn { width: 100%; }
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .link-arrow {
@@ -249,7 +322,7 @@ p { text-wrap: pretty; }
 .brand .zaec-logo { width: 46px; height: auto; fill: currentColor; }
 .brand-word { display: flex; flex-direction: column; line-height: 1; }
 .brand-word b { font-weight: 850; font-size: 1.12rem; letter-spacing: 0.02em; font-variation-settings: 'wdth' 125; }
-.brand-word span { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; margin-top: 4px; }
+.brand-word span { font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tr-micro); text-transform: uppercase; opacity: 0.7; margin-top: 4px; }
 .brand:hover .zl-z2 { transform: translateX(-18px); }
 .zaec-logo path { transition: transform 0.6s var(--ease-out); transform-box: fill-box; }
 .brand:hover .zl-e2 { transform: translateX(26px); }
@@ -307,9 +380,11 @@ p { text-wrap: pretty; }
 .menu-open .site-header::before { opacity: 0; }
 .mobile-menu ul { list-style: none; margin: 0; padding: 0; }
 .mobile-menu .mm-main a { display: flex; align-items: baseline; gap: 14px; padding: 9px 0; font-size: clamp(1.9rem, 8vw, 2.6rem); font-weight: 800; letter-spacing: -0.03em; text-decoration: none; font-variation-settings: 'wdth' 112; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-.mobile-menu .mm-main a small { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; opacity: 0.5; letter-spacing: 0.08em; }
-.mobile-menu .mm-sub { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.mobile-menu .mm-sub a { padding: 9px 14px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 99px; font-size: 0.88rem; text-decoration: none; }
+.mobile-menu .mm-main a small { font-family: var(--font-mono); font-size: var(--fs-label); font-weight: 400; opacity: 0.5; letter-spacing: 0.08em; }
+/* usluge su poveznice (vode dalje), pa nisu pilule: pilula znači izbor ili oznaku */
+.mobile-menu .mm-h { margin: 26px 0 4px; color: rgba(239, 235, 227, 0.6); }
+.mobile-menu .mm-sub { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
+.mobile-menu .mm-sub a { display: flex; align-items: center; min-height: 46px; padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: var(--fs-ui); font-weight: 550; line-height: var(--lh-ui); text-decoration: none; color: rgba(239, 235, 227, 0.86); }
 .mobile-menu .mm-foot { margin-top: auto; padding-top: 28px; display: grid; gap: 14px; }
 .mobile-menu .mm-foot .btn { width: 100%; }
 
@@ -425,7 +500,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(2
 .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }
 
 /* ───────── breadcrumbs ───────── */
-.crumbs { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.crumbs { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--muted); }
 .crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; }
 .crumbs li + li::before { content: '/'; margin-right: 6px; opacity: 0.5; }
 .crumbs a { text-decoration: none; }
@@ -440,7 +515,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(2
   background: radial-gradient(60% 120px at 50% 0, rgba(79, 115, 255, 0.16), transparent 70%), linear-gradient(90deg, transparent, rgba(150, 168, 255, 0.35) 30%, rgba(150, 168, 255, 0.35) 70%, transparent) top / 100% 1px no-repeat; }
 .site-footer a { color: inherit; text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: color 0.3s var(--ease-out), background-size 0.45s var(--ease-out); }
 .site-footer a:hover { color: var(--ft-fg); background-size: 100% 1px; }
-.site-footer a:focus-visible, .site-footer .link-btn:focus-visible { outline: 2px solid var(--glow, #9fb4ff); outline-offset: 3px; border-radius: 2px; }
+.site-footer a:focus-visible, .site-footer .link-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
 .foot-top { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 0.8fr) minmax(0, 0.95fr); gap: clamp(28px, 3vw, 48px); padding-bottom: clamp(48px, 6vw, 80px); }
 .foot-logo { display: inline-block; background: none !important; }
 .foot-brand .zaec-logo { width: 68px; fill: var(--ft-fg); margin-bottom: 26px; }
@@ -448,12 +523,12 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(2
 .foot-audit { display: inline-flex !important; align-items: center; gap: 10px; padding: 12px 0; font-weight: 620; color: var(--ft-fg) !important; border-top: 1px solid var(--abyss-line-2); background: none !important; }
 .foot-audit .icon { transition: transform 0.4s var(--ease-out); }
 .foot-audit:hover .icon { transform: translateX(4px); }
-.foot-h { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ft-4); margin: 0 0 18px; padding-bottom: 12px; border-bottom: 1px solid var(--abyss-line); }
+.foot-h { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: var(--tr-micro); text-transform: uppercase; color: var(--ft-3); margin: 0 0 18px; padding-bottom: 12px; border-bottom: 1px solid var(--abyss-line); }
 .foot-col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 9px; font-size: 0.94rem; line-height: 1.35; }
 .foot-col address { font-style: normal; display: grid; gap: 10px; font-size: 0.94rem; line-height: 1.45; justify-items: start; }
 .foot-contact-tel { font-size: 1.35rem; font-weight: 760; letter-spacing: -0.02em; color: var(--ft-fg) !important; font-variant-numeric: tabular-nums; font-variation-settings: 'wdth' 110; }
-.foot-hours { color: var(--ft-3); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; }
-.foot-legal { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 32px; padding: 22px 0; border-top: 1px solid var(--abyss-line); font-size: 0.8rem; color: var(--ft-4); }
+.foot-hours { color: var(--ft-3); font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.06em; }
+.foot-legal { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 32px; padding: 22px 0; border-top: 1px solid var(--abyss-line); font-size: 0.8rem; color: var(--ft-3); }
 .foot-legal p { max-width: 70ch; margin: 0; }
 .foot-legal-links { display: flex; flex-wrap: wrap; gap: 6px 22px; list-style: none; margin: 0; padding: 0; }
 .foot-legal .link-btn { color: inherit; font-size: inherit; }
@@ -482,7 +557,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(2
 /* ───────── prose (vodiči, pravne stranice) ───────── */
 .prose { font-size: 1.1rem; line-height: 1.72; color: var(--ink-2); max-width: 70ch; }
 .prose > * + * { margin-top: 1.15em; }
-.prose h2 { font-size: clamp(1.7rem, 2.8vw, 2.4rem); line-height: 1.05; margin-top: 2em; color: var(--ink); }
+.prose h2 { font-size: var(--fs-d4); letter-spacing: var(--tr-d4); line-height: var(--lh-d4); margin-top: 2em; color: var(--ink); }
 .prose h3 { margin-top: 1.6em; color: var(--ink); }
 .prose ul, .prose ol { padding-left: 1.3em; }
 .prose li + li { margin-top: 0.45em; }
@@ -503,7 +578,7 @@ a.card:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(2
 .cursor.is-hot .cursor-ring { transform: scale(1.7); background: rgba(255, 255, 255, 0.12); }
 .cursor.is-down .cursor-ring { transform: scale(0.8); }
 .cursor.has-label .cursor-ring { transform: scale(2.6); background: #fff; }
-.cursor-label { position: absolute; left: 0; top: 0; translate: -50% -50%; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: #000; white-space: nowrap; opacity: 0; transition: opacity 0.25s; }
+.cursor-label { position: absolute; left: 0; top: 0; translate: -50% -50%; font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: 0.08em; text-transform: uppercase; color: #000; white-space: nowrap; opacity: 0; transition: opacity 0.25s; }
 .cursor.has-label .cursor-label { opacity: 1; }
 
 /* ───────── reduced motion ───────── */
