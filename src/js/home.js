@@ -347,7 +347,7 @@ async function bootWorld() {
     world = createWorld3({
       canvas,
       labelsRoot: document.querySelector('[data-stage-labels]'),
-      assets: { land: T + 'img/world/land.png' + v, landEu: T + 'img/world/land-eu.png' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },
+      assets: { land: T + 'img/world/land.png' + v, landEu: T + 'img/world/land-eu.png' + v, lights: T + 'img/world/lights.webp' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },
       onReady: () => root.classList.add('stage-ready'),
     });
     world.setGates(gates);

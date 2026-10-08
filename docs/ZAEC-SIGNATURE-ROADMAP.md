@@ -63,6 +63,22 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   veći razmak forma ↔ telefon. Mobitel: novi kadar `final.m` (planet u donjoj polovici), sadržaj gore, 52vh zraka
   na dnu u kojem planet i "Vaša tvrtka" završavaju priču prije horizonta footera; telefon u vlastitoj kartici.
 - **Tokeni:** `--abyss*`, `--lamp` u `global.css` — temelj za ujednačavanje noćnih površina u fazi 2/12.
+- **Zemlja (faza 3):** atmosfera je jednostruko raspršenje (Rayleigh + Mie) kroz ljusku polumjera 1,032 R:
+  zraka iz kamere, 10 uzoraka (7 na mobitelu; nad diskom do 4), optička dubina prema suncu analitički
+  (Chapmanova aproksimacija, bez unutarnje petlje), mekana polusjena planeta, ekstinkcija ublažena da rub ostane
+  plavobijel. Debljina i visine skale uvećane ~4× radi čitljivosti, omjeri Zemljini. Površina: polje šelfa,
+  kontinentalnosti i obale izvodi se u pregledniku iz postojeće maske kopna (512×256, ~5 ms, bez preuzimanja);
+  `EARTH_GLSL` (lib.js) dijele globus i karta pa odmatanje ostaje bez šava. Odsjaj mora s Fresnelom, sumrak u dva
+  tona. Kadar: desktop planet veći, rub dijagonalno prema gore desno; uspravno obzor Europe u gornjoj polovici,
+  tekst na tamnoj podlozi (podloga više ne završava tvrdim rubom). Posteri ponovno snimljeni iz novog kadra.
+- **Svjetla (faza 4):** izvor je NASA/NOAA "Earth's City Lights" (javno vlasništvo; `tools/build-lights.py`,
+  `img/world/lights.webp`, 67 kB). Prikaz je stiliziran i tako se i opisuje: svaka ćelija matrice točaka pali se
+  prema gustoći svjetla na tom mjestu (uv središta ćelije + hash), jezgre metropola toplobijele, predgrađa
+  natrijeva narančasta, rijetko hladni LED; regionalni sjaj iz zamućenog kanala. Ispod praga snimke tiha pozadina
+  rijetkih slabih svjetala (čuva "detalje na Africi"), stišana na finijim razinama karte. Danju se približavanjem
+  Europi (`CIVIC`, Z 0,3→0,95) gusta urbana područja pojavljuju kao jantarne točke u plavoj matrici (podatkovni
+  sloj, ne fizička svjetla). Sumrak dolazi s istoka: Europa `dusk` 0,1, Hrvatska 0,6 (Slavonija već pali svjetla),
+  Slavonija 1. Atribucija u podnožju naslovnice.
 
 ## Faze
 
@@ -70,8 +86,8 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 |---|---|
 | 1 Audit i kreativna inteligencija | ✓ audit, snimke prije; Inspo/SEO Machine — vidi bilješke |
 | 2 Temelji (bugovi, interakcije, tokeni) | djelomično: vrata ✓, procjena ✓, tokeni ✓; tipografska skala i gumbi — otvoreno |
-| 3 Zemlja | otvoreno |
-| 4 Svjetla Europe | otvoreno |
+| 3 Zemlja | ✓ atmosfera, ocean, kopno, kadrovi (desktop + uspravno), posteri |
+| 4 Svjetla Europe | ✓ svjetla iz NASA/NOAA snimke, jantarni dnevni sloj, sumrak s istoka |
 | 5 Osijek (krovovi, rasvjeta, Drava) | otvoreno |
 | 6 Konkatedrala i nacrt | otvoreno |
 | 7 Naslovnica: urednički dio, prefooter, footer, Daj Gric | djelomično: prefooter ✓, footer ✓, Daj Gric ✓; sekcija "Dobri ste…" — otvoreno |
@@ -92,6 +108,11 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 - Procjena: 3 brza klika, 12 brzih klikova, trostruki klik istog polja, promjena vrste projekta → redoslijed katova
   uvijek točan, bez duplikata; snimke tijekom i nakon animacije pregledane.
 - Footer: 1440×900 i 390×844 pregledani. Prefooter: 1440×900 i 390×844 (tri scroll pozicije) pregledani.
+- Zemlja: snimke prije/poslije 1440×900 (heroj, mreža, rub izbliza), 390×844, 768×1024, 360×640, 1280×720, 1920×1080;
+  prijelaz globus → karta (1350–1800 px) bez šava; finale. Bez JS grešaka u konzoli.
+- Cijena atmosfere izmjerena samo relativno, u softverskom rendereru (swiftshader, CPU): ~60 % vremena sličice
+  na kadru heroja. To nije mjera za stvarni GPU; mjerenje na uređajima ostaje za fazu 11.
+- Svjetla: snimke 1440×900 i 390×844 na kadrovima mreža, Europa, Hrvatska, Slavonija i u poniranju (1350–1800 px).
 
 ## Otvoreno
 
@@ -102,8 +123,14 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 
 ## Sljedeći korak
 
-Faze 3–6 (Zemlja → svjetla Europe → Osijek → nacrt), zatim 8 i 9.
+Faza 5 (Osijek: krovovi, rasvjeta, Drava), zatim 6, 8 i 9.
 
 ## Commitovi
 
-(popis se dopunjuje)
+- `a431f50` Offline build kit (Bun)
+- `01cc977` Portfelj: Daj Gric povučen (reverzibilno)
+- `2702cf7` Naslovnica: put do upita bez skokova, prefooter, mobilni završni kadar
+- `96168d5` Procjena: popravljen pad blokova, presjek zgrade
+- `b8e4968` Footer u dubokoj noći, tokeni `--abyss`
+- `4644aef` Zemlja: atmosfera s raspršenjem, ocean, kopno, kadrovi
+- (faza 4) Svjetla Europe iz NASA/NOAA snimke

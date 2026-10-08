@@ -67,7 +67,7 @@ $posts_page = (int) get_option( 'page_for_posts' );
 				<li><a href="<?php echo esc_url( $privacy ); ?>">Privatnost</a></li>
 				<?php if ( $o['terms_url'] ) : ?><li><a href="<?php echo esc_url( $o['terms_url'] ); ?>">Uvjeti</a></li><?php endif; ?>
 				<?php if ( $o['gtm_id'] ) : ?><li><button type="button" class="link-btn" data-consent-open>Postavke kolačića</button></li><?php else : ?><li>Bez kolačića za praćenje</li><?php endif; ?>
-				<?php if ( is_front_page() ) : ?><li>Karta Osijeka: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> suradnici</li><?php endif; ?>
+				<?php if ( is_front_page() ) : ?><li>Karta Osijeka: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> suradnici · noćna svjetla: NASA/NOAA</li><?php endif; ?>
 			</ul>
 		</div>
 	</div>

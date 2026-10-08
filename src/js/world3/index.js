@@ -19,7 +19,7 @@ import { createMorph, createLayers, LAYER_DEFS } from './wire.js';
 import { createFlow } from './flow.js';
 import { GATES } from './gates.js';
 import { FRAMES, KEYS, frameState } from './keyframes.js';
-import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, Z_CITY, CITY_KX, CITY_KZ, BEND, SUN_MAP, DAY_EDGE } from './lib.js';
+import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, Z_CITY, CITY_KX, CITY_KZ, BEND, SUN_MAP, DAY_EDGE, CIVIC } from './lib.js';
 
 // kanali koji se interpoliraju krivuljom (udaljenost i meta idu preko visine i koordinata karte)
 const CH = [...KEYS.filter((k) => !['dist', 'tx', 'ty', 'tz', 'fit'].includes(k)), 'LA', 'mx', 'my', 'mz'];
@@ -69,10 +69,10 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   scene.add(rim);
 
   /* ── pozornice ── */
-  const globe = createGlobe({ geo, lite, landUrl: assets.land });
+  const globe = createGlobe({ geo, lite, landUrl: assets.land, lightsUrl: assets.lights });
   const network = createNetwork({ geo, lite });
   globe.spin.add(network.group);
-  const europe = createEurope({ geo, lite, landTex: globe.land, fieldTex: globe.field, landEuUrl: assets.landEu });
+  const europe = createEurope({ geo, lite, landTex: globe.land, fieldTex: globe.field, lightsTex: globe.lights, landEuUrl: assets.landEu });
   const morph = createMorph(null, { max: lite ? 3200 : 6500 });
   // rubovi konkatedrale (metri) → svjetske jedinice na mjerilu grada
   const kCity = mapScale(Z_CITY);
@@ -448,6 +448,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
 
     /* Europa + Hrvatska + Slavonija (karta se odmata s kugle, sumrak putuje preko nje) */
     updateSun(st.dusk);
+    // gustoća naselja nazire se postupno dok se kamera spušta prema Europi (prije sumraka)
+    CIVIC.value = smooth(0.3, 0.95, Z);
     BEND.value = 1 - smooth(0.86, 0.97, Z);
     const europeA = smooth(0.78, 0.87, Z) * (1 - smooth(1.8, 1.97, Z));
     europe.group.scale.set(s, Math.min(s, 1), s);

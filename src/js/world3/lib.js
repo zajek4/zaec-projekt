@@ -146,13 +146,40 @@ export function createEarthField() {
         data[o] = Math.round(shelf[i] * 255);
         data[o + 1] = Math.round(cont[i] * 255);
         data[o + 2] = Math.round(near[i] * 255);
-        data[o + 3] = 255;
       }
     }
     texture.needsUpdate = true;
   }
-  return { texture, fill };
+  /** A kanal: regionalni sjaj noćnih svjetala (~0,7° zamućenje), za udaljeni pogled gdje su točke sitne. */
+  function fillLights(img) {
+    const W = EARTH_W, H = EARTH_H;
+    let src;
+    try {
+      const cv = document.createElement('canvas');
+      cv.width = W; cv.height = H;
+      const cx = cv.getContext('2d', { willReadFrequently: true });
+      cx.imageSmoothingEnabled = true;
+      cx.imageSmoothingQuality = 'high';
+      cx.drawImage(img, 0, 0, W, H);
+      src = cx.getImageData(0, 0, W, H).data;
+    } catch {
+      return;
+    }
+    for (let y = 0; y < H; y++) {
+      const row = (H - 1 - y) * W;
+      for (let x = 0; x < W; x++) {
+        // prosjek po pikselu slabi male gradove: korijen ih vraća, a jezgre metropola ostaju najsvjetlije
+        const v = Math.min(1, (src[(y * W + x) * 4] / 255) * 2.2);
+        data[(row + x) * 4 + 3] = Math.round(Math.sqrt(v) * 255);
+      }
+    }
+    texture.needsUpdate = true;
+  }
+  return { texture, fill, fillLights };
 }
+
+/** Rani "civilizacijski" sloj: koliko se gustoća naselja nazire i na dnevnoj strani (0…1), zajedničko globusu i karti. */
+export const CIVIC = { value: 0 };
 
 export const EARTH_GLSL = /* glsl */ `
 uniform sampler2D uField;
@@ -181,6 +208,28 @@ vec3 landTone(vec4 F, float lat, float lon){
   c = mix(c, vec3(0.074, 0.092, 0.126), smoothstep(1.03, 1.2, abs(lat)) * 0.75);
   return c;
 }
+// noćna svjetla iz snimke NASA/NOAA (tools/build-lights.py): stvarna geografija, stiliziran prikaz.
+// Odluka se donosi po ćeliji matrice (uv središta ćelije, hash ćelije), pa svijetle cijele točke, a ne mrlje.
+// Vjerojatnost i jačina rastu s gustoćom; jezgre metropola su toplobijele, predgrađa i sela natrijeva
+// narančasta, rijetke točke u velikim gradovima hladni LED. Ispod praga snimke ostaje tiha pozadina
+// rijetkih slabih svjetala (manja mjesta), rjeđa u dubokoj unutrašnjosti kontinenata; ambK je stišava
+// na finijim razinama matrice, da se izbliza ne pretvori u posipanje.
+// Vraća rgb noćnog svjetla (s regionalnim sjajem iz polja, kanal A) i a = maska dnevnog sloja: samo gusta
+// urbana područja (viši prag), da se danju čitaju gradovi i koridori, a ne posipanje po cijelom kopnu.
+uniform sampler2D uLights; uniform float uCivic;
+vec4 cityLights(vec2 cellUv, float hc, float dm, vec4 F, float ambK){
+  float L = texture2D(uLights, cellUv).r;
+  float on = step(hc, smoothstep(0.012, 0.5, L));
+  float inten = 0.3 + 0.7 * smoothstep(0.04, 0.85, L);
+  vec3 c = mix(vec3(1.0, 0.57, 0.23), vec3(1.0, 0.84, 0.62), smoothstep(0.32, 0.95, L));
+  c = mix(c, vec3(0.84, 0.9, 1.0), step(0.94, fract(hc * 7.31)) * smoothstep(0.4, 0.9, L) * 0.65);
+  float amb = (1.0 - on) * step(fract(hc * 13.7), (0.08 + 0.3 * (1.0 - smoothstep(0.5, 0.95, F.b))) * (1.0 - 0.45 * smoothstep(0.86, 0.99, F.g)) * ambK);
+  vec3 rgb = (c * on * inten + vec3(1.0, 0.6, 0.26) * amb * 0.45) * dm + vec3(1.0, 0.52, 0.2) * F.a * F.a * 0.15;
+  float civ = step(hc, smoothstep(0.22, 0.75, L));
+  return vec4(rgb, civ * dm);
+}
+// danja boja točke naselja: jantar jednake težine kao plava točka matrice (ljudi i tvrtke u mreži)
+vec3 civicTone(float day){ return vec3(0.6, 0.36, 0.15) * (0.22 + 1.0 * day); }
 // atmosferska izmaglica nad diskom (ostatak raspršenja koji ljuska atmosfere ne pokriva)
 vec3 hazeTone(float mu, float ndl){
   float fres = pow(1.0 - mu, 2.6);

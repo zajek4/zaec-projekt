@@ -4,7 +4,7 @@
 // iz Osijeka (scroll vodi pero), vrhunac sjaja dolazi kad se krug zatvori, zatim se smiri.
 // Spuštanjem pada sumrak (SUN_MAP): noć prelazi kartu, a svjetla gradova pale se tek kad je nad njima mrak.
 import * as THREE from 'three';
-import { proj, glowPoints, seeded, smooth, BEND, BEND_GLSL, SUN_MAP, DAY_EDGE, OSIJEK, MAPK, COSLAT, EARTH_GLSL } from './lib.js';
+import { proj, glowPoints, seeded, smooth, BEND, BEND_GLSL, SUN_MAP, DAY_EDGE, OSIJEK, MAPK, COSLAT, EARTH_GLSL, CIVIC } from './lib.js';
 
 const f = (v) => (Number.isInteger(v) ? v.toFixed(1) : String(v));
 // detaljna tekstura kopna (build-geo.mjs, korak 6): lon −30…60, lat 25…75
@@ -40,7 +40,7 @@ function ribbon(rings) {
   return g;
 }
 
-export function createEurope({ geo, lite, landTex, fieldTex, landEuUrl }) {
+export function createEurope({ geo, lite, landTex, fieldTex, lightsTex, landEuUrl }) {
   const rand = seeded(11);
   const group = new THREE.Group();
   group.name = 'europa';
@@ -61,6 +61,8 @@ export function createEurope({ geo, lite, landTex, fieldTex, landEuUrl }) {
     uLandW: { value: landTex },
     uLandE: { value: tex(landEuUrl) },
     uField: { value: fieldTex },
+    uLights: { value: lightsTex },
+    uCivic: CIVIC,
     uBend: BEND,
     uSunMap: SUN_MAP,
     uDayEdge: DAY_EDGE,
@@ -119,7 +121,8 @@ export function createEurope({ geo, lite, landTex, fieldTex, landEuUrl }) {
         float k0 = exp2(l0 * 2.0);
         float fr = smoothstep(0.55, 1.0, lev - l0);
         float rr = mix(0.17, 0.12, clamp(lev, 0.0, 1.0));
-        float dots = mix(dotField(g * k0, rr), dotField(g * k0 * 4.0, rr), fr) * land * uDots;
+        float dm = mix(dotField(g * k0, rr), dotField(g * k0 * 4.0, rr), fr) * land;
+        float dots = dm * uDots;
         vec3 n = sphereNormal(vXZ);
         vec3 v = normalize(cameraPosition - vW);
         float ndl = dot(n, uSunMap);
@@ -132,11 +135,19 @@ export function createEurope({ geo, lite, landTex, fieldTex, landEuUrl }) {
         // sumrak: topla traka koja putuje preko karte
         float mid = (uDayEdge.x + uDayEdge.y) * 0.5, wid = (uDayEdge.y - uDayEdge.x) * 0.32;
         col += twilightTone(ndl, mid, wid) * (0.3 + 0.7 * land) * 0.3;
-        // noćna strana (kao na globusu): tiha matrica i rijetka svjetla dok je pogled kontinentalan
+        // noćna strana (kao na globusu): tiha matrica i svjetla naselja iz snimke; svaka razina matrice
+        // ima svoje ćelije (središte ćelije → uv), pa spuštanjem gradovi dobivaju sve finiju strukturu
         float night = 1.0 - day;
         col += dots * vec3(0.08, 0.16, 0.38) * night * 0.45;
-        float lit = step(0.9, h21(floor(g))) * dots;
-        col += vec3(1.0, 0.6, 0.26) * lit * night * 0.55 * uNightL;
+        vec2 c0 = (floor(g * k0) + 0.5) / k0, c1 = (floor(g * k0 * 4.0) + 0.5) / (k0 * 4.0);
+        float la0 = c0.y * 0.0062832, la1 = c1.y * 0.0062832;
+        vec2 u0 = vec2((c0.x * 0.0062832 / cos(la0) + 3.14159265) / 6.2831853, (la0 + 1.5707963) / 3.14159265);
+        vec2 u1 = vec2((c1.x * 0.0062832 / cos(la1) + 3.14159265) / 6.2831853, (la1 + 1.5707963) / 3.14159265);
+        float ambK = 1.0 - 0.75 * smoothstep(0.0, 1.0, lev);
+        vec4 cl = mix(cityLights(u0, h21(floor(g * k0) + k0 - 1.0), dotField(g * k0, rr) * land, F, ambK), cityLights(u1, h21(floor(g * k0 * 4.0) + k0 * 4.0 - 1.0), dotField(g * k0 * 4.0, rr) * land, F, ambK), fr);
+        float civ = uCivic * day;
+        col = mix(col, civicTone(day) * (1.0 - uDim * 0.55), clamp(cl.a * civ * uNightL, 0.0, 1.0));
+        col += cl.rgb * night * 1.3 * uNightL;
         // geografska mreža (1°) — tanka, samo dok je pogled regionalan
         vec2 gl = vec2(lonD, latD);
         vec2 gd = abs(fract(gl - 0.5) - 0.5) / fwidth(gl);
@@ -412,7 +423,8 @@ export function createEurope({ geo, lite, landTex, fieldTex, landEuUrl }) {
       // matrica je jezik globusa: puna pri prijelazu, tiha nad Hrvatskom, nestaje prije Slavonije
       TU.uDots.value = 1 - 0.55 * smooth(0.9, 1.0, Z) - 0.45 * smooth(1.0, 1.3, Z);
       TU.uGrat.value = smooth(0.94, 1.05, Z) * (1 - smooth(1.3, 1.6, Z)) * 0.5;
-      TU.uNightL.value = 1 - smooth(0.9, 0.99, Z);
+      // svjetla naselja ostaju kroz Hrvatsku; nad Slavonijom ih preuzimaju stvarna mjesta i grad
+      TU.uNightL.value = 1 - smooth(1.2, 1.5, Z);
       TU.uDim.value = smooth(1.5, 1.9, Z);
       borders.U.uOpacity.value = 0.55 * a * fade * (1 - 0.5 * s.hl);
       // obris Hrvatske

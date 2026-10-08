@@ -6,11 +6,11 @@
 // Bez oblaka: čista silueta.
 // Mreža komunikacija je zaseban modul (network.js) u istom koordinatnom sustavu (jedinična sfera).
 import * as THREE from 'three';
-import { ll2v, OSIJEK, DEG, glowPoints, lineMat, createEarthField, EARTH_GLSL } from './lib.js';
+import { ll2v, OSIJEK, DEG, glowPoints, lineMat, createEarthField, EARTH_GLSL, CIVIC } from './lib.js';
 
 const ATMO_R = 1.032;
 
-export function createGlobe({ geo, lite, landUrl }) {
+export function createGlobe({ geo, lite, landUrl, lightsUrl }) {
   const group = new THREE.Group();
   group.name = 'planet';
   const spin = new THREE.Group();
@@ -33,9 +33,18 @@ export function createGlobe({ geo, lite, landUrl }) {
   land.minFilter = THREE.LinearFilter; // bez mipmapa → nema šava na antimeridijanu
   land.generateMipmaps = false;
   land.wrapS = THREE.RepeatWrapping;
+  // noćna svjetla (NASA/NOAA, tools/build-lights.py): oštra tekstura za točke + zamućeni sjaj u polju
+  const lights = new THREE.TextureLoader().load(lightsUrl, (t) => field.fillLights(t.image));
+  lights.colorSpace = THREE.NoColorSpace;
+  lights.format = THREE.RedFormat;
+  lights.minFilter = THREE.LinearFilter;
+  lights.generateMipmaps = false;
+  lights.wrapS = THREE.RepeatWrapping;
   const U = {
     uLand: { value: land },
     uField: { value: field.texture },
+    uLights: { value: lights },
+    uCivic: CIVIC,
     uSun: { value: new THREE.Vector3(0.78, 0.46, -0.95).normalize() },
     uTime: { value: 0 },
     uAlpha: { value: 1 },
@@ -65,8 +74,6 @@ export function createGlobe({ geo, lite, landUrl }) {
         vec2 uv = vec2((lon + 3.14159265) / 6.2831853, (lat + 1.5707963) / 3.14159265);
         float land = smoothstep(0.25, 0.75, texture2D(uLand, uv).r);
         vec4 F = texture2D(uField, uv);
-        // obala: kopno uz more — tamo su gradovi gušći
-        float coast = land * (1.0 - smoothstep(0.55, 0.95, F.b));
         // digitalna matrica točaka na kopnu (razmak ~0,36°, ispravljen za širinu)
         vec2 g = vec2(lon * cos(lat), lat) / (0.36 * 0.0174533);
         vec2 f = fract(g) - 0.5;
@@ -87,11 +94,18 @@ export function createGlobe({ geo, lite, landUrl }) {
         float fr = 0.02 + 0.98 * pow(1.0 - mu, 5.0);
         float glint = (pow(nh, 110.0) * 0.8 + pow(nh, 16.0) * 0.07) * (0.35 + 2.6 * fr);
         col += vec3(0.62, 0.72, 0.9) * glint * (1.0 - land) * smoothstep(-0.02, 0.22, ndl) * 0.62;
-        // noćna strana: matrica i rijetka topla svjetla (gušća uz obalu)
+        // noćna strana: tiha matrica i svjetla naselja prema stvarnoj snimci; približavanjem Europi
+        // gustoća naselja nazire se i danju (uCivic), kao tihi topli sloj u matrici
         float night = 1.0 - smoothstep(-0.06, 0.2, ndl);
         col += dots * uDots * vec3(0.08, 0.16, 0.38) * (1.0 - day) * 0.45;
-        float lit = step(1.0 - (0.07 + 0.38 * coast), eHash(floor(g))) * dots;
-        col += vec3(1.0, 0.6, 0.26) * lit * night * 0.6 * uNight;
+        vec2 gc = floor(g) + 0.5;
+        float latc = gc.y * 0.0062832;
+        vec2 uvc = vec2((gc.x * 0.0062832 / max(cos(latc), 0.05) + 3.14159265) / 6.2831853, (latc + 1.5707963) / 3.14159265);
+        vec4 cl = cityLights(uvc, eHash(floor(g)), dots, F, 1.0);
+        float civ = uCivic * (1.0 - night);
+        // danju je naselje jantarna točka u plavoj matrici (podatkovni sloj), noću stvarno svjetlo
+        col = mix(col, civicTone(day), clamp(cl.a * civ, 0.0, 1.0));
+        col += cl.rgb * night * uNight;
         col += hazeTone(mu, ndl);
         gl_FragColor = vec4(col, uAlpha);
       }`,
@@ -222,6 +236,7 @@ export function createGlobe({ geo, lite, landUrl }) {
     spin,
     sun: U.uSun.value,
     land,
+    lights,
     field: field.texture,
     /** s: { alpha, spin, net, finale, dive, time, pr, reduce } */
     update(s) {
@@ -245,7 +260,7 @@ export function createGlobe({ geo, lite, landUrl }) {
       return out.copy(osijek).multiplyScalar(1.02).applyMatrix4(spin.matrixWorld);
     },
     dispose() {
-      planet.geometry.dispose(); planetMat.dispose(); land.dispose(); field.texture.dispose();
+      planet.geometry.dispose(); planetMat.dispose(); land.dispose(); lights.dispose(); field.texture.dispose();
       atmo.geometry.dispose(); atmo.material.dispose();
       borderGeo.dispose(); borderMat.dispose();
       hub.geometry.dispose(); hub.material.dispose();
