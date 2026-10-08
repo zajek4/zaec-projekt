@@ -346,16 +346,54 @@ function zaec_block_services( $b, $l, $alt ) {
 	zaec_block_close();
 }
 
+/**
+ * Djelatnosti po sektorima (strategija 01): hub (full) prikazuje svih 8 sektora sa stranicama, dokazom i CTA-om;
+ * drugdje kompaktna mreža sektora koja vodi na stranicu ili na sektor na hubu. Bez sintetičkih slika.
+ */
 function zaec_block_trades( $b, $l, $alt ) {
+	$full = ! empty( $b['full'] );
 	zaec_block_open( $alt );
 	if ( ! empty( $b['title'] ) || ! isset( $b['title'] ) ) {
-		zaec_block_head( $b['title'] ?? 'Svaki zanat traži <em>drukčiji</em> web.', $b['lead'] ?? 'Pogledajte što mora imati stranica za vašu djelatnost.', 'Djelatnosti' );
+		zaec_block_head( $b['title'] ?? 'Web prema tome kako <em>vaši</em> kupci biraju.', $b['lead'] ?? 'Osam područja, od obrta do industrije. Svako ima svoja pitanja i svoj put do upita.', 'Djelatnosti' );
 	}
-	echo '<ul class="trade-cards" role="list" data-stagger="0.05">';
-	foreach ( zaec_industries() as $t ) {
-		echo '<li data-reveal><a class="trade-card" href="' . esc_url( zaec_url( $t['key'] ) ) . '"><figure><img src="' . esc_url( zaec_img( $t['image'] ) ) . '"' . ( zaec_img_srcset( $t['image'] ) ? ' srcset="' . esc_attr( zaec_img_srcset( $t['image'] ) ) . '" sizes="(max-width: 560px) 92vw, (max-width: 1100px) 46vw, 340px"' : '' ) . ' alt="" width="1400" height="1050" loading="lazy" decoding="async"></figure><h3>' . zaec_icon( $t['icon'], 18 ) . ' ' . esc_html( $t['title'] ) . '</h3><p>' . esc_html( implode( ' · ', $t['onweb'] ) ) . '</p><span class="go">Pogledajte ' . zaec_icon( 'arrow-right', 16 ) . '</span></a></li>'; // phpcs:ignore
+	$n = 0;
+	if ( $full ) {
+		echo '<ol class="sectors" role="list" data-stagger="0.05">';
+		foreach ( zaec_sectors() as $key => $sec ) {
+			$pages = zaec_sector_pages( $key );
+			$proof = ! empty( $sec['proof'] ) ? zaec_project_by_host( $sec['proof'] ) : null;
+			echo '<li class="sector" id="sektor-' . esc_attr( $key ) . '" data-reveal>';
+			echo '<div class="sector-id"><span class="code-tag">S.' . esc_html( zaec_pad( ++$n ) ) . '</span>' . zaec_icon( $sec['icon'], 22 ) . '</div>'; // phpcs:ignore
+			echo '<div class="sector-name"><h3>' . esc_html( $sec['name'] ) . '</h3><p class="sector-ex">' . esc_html( $sec['examples'] ) . '</p></div>';
+			echo '<div class="sector-body"><p>' . esc_html( $sec['about'] ) . '</p>';
+			if ( $pages ) {
+				echo '<ul class="sector-pages" role="list">';
+				foreach ( $pages as $t ) {
+					echo '<li><a href="' . esc_url( zaec_url( $t['key'] ) ) . '"><b>' . esc_html( $t['label'] ) . '</b><span>' . esc_html( implode( ' · ', array_slice( $t['onweb'], 0, 2 ) ) ) . '</span>' . zaec_icon( 'arrow-right', 16 ) . '</a></li>'; // phpcs:ignore
+				}
+				echo '</ul>';
+			}
+			if ( $proof ) {
+				echo '<p class="sector-proof"><span class="mono">Iz prakse</span> <a href="' . esc_url( $proof['permalink'] ) . '">' . esc_html( $proof['title'] ) . '</a></p>';
+			}
+			echo '<a class="sector-cta" href="' . esc_url( zaec_url( 'cijene?djelatnost=' . $key . '#konfigurator' ) ) . '">Procjena za ovo područje ' . zaec_icon( 'arrow-right', 16 ) . '</a>'; // phpcs:ignore
+			echo '</div></li>';
+		}
+		echo '<li class="sector sector--other" id="sektor-ostalo" data-reveal><div class="sector-id"><span class="code-tag">S.' . esc_html( zaec_pad( ++$n ) ) . '</span>' . zaec_icon( ZAEC_SECTOR_OTHER['icon'], 22 ) . '</div>'; // phpcs:ignore
+		echo '<div class="sector-name"><h3>Nešto drugo</h3><p class="sector-ex">autoservisi, zdravstvo, prijevoz, IT i sve ostalo</p></div>';
+		echo '<div class="sector-body"><p>Isti pristup radi za svaki posao koji kupci traže i uspoređuju na webu. Strukturu za vaš složimo u razgovoru.</p>';
+		echo '<a class="sector-cta" href="' . esc_url( zaec_url( 'cijene?djelatnost=ostalo#konfigurator' ) ) . '">Procjena za vaš posao ' . zaec_icon( 'arrow-right', 16 ) . '</a></div></li>'; // phpcs:ignore
+		echo '</ol>';
+	} else {
+		echo '<ul class="sector-grid" role="list" data-stagger="0.04">';
+		foreach ( zaec_sectors() as $key => $sec ) {
+			$pages = zaec_sector_pages( $key );
+			$href  = 1 === count( $pages ) ? zaec_url( $pages[0]['key'] ) : zaec_url( 'djelatnosti#sektor-' . $key );
+			echo '<li data-reveal><a class="sector-tile" href="' . esc_url( $href ) . '"><span class="sector-tile-top"><span class="code-tag">S.' . esc_html( zaec_pad( ++$n ) ) . '</span>' . zaec_icon( $sec['icon'], 20 ) . '</span><b>' . esc_html( $sec['short'] ) . '</b><span class="sector-tile-sub">' . esc_html( $sec['examples'] ) . '</span></a></li>'; // phpcs:ignore
+		}
+		echo '</ul>';
+		echo '<p class="sector-more" data-reveal><a class="link-arrow" href="' . esc_url( zaec_url( 'djelatnosti' ) ) . '">Sva područja i stranice djelatnosti ' . zaec_icon( 'arrow-right', 16 ) . '</a></p>'; // phpcs:ignore
 	}
-	echo '</ul>';
 	zaec_block_close();
 }
 

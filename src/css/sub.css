@@ -162,20 +162,54 @@
 .sub-faq .h2 em { color: var(--signal); }
 @media (max-width: 900px) { .sub-faq-grid { grid-template-columns: 1fr; } }
 
-/* kartice djelatnosti */
-.trade-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-.trade-card { display: grid; gap: 10px; text-decoration: none; padding: 0 0 22px; border-radius: var(--r-l); background: var(--card); border: 1px solid var(--line); overflow: hidden; transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); height: 100%; }
-.trade-card:hover { transform: translateY(-5px); box-shadow: 0 30px 50px -30px rgba(20, 20, 20, 0.35); }
-.trade-card figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: var(--night); }
-.trade-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease-out); }
-.trade-card:hover img { transform: scale(1.05); }
-.trade-card h3, .trade-card p, .trade-card .go { padding-inline: 22px; }
-.trade-card h3 { font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
-.trade-card h3 .icon { color: var(--signal); }
-.trade-card p { color: var(--ink-3); font-size: 0.93rem; line-height: 1.5; }
-.trade-card .go { font-weight: 650; font-size: 0.9rem; color: var(--signal-2); display: inline-flex; align-items: center; gap: 6px; margin-top: auto; }
-@media (max-width: 1100px) { .trade-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .trade-cards { grid-template-columns: 1fr; } }
+/* djelatnosti po sektorima: indeks na hubu (.sectors), kompaktna mreža drugdje (.sector-grid) */
+.sectors { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--line-2); counter-reset: none; }
+.sector { display: grid; grid-template-columns: 96px minmax(0, 0.95fr) minmax(0, 1.25fr); gap: 18px clamp(24px, 4vw, 72px); padding: clamp(28px, 3.4vw, 48px) 0; border-top: 1px solid var(--line-2); scroll-margin-top: calc(var(--header-h) + 24px); }
+.sector-id { display: grid; gap: 14px; align-content: start; justify-items: start; color: var(--signal); }
+.sector-name h3 { font-size: clamp(1.45rem, 2.3vw, 2.15rem); line-height: 1.08; letter-spacing: -0.02em; font-variation-settings: 'wdth' 92; }
+.sector-ex { margin-top: 12px; font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.7; color: var(--muted); max-width: 38ch; }
+.sector-body { display: grid; gap: 18px; align-content: start; }
+.sector-body > p { color: var(--ink-3); font-size: 1.04rem; line-height: 1.55; max-width: 58ch; }
+.sector-pages { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.sector-pages a { display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto; align-items: baseline; gap: 4px 16px; padding: 13px 2px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); transition: color 0.3s, padding 0.4s var(--ease-out); }
+.sector-pages a b { font-weight: 650; font-size: 1.04rem; }
+.sector-pages a span { color: var(--muted); font-size: 0.88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sector-pages a .icon { color: var(--signal); align-self: center; transition: transform 0.4s var(--ease-out); }
+.sector-pages a:hover { color: var(--signal-2); padding-inline: 8px 0; }
+.sector-pages a:hover .icon { transform: translateX(4px); }
+.sector-proof { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; font-size: 0.98rem; }
+.sector-proof .mono { font-size: var(--fs-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ok); }
+.sector-proof a { color: var(--ink); font-weight: 600; text-underline-offset: 4px; }
+.sector-cta { justify-self: start; display: inline-flex; align-items: center; gap: 8px; font-weight: 650; font-size: 0.95rem; color: var(--signal-2); text-decoration: none; border-bottom: 1.5px solid currentColor; padding-bottom: 3px; }
+.sector-cta .icon { transition: transform 0.4s var(--ease-out); }
+.sector-cta:hover .icon { transform: translateX(4px); }
+.sector-pages + .sector-cta, .sector-proof + .sector-cta { margin-top: 2px; }
+.sector--other h3 { color: var(--muted); }
+.sector:target { background: linear-gradient(90deg, var(--signal-soft), transparent 70%); }
+@media (max-width: 960px) {
+  .sector { grid-template-columns: 64px minmax(0, 1fr); }
+  .sector-body { grid-column: 2; }
+}
+@media (max-width: 560px) {
+  .sector { grid-template-columns: 1fr; gap: 14px; }
+  .sector-id { grid-auto-flow: column; justify-content: start; align-items: center; gap: 12px; }
+  .sector-body { grid-column: auto; }
+  .sector-pages a { grid-template-columns: minmax(0, 1fr) auto; }
+  .sector-pages a span { grid-column: 1; grid-row: 2; white-space: normal; }
+  .sector-pages a .icon { grid-column: 2; grid-row: 1 / 3; }
+}
+
+.sector-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line-2); border-left: 1px solid var(--line-2); }
+.sector-grid > li { border-right: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); }
+.sector-tile { display: grid; gap: 10px; align-content: start; height: 100%; min-height: 168px; padding: 22px 22px 24px; text-decoration: none; color: var(--ink); transition: background 0.35s, color 0.35s; }
+.sector-tile-top { display: flex; justify-content: space-between; align-items: center; color: var(--signal); margin-bottom: 14px; }
+.sector-tile b { font-size: 1.22rem; line-height: 1.15; letter-spacing: -0.01em; font-weight: 650; }
+.sector-tile-sub { color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+.sector-tile:hover { background: var(--card); }
+.sector-tile:hover b { color: var(--signal-2); }
+.sector-more { margin-top: 26px; }
+@media (max-width: 1100px) { .sector-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .sector-tile { min-height: 0; padding: 18px; } .sector-tile-top { margin-bottom: 4px; } }
 
 /* naglašeni citat / poruka */
 .statement { font-size: clamp(1.6rem, 3.2vw, 3rem); line-height: 1.12; letter-spacing: -0.025em; font-weight: 720; max-width: 26ch; font-variation-settings: 'wdth' 108; text-wrap: balance; }

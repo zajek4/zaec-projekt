@@ -75,6 +75,10 @@ function init(root) {
   const sizeLegend = $('[data-size-legend]');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const live = $('[data-cfg-live]');
+  // ?djelatnost= prihvaća ključ sektora, slug stranice djelatnosti ili stari tab (mapa dolazi iz registra)
+  let sectorMap = {};
+  try { sectorMap = JSON.parse(root.dataset.sectors || '{}'); } catch (e) {}
+  let pageLabel = ''; // "Klima i grijanje" kad je procjena otvorena sa stranice djelatnosti
 
   function read() {
     const fd = new FormData(form);
@@ -89,13 +93,19 @@ function init(root) {
     };
   }
 
+  function tradeText(s) {
+    const el = s.trade && form.querySelector(`input[name="trade"][value="${CSS.escape(s.trade)}"]`);
+    if (!el) return 'nije odabrano';
+    return el.dataset.name + (pageLabel && el.dataset.pre ? ` · ${pageLabel}` : '');
+  }
+
   function summaryLines(s, r, compact = false) {
     const size = s.type === 'landing' ? '1 landing stranica' : s.type === 'shop' ? `${s.products} proizvoda` : `${s.pages} ${stranica(s.pages)}`;
     const feats = s.features.map((f) => form.querySelector(`[value="${f}"]`)?.dataset.label).filter(Boolean);
     const short = s.features.map((f) => form.querySelector(`[value="${f}"]`)?.dataset.short).filter(Boolean);
     return [
       ['Projekt', `${TYPE[s.type].name} · ${size}`],
-      ['Djelatnost', s.trade],
+      ['Djelatnost', tradeText(s)],
       ['Funkcije', feats.length ? (compact ? short : feats).join(', ') : 'osnovni paket'],
       ['Rok', s.deadline],
       ['Sadržaj', s.content],
@@ -188,11 +198,18 @@ function init(root) {
   form.addEventListener('change', update);
   update();
 
-  // predodaberi djelatnost iz URL-a (?djelatnost=Klima)
+  // predodaberi sektor iz URL-a (?djelatnost=instalacije | klima-i-grijanje | Klima)
   const pre = new URLSearchParams(location.search).get('djelatnost');
   if (pre) {
-    const r = form.querySelector(`input[name="trade"][value="${CSS.escape(pre)}"]`);
-    if (r) { r.checked = true; update(); }
+    const [sector, label] = sectorMap[pre] || [pre, ''];
+    const r = form.querySelector(`input[name="trade"][value="${CSS.escape(sector)}"]`);
+    if (r) {
+      r.checked = true;
+      r.dataset.pre = '1';
+      pageLabel = label;
+      form.querySelectorAll('input[name="trade"]').forEach((o) => o !== r && o.addEventListener('change', () => { delete r.dataset.pre; }, { once: true }));
+      update();
+    }
   }
 
   $('[data-cfg-send]').addEventListener('click', () => {

@@ -64,10 +64,10 @@ $rows  = max( 2, (int) ( $args['rows'] ?? 4 ) );
 				<label for="<?php echo esc_attr( $fid ); ?>-djelatnost">Djelatnost <span class="opt">(opcionalno)</span></label>
 				<select class="select" id="<?php echo esc_attr( $fid ); ?>-djelatnost" name="djelatnost">
 					<option value="">Odaberite…</option>
-					<?php foreach ( zaec_industries() as $ind ) : ?>
-						<option value="<?php echo esc_attr( $ind['title'] ); ?>" data-tab="<?php echo esc_attr( $ind['tab'] ); ?>"><?php echo esc_html( $ind['title'] ); ?></option>
+					<?php foreach ( zaec_sectors() as $key => $sec ) : ?>
+						<option value="<?php echo esc_attr( $sec['name'] ); ?>" data-sector="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $sec['name'] ); ?></option>
 					<?php endforeach; ?>
-					<option value="Ostalo" data-tab="Ostalo">Nešto drugo</option>
+					<option value="<?php echo esc_attr( ZAEC_SECTOR_OTHER['name'] ); ?>" data-sector="<?php echo esc_attr( ZAEC_SECTOR_OTHER['key'] ); ?>"><?php echo esc_html( ZAEC_SECTOR_OTHER['name'] ); ?></option>
 				</select>
 			</div>
 			<div class="field">

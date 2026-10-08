@@ -351,9 +351,12 @@ function zaec_llms_output() {
 	foreach ( zaec_services() as $s ) {
 		$out .= '- [' . $s['title'] . '](' . zaec_url( $s['key'] ) . '): ' . wp_strip_all_tags( $s['answer'] ?? $s['description'] ) . "\n";
 	}
-	$out .= "\n## Djelatnosti\n\n";
-	foreach ( zaec_industries() as $i ) {
-		$out .= '- [' . $i['title'] . '](' . zaec_url( $i['key'] ) . '): ' . $i['description'] . "\n";
+	$out .= "\n## Djelatnosti\n\n[Sva područja](" . zaec_url( 'djelatnosti' ) . ")\n";
+	foreach ( zaec_sectors() as $key => $sec ) {
+		$out .= "\n### " . $sec['name'] . "\n\n" . $sec['about'] . "\n";
+		foreach ( zaec_sector_pages( $key ) as $i ) {
+			$out .= '- [' . $i['title'] . '](' . zaec_url( $i['key'] ) . '): ' . $i['description'] . "\n";
+		}
 	}
 	$out .= "\n## Ostalo\n\n- [Cijene i procjena projekta](" . zaec_url( 'cijene' ) . ")\n- [Besplatna provjera vidljivosti](" . zaec_url( 'provjera-vidljivosti' ) . ")\n- [Radovi](" . get_post_type_archive_link( 'projekti' ) . ")\n- [O nama](" . zaec_url( 'o-nama' ) . ")\n- [Kontakt](" . zaec_url( 'kontakt' ) . ")\n";
 	$guides = get_posts( array( 'post_type' => 'post', 'posts_per_page' => 20, 'category_name' => 'vodici' ) );

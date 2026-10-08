@@ -32,7 +32,7 @@ $feats  = array(
 	array( 'animacije', 'Premium animacije / 3D', 'layers', 'Animacije / 3D' ),
 );
 ?>
-<div class="cfg" id="<?php echo esc_attr( $cid ); ?>" data-configurator data-form-target="<?php echo esc_attr( $target ); ?>">
+<div class="cfg" id="<?php echo esc_attr( $cid ); ?>" data-configurator data-form-target="<?php echo esc_attr( $target ); ?>" data-sectors="<?php echo esc_attr( wp_json_encode( zaec_sector_js_map() ) ); ?>">
 	<form class="cfg-form" onsubmit="return false" aria-describedby="<?php echo esc_attr( $cid ); ?>-help">
 		<p class="sr-only" id="<?php echo esc_attr( $cid ); ?>-help">Odabirom opcija procjena opsega i okvirnog roka ažurira se odmah, u panelu s rezultatom.</p>
 
@@ -48,13 +48,14 @@ $feats  = array(
 			</div>
 		</fieldset>
 
-		<fieldset class="cfg-step">
+		<fieldset class="cfg-step" aria-describedby="<?php echo esc_attr( $cid ); ?>-sector-help">
 			<legend><span class="cfg-n">02</span> Čime se bavite?</legend>
-			<div class="cfg-chips">
-				<?php foreach ( zaec_industries() as $i => $ind ) : ?>
-					<label class="cfg-chip"><input type="radio" name="trade" value="<?php echo esc_attr( $ind['tab'] ); ?>" <?php checked( 0, $i ); ?>><span><?php echo esc_html( $ind['tab'] ); ?></span></label>
+			<p class="cfg-hint" id="<?php echo esc_attr( $cid ); ?>-sector-help">Odaberite najbliže. Pojedinosti dogovorimo u razgovoru.</p>
+			<div class="cfg-chips cfg-chips--sectors">
+				<?php foreach ( zaec_sectors() as $key => $sec ) : ?>
+					<label class="cfg-chip"><input type="radio" name="trade" value="<?php echo esc_attr( $key ); ?>" data-name="<?php echo esc_attr( $sec['name'] ); ?>"><span><?php echo esc_html( $sec['short'] ); ?></span></label>
 				<?php endforeach; ?>
-				<label class="cfg-chip"><input type="radio" name="trade" value="Ostalo"><span>Ostalo</span></label>
+				<label class="cfg-chip"><input type="radio" name="trade" value="<?php echo esc_attr( ZAEC_SECTOR_OTHER['key'] ); ?>" data-name="<?php echo esc_attr( ZAEC_SECTOR_OTHER['name'] ); ?>"><span><?php echo esc_html( ZAEC_SECTOR_OTHER['short'] ); ?></span></label>
 			</div>
 		</fieldset>
 

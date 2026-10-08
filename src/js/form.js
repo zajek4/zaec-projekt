@@ -41,7 +41,7 @@ function init(form) {
     chip.hidden = false;
     const sel = form.querySelector('select[name="djelatnost"]');
     if (sel && cfg.trade && !sel.value) {
-      const opt = [...sel.options].find((o) => o.value === cfg.trade || o.dataset.tab === cfg.trade);
+      const opt = [...sel.options].find((o) => o.dataset.sector === cfg.trade || o.value === cfg.trade);
       if (opt) sel.value = opt.value;
     }
     const usl = form.querySelector('select[name="usluga"]');
