@@ -39,7 +39,7 @@ function zaec_home_defaults() {
 		// Slavonija (svjetla naselja).
 		'slav_kicker'     => 'Slavonija · noću',
 		'slav_title'      => 'Svako svjetlo je nečiji <em>posao</em>.',
-		'slav_lead'       => 'Pekara u Đakovu, servis klima u Vinkovcima, salon u Osijeku. Svi se svaki dan natječu za iste pretrage. Posao dobiva onaj kojeg kupac prvi razumije.',
+		'slav_lead'       => 'Pekara u Đakovu, servis klima u Vinkovcima, laboratorij u Osijeku. Svatko se svaki dan natječe za svoje pretrage. Posao dobiva onaj kojeg kupac prvi razumije.',
 		// Osijek.
 		'os_kicker'       => '03 — Osijek',
 		'os_title'        => 'Dobri gradovi nastaju iz <em>plana</em>.',
@@ -66,12 +66,11 @@ function zaec_home_defaults() {
 		'sys_title'       => 'Sedam slojeva između pretrage i <em>poziva</em>.',
 		'sys_lead'        => 'Svaki sloj ima svoj posao. Ako jedan zakaže, ostali ga ne mogu sakriti.',
 		'sys_statement'   => 'Web koji radi nije jedan lijep ekran. <em>To je sustav.</em>',
-		// Prepoznavanje: most iz priče u konkretan posao (tko smo, što radimo, za koga, razlika, prvi korak).
-		'recog_kicker'    => '08 — Što radimo',
-		'recog_title'     => 'Dobri ste u svom poslu. <em>Web</em> to još ne pokazuje.',
-		'recog_lead'      => 'Kupci biraju u tri koraka: pretraga, karta, prvi uvjerljiv web. Ako ispadnete u bilo kojem, posao ode — ne nužno boljem, nego vidljivijem.',
-		'recog_who'       => 'ZAEC je web studio iz Osijeka. Obrtima, servisima, salonima, ugostiteljima, trgovinama i ustanovama projektiramo web, lokalni SEO i mjerenje — da vas kupac nađe, razumije i javi se.',
-		'recog_diff'      => 'Razlika je u redoslijedu: prvo nacrt, onda dizajn. I mjerimo ono što web stvarno donosi.',
+		// 08 — ZAEC: osmo poglavlje filma, most iz priče u ponudu (tko smo, što radimo, za koga, kako, što dobivate,
+		// kako početi). Smjernice: /mnt/project-files/zaec-signature/strategy/04-naslovnica.md.
+		'recog_kicker'    => '08 — ZAEC',
+		'recog_title'     => 'Svako svjetlo je nečiji posao. <em>Naš</em> je da se vaš vidi.',
+		'recog_lead'      => 'ZAEC je web studio iz Osijeka. Projektiramo, gradimo i mjerimo web stranice za tvrtke kojima web mora donositi posao: od obrta i trgovina do stručnih usluga, proizvodnje i ustanova.',
 		'recog_cta'       => 'Recite nam što želite postići',
 		'recog_start'     => 'Prvi korak: razgovor od dvadesetak minuta i pisana procjena, bez obveze.',
 		// Lijepo vs učinkovito.
@@ -97,7 +96,7 @@ function zaec_home_defaults() {
 		// Ulaganje.
 		'invest_kicker'   => 'Ulaganje',
 		'invest_title'    => 'Cijena prema opsegu. <em>Napisana</em> unaprijed.',
-		'invest_lead'     => 'Ne objavljujemo „od” cijene jer ništa ne znače: web za obrt i webshop s integracijama nisu isti posao. Umjesto toga, cijenu dobivate pisano, fiksno i prije početka — bez obveze.',
+		'invest_lead'     => 'Već ste se jednom opekli? Zato opseg, rok i cijenu dobivate na papiru prije početka. „Od” cijene ne objavljujemo jer ništa ne znače: web za obrt i webshop s integracijama nisu isti posao. Ponuda je fiksna i bez obveze.',
 		// FAQ.
 		'faq_kicker'      => 'Pitanja',
 		'faq_title'       => 'Prije nego <em>pitate</em>.',
@@ -120,38 +119,34 @@ function zaec_home( $key ) {
 }
 
 /**
- * Četiri problema → što radimo (poveznice na usluge) → što dobivate (isporuka, ne obećanje rezultata).
- * [ broj, problem, opis, [ [ putanja, naziv ], … ], dobivate ]
+ * 08 — ZAEC: četiri retka legende nacrta. [ broj, naslov, tekst, [ [ putanja, naziv ], … ] ]
+ * Sve tvrdnje već postoje drugdje na webu (usluge, proces, jamstva, stranica za Osijek).
  */
-function zaec_home_pains() {
+function zaec_home_about_rows() {
 	return array(
 		array(
 			'01',
-			'Nema vas tamo gdje vas traže.',
-			'Google karta, pretraga i sve češće ChatGPT. Ako vas ondje nema, ne postojite za kupca koji uslugu treba sada.',
-			array( array( 'usluge/lokalni-seo', 'Lokalni SEO' ), array( 'usluge/google-business-profil', 'Google Business profil' ), array( 'usluge/ai-vidljivost', 'AI vidljivost' ) ),
-			'Sređen Google profil, stranicu za svaku uslugu i lokaciju te sadržaj koji Google i AI asistenti mogu razumjeti.',
+			'Što radimo',
+			'Web stranice, webshopove i landing stranice. SEO, Google profil i AI vidljivost. Mjerenje poziva, upita i prodaje u GA4.',
+			array( array( 'usluge/izrada-web-stranica', 'Izrada web stranica' ), array( 'usluge/webshop', 'Webshop' ), array( 'usluge/seo', 'SEO' ), array( 'usluge/ga4-i-pracenje-konverzija', 'GA4 i mjerenje' ) ),
 		),
 		array(
 			'02',
-			'Web postoji, telefon šuti.',
-			'Lijep dizajn bez jasne ponude, poziva na akciju i brzine na mobitelu je skupa posjetnica.',
-			array( array( 'usluge/izrada-web-stranica', 'Izrada web stranica' ), array( 'usluge/landing-stranice', 'Landing stranice' ), array( 'usluge/brzina-web-stranice', 'Brzina web stranice' ) ),
-			'Jasnu ponudu u prvom ekranu, poziv i WhatsApp jednim dodirom i stranicu koja se na mobitelu otvara odmah.',
+			'Za koga',
+			'Za tvrtke kojima web mora donositi upite: instalacije i gradnja, trgovina i ugostiteljstvo, stručne usluge, proizvodnja i ustanove.',
+			array( array( 'djelatnosti', 'Pogledajte djelatnosti' ) ),
 		),
 		array(
 			'03',
-			'Ne znate što radi.',
-			'Bez mjerenja ne znate dolaze li upiti s weba, oglasa ili preporuke — pa novac ulažete naslijepo.',
-			array( array( 'usluge/ga4-i-pracenje-konverzija', 'GA4 i praćenje konverzija' ) ),
-			'Svaki poziv, upit i prodaju zabilježene u GA4 i izvještaj koji pokazuje odakle dolaze.',
+			'Kako radimo',
+			'Nacrt prije dizajna. Fiksna cijena u pisanoj ponudi prije početka. Jedna osoba odgovara za projekt od prvog razgovora do objave.',
+			array( array( '#proces', 'Proces u šest koraka' ) ),
 		),
 		array(
 			'04',
-			'Već ste se jednom opekli.',
-			'Rok probijen, cijena narasla, a pristupi su ostali kod agencije.',
-			array( array( '#proces', 'Proces u šest koraka' ), array( 'cijene', 'Cijene i procjena' ) ),
-			'Fiksnu cijenu i rok u pisanoj ponudi, domenu, hosting i pristupe na vaše ime te 14 dana jamstva nakon objave.',
+			'Što dobivate',
+			'Web koji kupac razumije u pet sekundi, mjerenje koje pokazuje što donosi posao i sve pristupe na vaše ime.',
+			array( array( '#radovi', 'Pogledajte radove' ) ),
 		),
 	);
 }

@@ -242,18 +242,18 @@
 .paper .h2 em { color: var(--signal); }
 .paper .sec--night .h2 em { color: var(--glow); }
 
-/* prepoznavanje: most iz priče u posao. Lijevo tko smo i prvi korak (ljepljivo), desno problem → što radimo →
-   što dobivate. Svaki red ima "prozor" koji se upali kad red uđe u kadar — svako svjetlo je nečiji posao. */
+/* 08 — ZAEC: osmo poglavlje filma, most iz priče u ponudu. Lijevo tko smo i prvi korak (ljepljivo), desno legenda
+   nacrta: što radimo, za koga, kako, što dobivate. Svaki red ima prozor koji se upali kad uđe u kadar —
+   "svako svjetlo je nečiji posao" prelazi s 3D grada na papir. */
 .recog-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 104px); align-items: start; }
-.recog-head { position: sticky; top: calc(var(--header-h) + 40px); display: grid; gap: 22px; }
+.recog-head { position: sticky; top: calc(var(--header-h) + 40px); display: grid; gap: 24px; }
 .recog-head .h2 { max-width: 14ch; font-size: clamp(2.3rem, 3.9vw, 4.1rem); }
-.recog-id { margin-top: 14px; padding-top: 22px; border-top: 1px solid var(--ink); display: grid; gap: 12px; max-width: 46ch; }
-.recog-who { font-size: 1.04rem; line-height: 1.5; color: var(--ink); }
-.recog-diff { color: var(--ink-3); font-size: 0.96rem; }
-.recog-start { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 10px; }
-.recog-note { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.04em; line-height: 1.5; color: var(--ink-3); max-width: 30ch; }
+.recog-head .lead { max-width: 40ch; }
+.recog-start { display: grid; gap: 10px; justify-items: start; margin-top: 6px; padding-top: 22px; border-top: 1px solid var(--ink); max-width: 46ch; }
+.recog-cta { font-size: 1.04rem; font-weight: 650; color: var(--signal); }
+.recog-note { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.04em; line-height: 1.5; color: var(--ink-3); max-width: 34ch; }
 .recog-list { border-top: 1px solid var(--ink); }
-.recog-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1.08fr); gap: 10px 30px; padding: 30px 0 32px; border-bottom: 1px solid var(--line); }
+.recog-row { display: grid; grid-template-columns: 52px minmax(0, 0.62fr) minmax(0, 1.38fr); gap: 10px 30px; padding: 30px 0 32px; border-bottom: 1px solid var(--line); }
 .recog-n { display: grid; gap: 12px; align-content: start; justify-items: start; color: var(--signal); font-weight: 600; font-size: 0.72rem; padding-top: 4px; }
 .recog-win {
   width: 14px; height: 19px; border: 1px solid var(--line-2); border-radius: 1px;
@@ -266,12 +266,9 @@
   box-shadow: 0 0 0 3px rgba(255, 178, 63, 0.14), 0 0 22px 4px rgba(255, 170, 60, 0.42);
   transition-delay: calc(var(--d, 0s) + 0.45s);
 }
-.recog-pain { display: grid; gap: 10px; align-content: start; }
-.recog-pain h3 { font-size: clamp(1.18rem, 1.45vw, 1.42rem); }
-.recog-pain p { color: var(--ink-3); font-size: 0.96rem; }
-.recog-fix { display: grid; gap: 16px; align-content: start; margin: 0; padding-left: 26px; border-left: 1px solid var(--line); }
-.recog-fix dt { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--signal); margin-bottom: 6px; }
-.recog-fix dd { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--ink-2); }
+.recog-row h3 { font-size: clamp(1.18rem, 1.45vw, 1.42rem); padding-top: 1px; }
+.recog-body { display: grid; gap: 14px; align-content: start; }
+.recog-body p { color: var(--ink-2); font-size: 0.98rem; line-height: 1.55; max-width: 52ch; }
 .recog-tags { display: flex; flex-wrap: wrap; gap: 6px 8px; }
 .recog-tags a { display: inline-block; font-size: 0.82rem; font-weight: 550; padding: 4px 10px; border: 1px solid var(--line-2); border-radius: 999px; color: var(--ink); text-decoration: none; transition: border-color 0.25s var(--ease-out), color 0.25s var(--ease-out), background-color 0.25s var(--ease-out); }
 .recog-tags a:hover, .recog-tags a:focus-visible { border-color: var(--signal); color: var(--signal); background: var(--signal-soft); }
@@ -562,8 +559,8 @@
   .sys-layers .sys-layer:last-child { min-height: 46vh; }
   .sys-layers { margin-top: 0; }
   .sys-statement { min-height: 80vh; padding-top: 40vh; }
-  .recog-row { grid-template-columns: 34px minmax(0, 1fr); gap: 14px 14px; padding: 24px 0 26px; }
-  .recog-fix { grid-column: 2; padding: 16px 0 0; border-left: 0; border-top: 1px dashed var(--line-2); }
+  .recog-row { grid-template-columns: 34px minmax(0, 1fr); gap: 10px 14px; padding: 24px 0 26px; }
+  .recog-body { grid-column: 2; }
   .cmp-stage { aspect-ratio: 9 / 13; }
   .mk { font-size: 2.3vw; }
   .mk--pretty .mk-nav span { display: none; }

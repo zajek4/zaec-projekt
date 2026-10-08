@@ -100,14 +100,16 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 - **"Devedeset metara" provjereno:** 90 m navode opis kulturnog dobra (Konzervatorski odjel u Osijeku, preko
   bus.hr), Lonely Planet i drugi; engleska Wikipedija navodi 94 m. Model konkatedrale visok je 94 m s križem.
   Tekst ostaje "90 m"; kota se crta do 90 m, križ je iznad nje.
-- **Most iz priče u posao (faza 7):** sekcija "Dobri ste u svom poslu" ostaje prva na papiru (naslov je jak i
-  govori jezikom kupca), ali više nije samo popis boli. Kicker nastavlja numeraciju priče (`08 — Što radimo`).
-  Lijevo, ljepljivo: uvid (tri koraka izbora), tko smo i za koga radimo, u čemu je razlika (prvo nacrt, pa
-  dizajn; mjerimo što web donosi) i prvi korak (razgovor od dvadesetak minuta i pisana procjena) s pozivom na upit.
-  Desno četiri reda: problem → **Radimo** (poveznice na stvarne usluge) → **Dobivate** (isporuka, bez obećanja
-  rezultata). Svaki red ima mali prozor koji se upali kad red uđe u kadar — motiv "svako svjetlo je nečiji posao"
-  prelazi s 3D grada na papir. Sve tvrdnje su iz postojećeg sadržaja (hero, proces, jamstva); novi tekstovi su
-  zadane vrijednosti i mogu se urediti u Izgled → ZAEC naslovnica (uređeni tekstovi imaju prednost).
+- **Most iz priče u posao (faza 7):** prva sekcija na papiru postaje osmo poglavlje filma (`08 — ZAEC`, `#zaec`),
+  prema smjernicama niti za sadržaj (`strategy/04-naslovnica.md`): naslov "Svako svjetlo je nečiji posao. *Naš* je
+  da se vaš vidi." preuzima motiv filma; "Dobri ste u svom poslu" je otišao jer je zvučao pokroviteljski za B2B i
+  ustanove, a tri od četiri boli ponavljale su poglavlja filma. Lijevo (ljepljivo): tko smo i za koga, poziv na upit
+  i prvi korak (razgovor od dvadesetak minuta i pisana procjena). Desno legenda nacrta: Što radimo (poveznice na
+  usluge), Za koga (djelatnosti), Kako radimo (nacrt prije dizajna, fiksna cijena, jedna osoba od početka do kraja),
+  Što dobivate (radovi). Svaki red ima prozor koji se upali kad red uđe u kadar. "Već ste se jednom opekli?" prelazi
+  u lead Ulaganja; `slav_lead` ispravljen (pekara i klima servis ne natječu se za iste pretrage; laboratorij =
+  stvarni projekt Eurokontrola). Sve tvrdnje već postoje na webu. Tekstovi su zadane vrijednosti; uređeni tekstovi
+  iz administracije imaju prednost — na produkciji provjeriti opciju `zaec_home_texts` prije objave.
 - **Leća za uspravne zaslone:** sekcije s `data-lens` mjere svoj tekst; dok tekst prolazi gornjom polovicom ekrana,
   kamera pomiče motiv u slobodni pojas ispod njega. Popravlja crnu sličicu na mobitelu (~4100 px, postojala i prije)
   gdje je grad bio ispod tamne podloge teksta; podloga je uža i prozirnija. Leća je dodana i konkatedrali i
@@ -127,7 +129,7 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 4 Svjetla Europe | ✓ svjetla iz NASA/NOAA snimke, jantarni dnevni sloj, sumrak s istoka |
 | 5 Osijek (krovovi, rasvjeta, Drava) | ✓ karta uličnog svjetla, prozori i izlozi, krovovi, Drava s nasipima i mostovima, leća za mobitel |
 | 6 Konkatedrala i nacrt | ✓ kota 90 m, os, tlo, konstrukcijski pravci → mreža stranice, sporiji skener, leća |
-| 7 Naslovnica: urednički dio, prefooter, footer, Daj Gric | ✓ prefooter, footer, Daj Gric, most "Dobri ste…" (tko/što/za koga/razlika/prvi korak) |
+| 7 Naslovnica: urednički dio, prefooter, footer, Daj Gric | ✓ prefooter, footer, Daj Gric, poglavlje 08 — ZAEC (most iz priče u ponudu) |
 | 8 Izrada web stranica | predano niti za podstranice |
 | 9 Djelatnosti, cijene, o nama, kontakt | djelomično: bug procjene ✓; ostalo predano niti za podstranice |
 | 10 SEO i sadržaj | otvoreno |
@@ -153,7 +155,7 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 - Osijek: snimke prije/poslije 1440×900 (prijelaz 4050, Osijek 4500, konkatedrala 5400) i 390×844 (prijelaz,
   Hrvatska 1941–3200, Osijek 3685–4529, konkatedrala), krupni kadrovi krovova i vode iz debug kamere.
   `qa/faza-5-prije-poslije.png` u projektnim datotekama.
-- Most "Dobri ste…": PHP lint; snimke 1440×900 (tri pozicije), 1024×768 i 390×844; bez JS grešaka.
+- Poglavlje 08 — ZAEC: PHP lint; snimke 1440×900 (tri pozicije), 1024×768 i 390×844; bez JS grešaka.
 - Nacrt: snimke 1440×900 (5400–8100, svakih 150–450 px) i 390×844 (5429–8300), uključujući sredine prijelaza;
   oznaka "90 m" ne prekriva naslov ni na jednom. Bez JS grešaka u konzoli. Napomena: u softverskom rendereru kamera
   kasni za scrollom (sličica traje ~150 ms, korak prigušenja je ograničen), pa snimke na sidrima trebaju ~4 s.
@@ -168,7 +170,7 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 |---|---|---|---|---|---|
 | 5 Osijek | 7,5 | 7 | 8 | 7 | Grad se čita kao noćni Osijek; krovovi izbliza tamni, cijena na CPU-u visoka |
 | 6 Nacrt | 8 | 8 | 8 | 7,5 | Kota i pravci daju nacrtu smisao; na desktopu toranj na trenutak prolazi ispod teksta |
-| 7 Most | 7,5 | 7 | 8,5 | 8 | Odgovara tko/što/za koga/kako početi; ljepljivi stupac ima kratak hod na 1440×900 |
+| 7 Poglavlje 08 | 8 | 8 | 8,5 | 8 | Motiv filma nastavljen na papiru; odgovara tko/što/za koga/kako početi |
 
 ## Otvoreno
 
@@ -197,4 +199,5 @@ nakon QA-a; QA nalazi za vlastite datoteke; 3D dorada (krovovi izbliza, desktopn
 - `5515519` Svjetla Europe iz NASA/NOAA snimke
 - `5c2d62d` Osijek: noćni grad, Drava, leća za uspravne zaslone
 - `080163d` Nacrt: kota tornja, os, konstrukcijski pravci, mreža stranice
-- (faza 7) Naslovnica: most iz priče u posao
+- `7ffe5f0` Naslovnica: most iz priče u posao
+- (faza 7) Poglavlje 08 — ZAEC prema smjernicama za sadržaj; oznake bez preklapanja; zadrška tornja
