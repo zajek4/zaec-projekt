@@ -42,7 +42,7 @@ export const FRAMES = {
   'layers-a': { ...web, wire: 0, tx: 0.6, ty: 4.2, az: -26, el: 32, dist: 35, sx: 0.17, layers: 0.14, layersA: 1, labLayers: 1, fit: 15, m: { dist: 54, sx: 0, sy: 0.17 } },
   'layers-b': { ...web, wire: 0, tx: 0.6, ty: 4.2, az: -22, el: 30, dist: 35, sx: 0.17, layers: 1, layersA: 1, labLayers: 1, fit: 15, m: { dist: 52, sx: 0, sy: 0.17 } },
   'layers-c': { ...web, wire: 0, tx: 0.4, ty: 4.2, az: -14, el: 22, dist: 33, sx: 0.25, layers: 1, layersA: 1, assemble: 1, labLayers: 0, fit: 14, m: { dist: 46, sx: 0, sy: 0.17 } },
-  final: { Z: 0, tx: 0.2, ty: -0.4, tz: -2.2, az: 28, el: 16, dist: 13.5, fov: 40, roll: -10, sx: 0.2, sy: -0.12, finale: 1, net: 1, conv: 1, labFinale: 1, m: { dist: 17, fov: 48, roll: -4, sx: 0, sy: 0.24 } },
+  final: { Z: 0, tx: 0.2, ty: -0.4, tz: -2.2, az: 28, el: 16, dist: 13.5, fov: 40, roll: -10, sx: 0.2, sy: -0.12, finale: 1, net: 1, conv: 1, labFinale: 1, m: { dist: 15.5, fov: 48, roll: -4, sx: 0, sy: -0.03 } },
 };
 
 export function frameState(id, mobile, tablet = false) {
