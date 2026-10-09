@@ -97,4 +97,3 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 		</nav>
 	<?php endif; ?>
 </section>
-<?php zaec_hero_answer( $l, 'eh-answer' ); ?>

@@ -17,8 +17,12 @@ function zaec_render_blocks( $landing ) {
 			$i++;
 			$alt = 0 === $i % 2 ? ' block--paper2' : '';
 			call_user_func( $fn, $b, $landing, $alt );
+			if ( 1 === $i ) {
+				zaec_answer_block( $landing ); // „Ukratko“ iza druge sekcije stranice (hero je prva)
+			}
 		}
 	}
+	zaec_answer_block( $landing ); // stranica bez blokova: odmah iza heroja
 }
 
 function zaec_block_head( $title, $lead = '', $kicker = '' ) {
@@ -112,6 +116,10 @@ function zaec_block_anatomy( $b, $l, $alt ) {
 	if ( ! is_array( $b['parts'][0] ) ) {
 		$parts[ count( $parts ) - 1 ][2] = 'form';
 	}
+	if ( ! empty( $b['tower'] ) && zaec_hero_meta( 'izrada-m' ) ) {
+		zaec_block_anatomy_tower( $b, $parts );
+		return;
+	}
 	zaec_block_open( $alt );
 	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Nacrt' );
 	echo '<div class="anat" data-reveal><div class="anat-sheet" aria-hidden="true"><div class="anat-bar"><span></span><span></span><span></span><b>' . esc_html( $b['label'] ?? 'nacrt.pdf' ) . '</b></div><div class="anat-page">';
@@ -152,6 +160,57 @@ function zaec_block_anatomy( $b, $l, $alt ) {
 	zaec_block_close();
 }
 
+/**
+ * Izrada: „Kako izgleda stranica koja zove“ kao nastavak heroja (design/03, 4.5): u noći, lijevo kula iz heroja
+ * (sagrađeni kadar ispod nacrta, isti natpisi), desno sedam dijelova stranice. Dio stranice odozgo pali svoju
+ * etažu odozgo (zadnji, upit i poziv, pali ulaz). Bez JS-a i uz smanjeno kretanje kula je cijela sagrađena.
+ */
+function zaec_block_anatomy_tower( $b, $parts ) {
+	$m = zaec_hero_meta( 'izrada-m' );
+	// pojasevi etaža bez praznina (granica je sredina ploče između dviju etaža): krov ide s gornjom etažom, tlo s ulazom
+	$tops    = array_column( $m['floors'], 'top' );
+	$bottoms = array_column( $m['floors'], 'bottom' );
+	$tops[]  = $m['lobby']['top'];
+	$cuts    = array( 0 );
+	for ( $i = 1; $i < count( $tops ); $i++ ) {
+		$cuts[] = round( ( $bottoms[ $i - 1 ] + $tops[ $i ] ) / 2, 3 );
+	}
+	$cuts[] = 100;
+	$stops  = array();
+	for ( $i = 0; $i < count( $cuts ) - 1; $i++ ) {
+		$stops[] = "rgb(0 0 0/var(--f{$i},1)) {$cuts[ $i ]}%";
+		$stops[] = "rgb(0 0 0/var(--f{$i},1)) {$cuts[ $i + 1 ]}%";
+	}
+	$mask  = 'linear-gradient(180deg,' . implode( ',', $stops ) . ')';
+	$words = '';
+	foreach ( $m['floors'] as $i => $f ) {
+		$words .= sprintf(
+			'<text class="it-w at-w%1$s" data-f="%2$d" x="%3$s" y="%4$s" font-size="%5$s" textLength="%6$s" lengthAdjust="spacingAndGlyphs">%7$s</text>',
+			'serif' === $f['kind'] ? ' it-w--serif' : '',
+			(int) $i,
+			esc_attr( $m['textX'] ),
+			esc_attr( $f['base'] ),
+			esc_attr( $f['fs'] ),
+			esc_attr( $m['textW'] ),
+			esc_html( $f['word'] )
+		);
+	}
+	$img = static fn( $n ) => sprintf( 'src="%1$s" srcset="%1$s 720w, %2$s 1080w" sizes="(max-width: 900px) 46vw, 600px"', esc_url( zaec_img( "hero/{$n}-m-720.webp" ) ), esc_url( zaec_img( "hero/{$n}-m.webp" ) ) );
+	echo '<section class="block block--ink anat-night" data-header-theme="night" data-anat-tower><div class="wrap">';
+	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Nacrt' );
+	echo '<div class="anat anat--tower"><figure class="at-tower" aria-hidden="true"><div class="at-scene">';
+	echo '<img class="at-plan" ' . $img( 'izrada-plan' ) . ' alt="" width="720" height="1280" loading="lazy" decoding="async">'; // phpcs:ignore -- esc_url u $img
+	echo '<div class="at-real" style="' . esc_attr( '-webkit-mask-image:' . $mask . ';mask-image:' . $mask ) . '"><img ' . $img( 'izrada-real' ) . ' alt="" width="720" height="1280" loading="lazy" decoding="async"></div>'; // phpcs:ignore
+	printf( '<svg viewBox="0 0 %1$d %2$d" preserveAspectRatio="none" focusable="false">%3$s</svg>', (int) $m['w'], (int) $m['h'], $words ); // phpcs:ignore -- izgrađeno iz esc_* gore
+	echo '</div></figure><ol class="anat-notes" role="list">';
+	$last = count( $cuts ) - 2; // ulaz
+	foreach ( $parts as $i => $p ) {
+		$f = $i === count( $parts ) - 1 ? $last : min( $i, $last - 1 );
+		echo '<li data-f="' . (int) $f . '"><span class="anat-n">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $p[0] ) . '</b>' . ( $p[1] ? '<p>' . esc_html( $p[1] ) . '</p>' : '' ) . '</div></li>';
+	}
+	echo '</ol></div></div></section>';
+}
+
 function zaec_block_process( $b, $l, $alt ) {
 	echo '<section class="block block--ink" data-header-theme="night"><div class="wrap">';
 	zaec_block_head( $b['title'] ?? 'Četiri koraka, <em>bez</em> iznenađenja.', $b['lead'] ?? 'Cijenu i opseg znate prije prvog retka koda. Sve izvan dogovora prvo dobiva procjenu — tek onda rad.', 'Proces' );
@@ -160,6 +219,44 @@ function zaec_block_process( $b, $l, $alt ) {
 		printf( '<li data-reveal><span class="code-tag">%s</span><h3>%s</h3><p>%s</p><span class="mono meta">%s</span></li>', esc_html( $s[0] ), esc_html( $s[1] ), esc_html( $s[2] ), esc_html( $s[3] ) );
 	}
 	echo '</ol></div></section>';
+}
+
+/**
+ * „Što kupujete“: šest koraka procesa s onim što klijent dobiva na kraju svakog (zaec_home_steps, treći stupac).
+ * Zamjenjuje blok process na Izradi (strategy/05, sekcija 2).
+ */
+function zaec_block_decisions( $b, $l, $alt ) {
+	zaec_block_open( $alt );
+	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Proces' );
+	echo '<ol class="decisions" role="list" data-stagger="0.06">';
+	foreach ( zaec_home_steps() as $i => $st ) {
+		printf(
+			'<li data-reveal><span class="mono dec-n">%1$s</span><div class="dec-step"><h3>%2$s</h3><p>%3$s</p></div><p class="dec-get"><span class="mono">Dobivate</span>%4$s</p></li>',
+			esc_html( zaec_pad( $i + 1 ) ),
+			esc_html( $st[0] ),
+			esc_html( $st[1] ),
+			esc_html( $st[2] )
+		);
+	}
+	echo '</ol>';
+	zaec_block_close();
+}
+
+/** „Primopredaja“: popis provjera prije predaje (koraci Testiramo i Lansiramo), s pragovima Core Web Vitals. */
+function zaec_block_handover( $b, $l, $alt ) {
+	zaec_block_open( $alt );
+	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Primopredaja' );
+	echo '<ul class="handover" role="list" data-stagger="0.05">';
+	foreach ( $b['items'] as $it ) {
+		printf(
+			'<li data-reveal><span class="ho-box" aria-hidden="true"></span><div><b>%1$s</b><p>%2$s</p>%3$s</div></li>',
+			esc_html( $it[0] ),
+			esc_html( $it[1] ),
+			! empty( $it[2] ) ? '<p class="mono ho-v">' . esc_html( $it[2] ) . '</p>' : ''
+		);
+	}
+	echo '</ul>';
+	zaec_block_close();
 }
 
 function zaec_block_guarantees( $b, $l, $alt ) {

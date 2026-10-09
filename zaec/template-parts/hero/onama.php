@@ -95,4 +95,3 @@ $vars = $md && $mm ? sprintf( '--wx:%s;--wy:%s;--wxm:%s;--wym:%s', round( $md['w
 		</div>
 	</div>
 </section>
-<?php zaec_hero_answer( $l, 'sh-answer on-answer' ); ?>

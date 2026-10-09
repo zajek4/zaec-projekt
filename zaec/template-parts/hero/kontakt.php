@@ -111,4 +111,3 @@ $zaec_direct = static function () use ( $o ) {
 		</div>
 	</div>
 </section>
-<?php zaec_hero_answer( $l, 'sh-answer' ); ?>

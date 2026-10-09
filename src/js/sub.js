@@ -21,6 +21,29 @@ if (art && motionOK) {
   }
 }
 
+/* Izrada: anatomija u noći — svaki dio stranice pali svoju etažu kule (prvi gornju, zadnji ulaz). Etaža je
+   upaljena dok je njezin dio iznad 55 % visine prozora; skrol natrag je gasi. Bez kretanja kula je sagrađena. */
+const tower = document.querySelector('[data-anat-tower]');
+if (tower && motionOK) {
+  const notes = [...tower.querySelectorAll('.anat-notes li[data-f]')];
+  const words = [...tower.querySelectorAll('.at-w[data-f]')];
+  const floors = [...new Set(notes.map((li) => +li.dataset.f))];
+  floors.forEach((f) => tower.style.setProperty(`--f${f}`, '0'));
+  tower.classList.add('is-live');
+  const state = new Map();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => e.target.classList.toggle('is-lit', e.isIntersecting || e.boundingClientRect.top < 0));
+    floors.forEach((f) => {
+      const on = notes.some((li) => +li.dataset.f === f && li.classList.contains('is-lit'));
+      if (state.get(f) === on) return;
+      state.set(f, on);
+      words.forEach((w) => +w.dataset.f === f && w.classList.toggle('is-lit', on));
+      gsap.to(tower, { [`--f${f}`]: on ? 1 : 0, duration: on ? 0.9 : 0.4, ease: on ? 'expo.out' : 'power2.out', overwrite: 'auto' });
+    });
+  }, { rootMargin: '0px 0px -45% 0px' });
+  notes.forEach((li) => io.observe(li));
+}
+
 /* ───────── heroji podstranica (potpisni + urednički) ───────── */
 import izrada from './hero/izrada.js';
 import onama from './hero/onama.js';

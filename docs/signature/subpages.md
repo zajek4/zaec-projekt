@@ -64,3 +64,29 @@ Nisu dirani (izvan opsega podstranica): `.quote`, `.stats`, `.next-card`, `.arti
   poveznice ili BBCode/HTML poveznicom, s vidljivom porukom (stvaran klijent je može ispraviti). Isto pravilo u JS-u.
 - `inline` argument forme: potvrda ostaje na stranici umjesto prelaska na `/hvala/` (Kontakt). `generate_lead` se
   šalje kao i prije; ostale forme i dalje idu na `/hvala/`.
+
+## 5. Izrada: naslov je zgrada (design/03 §4, strategija 05 §1–2)
+
+- Špica: skener se sam digne do crte iznad istaknute riječi (`promise` u `data-meta`), pa su „donose UPITE.“ i ulaz
+  sagrađeni u prvom ekranu na svim širinama. Scroll dalje gradi prema vrhu.
+- Crta i sjaj skenera široki su kao kula +8 % sa svake strane, s mekim rubom (`--scan-l`, `--scan-w` iz `left`/`right`
+  u JSON-u kadra). Uvod je ograničen na prostor lijevo od kule (`--tl`: rub kule s bočnim pročeljem, scena je „cover“
+  16:9), a ispod njega je sjena koja gasi crte nacrta u kadru. Na ekranima omjera 4:5–5:4 (npr. 900 × 1000) lijevo
+  nema mjesta, pa uvod ide ispod pozornice kao na mobitelu.
+- Nacrt je renderiran bez sjaja (`hero-izrada.js`: bloom 0 i tanje, prigušene crte za plan); riječi u nacrtu imaju obris
+  2 px u boji crte lista. Lokalni render, bez troška.
+- Prvi blok iza heroja je „Kako izgleda stranica koja zove“ u noći (`zaec_block_anatomy_tower`): lijevo kula iz
+  mobilnog kadra (nacrt ispod, sagrađeno iznad s maskom po etažama `--f0…--f6`), desno sedam dijelova stranice. Dio
+  stranice odozgo pali svoju etažu odozgo, zadnji (upit i poziv) pali ulaz; skrol natrag je gasi. Bez JS-a i uz
+  smanjeno kretanje kula je sagrađena.
+- „Što kupujete: odluke, ne stranice.“ zamjenjuje blok process: šest koraka iz `zaec_home_steps()` s onim što
+  klijent dobiva na kraju svakog. „Primopredaja koju možete provjeriti.“ je popis provjera iz koraka Testiramo i
+  Lansiramo, s pragovima Core Web Vitals (LCP do 2,5 s, INP do 200 ms, CLS do 0,1, Googleove „dobre“ vrijednosti).
+  Rečenica „izmjereno pri primopredaji“ iz strategije 05 nije korištena dok je vlasnik ne potvrdi.
+- „Kratki odgovor“ je sada „Ukratko“ (design/04 #9): tipografski blok bez okvira i ikone, `--fs-lead`, 38ch, u
+  stupcu uvoda. Ispisuje ga `zaec_render_blocks` iza prvog bloka (druga sekcija stranice), najviše jednom; heroji ga
+  više ne ispisuju.
+
+Provjereno Playwrightom na lokalnom WP-u (build iz ove grane): prvi ekran na 360, 390, 900 × 1000, 1024, 1280, 1440 i
+1920; slijed bloka s kulom na 390, 1024, 1440 i 1920 (paljenje etaža, sve upaljeno na kraju) i uz smanjeno kretanje;
+„Ukratko“ na O nama, Cijenama, SEO-u, hubu djelatnosti, lokalnoj stranici, provjeri i hubu usluga (jednom po stranici).

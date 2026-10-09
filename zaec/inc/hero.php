@@ -117,14 +117,18 @@ function zaec_hero_prepare( $l ) {
 	return $l;
 }
 
-/** Blok "Kratki odgovor" (za AI pretraživače i brze čitače) — dijele ga sve vrste heroja. */
-function zaec_hero_answer( $l, $class = '' ) {
-	if ( empty( $l['answer'] ) ) {
+/**
+ * Blok „Ukratko“: sažetak stranice (koristan i tražilicama i AI-ju) kao tipografski blok, bez kartice, okvira i
+ * ikone (design/04, točka 9). Ispisuje ga zaec_render_blocks iza prvog bloka (druga sekcija stranice; bez blokova
+ * odmah iza heroja), najviše jednom po stranici.
+ */
+function zaec_answer_block( $l ) {
+	static $done = false;
+	if ( $done || empty( $l['answer'] ) ) {
 		return;
 	}
-	echo '<div class="wrap ' . esc_attr( $class ) . '"><div class="answer" data-reveal><p class="mono answer-k">';
-	zaec_the_icon( 'lightbulb', 16 );
-	echo ' Kratki odgovor</p><p>' . esc_html( $l['answer'] ) . '</p></div></div>';
+	$done = true;
+	echo '<section class="block block--ukratko"><div class="wrap"><div class="ukratko" data-reveal><p class="kicker">Ukratko</p><p class="ukratko-t">' . esc_html( $l['answer'] ) . '</p></div></div></section>';
 }
 
 /**
