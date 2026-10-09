@@ -11,9 +11,8 @@ export const meta = {
   title: 'Jednopolna shema kućnog razdjelnika s novim krugom punjača',
   desc: 'Tehnički crtež: priključak na mrežu preko brojila, glavna sklopka, zaštitna strujna sklopka i strujni krugovi kuće, fotonaponska elektrana s izmjenjivačem te novi strujni krug punjača za električni automobil. Oznake 01–04 povezuju dijelove sheme s dijelovima weba električara. Novi krug punjača označen je toplim svjetlom.',
   lamp: { time: '19:30 · AUTO U GARAŽI', search: 'ugradnja punjača za auto' },
-  mvb: '520 250 680 562',
-  tvb: '340 14 940 705',
-  mobileCallout: 'c04',
+  mvb: '520 380 680 562',
+  mobileCallout: 'c02',
 };
 
 export function draw(b) {
@@ -108,14 +107,15 @@ export function draw(b) {
     b.text(feed + 14, 34, 'NN MREŽA', 't-dim');
     b.text(feed, 95, 'kWh', 't-dim', ' text-anchor="middle"');
     b.text(feed + 36, 95, 'BROJILO', 't-dim');
-    b.text(feed + 15, 192, 'GLAVNA SKLOPKA', 't-dim');
+    b.text(feed + 40, 192, 'GLAVNA SKLOPKA', 't-dim'); // na 1024 px prvi red naslova seže do x ≈ 587
     if (b.v !== 'm') b.text(594, 316, 'FID 30 mA', 't-dim', ' text-anchor="end"'); // mobilni izrez je reže
     b.text(986, 316, 'FID 30 mA', 't-dim', ' text-anchor="end"');
     b.text(1062, 230, 'B16 · 3P', 't-dim', ' text-anchor="end"');
     b.text(ev + 10, 444, 'C16 · 3P', 't-dim');
     for (const [x, name, cb, kind] of circuits) {
       b.text(x + 8, 444, cb, 't-dim');
-      b.P(`<text class="t-dim" transform="translate(${x + 19} 566) rotate(-90)">${name}</text>`);
+      // nazivi krugova na mobilnih 23 u ne stanu u razmak od 70 u: mobilni izrez ih ne piše
+      if (b.v !== 'm') b.P(`<text class="t-dim" transform="translate(${x + 19} 566) rotate(-90)">${name}</text>`);
       if (kind === 'motor') b.text(x, LOAD + 5, 'M', 't-dim', ' text-anchor="middle"');
     }
     if (b.v !== 'm') b.text(470, 492, 'RAZDJELNIK R1', 't-small');
@@ -137,12 +137,12 @@ export function draw(b) {
   // 6 oznake i svjetlo: novi krug punjača (žica, kontakti, toroid) i zidni punjač u garaži
   b.g('nd nd-6', () => {
     b.callout('01', [fid - 6.5, 311], [[700, 300], [708, 300]], 'FID', '→ Ovlaštenja');
-    b.callout('02', [620, LOAD + 12], [[620, 760], [640, 760]], 'STRUJNI KRUGOVI', '→ Kvarovi · instalacije');
+    b.callout('02', [620, LOAD + 12], [[620, 760], [640, 760]], 'STRUJNI KRUGOVI', '→ Kvarovi · instalacije', false, [[620, 640], [636, 640]]);
     b.callout('03', [1040, 52], [[1000, 52]], 'FN ELEKTRANA', '→ Solari', true);
     b.callout('04', [ev, 712], [[ev, 770], [ev + 12, 770]], 'PUNJAČ', '→ Brzi upit');
     b.d(`M${ev} ${S1} V292 ${stub(ev, 292)} ${contact(ev, 292, 328)} ${toroid(ev, 346)} M${ev} 328 V412 ${cross(ev, 412)} ${contact(ev, 412, 446)} M${ev} 446 V660`, 'lamp-ln');
     b.rect(ev - 24, 660, 48, 52, 'lamp-fill', ' rx="4"');
     b.circle(ev, 686, 9, 'ln-2');
-    b.lamp({ at: [ev, 686], r: 44, d: [689, 0, 'h'], m: [600, 0, 'h'] });
+    b.lamp({ at: [ev, 686], r: 44, d: [689, 0, 'h'], m: [590, 770, 'down'] });
   });
 }

@@ -1,19 +1,18 @@
-// LIST 01 · Klima i grijanje — presjek vanjskog zida sa split uređajem, M 1:5 (7 u = 1 cm).
+// LIST 01 · Klima i grijanje — presjek vanjskog zida sa split uređajem, M 1:10 (7 u = 1 cm).
 // Unutra (desno): unutarnja jedinica na montažnoj ploči 15 cm ispod stropa — usisna rešetka s filtrom,
 // izmjenjivač oko tangencijalnog ventilatora, posuda kondenzata, lamela na izlazu. Zid: opeka 25 cm +
-// toplinska izolacija 10 cm. Proboj Ø 65 s padom prema van; cijevi i odvod kondenzata do vanjske jedinice
-// na konzoli, 10 cm od pročelja. Svjetlo: lamela — "klima ne hladi".
+// toplinska izolacija 10 cm. Proboj Ø 65 s padom prema van; cijevi i odvod kondenzata niz pročelje do vanjske
+// jedinice na konzoli, 10 cm od pročelja, ispod crte naslova (design/06, 4). Svjetlo: lamela — "klima ne hladi".
 export const meta = {
   slug: 'klima-i-grijanje',
   list: '01',
   name: 'Klima i grijanje',
-  view: 'PRESJEK ZIDA A–A · M 1:5',
+  view: 'PRESJEK ZIDA A–A · M 1:10',
   web: 'MONTAŽA · SERVIS · TERMIN',
-  title: 'Presjek vanjskog zida sa split klima uređajem, mjerilo 1:5',
+  title: 'Presjek vanjskog zida sa split klima uređajem, mjerilo 1:10',
   desc: 'Tehnički crtež: unutarnja jedinica ispod stropa s filtrom, izmjenjivačem, ventilatorom i lamelom, proboj kroz zid s padom prema van te vanjska jedinica na konzoli. Oznake 01–04 povezuju dijelove uređaja s dijelovima weba klima servisa. Lamela unutarnje jedinice označena je toplim svjetlom.',
   lamp: { time: '15:40 · SRPANJ', search: 'klima ne hladi' },
-  mvb: '560 200 680 562',
-  tvb: '150 110 1000 750',
+  mvb: '580 200 680 562',
   mobileCallout: 'c02',
 };
 
@@ -24,7 +23,8 @@ export function draw(b) {
   const ceil = [30, 170];
   const U = { x0: 706, x1: 857, y0: 275, y1: 485 }; // unutarnja jedinica 22 × 30 cm
   const sl = { i: [455, 500], e: [476, 521] }; // proboj: unutra viši, vani niži
-  const O = { x0: 171, x1: 381, y0: 330, y1: 715 }; // vanjska jedinica 30 × 55 cm
+  const O = { x0: 171, x1: 381, y0: 574, y1: 910 }; // vanjska jedinica 30 × 48 cm, ispod naslova na 1280–1920 px
+  const oc = (O.y0 + O.y1) / 2;
   const fan = [790, 418];
 
   // 1 osi i konstrukcijske crte
@@ -77,31 +77,30 @@ export function draw(b) {
 
   // 4 pročelje: vanjska jedinica na konzoli
   b.g('nd nd-4', () => {
-    b.poly([[wo - 30, sl.e[0] + 12], [O.x1 + 16, sl.e[0] + 12], [O.x1 + 16, O.y1 - 70], [O.x1, O.y1 - 70]], 'ln-2');
-    b.poly([[wo - 30, sl.e[0] + 22], [O.x1 + 26, sl.e[0] + 22], [O.x1 + 26, O.y1 - 46], [O.x1, O.y1 - 46]], 'ln-2');
+    // cijevi uz pročelje (između jedinice i zida), da oznaka 04 iznad jedinice ne leži na njima
+    b.poly([[wo - 30, sl.e[0] + 12], [wo - 34, sl.e[0] + 12], [wo - 34, O.y1 - 70], [O.x1, O.y1 - 70]], 'ln-2');
+    b.poly([[wo - 30, sl.e[0] + 22], [wo - 26, sl.e[0] + 22], [wo - 26, O.y1 - 46], [O.x1, O.y1 - 46]], 'ln-2');
     b.rect(O.x0, O.y0, O.x1 - O.x0, O.y1 - O.y0, 'cut-w');
     b.rect(O.x1 - 22, O.y0 + 16, 12, O.y1 - O.y0 - 32, 'cut', ` fill="${b.url('hz')}"`); // izmjenjivač
-    b.rect(232, 500, 20, 44, 'ln-2'); // glavčina ventilatora
-    b.line(242, 500, 262, 372, 'ln-2');
-    b.line(242, 544, 262, 672, 'ln-2');
+    b.rect(232, oc - 22, 20, 44, 'ln-2'); // glavčina ventilatora
+    b.line(242, oc - 22, 262, O.y0 + 38, 'ln-2');
+    b.line(242, oc + 22, 262, O.y1 - 38, 'ln-2');
     for (let y = O.y0 + 16; y < O.y1 - 12; y += 12) b.line(O.x0 - 5, y, O.x0 + 5, y, 'ln-h'); // rešetka
-    b.d(`M285 ${O.y1 - 8} V626 Q285 606 306 606 Q327 606 327 626 V${O.y1 - 8}`, 'ln-2'); // kompresor
+    b.d(`M285 ${O.y1 - 8} V${O.y1 - 89} Q285 ${O.y1 - 109} 306 ${O.y1 - 109} Q327 ${O.y1 - 109} 327 ${O.y1 - 89} V${O.y1 - 8}`, 'ln-2'); // kompresor
     b.circle(O.x1 - 6, O.y1 - 70, 6, 'ln-2');
     b.circle(O.x1 - 6, O.y1 - 46, 5, 'ln-2');
-    // konzola: krak i kosnik u presjeku, sidra u zidu; gumeni podlošci
+    // konzola: krak i kosnik u presjeku (kosnik izlazi iz lista kao i zid), sidra u zidu; gumeni podlošci
     b.rect(196, O.y1, 22, 8, 'ln-2');
     b.rect(334, O.y1, 22, 8, 'ln-2');
     b.rect(160, O.y1 + 8, wo - 160, 14, 'cut', ` fill="${b.url('hz')}"`);
-    b.line(wo, 880, 182, O.y1 + 22, 'cut-w');
+    b.line(wo, O.y1 + 165, 182, O.y1 + 22, 'cut-w');
     b.line(wo - 2, O.y1 + 15, wo + 90, O.y1 + 15, 'ln-2');
-    b.line(wo - 2, 880, wo + 90, 880, 'ln-2');
   });
 
   // 5 kote
   b.g('nd nd-5', () => {
-    b.dim([O.x1, 770], [wo, 770], '10', { side: -12 });
-    b.line(O.x1, O.y1 + 22, O.x1, 778, 'ln-dim');
-    b.text(560, sl.i[0] - 20, 'Ø 65', 't-dim');
+    b.dim([O.x1, O.y1 - 16], [wo, O.y1 - 16], '10', { side: -12 }); // ispod spojeva cijevi
+    if (b.v !== 'm') b.text(560, sl.i[0] - 20, 'Ø 65', 't-dim');
     if (b.v !== 'm') b.text(600, sl.i[1] + 34, 'PAD PREMA VAN', 't-dim', ' transform="rotate(4.8 600 534)"');
   });
 
@@ -121,10 +120,10 @@ export function draw(b) {
   // 6 oznake i svjetlo
   b.g('nd nd-6', () => {
     b.callout('01', [790, 291], [[870, 210], [890, 210]], 'FILTER', '→ FAQ: koliko često servis');
-    b.callout('02', [U.x1, 365], [[870, 340], [882, 340]], 'UNUTARNJA JEDINICA', '→ Montaža · servis · čišćenje', false, { p: [[1120, 365], [1120, 690], [1110, 690]], end: true });
+    b.callout('02', [U.x1, 365], [[870, 340], [882, 340]], 'UNUTARNJA JEDINICA', '→ Montaža · servis · čišćenje', false, { p: [[880, 365], [880, 300], [888, 300]], t2: '→ Montaža · servis' });
     b.callout('03', [612, 486], [[612, 730], [720, 730]], 'PROBOJ I CIJEVI', '→ Upit za termin');
-    b.callout('04', [O.x1, 560], [[418, 590], [418, 905], [412, 905]], 'VANJSKA JEDINICA', '→ Radovi i recenzije', true);
+    b.callout('04', [178, O.y0], [[178, 538], [180, 538]], 'VANJSKA JEDINICA', '→ Radovi i recenzije');
     b.P('<path class="lamp-fill" pathLength="1" d="M796 488 L846 471 L848 477 L798 494 Z"/>');
-    b.lamp({ at: [822, 483], d: [890, 590, 'down'], m: [720, 600, 'down'] });
+    b.lamp({ at: [822, 483], d: [890, 590, 'down'], m: [834, 600, 'down'] });
   });
 }

@@ -7,42 +7,60 @@
 export const W = 1200;
 export const H = 1000;
 export const TOTAL = 10; // listova u kompletu
+export const READ_X = 508; // zona čitanja: od ovog x tekst se vidi na svakoj desktop širini
+export const TB = [732, 836, 440, 112]; // sastavnica
+// širina znaka u jedinicama crteža na 16 u (JetBrains Mono 0,6 em + razmak slova): oznake .08em, pretraga .02em
+export const CH = { call: 10.9, web: 9.9 };
 
 // pune crte se iscrtavaju (pathLength=1 → stroke-dashoffset 1 → 0); isprekidane i šrafure samo prozirnošću
 const SOLID = new Set(['cut', 'cut-w', 'tile', 'ln-2', 'ln-dim', 'ln-lead', 'lamp-fill', 'lamp-ln', 'ln-frame']);
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-export const f = (n) => (Math.round(n * 10) / 10).toString();
+// koordinate na cijelu jedinicu (≈ 0,8 px na 1440), male vrijednosti (polumjeri točaka, zarezi) na desetinku
+export const f = (n) => (Math.abs(n) < 20 ? Math.round(n * 10) / 10 : Math.round(n)).toString();
+// klase koje u CSS-u već imaju fill: none — atribut se ne ponavlja na svakom elementu
+const NOFILL = new Set(['ln-h', 'ln-2', 'ln-3', 'ln-beyond', 'cut-w', 'ln-con', 'ln-frame', 'lamp-ln', 'ln-dim', 'ln-lead', 'ln-sec']);
+const fa = (cls, attrs) => (NOFILL.has(cls.split(' ')[0]) ? attrs.replace(' fill="none"', '') : attrs);
 const pts = (list) => list.map(([x, y]) => `${f(x)} ${f(y)}`).join(' L');
 
-export function builder(meta, view) {
+export function builder(meta, view, tvb = meta.tvb) {
   const o = [];
+  // izrezi (mobilni pogled, sličica): elementi potpuno izvan izreza se ne ispisuju (težina lista ≤ 20 kB)
+  const vb = view === 'm' ? meta.mvb : view === 't' ? tvb || '240 120 960 720' : null;
+  const [vx, vy, vw, vh] = vb ? vb.split(/\s+/).map(Number) : [];
+  const away = (xs, ys) => !!vb && (Math.max(...xs) < vx - 24 || Math.min(...xs) > vx + vw + 24 || Math.max(...ys) < vy - 24 || Math.min(...ys) > vy + vh + 24);
   const b = {
     v: view,
     meta,
     o,
     P: (s) => o.push(s),
-    id: (name) => `${name}-${meta.slug}-${view}`,
-    url: (name) => `url(#${name}-${meta.slug}-${view})`,
+    // kratki ID-evi (na stranici je jedan list u dva pogleda; broj lista ih razlikuje)
+    id: (name) => `${name}${meta.list}${view}`,
+    url: (name) => `url(#${name}${meta.list}${view})`,
     pl: (cls) => (SOLID.has(cls.split(' ')[0]) ? ' pathLength="1"' : ''),
     path(list, cls, close = true, attrs = '') {
       if (typeof close === 'string') [close, attrs] = [true, close];
-      o.push(`<path class="${cls}"${b.pl(cls)} d="M${pts(list)}${close ? ' Z' : ''}"${attrs}/>`);
+      if (away(list.map((q) => q[0]), list.map((q) => q[1]))) return;
+      o.push(`<path class="${cls}"${b.pl(cls)} d="M${pts(list)}${close ? ' Z' : ''}"${fa(cls, attrs)}/>`);
     },
     d(dstr, cls, attrs = '') {
-      o.push(`<path class="${cls}"${b.pl(cls)} d="${dstr}"${attrs}/>`);
+      o.push(`<path class="${cls}"${b.pl(cls)} d="${dstr}"${fa(cls, attrs)}/>`);
     },
     line(x1, y1, x2, y2, cls, attrs = '') {
-      o.push(`<line class="${cls}"${b.pl(cls)} x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}"${attrs}/>`);
+      if (away([x1, x2], [y1, y2])) return;
+      o.push(`<line class="${cls}"${b.pl(cls)} x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}"${fa(cls, attrs)}/>`);
     },
     rect(x, y, w, h, cls, attrs = '') {
-      o.push(`<rect class="${cls}"${b.pl(cls)} x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}"${attrs}/>`);
+      if (away([x, x + w], [y, y + h])) return;
+      o.push(`<rect class="${cls}"${b.pl(cls)} x="${f(x)}" y="${f(y)}" width="${f(w)}" height="${f(h)}"${fa(cls, attrs)}/>`);
     },
     circle(cx, cy, r, cls, attrs = '') {
-      o.push(`<circle class="${cls}"${b.pl(cls)} cx="${f(cx)}" cy="${f(cy)}" r="${f(r)}"${attrs}/>`);
+      if (away([cx - r, cx + r], [cy - r, cy + r])) return;
+      o.push(`<circle class="${cls}"${b.pl(cls)} cx="${f(cx)}" cy="${f(cy)}" r="${f(r)}"${fa(cls, attrs)}/>`);
     },
     poly(list, cls, attrs = '') {
-      o.push(`<polyline class="${cls}"${b.pl(cls)} points="${list.map(([x, y]) => `${f(x)},${f(y)}`).join(' ')}" fill="none"${attrs}/>`);
+      if (away(list.map((q) => q[0]), list.map((q) => q[1]))) return;
+      o.push(`<polyline class="${cls}"${b.pl(cls)} points="${list.map(([x, y]) => `${f(x)},${f(y)}`).join(' ')}"${fa(cls, ' fill="none"' + attrs)}/>`);
     },
     text(x, y, s, cls, attrs = '') {
       o.push(`<text class="${cls}" x="${f(x)}" y="${f(y)}"${attrs}>${esc(s)}</text>`);
@@ -85,23 +103,31 @@ export function builder(meta, view) {
       b.poly([[x1 - 10, y], [m - 8, y], [m - 3, y - 6], [m + 3, y + 6], [m + 8, y], [x2 + 10, y]], 'ln-2');
     },
 
-    /** Oznaka dijela: točka na dijelu, vodilica, "NN NAZIV" i ispod "→ dio weba". */
+    /**
+     * Oznaka dijela: točka na dijelu, vodilica, "NN NAZIV" i ispod "→ dio weba". Oznaka čiji tekst počinje lijevo
+     * od zone čitanja (x < 508 u) dobiva klasu c-wide: vidi se samo kad je kadar dovoljno širok da je pokaže cijelu.
+     */
     callout(n, anchor, path, t1, t2, end = false, mpath = null) {
       if (view === 't') return;
       if (view === 'm' && meta.mobileCallout !== `c${n}`) return;
       if (view === 'm' && mpath) {
         end = mpath.end ?? end;
         path = mpath.p ?? mpath;
+        t1 = mpath.t1 ?? t1; // kraći tekst za mobilni izrez (23 u)
+        t2 = mpath.t2 ?? t2;
       }
       const [ax, ay] = anchor;
       const [lx, ly] = path[path.length - 1];
       const ta = end ? ' text-anchor="end"' : '';
       const tx = end ? lx - 8 : lx + 8;
-      o.push(`<g class="call c${n}">`);
+      const tw = Math.max((t1.length + 4) * CH.call, (t2 || '').length * CH.web) * (17 / 16);
+      const wide = view === 'd' && (end ? tx - tw : tx) < READ_X;
+      o.push(`<g class="call c${n}${wide ? ' c-wide' : ''}">`);
       b.circle(ax, ay, 3.5, 'dot');
       b.poly([anchor, ...path], 'ln-lead');
       o.push(`<text class="t-call"${ta} x="${f(tx)}" y="${f(ly + 5)}"><tspan class="t-n">${n}</tspan>  ${esc(t1)}</text>`);
-      if (t2) o.push(`<text class="t-web"${ta} x="${f(tx)}" y="${f(ly + 25)}">${esc(t2)}</text>`);
+      // drugi red ispod prvog: 20 u na 16 u, na mobilnih 23 u razmak raste s tekstom
+      if (t2) o.push(`<text class="t-web"${ta} x="${f(tx)}" y="${f(ly + 5 + (view === 'm' ? 29 : 20))}">${esc(t2)}</text>`);
       o.push('</g>');
     },
 
@@ -119,10 +145,10 @@ export function builder(meta, view) {
       const cfg = view === 'd' ? d : view === 'm' ? m : null;
       if (cfg) {
         const [lx, ly, dir = 'up'] = Array.isArray(cfg) ? cfg : [cfg.x, cfg.y, cfg.dir];
-        const k = view === 'm' ? 21 / 16 : 1;
+        const k = view === 'm' ? 23 / 16 : 17 / 16; // mobilni pogled 23 u; desktop računa s tabletnih 17 u
         const q = view === 'm' ? searchShort || search : search;
         const right = lx > cx;
-        const w = Math.max(time.length * 10.9, (q.length + 2) * 9.9) * k;
+        const w = Math.max(time.length * CH.call, (q.length + 2) * CH.web) * k;
         // 'h': vodoravna vodilica iz svjetla, tekst sjedi na njoj (kad je svjetlo na okomitoj crti)
         const h = dir === 'h';
         const shelf = h ? cy : ly + 10 * k;
@@ -135,28 +161,33 @@ export function builder(meta, view) {
       o.push('</g>');
     },
 
-    /** Sastavnica (title block) u donjem desnom kutu. */
+    /** Sastavnica (title block) u donjem desnom kutu: x 732–1172, y 836–948 (design/02, točka 4.3). */
     titleBlock() {
       if (view !== 'd') return;
-      const [bx, by, bw, bh] = [772, 836, 400, 112];
+      const [bx, by, bw, bh] = TB;
       o.push('<g class="nd nd-6 tb">');
       b.rect(bx, by, bw, bh, 'tb-bg');
       b.line(bx, by + 30, bx + bw, by + 30, 'ln-frame');
-      b.line(bx + 280, by, bx + 280, by + 30, 'ln-frame');
+      b.line(bx + 310, by, bx + 310, by + 30, 'ln-frame');
       b.line(bx, by + 86, bx + bw, by + 86, 'ln-frame');
-      b.text(bx + 12, by + 20, 'ZAEC · NACRT DJELATNOSTI', 't-tb');
-      b.text(bx + 292, by + 20, `LIST ${meta.list}/${String(TOTAL).padStart(2, '0')}`, 't-tb');
+      // tbFs: veći tekst sastavnice gdje je kadar manji (hub); inline stil nadjačava tabletnih 17 u
+      const st = meta.tbFs ? ` style="font-size:${meta.tbFs}px;letter-spacing:.02em"` : ''; // uži razmak: retci ostaju u okviru 440 u
+      b.text(bx + 12, by + 21, 'ZAEC · NACRT DJELATNOSTI', 't-tb', st);
+      b.text(bx + 322, by + 21, `LIST ${meta.list}/${String(TOTAL).padStart(2, '0')}`, 't-tb', st);
       b.text(bx + 12, by + 58, meta.name, 't-tb-b');
-      b.text(bx + 12, by + 77, meta.view, 't-tb');
-      b.text(bx + 12, by + 107, `WEB · ${meta.web}`, 't-tb');
+      b.text(bx + 12, by + 78, meta.view, 't-tb', st);
+      b.text(bx + 12, by + 107, `WEB · ${meta.web}`, 't-tb', st);
       o.push('</g>');
     },
 
-    /** Ključ (mala skica cjeline) — samo desktop. */
+    /** Ključ (mala skica cjeline) — samo desktop; lijevo od zone čitanja dobiva c-wide kao oznake (design/06, 3). */
     key(fn) {
       if (view !== 'd') return;
+      const i = o.length;
       o.push('<g class="nd nd-5 key">');
       fn();
+      const xs = [...o.slice(i + 1).join(' ').matchAll(/\b(?:x|x1|x2)="(-?[\d.]+)"|[ML](-?[\d.]+)[ ,]/g)].map((m) => +(m[1] ?? m[2]));
+      if (Math.min(...xs) < READ_X) o[i] = '<g class="nd nd-5 key c-wide">';
       o.push('</g>');
     },
   };
@@ -174,28 +205,76 @@ function defs(b) {
     `<pattern id="${b.id('grid')}" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern>`,
   ];
   if (b.meta.defs) p.push(...b.meta.defs(b));
-  return `<defs>${p.join('')}</defs>`;
+  // samo uzorci koje list stvarno koristi
+  const body = b.o.join('\n');
+  return `<defs>${p.filter((x) => body.includes(`url(#${x.match(/id="([^"]+)"/)[1]})`)).join('')}</defs>`;
 }
 
-// stilovi za sličicu (<img> ne vidi CSS stranice): isti standard, bez teksta
+// stilovi za sličicu (<img> ne vidi CSS stranice): isti standard bez teksta, crte dvostruko deblje (180 px)
 const THUMB_CSS = `svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
-.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:1}
-.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:.75;stroke-dasharray:14 6 2 6;fill:none}
-.cut{stroke:var(--l);stroke-width:2}.cut-w{stroke:var(--l);stroke-width:2.2;fill:none}
-.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:.8}.wool{stroke:none;opacity:.55}
-.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:1.2;fill:none}
-.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:.8;stroke-dasharray:6 4;fill:none}
-.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:1;stroke-dasharray:8 6;fill:none}
-.tile{stroke:var(--l);stroke-width:1.6;fill:var(--sheet)}
-.lamp-fill{stroke:var(--lamp);stroke-width:1.8;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:2;fill:none}
-.ln-dim{stroke:var(--l);stroke-opacity:.7;stroke-width:.8}.nib{fill:var(--l);opacity:.8}
-.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:.8}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:1.2}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}`;
+
+// uzastopni pravokutnici i crte iste klase bez vlastitih atributa (zidovi, šrafure, sjedala) postaju jedan <path>
+const RECT = /^<rect class="([\w-]+)" x="(-?[\d.]+)" y="(-?[\d.]+)" width="([\d.]+)" height="([\d.]+)"\/>$/;
+const LINE = /^<line class="([\w-]+)" x1="(-?[\d.]+)" y1="(-?[\d.]+)" x2="(-?[\d.]+)" y2="(-?[\d.]+)"\/>$/;
+function merge(lines) {
+  const out = [];
+  let run = null;
+  const flush = () => {
+    if (!run) return;
+    out.push(run.n === 1 ? run.first : `<path class="${run.cls}" d="${run.d}"/>`);
+    run = null;
+  };
+  for (const ln of lines) {
+    const r = RECT.exec(ln);
+    const l = r ? null : LINE.exec(ln);
+    const m = r || l;
+    if (!m || SOLID.has(m[1])) { flush(); out.push(ln); continue; }
+    const key = `${r ? 'r' : 'l'}:${m[1]}`;
+    const seg = r ? `M${m[2]} ${m[3]}h${m[4]}v${m[5]}h-${m[4]}z` : `M${m[2]} ${m[3]}L${m[4]} ${m[5]}`;
+    if (run && run.key === key) { run.d += seg; run.n++; }
+    else { flush(); run = { key, cls: m[1], d: seg, n: 1, first: ln }; }
+  }
+  flush();
+  return out;
+}
+
+// sličica u kontaktnom arku (180 × 135 px): izrez 4:3 širok 480 u, centriran na svjetlo (design/06, 13);
+// list bez kruga svjetla (kazalo) zadržava svoj tvb
+function thumbBox(o, fallback) {
+  const m = o.join(' ').match(/<circle class="halo"[^>]*? cx="(-?[\d.]+)" cy="(-?[\d.]+)"/);
+  if (!m) return fallback || '240 120 960 720';
+  const [w, h] = [480, 360];
+  const x = Math.round(Math.min(Math.max(+m[1] - w / 2, 0), W - w));
+  const y = Math.round(Math.min(Math.max(+m[2] - h / 2, 0), H - h));
+  return `${x} ${y} ${w} ${h}`;
+}
 
 export function render(sheet, view) {
   const { meta } = sheet;
-  const b = builder(meta, view);
-  const vb = view === 'd' ? `0 0 ${W} ${H}` : view === 'm' ? meta.mvb : meta.tvb || '240 120 960 720';
+  // sličica: izrez se računa iz položaja svjetla na cijelom listu, pa se crta samo ono što je u izrezu
+  let tvb = meta.tvb;
+  if (view === 't') {
+    const pre = builder(meta, 'd');
+    sheet.draw(pre);
+    tvb = thumbBox(pre.o, meta.tvb);
+  }
+  const b = builder(meta, view, tvb);
+  b.P(`<rect class="sheet" x="-200" y="-200" width="${W + 400}" height="${H + 400}"/><rect x="-200" y="-200" width="${W + 400}" height="${H + 400}" fill="${b.url('grid')}"/>`);
+  sheet.draw(b);
+  if (view !== 't') b.titleBlock();
+  const vb = view === 'd' ? `0 0 ${W} ${H}` : view === 'm' ? meta.mvb : tvb || '240 120 960 720';
   const par = view === 'd' ? 'xMaxYMid slice' : 'xMidYMid slice';
   const head =
     view === 'd'
@@ -203,11 +282,6 @@ export function render(sheet, view) {
       : view === 'm'
         ? `<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" preserveAspectRatio="${par}" aria-hidden="true" focusable="false">`
         : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" preserveAspectRatio="${par}"><style>${THUMB_CSS}</style>`;
-  b.P(head);
-  b.P(defs(b));
-  b.P(`<rect class="sheet" x="-200" y="-200" width="${W + 400}" height="${H + 400}"/><rect x="-200" y="-200" width="${W + 400}" height="${H + 400}" fill="${b.url('grid')}"/>`);
-  sheet.draw(b);
-  if (view !== 't') b.titleBlock();
-  b.P('</svg>');
-  return b.o.join('\n');
+  const d = defs(b);
+  return [head, d, ...merge(b.o), '</svg>'].join('\n');
 }

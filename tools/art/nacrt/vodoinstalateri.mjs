@@ -12,7 +12,6 @@ export const meta = {
   desc: 'Tehnički crtež zida kupaonice: vertikala odvoda i uspon vode u kutu, zaporni ventil iza revizijskog otvora, bojler sa sigurnosnim ventilom, umivaonik s kutnim ventilima i sifonom te odvod s padom prema vertikali. Oznake 01–04 povezuju dijelove instalacije s dijelovima weba vodoinstalatera. Spoj tople vode na bojleru, s kapi, označen je toplim svjetlom.',
   lamp: { time: '02:40 · HITNO', search: 'curi bojler' },
   mvb: '420 262 680 562',
-  tvb: '360 150 840 630',
   mobileCallout: 'c02',
 };
 
@@ -87,9 +86,12 @@ export function draw(b) {
 
   // 5 kote
   b.g('nd nd-5', () => {
-    b.dim([790, FL], [790, basin.top], '+0,85', { side: -12 });
-    b.line(790, basin.top, basin.x0 - 4, basin.top, 'ln-dim');
-    b.text(970, 772, 'PAD 2 %', 't-dim');
+    // visina umivaonika i pad odvoda leže na mobilnom izrezu u zatamnjenju kadra
+    if (b.v !== 'm') {
+      b.dim([790, FL], [790, basin.top], '+0,85', { side: -12 });
+      b.line(790, basin.top, basin.x0 - 4, basin.top, 'ln-dim');
+      b.text(970, 772, 'PAD 2 %', 't-dim');
+    }
     b.text(1040, CEIL + 40, 'Ø 110', 't-dim', ' text-anchor="end"');
   });
 

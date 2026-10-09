@@ -11,7 +11,6 @@ export const meta = {
   desc: 'Tehnički crtež ureda: prijem uz ulaz, sala za sastanke iza staklene pregrade, šest radnih mjesta i arhiva s policama. Oznake 01–04 povezuju dijelove ureda s dijelovima weba stručne usluge. Stol u sali za sastanke označen je toplim svjetlom.',
   lamp: { time: 'PONEDJELJAK · 08:50', search: 'knjigovodstvo za obrt' },
   mvb: '440 36 680 562',
-  tvb: '400 180 640 480',
   mobileCallout: 'c02',
 };
 
@@ -101,7 +100,7 @@ export function draw(b) {
 
   // 5 nazivi i kota fasade
   b.g('nd nd-5', () => {
-    b.text(X(5.4), Y(5.7), 'HODNIK', 't-dim', ' text-anchor="middle"');
+    if (b.v !== 'm') b.text(X(5.4), Y(5.7), 'HODNIK', 't-dim', ' text-anchor="middle"'); // mobilni: u zatamnjenju kadra
     if (b.v !== 'm') b.dim([X(10.25) + 26, Y(-0.25)], [X(10.25) + 26, Y(4.9)], '5,15', { side: -12, ext: [[[X(10.25), Y(-0.25)], [X(10.25) + 32, Y(-0.25)]], [[X(10.25), Y(4.9)], [X(10.25) + 32, Y(4.9)]]] });
   });
 
@@ -122,6 +121,6 @@ export function draw(b) {
     b.callout('03', [X(5.5), Y(3.05)], [[X(5.5), 650], [900, 650]], 'RADNA MJESTA', '→ Tim i ovlaštenja');
     b.callout('04', [X(9.36), Y(6.1)], [[1030, Y(6.1)]], 'ARHIVA', '→ Reference');
     b.d(`M${X(T.cx - T.rx)} ${Y(T.cy)} A${T.rx * s} ${T.ry * s} 0 1 0 ${X(T.cx + T.rx)} ${Y(T.cy)} A${T.rx * s} ${T.ry * s} 0 1 0 ${X(T.cx - T.rx)} ${Y(T.cy)} Z`, 'lamp-fill');
-    b.lamp({ at: [X(T.cx), Y(T.cy)], r: 40, d: [570, 150, 'up'], m: [570, 150, 'up'] });
+    b.lamp({ at: [X(T.cx), Y(T.cy)], r: 40, d: [570, 150, 'up'], m: [570, 185, 'up'] });
   });
 }

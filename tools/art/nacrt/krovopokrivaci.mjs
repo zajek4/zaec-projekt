@@ -12,8 +12,7 @@ export const meta = {
   title: 'Presjek krovišta, mjerilo 1:20',
   desc: 'Tehnički crtež krova nagiba 40°: rog, toplinska izolacija, kontraletve, letve i crijep, oluk na strehi i sljeme. Oznake 01–04 povezuju dijelove krova s dijelovima weba krovopokrivača. Jedan crijep pomaknut je nakon nevremena i označen toplim svjetlom.',
   lamp: { time: '23:10 · NAKON NEVREMENA', search: 'popravak krova nakon nevremena', searchShort: 'popravak krova' },
-  mvb: '440 300 680 562',
-  tvb: '300 120 880 660',
+  mvb: '470 300 680 562',
   mobileCallout: 'c02',
 };
 
@@ -109,27 +108,33 @@ export function draw(b) {
       const mm = [(a[0] + c[0]) / 2, (a[1] + c[1]) / 2];
       b.P(`<text class="t-dim" text-anchor="middle" transform="translate(${(mm[0] - 10).toFixed(1)} ${(mm[1] - 10).toFixed(1)}) rotate(-40)">33</text></g>`);
     }
-    const [, sy] = g(L, 0);
-    const X = W - 34;
-    b.line(X, ey, X, sy, 'ln-dim');
-    for (const yy of [ey, sy]) {
-      b.line(X - 6, yy + 6, X + 6, yy - 6, 'ln-dim');
-      b.line(X - 16, yy, X + 8, yy, 'ln-dim');
+    // visinska kota sljemena: na mobilnom izrezu bila bi u zatamnjenju kadra
+    if (b.v !== 'm') {
+      const [, sy] = g(L, 0);
+      const X = W - 34;
+      b.line(X, ey, X, sy, 'ln-dim');
+      for (const yy of [ey, sy]) {
+        b.line(X - 6, yy + 6, X + 6, yy - 6, 'ln-dim');
+        b.line(X - 16, yy, X + 8, yy, 'ln-dim');
+      }
+      b.P(`<text class="t-dim" text-anchor="middle" transform="translate(${X - 12} ${((ey + sy) / 2).toFixed(1)}) rotate(-90)">+2,52</text>`);
     }
-    b.P(`<text class="t-dim" text-anchor="middle" transform="translate(${X - 12} ${((ey + sy) / 2).toFixed(1)}) rotate(-90)">+2,52</text>`);
   });
 
-  // ključ: mali pogled zabata s oznakom presjeka A–A
+  // ključ: tlocrt krova (streha dolje i gore, sljeme po sredini); presjek A–A ide okomito preko sljemena
   b.key(() => {
     const [kx, ky] = [560, 64];
-    b.d(`M${kx} ${ky + 120} V${ky + 62} L${kx + 70} ${ky} L${kx + 140} ${ky + 62} V${ky + 120} Z`, 'ln-2');
-    b.d(`M${kx + 58} ${ky + 120} V${ky + 88} H${kx + 82} V${ky + 120}`, 'ln-2');
-    b.rect(kx + 18, ky + 74, 22, 22, 'ln-2');
-    b.rect(kx + 100, ky + 74, 22, 22, 'ln-2');
-    b.line(kx + 94, ky - 14, kx + 94, ky + 134, 'ln-sec');
-    b.text(kx + 98, ky - 18, 'A', 't-key');
-    b.text(kx + 98, ky + 150, 'A', 't-key');
-    b.text(kx, ky + 178, 'KLJUČ · PRESJEK A–A', 't-small');
+    b.rect(kx, ky + 14, 170, 100, 'ln-2');
+    b.line(kx, ky + 64, kx + 170, ky + 64, 'ln-2');
+    // nagib: strelice niz krovne plohe, od sljemena prema strehi
+    for (const [y0, y1] of [[ky + 54, ky + 28], [ky + 74, ky + 100]]) {
+      const d = y1 > y0 ? -6 : 6;
+      b.d(`M${kx + 40} ${y0} V${y1} m-4 ${d} l4 ${-d} l4 ${d}`, 'ln-dim');
+    }
+    b.line(kx + 118, ky - 4, kx + 118, ky + 132, 'ln-sec');
+    b.text(kx + 122, ky - 8, 'A', 't-key');
+    b.text(kx + 122, ky + 148, 'A', 't-key');
+    b.text(kx, ky + 178, 'KLJUČ · TLOCRT KROVA', 't-small');
   });
 
   // 6 oznake i svjetlo
@@ -138,13 +143,13 @@ export function draw(b) {
     let c = g((lo + tp) / 2, bt - 2 * t);
     b.callout('01', c, [[c[0] + 60, c[1] + 120], [c[0] + 90, c[1] + 120]], 'POKROV', '→ Vrste krova');
     c = g(xs[1] + 8, lb - 2);
-    b.callout('02', c, [[c[0] + 64, c[1] + 64], [c[0] + 94, c[1] + 64]], 'LETVE · KONTRALETVE', '→ Proces i jamstvo');
+    b.callout('02', c, [[c[0] + 64, c[1] + 64], [c[0] + 94, c[1] + 64]], 'LETVE · KONTRALETVE', '→ Proces i jamstvo', false, { p: [[850, 655], [862, 655]], t1: 'LETVE' });
     b.callout('03', [gx - 30, gy + 18], [[gx - 90, gy - 60], [gx - 120, gy - 60]], 'OLUK · OPŠAV', '→ Limarski radovi', true);
     c = [apx, apy - 14];
     b.callout('04', c, [[c[0] - 60, c[1] - 80], [c[0] - 90, c[1] - 80]], 'SLJEME', '→ Prije / poslije', true);
     [lo, tp] = tiles[LAMP];
     c = g((lo + tp) / 2 + 8, bt - 2 * t - 26);
     // tekst svjetla počinje na x 508: najuži vidljivi kadar (tablet, 47vw) vidi od x ≈ 492
-    b.lamp({ at: c, d: [508, c[1] - 198], m: [452, c[1] - 174] });
+    b.lamp({ at: c, d: [508, c[1] - 198], m: [480, c[1] - 174] });
   });
 }

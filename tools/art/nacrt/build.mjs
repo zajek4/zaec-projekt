@@ -17,6 +17,8 @@ for (const file of readdirSync(here).filter((n) => n.endsWith('.mjs') && !['std.
   const { slug, lamp } = sheet.meta;
   if (only && only !== slug) continue;
   if (lamp && !registry.includes(`'${lamp.search}'`)) console.warn(`! ${slug}: pretraga "${lamp.search}" nije u registru (searches)`);
+  // sastavnica na tabletnih 17 u: redovi stanu u 440 u (36 znakova)
+  for (const [k, t] of [['view', sheet.meta.view], ['web', `WEB · ${sheet.meta.web}`]]) if (t.length > 36) console.warn(`! ${slug}: ${k} "${t}" je dulji od 36 znakova`);
   const sizes = [];
   for (const v of ['d', 'm', 't']) {
     const svg = render(sheet, v);

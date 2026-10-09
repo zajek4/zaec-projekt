@@ -1,19 +1,13 @@
-<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="560 200 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-<defs><pattern id="hz-klima-i-grijanje-m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="hz2-klima-i-grijanje-m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool-klima-i-grijanje-m" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="dots-klima-i-grijanje-m" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="wool-v-klima-i-grijanje-m" width="16" height="20" patternUnits="userSpaceOnUse"><path d="M8 0 Q0 5 8 10 T8 20" class="ln-h" fill="none"/></pattern><pattern id="grid-klima-i-grijanje-m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid-klima-i-grijanje-m)"/>
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="580 200 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="hz01m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid01m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid01m)"/>
 <g class="nd nd-1">
-<line class="ln-con" x1="703" y1="20" x2="703" y2="980"/>
-<line class="ln-con" x1="120" y1="496.5" x2="1180" y2="455.5"/>
-<line class="ln-con" x1="790" y1="230" x2="790" y2="760"/>
-<line class="ln-con" x1="670" y1="418" x2="850" y2="418"/>
+<path class="ln-con" d="M703 20L703 980M120 497L1180 456M790 230L790 760M670 418L850 418"/>
 </g>
 <g class="nd nd-2">
-<rect class="cut" pathLength="1" x="525" y="30" width="175" height="950" fill="url(#hz-klima-i-grijanje-m)"/>
-<rect class="cut" pathLength="1" x="455" y="-10" width="70" height="1010" fill="url(#wool-v-klima-i-grijanje-m)"/>
-<line class="ln-2" pathLength="1" x1="451" y1="-10" x2="451" y2="1010"/>
+<rect class="cut" pathLength="1" x="525" y="30" width="175" height="950" fill="url(#hz01m)"/>
 <line class="ln-2" pathLength="1" x1="703" y1="170" x2="703" y2="1010"/>
-<rect class="cut" pathLength="1" x="700" y="30" width="450" height="140" fill="url(#hz2-klima-i-grijanje-m)"/>
-<polyline class="ln-2" pathLength="1" points="1150,20 1150,92 1144,97 1156,103 1150,108 1150,180" fill="none"/>
+<polyline class="ln-2" pathLength="1" points="1150,20 1150,92 1144,97 1156,103 1150,108 1150,180"/>
 <path class="mask" d="M447 476 L703 455 L703 500 L447 521 Z"/>
 <line class="ln-2" pathLength="1" x1="447" y1="476" x2="703" y2="455"/>
 <line class="ln-2" pathLength="1" x1="447" y1="521" x2="703" y2="500"/>
@@ -22,121 +16,42 @@
 <rect class="ln-2" pathLength="1" x="703" y="265" width="5" height="200"/>
 <path class="cut-w" pathLength="1" d="M706 485 V275 H835 Q857 275 857 297 V445 Q857 468 838 474"/>
 <line class="cut-w" pathLength="1" x1="706" y1="485" x2="792" y2="485"/>
-<line class="ln-h" x1="722" y1="275" x2="722" y2="282"/>
-<line class="ln-h" x1="731" y1="275" x2="731" y2="282"/>
-<line class="ln-h" x1="740" y1="275" x2="740" y2="282"/>
-<line class="ln-h" x1="749" y1="275" x2="749" y2="282"/>
-<line class="ln-h" x1="758" y1="275" x2="758" y2="282"/>
-<line class="ln-h" x1="767" y1="275" x2="767" y2="282"/>
-<line class="ln-h" x1="776" y1="275" x2="776" y2="282"/>
-<line class="ln-h" x1="785" y1="275" x2="785" y2="282"/>
-<line class="ln-h" x1="794" y1="275" x2="794" y2="282"/>
-<line class="ln-h" x1="803" y1="275" x2="803" y2="282"/>
-<line class="ln-h" x1="812" y1="275" x2="812" y2="282"/>
-<line class="ln-h" x1="821" y1="275" x2="821" y2="282"/>
-<line class="ln-h" x1="830" y1="275" x2="830" y2="282"/>
+<path class="ln-h" d="M722 275L722 282M731 275L731 282M740 275L740 282M749 275L749 282M758 275L758 282M767 275L767 282M776 275L776 282M785 275L785 282M794 275L794 282M803 275L803 282M812 275L812 282M821 275L821 282M830 275L830 282"/>
 <line class="ln-3" x1="716" y1="291" x2="846" y2="291"/>
-<path class="cut" pathLength="1" d="M722 302 L842 302 L846 314 L726 314 Z" fill="url(#hz-klima-i-grijanje-m)"/>
-<path class="cut" pathLength="1" d="M834 316 L846 316 L850 410 L838 410 Z" fill="url(#hz-klima-i-grijanje-m)"/>
-<path class="cut" pathLength="1" d="M724 318 L738 318 L764 372 L750 372 Z" fill="url(#hz-klima-i-grijanje-m)"/>
+<path class="cut" pathLength="1" d="M722 302 L842 302 L846 314 L726 314 Z" fill="url(#hz01m)"/>
+<path class="cut" pathLength="1" d="M834 316 L846 316 L850 410 L838 410 Z" fill="url(#hz01m)"/>
+<path class="cut" pathLength="1" d="M724 318 L738 318 L764 372 L750 372 Z" fill="url(#hz01m)"/>
 <circle class="ln-2" pathLength="1" cx="790" cy="418" r="32"/>
 <circle class="ln-2" pathLength="1" cx="790" cy="418" r="10"/>
-<line class="ln-h" x1="812" y1="418" x2="819.1" y2="428.6"/>
-<line class="ln-h" x1="810.1" y1="426.9" x2="812.3" y2="439.6"/>
-<line class="ln-h" x1="804.7" y1="434.3" x2="801.6" y2="446.8"/>
-<line class="ln-h" x1="796.8" y1="438.9" x2="788.9" y2="449"/>
-<line class="ln-h" x1="787.7" y1="439.9" x2="776.4" y2="445.8"/>
-<line class="ln-h" x1="779" y1="437.1" x2="766.2" y2="437.9"/>
-<line class="ln-h" x1="772.2" y1="430.9" x2="760.2" y2="426.5"/>
-<line class="ln-h" x1="768.5" y1="422.6" x2="759.3" y2="413.7"/>
-<line class="ln-h" x1="768.5" y1="413.4" x2="763.7" y2="401.5"/>
-<line class="ln-h" x1="772.2" y1="405.1" x2="772.7" y2="392.3"/>
-<line class="ln-h" x1="779" y1="398.9" x2="784.6" y2="387.5"/>
-<line class="ln-h" x1="787.7" y1="396.1" x2="797.5" y2="387.9"/>
-<line class="ln-h" x1="796.8" y1="397.1" x2="809.1" y2="393.6"/>
-<line class="ln-h" x1="804.7" y1="401.7" x2="817.4" y2="403.5"/>
-<line class="ln-h" x1="810.1" y1="409.1" x2="820.9" y2="415.9"/>
+<path class="ln-h" d="M812 418L819 429M810 427L812 440M805 434L802 447M797 439L789 449M788 440L776 446M779 437L766 438M772 431L760 427M768 423L759 414M768 413L764 402M772 405L773 392M779 399L785 387M788 396L798 388M797 397L809 394M805 402L817 403M810 409L821 416"/>
 <path class="ln-2" pathLength="1" d="M828 414 V426 H854 V414"/>
-<line class="ln-beyond" x1="806" y1="470" x2="808" y2="482"/>
-<line class="ln-beyond" x1="815" y1="470" x2="817" y2="482"/>
-<line class="ln-beyond" x1="824" y1="470" x2="826" y2="482"/>
-<line class="ln-beyond" x1="833" y1="470" x2="835" y2="482"/>
-<polyline class="ln-2" pathLength="1" points="720,467 703,467 447,488 421,488" fill="none"/>
-<polyline class="ln-2" pathLength="1" points="720,477 703,477 447,498 421,498" fill="none"/>
-<polyline class="ln-3" points="841,426 841,438 724,438 724,489 703,489 447,510 433,510 433,980" fill="none"/>
+<path class="ln-beyond" d="M806 470L808 482M815 470L817 482M824 470L826 482M833 470L835 482"/>
+<polyline class="ln-2" pathLength="1" points="720,467 703,467 447,488 421,488"/>
+<polyline class="ln-2" pathLength="1" points="720,477 703,477 447,498 421,498"/>
+<polyline class="ln-3" points="841,426 841,438 724,438 724,489 703,489 447,510 433,510 433,980"/>
 </g>
 <g class="nd nd-4">
-<polyline class="ln-2" pathLength="1" points="421,488 397,488 397,645 381,645" fill="none"/>
-<polyline class="ln-2" pathLength="1" points="421,498 407,498 407,669 381,669" fill="none"/>
-<rect class="cut-w" pathLength="1" x="171" y="330" width="210" height="385"/>
-<rect class="cut" pathLength="1" x="359" y="346" width="12" height="353" fill="url(#hz-klima-i-grijanje-m)"/>
-<rect class="ln-2" pathLength="1" x="232" y="500" width="20" height="44"/>
-<line class="ln-2" pathLength="1" x1="242" y1="500" x2="262" y2="372"/>
-<line class="ln-2" pathLength="1" x1="242" y1="544" x2="262" y2="672"/>
-<line class="ln-h" x1="166" y1="346" x2="176" y2="346"/>
-<line class="ln-h" x1="166" y1="358" x2="176" y2="358"/>
-<line class="ln-h" x1="166" y1="370" x2="176" y2="370"/>
-<line class="ln-h" x1="166" y1="382" x2="176" y2="382"/>
-<line class="ln-h" x1="166" y1="394" x2="176" y2="394"/>
-<line class="ln-h" x1="166" y1="406" x2="176" y2="406"/>
-<line class="ln-h" x1="166" y1="418" x2="176" y2="418"/>
-<line class="ln-h" x1="166" y1="430" x2="176" y2="430"/>
-<line class="ln-h" x1="166" y1="442" x2="176" y2="442"/>
-<line class="ln-h" x1="166" y1="454" x2="176" y2="454"/>
-<line class="ln-h" x1="166" y1="466" x2="176" y2="466"/>
-<line class="ln-h" x1="166" y1="478" x2="176" y2="478"/>
-<line class="ln-h" x1="166" y1="490" x2="176" y2="490"/>
-<line class="ln-h" x1="166" y1="502" x2="176" y2="502"/>
-<line class="ln-h" x1="166" y1="514" x2="176" y2="514"/>
-<line class="ln-h" x1="166" y1="526" x2="176" y2="526"/>
-<line class="ln-h" x1="166" y1="538" x2="176" y2="538"/>
-<line class="ln-h" x1="166" y1="550" x2="176" y2="550"/>
-<line class="ln-h" x1="166" y1="562" x2="176" y2="562"/>
-<line class="ln-h" x1="166" y1="574" x2="176" y2="574"/>
-<line class="ln-h" x1="166" y1="586" x2="176" y2="586"/>
-<line class="ln-h" x1="166" y1="598" x2="176" y2="598"/>
-<line class="ln-h" x1="166" y1="610" x2="176" y2="610"/>
-<line class="ln-h" x1="166" y1="622" x2="176" y2="622"/>
-<line class="ln-h" x1="166" y1="634" x2="176" y2="634"/>
-<line class="ln-h" x1="166" y1="646" x2="176" y2="646"/>
-<line class="ln-h" x1="166" y1="658" x2="176" y2="658"/>
-<line class="ln-h" x1="166" y1="670" x2="176" y2="670"/>
-<line class="ln-h" x1="166" y1="682" x2="176" y2="682"/>
-<line class="ln-h" x1="166" y1="694" x2="176" y2="694"/>
-<path class="ln-2" pathLength="1" d="M285 707 V626 Q285 606 306 606 Q327 606 327 626 V707"/>
-<circle class="ln-2" pathLength="1" cx="375" cy="645" r="6"/>
-<circle class="ln-2" pathLength="1" cx="375" cy="669" r="5"/>
-<rect class="ln-2" pathLength="1" x="196" y="715" width="22" height="8"/>
-<rect class="ln-2" pathLength="1" x="334" y="715" width="22" height="8"/>
-<rect class="cut" pathLength="1" x="160" y="723" width="291" height="14" fill="url(#hz-klima-i-grijanje-m)"/>
-<line class="cut-w" pathLength="1" x1="451" y1="880" x2="182" y2="737"/>
-<line class="ln-2" pathLength="1" x1="449" y1="730" x2="541" y2="730"/>
-<line class="ln-2" pathLength="1" x1="449" y1="880" x2="541" y2="880"/>
+<path class="ln-2" pathLength="1" d="M285 902 V821 Q285 801 306 801 Q327 801 327 821 V902"/>
 </g>
 <g class="nd nd-5">
 <g class="dim">
-<line class="ln-dim" pathLength="1" x1="381" y1="770" x2="451" y2="770"/>
-<line class="ln-dim" pathLength="1" x1="376.8" y1="765.8" x2="385.2" y2="774.2"/>
-<line class="ln-dim" pathLength="1" x1="446.8" y1="765.8" x2="455.2" y2="774.2"/>
-<text class="t-dim" text-anchor="middle" transform="translate(416 758) rotate(0)">10</text>
+<text class="t-dim" text-anchor="middle" transform="translate(416 882) rotate(0)">10</text>
 </g>
-<line class="ln-dim" pathLength="1" x1="381" y1="737" x2="381" y2="778"/>
-<text class="t-dim" x="560" y="435">Ø 65</text>
 </g>
 <g class="nd nd-6">
 <g class="call c02">
 <circle class="dot" cx="857" cy="365" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="857,365 1120,365 1120,690 1110,690" fill="none"/>
-<text class="t-call" text-anchor="end" x="1102" y="695"><tspan class="t-n">02</tspan>  UNUTARNJA JEDINICA</text>
-<text class="t-web" text-anchor="end" x="1102" y="715">→ Montaža · servis · čišćenje</text>
+<polyline class="ln-lead" pathLength="1" points="857,365 880,365 880,300 888,300"/>
+<text class="t-call" x="896" y="305"><tspan class="t-n">02</tspan>  UNUTARNJA JEDINICA</text>
+<text class="t-web" x="896" y="334">→ Montaža · servis</text>
 </g>
 <path class="lamp-fill" pathLength="1" d="M796 488 L846 471 L848 477 L798 494 Z"/>
 <g class="call lamp">
 <circle class="halo" cx="822" cy="483" r="30"/>
 <circle class="dot" cx="822" cy="483" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="822,491 822,613.1 720,613.1" fill="none"/>
-<text class="t-call" x="720" y="573.8">15:40 · SRPANJ</text>
-<text class="t-web" x="720" y="600">„klima ne hladi“</text>
+<polyline class="ln-lead" pathLength="1" points="822,491 822,614 1062,614"/>
+<text class="t-call" x="834" y="571">15:40 · SRPANJ</text>
+<text class="t-web" x="834" y="600">„klima ne hladi“</text>
 </g>
 </g>
 </svg>

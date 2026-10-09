@@ -1,114 +1,112 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt-krovopokrivaci-d nd-krovopokrivaci-d"><title id="nt-krovopokrivaci-d">Presjek krovišta, mjerilo 1:20</title><desc id="nd-krovopokrivaci-d">Tehnički crtež krova nagiba 40°: rog, toplinska izolacija, kontraletve, letve i crijep, oluk na strehi i sljeme. Oznake 01–04 povezuju dijelove krova s dijelovima weba krovopokrivača. Jedan crijep pomaknut je nakon nevremena i označen toplim svjetlom.</desc>
-<defs><pattern id="hz-krovopokrivaci-d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="hz2-krovopokrivaci-d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool-krovopokrivaci-d" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="dots-krovopokrivaci-d" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="wool-v-krovopokrivaci-d" width="16" height="20" patternUnits="userSpaceOnUse"><path d="M8 0 Q0 5 8 10 T8 20" class="ln-h" fill="none"/></pattern><pattern id="grid-krovopokrivaci-d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid-krovopokrivaci-d)"/>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt04d nd04d"><title id="nt04d">Presjek krovišta, mjerilo 1:20</title><desc id="nd04d">Tehnički crtež krova nagiba 40°: rog, toplinska izolacija, kontraletve, letve i crijep, oluk na strehi i sljeme. Oznake 01–04 povezuju dijelove krova s dijelovima weba krovopokrivača. Jedan crijep pomaknut je nakon nevremena i označen toplim svjetlom.</desc>
+<defs><pattern id="hz04d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool04d" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="grid04d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid04d)"/>
 <g class="nd nd-1">
-<line class="ln-con" x1="397.2" y1="952.1" x2="1193.9" y2="283.6"/>
-<line class="ln-con" x1="300" y1="740" x2="1180" y2="740"/>
-<line class="ln-con" x1="1140.3" y1="30" x2="1140.3" y2="970"/>
+<path class="ln-con" d="M397 952L1194 284M300 740L1180 740M1140 30L1140 970"/>
 </g>
 <g class="nd nd-2">
-<rect class="cut" pathLength="1" x="570" y="782" width="118" height="260" fill="url(#hz-krovopokrivaci-d)"/>
-<rect class="cut" pathLength="1" x="570" y="752" width="118" height="30" fill="url(#hz-krovopokrivaci-d)"/>
+<rect class="cut" pathLength="1" x="570" y="782" width="118" height="260" fill="url(#hz04d)"/>
+<rect class="cut" pathLength="1" x="570" y="752" width="118" height="30" fill="url(#hz04d)"/>
 <rect class="cut-w" pathLength="1" x="620" y="738" width="52" height="14"/>
-<path class="cut-w" pathLength="1" d="M535.1 836.4 L1140.3 328.6 L1098.6 279 L493.4 786.8 Z"/>
-<path class="wool" d="M666.5 722.3 L1120 341.7 L1082.2 296.7 L628.7 677.2 Z" fill="url(#wool-krovopokrivaci-d)"/>
-<path class="ln-3" d="M492.2 785.2 L1097.3 277.4"/>
-<path class="cut-w" pathLength="1" d="M492.2 785.2 L1097.3 277.4 L1085.8 263.7 L480.6 771.5 Z"/>
+<path class="cut-w" pathLength="1" d="M535 836 L1140 329 L1099 279 L493 787 Z"/>
+<path class="wool" d="M666 722 L1120 342 L1082 297 L629 677 Z" fill="url(#wool04d)"/>
+<path class="ln-3" d="M492 785 L1097 277"/>
+<path class="cut-w" pathLength="1" d="M492 785 L1097 277 L1086 264 L481 771 Z"/>
 </g>
 <g class="nd nd-3">
-<path class="cut" pathLength="1" d="M497.4 757.3 L511.2 745.7 L504.3 737.5 L490.5 749 Z"/>
-<path class="cut" pathLength="1" d="M588.4 681 L602.2 669.4 L595.3 661.1 L581.5 672.7 Z"/>
-<path class="cut" pathLength="1" d="M679.5 604.6 L693.2 593 L686.3 584.7 L672.5 596.3 Z"/>
-<path class="cut" pathLength="1" d="M770.5 528.2 L784.2 516.7 L777.3 508.4 L763.5 520 Z"/>
-<path class="cut" pathLength="1" d="M861.5 451.9 L875.3 440.3 L868.3 432 L854.5 443.6 Z"/>
-<path class="cut" pathLength="1" d="M952.5 375.5 L966.3 363.9 L959.3 355.7 L945.5 367.2 Z"/>
-<path class="tile" pathLength="1" d="M386.4 826 L507.3 734.9 L502.3 728.8 L381.3 820 Z"/>
-<path class="nib" d="M502.8 738.8 L505.8 736.2 L510 741.2 L506.9 743.7 Z"/>
-<path class="tile" pathLength="1" d="M477.4 749.7 L598.4 658.5 L593.3 652.5 L472.3 743.6 Z"/>
-<path class="nib" d="M593.8 662.4 L596.8 659.8 L601 664.8 L597.9 667.4 Z"/>
-<path class="lamp-fill" pathLength="1" d="M556.8 643.9 L693.9 562.7 L685.7 559.2 L548.7 640.4 Z"/>
-<path class="tile" pathLength="1" d="M659.5 596.9 L780.4 505.8 L775.3 499.7 L654.4 590.9 Z"/>
-<path class="nib" d="M775.8 509.7 L778.8 507.1 L783 512.1 L779.9 514.6 Z"/>
-<path class="tile" pathLength="1" d="M750.5 520.6 L871.4 429.4 L866.3 423.4 L745.4 514.5 Z"/>
-<path class="nib" d="M866.8 433.3 L869.8 430.7 L874 435.7 L870.9 438.3 Z"/>
-<path class="tile" pathLength="1" d="M841.5 444.2 L962.4 353.1 L957.3 347 L836.4 438.1 Z"/>
-<path class="nib" d="M957.8 356.9 L960.8 354.4 L965 359.3 L961.9 361.9 Z"/>
+<path class="cut" pathLength="1" d="M497 757 L511 746 L504 737 L490 749 Z"/>
+<path class="cut" pathLength="1" d="M588 681 L602 669 L595 661 L582 673 Z"/>
+<path class="cut" pathLength="1" d="M679 605 L693 593 L686 585 L673 596 Z"/>
+<path class="cut" pathLength="1" d="M770 528 L784 517 L777 508 L764 520 Z"/>
+<path class="cut" pathLength="1" d="M861 452 L875 440 L868 432 L855 444 Z"/>
+<path class="cut" pathLength="1" d="M952 376 L966 364 L959 356 L946 367 Z"/>
+<path class="tile" pathLength="1" d="M386 826 L507 735 L502 729 L381 820 Z"/>
+<path class="nib" d="M503 739 L506 736 L510 741 L507 744 Z"/>
+<path class="tile" pathLength="1" d="M477 750 L598 659 L593 652 L472 744 Z"/>
+<path class="nib" d="M594 662 L597 660 L601 665 L598 667 Z"/>
+<path class="lamp-fill" pathLength="1" d="M557 644 L694 563 L686 559 L549 640 Z"/>
+<path class="tile" pathLength="1" d="M659 597 L780 506 L775 500 L654 591 Z"/>
+<path class="nib" d="M776 510 L779 507 L783 512 L780 515 Z"/>
+<path class="tile" pathLength="1" d="M750 521 L871 429 L866 423 L745 515 Z"/>
+<path class="nib" d="M867 433 L870 431 L874 436 L871 438 Z"/>
+<path class="tile" pathLength="1" d="M841 444 L962 353 L957 347 L836 438 Z"/>
+<path class="nib" d="M958 357 L961 354 L965 359 L962 362 Z"/>
 <path class="ln-beyond" d="M1068.6 243.2 l168.5 141.4"/>
-<rect class="cut" pathLength="1" x="1105.4" y="297.8" width="28" height="34" fill="url(#hz-krovopokrivaci-d)"/>
+<rect class="cut" pathLength="1" x="1105" y="298" width="28" height="34" fill="url(#hz04d)"/>
 <path class="tile" pathLength="1" d="M1034.6 251.2 Q1068.6 209.2 1102.6 251.2"/>
 </g>
 <g class="nd nd-4">
-<path class="cut-w" pathLength="1" d="M405.5 761.1 a28 28 0 0 0 56 0 M461.5 761.1 l6 -6" fill="none"/>
-<line class="ln-2" pathLength="1" x1="427.5" y1="789.1" x2="427.5" y2="1010"/>
-<line class="ln-2" pathLength="1" x1="439.5" y1="789.1" x2="439.5" y2="1010"/>
+<path class="cut-w" pathLength="1" d="M405.5 761.1 a28 28 0 0 0 56 0 M461.5 761.1 l6 -6"/>
+<line class="ln-2" pathLength="1" x1="427" y1="789" x2="427" y2="1010"/>
+<line class="ln-2" pathLength="1" x1="439" y1="789" x2="439" y2="1010"/>
 </g>
 <g class="nd nd-5">
-<path class="ln-dim" pathLength="1" d="M800.0 740.0 A150 150 0 0 0 764.9 643.6" fill="none"/>
-<text class="t-dim" x="806" y="688.2">40°</text>
+<path class="ln-dim" pathLength="1" d="M800.0 740.0 A150 150 0 0 0 764.9 643.6"/>
+<text class="t-dim" x="806" y="688">40°</text>
 <g class="dim-33">
-<line class="ln-dim" pathLength="1" x1="755.6" y1="482.5" x2="846.6" y2="406.1"/>
-<line class="ln-dim" pathLength="1" x1="749.6" y1="488.5" x2="761.6" y2="476.5"/>
-<line class="ln-dim" pathLength="1" x1="840.6" y1="412.1" x2="852.6" y2="400.1"/>
+<line class="ln-dim" pathLength="1" x1="756" y1="482" x2="847" y2="406"/>
+<line class="ln-dim" pathLength="1" x1="750" y1="488" x2="762" y2="476"/>
+<line class="ln-dim" pathLength="1" x1="841" y1="412" x2="853" y2="400"/>
 <text class="t-dim" text-anchor="middle" transform="translate(791.1 434.3) rotate(-40)">33</text></g>
-<line class="ln-dim" pathLength="1" x1="1166" y1="740" x2="1166" y2="328.6"/>
+<line class="ln-dim" pathLength="1" x1="1166" y1="740" x2="1166" y2="329"/>
 <line class="ln-dim" pathLength="1" x1="1160" y1="746" x2="1172" y2="734"/>
 <line class="ln-dim" pathLength="1" x1="1150" y1="740" x2="1174" y2="740"/>
-<line class="ln-dim" pathLength="1" x1="1160" y1="334.6" x2="1172" y2="322.6"/>
-<line class="ln-dim" pathLength="1" x1="1150" y1="328.6" x2="1174" y2="328.6"/>
+<line class="ln-dim" pathLength="1" x1="1160" y1="335" x2="1172" y2="323"/>
+<line class="ln-dim" pathLength="1" x1="1150" y1="329" x2="1174" y2="329"/>
 <text class="t-dim" text-anchor="middle" transform="translate(1154 534.3) rotate(-90)">+2,52</text>
 </g>
 <g class="nd nd-5 key">
-<path class="ln-2" pathLength="1" d="M560 184 V126 L630 64 L700 126 V184 Z"/>
-<path class="ln-2" pathLength="1" d="M618 184 V152 H642 V184"/>
-<rect class="ln-2" pathLength="1" x="578" y="138" width="22" height="22"/>
-<rect class="ln-2" pathLength="1" x="660" y="138" width="22" height="22"/>
-<line class="ln-sec" x1="654" y1="50" x2="654" y2="198"/>
-<text class="t-key" x="658" y="46">A</text>
-<text class="t-key" x="658" y="214">A</text>
-<text class="t-small" x="560" y="242">KLJUČ · PRESJEK A–A</text>
+<rect class="ln-2" pathLength="1" x="560" y="78" width="170" height="100"/>
+<line class="ln-2" pathLength="1" x1="560" y1="128" x2="730" y2="128"/>
+<path class="ln-dim" pathLength="1" d="M600 118 V92 m-4 6 l4 -6 l4 6"/>
+<path class="ln-dim" pathLength="1" d="M600 138 V164 m-4 -6 l4 6 l4 -6"/>
+<line class="ln-sec" x1="678" y1="60" x2="678" y2="196"/>
+<text class="t-key" x="682" y="56">A</text>
+<text class="t-key" x="682" y="212">A</text>
+<text class="t-small" x="560" y="242">KLJUČ · TLOCRT KROVA</text>
 </g>
 <g class="nd nd-6">
 <g class="call c01">
-<circle class="dot" cx="803.3" cy="465.9" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="803.3,465.9 863.3,585.9 893.3,585.9" fill="none"/>
-<text class="t-call" x="901.3" y="590.9"><tspan class="t-n">01</tspan>  POKROV</text>
-<text class="t-web" x="901.3" y="610.9">→ Vrste krova</text>
+<circle class="dot" cx="803" cy="466" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="803,466 863,586 893,586"/>
+<text class="t-call" x="901" y="591"><tspan class="t-n">01</tspan>  POKROV</text>
+<text class="t-web" x="901" y="611">→ Vrste krova</text>
 </g>
 <g class="call c02">
-<circle class="dot" cx="593.3" cy="674.3" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="593.3,674.3 657.3,738.3 687.3,738.3" fill="none"/>
-<text class="t-call" x="695.3" y="743.3"><tspan class="t-n">02</tspan>  LETVE · KONTRALETVE</text>
-<text class="t-web" x="695.3" y="763.3">→ Proces i jamstvo</text>
+<circle class="dot" cx="593" cy="674" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="593,674 657,738 687,738"/>
+<text class="t-call" x="695" y="743"><tspan class="t-n">02</tspan>  LETVE · KONTRALETVE</text>
+<text class="t-web" x="695" y="763">→ Proces i jamstvo</text>
 </g>
-<g class="call c03">
-<circle class="dot" cx="433.5" cy="769.1" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="433.5,769.1 373.5,691.1 343.5,691.1" fill="none"/>
-<text class="t-call" text-anchor="end" x="335.5" y="696.1"><tspan class="t-n">03</tspan>  OLUK · OPŠAV</text>
-<text class="t-web" text-anchor="end" x="335.5" y="716.1">→ Limarski radovi</text>
+<g class="call c03 c-wide">
+<circle class="dot" cx="433" cy="769" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="433,769 373,691 343,691"/>
+<text class="t-call" text-anchor="end" x="335" y="696"><tspan class="t-n">03</tspan>  OLUK · OPŠAV</text>
+<text class="t-web" text-anchor="end" x="335" y="716">→ Limarski radovi</text>
 </g>
 <g class="call c04">
-<circle class="dot" cx="1068.6" cy="229.2" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="1068.6,229.2 1008.6,149.2 978.6,149.2" fill="none"/>
-<text class="t-call" text-anchor="end" x="970.6" y="154.2"><tspan class="t-n">04</tspan>  SLJEME</text>
-<text class="t-web" text-anchor="end" x="970.6" y="174.2">→ Prije / poslije</text>
+<circle class="dot" cx="1069" cy="229" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="1069,229 1009,149 979,149"/>
+<text class="t-call" text-anchor="end" x="971" y="154"><tspan class="t-n">04</tspan>  SLJEME</text>
+<text class="t-web" text-anchor="end" x="971" y="174">→ Prije / poslije</text>
 </g>
 <g class="call lamp">
-<circle class="halo" cx="610.7" cy="593.6" r="30"/>
-<circle class="dot" cx="610.7" cy="593.6" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="610.7,585.6 610.7,405.6 508,405.6" fill="none"/>
-<text class="t-call" x="508" y="375.6">23:10 · NAKON NEVREMENA</text>
-<text class="t-web" x="508" y="395.6">„popravak krova nakon nevremena“</text>
+<circle class="halo" cx="611" cy="594" r="30"/>
+<circle class="dot" cx="611" cy="594" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="611,586 611,406 508,406"/>
+<text class="t-call" x="508" y="374">23:10 · NAKON NEVREMENA</text>
+<text class="t-web" x="508" y="396">„popravak krova nakon nevremena“</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
-<rect class="tb-bg" x="772" y="836" width="400" height="112"/>
-<line class="ln-frame" pathLength="1" x1="772" y1="866" x2="1172" y2="866"/>
-<line class="ln-frame" pathLength="1" x1="1052" y1="836" x2="1052" y2="866"/>
-<line class="ln-frame" pathLength="1" x1="772" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="784" y="856">ZAEC · NACRT DJELATNOSTI</text>
-<text class="t-tb" x="1064" y="856">LIST 04/10</text>
-<text class="t-tb-b" x="784" y="894">Krovopokrivači</text>
-<text class="t-tb" x="784" y="913">PRESJEK KROVIŠTA A–A · M 1:20</text>
-<text class="t-tb" x="784" y="943">WEB · RADOVI · MATERIJALI · PROCJENA</text>
+<rect class="tb-bg" x="732" y="836" width="440" height="112"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
+<text class="t-tb" x="744" y="857">ZAEC · NACRT DJELATNOSTI</text>
+<text class="t-tb" x="1054" y="857">LIST 04/10</text>
+<text class="t-tb-b" x="744" y="894">Krovopokrivači</text>
+<text class="t-tb" x="744" y="914">PRESJEK KROVIŠTA A–A · M 1:20</text>
+<text class="t-tb" x="744" y="943">WEB · RADOVI · MATERIJALI · PROCJENA</text>
 </g>
 </svg>

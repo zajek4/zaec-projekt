@@ -10,9 +10,8 @@ export const meta = {
   title: 'Tlocrt prizemlja ustanove s rampom, mjerilo 1:100',
   desc: 'Tehnički crtež prizemlja ustanove: ulaz s podestom, stubama i rampom, predvorje s info pultom i oglasnom pločom, sobe, dvorana s podijem i arhiva. Oznake 01–04 povezuju dijelove ustanove s dijelovima weba ustanove ili udruge. Info pult uz ulaz označen je toplim svjetlom.',
   lamp: { time: 'RUJAN · UPISI', search: 'upis u vrtić + grad', searchShort: 'upis u vrtić' },
-  mvb: '450 50 680 562',
-  tvb: '400 180 640 480',
-  mobileCallout: 'c02',
+  mvb: '450 124 680 562',
+  mobileCallout: 'c04', // mobilni izrez: svjetlo na pultu traži izrez niže, iznad zgrade ostaje mjesto za ARHIVU
 };
 
 export function draw(b) {
@@ -79,11 +78,11 @@ export function draw(b) {
     door([9, 2.6], [8, 2.6], [9, 1.4]);
     door([9.15, 11.2], [10.55, 11.2], [9.15, 9.8]);
     door([13.6, 4.15], [13.6, 5.15], [12.6, 4.15]);
-    // podest, tri stube, rampa 5 % uz pročelje s rukohvatima
+    // podest, dvije stube po 13 cm, rampa 5 % uz pročelje s rukohvatima (≈ 5,1 m × 5 % ≈ 26 cm, ista visina)
     R(5.7, 12.3, 8.5, 13.8, 'ln-2');
-    for (const y of [14.1, 14.4, 14.7]) L(5.7, y, 8.5, y, 'ln-2');
-    L(5.7, 13.8, 5.7, 14.7, 'ln-2');
-    L(8.5, 13.8, 8.5, 14.7, 'ln-2');
+    for (const y of [14.1, 14.4]) L(5.7, y, 8.5, y, 'ln-2');
+    L(5.7, 13.8, 5.7, 14.4, 'ln-2');
+    L(8.5, 13.8, 8.5, 14.4, 'ln-2');
     R(0.6, 12.45, 5.7, 13.8, 'ln-2');
     for (const y of [12.6, 13.65]) L(0.4, y, 5.7, y, 'ln-h');
     b.d(`M${X(5.2)} ${Y(13.12)} H${X(2.3)} m8 -5 l-8 5 l8 5`, 'ln-2');
@@ -104,10 +103,10 @@ export function draw(b) {
   // 5 nazivi i kota
   b.g('nd nd-5', () => {
     b.text(X(2.5), Y(4.4), 'SOBA 1', 't-dim', ' text-anchor="middle"');
-    b.text(X(2.5), Y(10.4), 'SOBA 2', 't-dim', ' text-anchor="middle"');
+    if (b.v !== 'm') b.text(X(2.5), Y(10.4), 'SOBA 2', 't-dim', ' text-anchor="middle"'); // mobilni: u zatamnjenju kadra
     b.text(X(11.6), Y(5.2), 'DVORANA', 't-dim', ' text-anchor="middle"');
     b.text(X(15.1), Y(8.3) + 5, 'PODIJ', 't-dim', ' text-anchor="middle"');
-    b.text(X(1.35), Y(13.12) + 5, '5 %', 't-dim', ' text-anchor="middle"');
+    if (b.v !== 'm') b.text(X(1.35), Y(13.12) + 5, '5 %', 't-dim', ' text-anchor="middle"');
     if (b.v !== 'm') b.dim([X(16.3) + 22, Y(-0.3)], [X(16.3) + 22, Y(12.3)], '12,60', { side: -12, ext: [[[X(16.3), Y(-0.3)], [X(16.3) + 28, Y(-0.3)]], [[X(16.3), Y(12.3)], [X(16.3) + 28, Y(12.3)]]] });
   });
 
@@ -126,8 +125,8 @@ export function draw(b) {
     b.callout('01', [X(7.1), Y(12.15)], [[X(7.1), 740], [X(7.1) + 12, 740]], 'ULAZ', '→ Ulaz za svakog posjetitelja');
     b.callout('02', [X(5.32), Y(4.1)], [[X(5.32), 100], [X(5.32) + 12, 100]], 'OGLASNA PLOČA', '→ Novosti i projekti');
     b.callout('03', [X(3), Y(13.4)], [[X(3), 800], [X(3) + 12, 800]], 'RAMPA', '→ Pristupačnost');
-    b.callout('04', [X(15.6), Y(1.5) + 7], [[1000, Y(1.5) + 7]], 'ARHIVA', '→ Dokumenti');
+    b.callout('04', [X(15.6), Y(1.5) + 7], [[1000, Y(1.5) + 7]], 'ARHIVA', '→ Dokumenti', false, { p: [[949, 165]], end: true });
     b.path([[X(P.x0), Y(P.y0)], [X(P.x1), Y(P.y0)], [X(P.x1), Y(P.y1)], [X(P.x0 + 0.4), Y(P.y1)], [X(P.x0), Y(P.y1 - 0.4)]], 'lamp-fill');
-    b.lamp({ at: [X((P.x0 + P.x1) / 2), Y((P.y0 + P.y1) / 2)], d: [725, 175, 'up'], m: [725, 180, 'up'] });
+    b.lamp({ at: [X((P.x0 + P.x1) / 2), Y((P.y0 + P.y1) / 2)], d: [725, 175, 'up'], m: [470, 190, 'up'] });
   });
 }

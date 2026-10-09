@@ -10,8 +10,7 @@ export const meta = {
   title: 'Tlocrt stana s označenim rušenjem i novim zidovima, mjerilo 1:50',
   desc: 'Tehnički crtež adaptacije stana: postojeći zidovi puni, zidovi za rušenje isprekidani, novi zid šrafiran. Zid između boravka i kuhinje se ruši, a kupaonica se novim zidom širi u hodnik. Oznake 01–04 povezuju dijelove nacrta s dijelovima weba izvođača radova. Nova kupaonica označena je toplim svjetlom.',
   lamp: { time: 'SUBOTA · OBILAZAK STANA', search: 'adaptacija kupaonice cijena' },
-  mvb: '510 68 680 562',
-  tvb: '390 150 640 480',
+  mvb: '550 68 680 562',
   mobileCallout: 'c03',
   // gušća šrafura za tanke nove zidove (10 cm = 6,4 u)
   defs: (b) => [`<pattern id="${b.id('hz4')}" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" class="ln-h"/></pattern>`],
@@ -26,7 +25,7 @@ export function draw(b) {
   const label = (x, y, name, a) => {
     if (b.v === 'm' && x < 3.5) return; // mobilni izrez počinje u sobi 1
     b.text(X(x), Y(y), name, 't-dim', ' text-anchor="middle"');
-    b.text(X(x), Y(y) + 20, `${a} m²`, 't-dim', ' text-anchor="middle"');
+    b.text(X(x), Y(y) + (b.v === 'm' ? 26 : 20), `${a} m²`, 't-dim', ' text-anchor="middle"');
   };
   // prozor u otvoru zida: dvije crte okvira i staklo
   const win = (x0, y0, x1, y1) => {
@@ -99,12 +98,12 @@ export function draw(b) {
     label(1.92, 1.75, 'SOBA 1', area(0.25, 0.25, 3.6, 3.5));
     label(4.95, 1.75, 'SOBA 2', area(3.72, 0.25, 6.3, 3.5));
     label(7.55, 1.45, 'KUPAONICA', area(6.42, 0.25, 8.75, 3));
-    label(7.55, 4.5, 'HODNIK', area(6.42, 3.1, 8.75, 6.75));
+    label(7.55, b.v === 'm' ? 4.3 : 4.5, 'HODNIK', area(6.42, 3.1, 8.75, 6.75));
     label(2.6, 5, 'BORAVAK + KUHINJA', area(0.25, 3.62, 6.3, 6.75));
-    b.text(X(9.1), Y(5.62), 'ULAZ', 't-small');
+    if (b.v !== 'm') b.text(X(9.1), Y(5.62), 'ULAZ', 't-small'); // mobilni: u zatamnjenju kadra
   });
 
-  // ključ: konvencija crtanja
+  // legenda: konvencija crtanja
   b.key(() => {
     const kx = 444;
     [['wall', 'POSTOJEĆE'], ['ln-3', 'RUŠENJE'], ['cut', 'NOVO']].forEach(([cls, t], i) => {
@@ -112,7 +111,7 @@ export function draw(b) {
       b.rect(kx, yy, 40, 9, cls, cls === 'cut' ? ` fill="${b.url('hz4')}"` : '');
       b.text(kx + 54, yy + 10, t, 't-small');
     });
-    b.text(kx, 150, 'KLJUČ · OZNAKE', 't-small');
+    b.text(kx, 150, 'LEGENDA', 't-small');
   });
 
   // 6 oznake i svjetlo: pod nove kupaonice
@@ -122,6 +121,6 @@ export function draw(b) {
     b.callout('03', [X(8.53), Y(2.1)], [[1004, 312]], 'KUPAONICA', '→ Projekti');
     b.callout('04', [X(7.55), Y(4.5) + 26], [[X(7.55), 720], [X(7.55) + 12, 720]], 'KOTE (m²)', '→ Upit prema opsegu');
     R(6.42, 0.25, 8.75, 3, 'lamp-fill', ' style="fill:rgba(255,207,138,.09)"'); // cijela prostorija: tiša ispuna od malog elementa
-    b.lamp({ at: [X(8.3), Y(0.7)], d: [650, 130, 'up'], m: [536, 130, 'up'] });
+    b.lamp({ at: [X(8.3), Y(0.7)], d: [650, 130, 'up'], m: [556, 130, 'up'] });
   });
 }

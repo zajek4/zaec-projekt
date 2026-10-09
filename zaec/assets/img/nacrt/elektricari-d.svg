@@ -1,10 +1,8 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt-elektricari-d nd-elektricari-d"><title id="nt-elektricari-d">Jednopolna shema kućnog razdjelnika s novim krugom punjača</title><desc id="nd-elektricari-d">Tehnički crtež: priključak na mrežu preko brojila, glavna sklopka, zaštitna strujna sklopka i strujni krugovi kuće, fotonaponska elektrana s izmjenjivačem te novi strujni krug punjača za električni automobil. Oznake 01–04 povezuju dijelove sheme s dijelovima weba električara. Novi krug punjača označen je toplim svjetlom.</desc>
-<defs><pattern id="hz-elektricari-d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="hz2-elektricari-d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool-elektricari-d" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="dots-elektricari-d" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="wool-v-elektricari-d" width="16" height="20" patternUnits="userSpaceOnUse"><path d="M8 0 Q0 5 8 10 T8 20" class="ln-h" fill="none"/></pattern><pattern id="grid-elektricari-d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid-elektricari-d)"/>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt03d nd03d"><title id="nt03d">Jednopolna shema kućnog razdjelnika s novim krugom punjača</title><desc id="nd03d">Tehnički crtež: priključak na mrežu preko brojila, glavna sklopka, zaštitna strujna sklopka i strujni krugovi kuće, fotonaponska elektrana s izmjenjivačem te novi strujni krug punjača za električni automobil. Oznake 01–04 povezuju dijelove sheme s dijelovima weba električara. Novi krug punjača označen je toplim svjetlom.</desc>
+<defs><pattern id="grid03d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid03d)"/>
 <g class="nd nd-1">
-<line class="ln-con" x1="420" y1="260" x2="1180" y2="260"/>
-<line class="ln-con" x1="420" y1="380" x2="1180" y2="380"/>
-<line class="ln-con" x1="420" y1="591" x2="1180" y2="591"/>
+<path class="ln-con" d="M420 260L1180 260M420 380L1180 380M420 591L1180 591"/>
 <rect class="ln-beyond" x="470" y="148" width="670" height="322"/>
 </g>
 <g class="nd nd-2">
@@ -22,8 +20,8 @@
 <line class="ln-2" pathLength="1" x1="640" y1="260" x2="640" y2="292"/>
 <path class="ln-2" pathLength="1" d="M633 292 H647 M640 328 L627 295 M629 346 A11 4.5 0 1 0 651 346 A11 4.5 0 1 0 629 346"/>
 <rect class="ln-2" pathLength="1" x="600" y="303" width="14" height="16"/>
-<polyline class="ln-3" points="629,346 607,346 607,319" fill="none"/>
-<line class="ln-3" x1="614" y1="311" x2="633.5" y2="311"/>
+<polyline class="ln-3" points="629,346 607,346 607,319"/>
+<line class="ln-3" x1="614" y1="311" x2="634" y2="311"/>
 <line class="ln-2" pathLength="1" x1="640" y1="328" x2="640" y2="380"/>
 <line class="cut-w" pathLength="1" x1="600" y1="380" x2="920" y2="380"/>
 <line class="ln-2" pathLength="1" x1="620" y1="380" x2="620" y2="412"/>
@@ -63,10 +61,7 @@
 </g>
 <g class="nd nd-4">
 <rect class="ln-2" pathLength="1" x="1040" y="28" width="80" height="48"/>
-<line class="ln-h" x1="1060" y1="28" x2="1060" y2="76"/>
-<line class="ln-h" x1="1080" y1="28" x2="1080" y2="76"/>
-<line class="ln-h" x1="1100" y1="28" x2="1100" y2="76"/>
-<line class="ln-h" x1="1040" y1="52" x2="1120" y2="52"/>
+<path class="ln-h" d="M1060 28L1060 76M1080 28L1080 76M1100 28L1100 76M1040 52L1120 52"/>
 <line class="ln-2" pathLength="1" x1="1080" y1="76" x2="1080" y2="98"/>
 <rect class="ln-2" pathLength="1" x="1058" y="98" width="44" height="40"/>
 <line class="ln-h" x1="1058" y1="138" x2="1102" y2="98"/>
@@ -75,14 +70,14 @@
 <path class="ln-2" pathLength="1" d="M1075 197 L1085 207 M1075 207 L1085 197 M1080 236 L1067 205"/>
 <line class="ln-2" pathLength="1" x1="1080" y1="236" x2="1080" y2="260"/>
 <rect class="ln-2" pathLength="1" x="1026" y="303" width="14" height="16"/>
-<polyline class="ln-3" points="1011,346 1033,346 1033,319" fill="none"/>
-<line class="ln-3" x1="1026" y1="311" x2="993.5" y2="311"/>
+<polyline class="ln-3" points="1011,346 1033,346 1033,319"/>
+<line class="ln-3" x1="1026" y1="311" x2="994" y2="311"/>
 </g>
 <g class="nd nd-5">
 <text class="t-dim" x="574" y="34">NN MREŽA</text>
 <text class="t-dim" x="560" y="95" text-anchor="middle">kWh</text>
 <text class="t-dim" x="596" y="95">BROJILO</text>
-<text class="t-dim" x="575" y="192">GLAVNA SKLOPKA</text>
+<text class="t-dim" x="600" y="192">GLAVNA SKLOPKA</text>
 <text class="t-dim" x="594" y="316" text-anchor="end">FID 30 mA</text>
 <text class="t-dim" x="986" y="316" text-anchor="end">FID 30 mA</text>
 <text class="t-dim" x="1062" y="230" text-anchor="end">B16 · 3P</text>
@@ -105,33 +100,33 @@
 <rect class="ln-2" pathLength="1" x="760" y="56" width="46" height="48"/>
 <rect class="ln-2" pathLength="1" x="674" y="62" width="6" height="14"/>
 <rect class="ln-2" pathLength="1" x="796" y="82" width="6" height="14"/>
-<polyline class="ln-3" points="680,69 690,69 690,89 796,89" fill="none"/>
+<polyline class="ln-3" points="680,69 690,69 690,89 796,89"/>
 <text class="t-key" x="684" y="60">R</text>
 <text class="t-key" x="782" y="76">P</text>
 <text class="t-small" x="670" y="128">KLJUČ · TLOCRT KUĆE</text>
 </g>
 <g class="nd nd-6">
 <g class="call c01">
-<circle class="dot" cx="633.5" cy="311" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="633.5,311 700,300 708,300" fill="none"/>
+<circle class="dot" cx="634" cy="311" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="634,311 700,300 708,300"/>
 <text class="t-call" x="716" y="305"><tspan class="t-n">01</tspan>  FID</text>
 <text class="t-web" x="716" y="325">→ Ovlaštenja</text>
 </g>
 <g class="call c02">
 <circle class="dot" cx="620" cy="603" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="620,603 620,760 640,760" fill="none"/>
+<polyline class="ln-lead" pathLength="1" points="620,603 620,760 640,760"/>
 <text class="t-call" x="648" y="765"><tspan class="t-n">02</tspan>  STRUJNI KRUGOVI</text>
 <text class="t-web" x="648" y="785">→ Kvarovi · instalacije</text>
 </g>
 <g class="call c03">
 <circle class="dot" cx="1040" cy="52" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="1040,52 1000,52" fill="none"/>
+<polyline class="ln-lead" pathLength="1" points="1040,52 1000,52"/>
 <text class="t-call" text-anchor="end" x="992" y="57"><tspan class="t-n">03</tspan>  FN ELEKTRANA</text>
 <text class="t-web" text-anchor="end" x="992" y="77">→ Solari</text>
 </g>
 <g class="call c04">
 <circle class="dot" cx="1000" cy="712" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="1000,712 1000,770 1012,770" fill="none"/>
+<polyline class="ln-lead" pathLength="1" points="1000,712 1000,770 1012,770"/>
 <text class="t-call" x="1020" y="775"><tspan class="t-n">04</tspan>  PUNJAČ</text>
 <text class="t-web" x="1020" y="795">→ Brzi upit</text>
 </g>
@@ -141,20 +136,20 @@
 <g class="call lamp">
 <circle class="halo" cx="1000" cy="686" r="44"/>
 <circle class="dot" cx="1000" cy="686" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="992,686 689,686" fill="none"/>
-<text class="t-call" x="689" y="656">19:30 · AUTO U GARAŽI</text>
-<text class="t-web" x="689" y="676">„ugradnja punjača za auto“</text>
+<polyline class="ln-lead" pathLength="1" points="992,686 689,686"/>
+<text class="t-call" x="689" y="654">19:30 · AUTO U GARAŽI</text>
+<text class="t-web" x="689" y="675">„ugradnja punjača za auto“</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
-<rect class="tb-bg" x="772" y="836" width="400" height="112"/>
-<line class="ln-frame" pathLength="1" x1="772" y1="866" x2="1172" y2="866"/>
-<line class="ln-frame" pathLength="1" x1="1052" y1="836" x2="1052" y2="866"/>
-<line class="ln-frame" pathLength="1" x1="772" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="784" y="856">ZAEC · NACRT DJELATNOSTI</text>
-<text class="t-tb" x="1064" y="856">LIST 03/10</text>
-<text class="t-tb-b" x="784" y="894">Električari</text>
-<text class="t-tb" x="784" y="913">JEDNOPOLNA SHEMA R1 · BEZ MJERILA</text>
-<text class="t-tb" x="784" y="943">WEB · USLUGE · OVLAŠTENJA · UPIT</text>
+<rect class="tb-bg" x="732" y="836" width="440" height="112"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
+<text class="t-tb" x="744" y="857">ZAEC · NACRT DJELATNOSTI</text>
+<text class="t-tb" x="1054" y="857">LIST 03/10</text>
+<text class="t-tb-b" x="744" y="894">Električari</text>
+<text class="t-tb" x="744" y="914">JEDNOPOLNA SHEMA R1 · BEZ MJERILA</text>
+<text class="t-tb" x="744" y="943">WEB · USLUGE · OVLAŠTENJA · UPIT</text>
 </g>
 </svg>

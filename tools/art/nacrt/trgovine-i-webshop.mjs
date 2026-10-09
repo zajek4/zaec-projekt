@@ -11,8 +11,7 @@ export const meta = {
   desc: 'Tehnički crtež pročelja trgovine: izlog s podestom i proizvodima, police iza stakla, ulazna vrata s pločicom radnog vremena i natpis, uz detalj paketa u tri projekcije. Oznake 01–04 povezuju dijelove trgovine s dijelovima weba trgovine ili webshopa. Jedan proizvod u izlogu označen je toplim svjetlom.',
   lamp: { time: '22:15 · S KAUČA', search: 'naziv proizvoda + kupiti' },
   mvb: '450 282 680 562',
-  tvb: '340 110 920 690',
-  mobileCallout: 'c01',
+  mobileCallout: null, // mobilni izrez: oznaka svjetla ide iznad izloga, a ispod bi bila u zatamnjenju kadra
 };
 
 export function draw(b) {
@@ -109,7 +108,8 @@ export function draw(b) {
     b.callout('02', [X(2.82), Y(2.35)], [[740, 320], [752, 320]], 'POLICE', '→ Katalog');
     b.callout('03', [X(4.1), Y(0.5)], [[X(4.6), 786], [X(4.6) + 12, 786]], 'VRATA', '→ O trgovini i lokacija');
     b.callout('04', [T.x, T.y + 52], [[T.x - 16, T.y + 52], [T.x - 16, 410], [T.x - 8, 410]], 'PAKET', '→ Dostava i plaćanje');
-    b.d(`M${X(1.52)} ${Y(0.75)} V${Y(1.2)} L${X(1.6)} ${Y(1.3)} H${X(1.98)} L${X(2.06)} ${Y(1.2)} V${Y(0.75)} Z M${X(1.52)} ${Y(1.2)} H${X(2.06)}`, 'lamp-fill');
-    b.lamp({ at: [X(1.79), Y(1)], r: 36, d: [616, 806, 'down'], m: [616, 806, 'down'] });
+    // kutija u pogledu: pravokutnik s trakom preko sredine (preklopi su na vrhu, u pogledu se ne vide)
+    b.d(`M${X(1.52)} ${Y(0.75)} V${Y(1.3)} H${X(2.06)} V${Y(0.75)} Z M${X(1.765)} ${Y(1.3)} V${Y(1.08)} M${X(1.815)} ${Y(1.3)} V${Y(1.08)}`, 'lamp-fill');
+    b.lamp({ at: [X(1.79), Y(1)], r: 36, d: [616, 806, 'down'], m: [616, 346, 'up'] });
   });
 }

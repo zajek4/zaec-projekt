@@ -1,127 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="400 180 640 480" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
-.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:1}
-.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:.75;stroke-dasharray:14 6 2 6;fill:none}
-.cut{stroke:var(--l);stroke-width:2}.cut-w{stroke:var(--l);stroke-width:2.2;fill:none}
-.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:.8}.wool{stroke:none;opacity:.55}
-.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:1.2;fill:none}
-.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:.8;stroke-dasharray:6 4;fill:none}
-.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:1;stroke-dasharray:8 6;fill:none}
-.tile{stroke:var(--l);stroke-width:1.6;fill:var(--sheet)}
-.lamp-fill{stroke:var(--lamp);stroke-width:1.8;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:2;fill:none}
-.ln-dim{stroke:var(--l);stroke-opacity:.7;stroke-width:.8}.nib{fill:var(--l);opacity:.8}
-.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:.8}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:1.2}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="312 158 480 360" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
-<defs><pattern id="hz-strucne-usluge-t" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="hz2-strucne-usluge-t" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool-strucne-usluge-t" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="dots-strucne-usluge-t" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="wool-v-strucne-usluge-t" width="16" height="20" patternUnits="userSpaceOnUse"><path d="M8 0 Q0 5 8 10 T8 20" class="ln-h" fill="none"/></pattern><pattern id="grid-strucne-usluge-t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid-strucne-usluge-t)"/>
+<defs><pattern id="hz09t" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid09t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid09t)"/>
 <g class="nd nd-1">
-<line class="ln-con" x1="666.8" y1="186.4" x2="666.8" y2="645.6"/>
-<line class="ln-con" x1="406.4" y1="458" x2="1033.6" y2="458"/>
-<line class="ln-con" x1="834.8" y1="466.4" x2="834.8" y2="645.6"/>
+<path class="ln-con" d="M667 186L667 646M406 458L1034 458"/>
 </g>
 <g class="nd nd-2">
-<rect class="cut" pathLength="1" x="426" y="206" width="70" height="14" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="608" y="206" width="112" height="14" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="776" y="206" width="44.8" height="14" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="876.8" y="206" width="44.8" height="14" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="977.6" y="206" width="36.4" height="14" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="426" y="612" width="70" height="14" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="552" y="612" width="89.6" height="14" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="798.4" y="612" width="215.6" height="14" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="426" y="220" width="14" height="392" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="1000" y="220" width="14" height="56" fill="url(#hz-strucne-usluge-t)"/>
-<rect class="cut" pathLength="1" x="1000" y="416" width="14" height="196" fill="url(#hz-strucne-usluge-t)"/>
+<rect class="cut" pathLength="1" x="426" y="206" width="70" height="14" fill="url(#hz09t)"/>
+<rect class="cut" pathLength="1" x="608" y="206" width="112" height="14" fill="url(#hz09t)"/>
+<rect class="cut" pathLength="1" x="776" y="206" width="45" height="14" fill="url(#hz09t)"/>
+<rect class="cut" pathLength="1" x="426" y="220" width="14" height="392" fill="url(#hz09t)"/>
 </g>
 <g class="nd nd-3">
-<line class="ln-2" pathLength="1" x1="664" y1="220" x2="664" y2="460.8"/>
-<line class="ln-2" pathLength="1" x1="669.6" y1="220" x2="669.6" y2="460.8"/>
-<line class="ln-2" pathLength="1" x1="440" y1="455.2" x2="608" y2="455.2"/>
-<line class="ln-2" pathLength="1" x1="440" y1="460.8" x2="608" y2="460.8"/>
-<line class="ln-2" pathLength="1" x1="658.4" y1="455.2" x2="669.6" y2="455.2"/>
-<line class="ln-2" pathLength="1" x1="658.4" y1="460.8" x2="669.6" y2="460.8"/>
-<rect class="wall" x="832" y="494.4" width="16.8" height="5.6"/>
-<rect class="wall" x="899.2" y="494.4" width="100.8" height="5.6"/>
-<rect class="wall" x="832" y="500" width="5.6" height="112"/>
+<line class="ln-2" pathLength="1" x1="664" y1="220" x2="664" y2="461"/>
+<line class="ln-2" pathLength="1" x1="670" y1="220" x2="670" y2="461"/>
+<line class="ln-2" pathLength="1" x1="440" y1="455" x2="608" y2="455"/>
+<line class="ln-2" pathLength="1" x1="440" y1="461" x2="608" y2="461"/>
+<line class="ln-2" pathLength="1" x1="658" y1="455" x2="670" y2="455"/>
+<line class="ln-2" pathLength="1" x1="658" y1="461" x2="670" y2="461"/>
 <rect class="ln-2" pathLength="1" x="496" y="206" width="112" height="14"/>
 <line class="ln-h" x1="496" y1="213" x2="608" y2="213"/>
 <rect class="ln-2" pathLength="1" x="720" y="206" width="56" height="14"/>
 <line class="ln-h" x1="720" y1="213" x2="776" y2="213"/>
-<rect class="ln-2" pathLength="1" x="820.8" y="206" width="56" height="14"/>
-<line class="ln-h" x1="820.8" y1="213" x2="876.8" y2="213"/>
-<rect class="ln-2" pathLength="1" x="921.6" y="206" width="56" height="14"/>
-<line class="ln-h" x1="921.6" y1="213" x2="977.6" y2="213"/>
-<rect class="ln-2" pathLength="1" x="641.6" y="612" width="156.8" height="14"/>
-<line class="ln-h" x1="641.6" y1="619" x2="798.4" y2="619"/>
-<rect class="ln-2" pathLength="1" x="1000" y="276" width="14" height="140"/>
-<line class="ln-h" x1="1007" y1="276" x2="1007" y2="416"/>
-<line class="ln-2" pathLength="1" x1="658.4" y1="458" x2="658.4" y2="407.6"/>
-<path class="ln-h" d="M608 458 A50.39999999999999 50.39999999999999 0 0 1 658.4 407.6" fill="none"/>
-<line class="ln-2" pathLength="1" x1="552" y1="612" x2="552" y2="556"/>
-<path class="ln-h" d="M496 612 A56 56 0 0 1 552 556" fill="none"/>
-<line class="ln-2" pathLength="1" x1="899.2" y1="497.2" x2="899.2" y2="446.8"/>
-<path class="ln-h" d="M848.8 497.2 A50.40000000000002 50.40000000000002 0 0 1 899.1999999999999 446.79999999999995" fill="none"/>
+<line class="ln-2" pathLength="1" x1="658" y1="458" x2="658" y2="408"/>
+<path class="ln-h" d="M608 458 A50.39999999999999 50.39999999999999 0 0 1 658.4 407.6"/>
+<path class="ln-h" d="M496 612 A56 56 0 0 1 552 556"/>
+<path class="ln-h" d="M848.8 497.2 A50.40000000000002 50.40000000000002 0 0 1 899.1999999999999 446.79999999999995"/>
 </g>
 <g class="nd nd-4">
-<rect class="ln-2" pathLength="1" x="500.5" y="282.7" width="24.6" height="20.2"/>
-<rect class="ln-2" pathLength="1" x="500.5" y="372.3" width="24.6" height="20.2"/>
-<rect class="ln-2" pathLength="1" x="539.7" y="282.7" width="24.6" height="20.2"/>
-<rect class="ln-2" pathLength="1" x="539.7" y="372.3" width="24.6" height="20.2"/>
-<rect class="ln-2" pathLength="1" x="578.9" y="282.7" width="24.6" height="20.2"/>
-<rect class="ln-2" pathLength="1" x="578.9" y="372.3" width="24.6" height="20.2"/>
-<line class="cut-w" pathLength="1" x1="444.5" y1="292.8" x2="444.5" y2="382.4"/>
-<rect class="cut-w" pathLength="1" x="529.6" y="494.4" width="89.6" height="33.6"/>
-<circle class="ln-2" pathLength="1" cx="574.4" cy="478.7" r="12.3"/>
-<rect class="ln-2" pathLength="1" x="445.6" y="522.4" width="25.2" height="25.2"/>
-<rect class="ln-2" pathLength="1" x="445.6" y="556" width="25.2" height="25.2"/>
-<rect class="ln-2" pathLength="1" x="708.8" y="220" width="78.4" height="39.2"/>
-<line class="ln-h" x1="731.2" y1="230.1" x2="764.8" y2="230.1"/>
-<circle class="ln-2" pathLength="1" cx="748" cy="278.8" r="13.4"/>
-<rect class="ln-2" pathLength="1" x="708.8" y="354.4" width="78.4" height="39.2"/>
-<line class="ln-h" x1="731.2" y1="364.5" x2="764.8" y2="364.5"/>
-<circle class="ln-2" pathLength="1" cx="748" cy="413.2" r="13.4"/>
-<rect class="ln-2" pathLength="1" x="809.6" y="220" width="78.4" height="39.2"/>
-<line class="ln-h" x1="832" y1="230.1" x2="865.6" y2="230.1"/>
-<circle class="ln-2" pathLength="1" cx="848.8" cy="278.8" r="13.4"/>
-<rect class="ln-2" pathLength="1" x="809.6" y="354.4" width="78.4" height="39.2"/>
-<line class="ln-h" x1="832" y1="364.5" x2="865.6" y2="364.5"/>
-<circle class="ln-2" pathLength="1" cx="848.8" cy="413.2" r="13.4"/>
-<rect class="ln-2" pathLength="1" x="910.4" y="220" width="78.4" height="39.2"/>
-<line class="ln-h" x1="932.8" y1="230.1" x2="966.4" y2="230.1"/>
-<circle class="ln-2" pathLength="1" cx="949.6" cy="278.8" r="13.4"/>
-<rect class="ln-2" pathLength="1" x="910.4" y="354.4" width="78.4" height="39.2"/>
-<line class="ln-h" x1="932.8" y1="364.5" x2="966.4" y2="364.5"/>
-<circle class="ln-2" pathLength="1" cx="949.6" cy="413.2" r="13.4"/>
-<rect class="ln-2" pathLength="1" x="862.8" y="522.4" width="23.5" height="75.6"/>
-<line class="ln-h" x1="862.8" y1="539.2" x2="886.3" y2="539.2"/>
-<line class="ln-h" x1="862.8" y1="556" x2="886.3" y2="556"/>
-<line class="ln-h" x1="862.8" y1="572.8" x2="886.3" y2="572.8"/>
-<line class="ln-h" x1="862.8" y1="589.6" x2="886.3" y2="589.6"/>
-<rect class="ln-2" pathLength="1" x="907.6" y="522.4" width="23.5" height="75.6"/>
-<line class="ln-h" x1="907.6" y1="539.2" x2="931.1" y2="539.2"/>
-<line class="ln-h" x1="907.6" y1="556" x2="931.1" y2="556"/>
-<line class="ln-h" x1="907.6" y1="572.8" x2="931.1" y2="572.8"/>
-<line class="ln-h" x1="907.6" y1="589.6" x2="931.1" y2="589.6"/>
-<rect class="ln-2" pathLength="1" x="952.4" y="522.4" width="23.5" height="75.6"/>
-<line class="ln-h" x1="952.4" y1="539.2" x2="975.9" y2="539.2"/>
-<line class="ln-h" x1="952.4" y1="556" x2="975.9" y2="556"/>
-<line class="ln-h" x1="952.4" y1="572.8" x2="975.9" y2="572.8"/>
-<line class="ln-h" x1="952.4" y1="589.6" x2="975.9" y2="589.6"/>
+<rect class="ln-2" pathLength="1" x="500" y="283" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="500" y="372" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="540" y="283" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="540" y="372" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="579" y="283" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="579" y="372" width="25" height="20"/>
+<line class="cut-w" pathLength="1" x1="444" y1="293" x2="444" y2="382"/>
+<rect class="cut-w" pathLength="1" x="530" y="494" width="90" height="34"/>
+<circle class="ln-2" pathLength="1" cx="574" cy="479" r="12.3"/>
+<rect class="ln-2" pathLength="1" x="446" y="522" width="25" height="25"/>
+<rect class="ln-2" pathLength="1" x="709" y="220" width="78" height="39"/>
+<line class="ln-h" x1="731" y1="230" x2="765" y2="230"/>
+<circle class="ln-2" pathLength="1" cx="748" cy="279" r="13.4"/>
+<rect class="ln-2" pathLength="1" x="709" y="354" width="78" height="39"/>
+<line class="ln-h" x1="731" y1="364" x2="765" y2="364"/>
+<circle class="ln-2" pathLength="1" cx="748" cy="413" r="13.4"/>
+<rect class="ln-2" pathLength="1" x="810" y="220" width="78" height="39"/>
+<rect class="ln-2" pathLength="1" x="810" y="354" width="78" height="39"/>
 </g>
 <g class="nd nd-5">
-<text class="t-dim" x="742.4" y="539.2" text-anchor="middle">HODNIK</text>
+<text class="t-dim" x="742" y="539" text-anchor="middle">HODNIK</text>
 <g class="dim">
-<line class="ln-dim" pathLength="1" x1="1014" y1="206" x2="1046" y2="206"/>
-<line class="ln-dim" pathLength="1" x1="1014" y1="494.4" x2="1046" y2="494.4"/>
-<line class="ln-dim" pathLength="1" x1="1040" y1="206" x2="1040" y2="494.4"/>
-<line class="ln-dim" pathLength="1" x1="1044.2" y1="201.8" x2="1035.8" y2="210.2"/>
-<line class="ln-dim" pathLength="1" x1="1044.2" y1="490.2" x2="1035.8" y2="498.6"/>
-<text class="t-dim" text-anchor="middle" transform="translate(1052 350.2) rotate(90)">5,15</text>
+<text class="t-dim" text-anchor="middle" transform="translate(1052 350) rotate(90)">5,15</text>
 </g>
 </g>
 <g class="nd nd-6">
 <path class="lamp-fill" pathLength="1" d="M484.8 337.6 A67.2 30.800000000000004 0 1 0 619.2 337.6 A67.2 30.800000000000004 0 1 0 484.8 337.6 Z"/>
 <g class="call lamp">
-<circle class="halo" cx="552" cy="337.6" r="40"/>
-<circle class="dot" cx="552" cy="337.6" r="3.5"/>
+<circle class="halo" cx="552" cy="338" r="40"/>
+<circle class="dot" cx="552" cy="338" r="3.5"/>
 </g>
 </g>
 </svg>

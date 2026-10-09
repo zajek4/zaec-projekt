@@ -11,7 +11,6 @@ export const meta = {
   desc: 'Tehnički crtež salona: četiri radna mjesta uz zid s ogledalima i krugom okretanja stolice, mjesta za pranje, recepcija uz ulaz i čekaonica. Oznake 01–04 povezuju dijelove salona s dijelovima weba salona ljepote. Jedno radno mjesto označeno je toplim svjetlom.',
   lamp: { time: 'UTORAK · 17:30', search: 'frizer + grad' },
   mvb: '440 60 680 562',
-  tvb: '390 180 620 465',
   mobileCallout: 'c03',
 };
 
@@ -79,10 +78,10 @@ export function draw(b) {
   // 5 kote i nazivi
   b.g('nd nd-5', () => {
     if (b.v !== 'm') b.dim([X(-0.25), Y(6.25) + 34], [X(8.25), Y(6.25) + 34], '8,50', { side: -10 });
-    b.text(X(5.6), Y(3.82), 'PRANJE', 't-dim', ' text-anchor="middle"');
+    b.text(X(5.6), Y(b.v === 'm' ? 3.6 : 3.82), 'PRANJE', 't-dim', ' text-anchor="middle"'); // mobilni: iznad zatamnjenja kadra
   });
 
-  // ključ: radno mjesto s krugom okretanja stolice
+  // detalj S: radno mjesto s krugom okretanja stolice
   b.key(() => {
     const [cx, cy] = [1062, 492];
     b.line(cx - 32, 430, cx + 32, 430, 'cut-w');
@@ -90,7 +89,7 @@ export function draw(b) {
     b.circle(cx, cy, 18, 'ln-2');
     b.circle(cx, cy, 48, 'ln-3');
     b.dim([cx - 48, cy + 62], [cx + 48, cy + 62], 'Ø 1,50', { side: 18, ext: [[[cx - 48, cy], [cx - 48, cy + 68]], [[cx + 48, cy], [cx + 48, cy + 68]]] });
-    b.text(1000, 610, 'KLJUČ · STOLICA', 't-small');
+    b.text(1000, 610, 'DETALJ S · M 1:25', 't-small');
   });
 
   // 6 oznake i svjetlo: jedno radno mjesto

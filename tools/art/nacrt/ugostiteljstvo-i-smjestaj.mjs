@@ -10,8 +10,7 @@ export const meta = {
   title: 'Tlocrt malog pansiona s terasom i bazenom, mjerilo 1:100',
   desc: 'Tehnički crtež: recepcija i salon uz ulaz, dvije sobe s kupaonicama, terasa s pergolom uz bazen i parkiralište uz ulicu. Oznake 01–04 povezuju dijelove objekta s dijelovima weba za smještaj ili restoran. Ležaljke na terasi uz bazen označene su toplim svjetlom.',
   lamp: { time: 'SIJEČANJ · PLANIRANJE LJETA', search: 'smještaj s bazenom' },
-  mvb: '510 22 680 562',
-  tvb: '404 126 768 576',
+  mvb: '510 66 680 562',
   mobileCallout: 'c02',
 };
 
@@ -131,8 +130,9 @@ export function draw(b) {
 
   // 5 kote i nazivi
   b.g('nd nd-5', () => {
-    b.dim([X(1.5), Y(1.35)], [X(12.5), Y(1.35)], '11,00', { side: -10 });
-    b.dim([X(17), Y(10.75)], [X(21.5), Y(10.75)], '4,50', { side: 18 });
+    // mobilni izrez: kote bi sjele pod oznaku svjetla i u zatamnjenje kadra
+    if (b.v !== 'm') b.dim([X(1.5), Y(1.35)], [X(12.5), Y(1.35)], '11,00', { side: -10 });
+    if (b.v !== 'm') b.dim([X(17), Y(10.75)], [X(21.5), Y(10.75)], '4,50', { side: 18 });
     if (b.v !== 'm') b.text(X(3.5), Y(6.5), 'RECEPCIJA', 't-dim', ' text-anchor="middle"');
     b.text(X(7.3), Y(5.3), 'SOBA 1', 't-dim', ' text-anchor="middle"');
     b.text(X(10.7), Y(5.3), 'SOBA 2', 't-dim', ' text-anchor="middle"');
@@ -155,10 +155,10 @@ export function draw(b) {
   // 6 oznake i svjetlo: ležaljke na terasi uz bazen
   b.g('nd nd-6', () => {
     b.callout('01', [X(11.6), Y(7.2)], [[X(11.6), 560], [X(11.6) + 12, 560]], 'SOBE', '→ Smještaj ili meni');
-    b.callout('02', [X(16), Y(10.5)], [[1000, 500], [1008, 500]], 'TERASA', '→ Galerija');
+    b.callout('02', [X(16), Y(10.5)], [[1000, 500], [1008, 500]], 'TERASA', '→ Galerija', false, { p: [[912, 445]], end: true });
     b.callout('03', [X(4.25), Y(15.5)], [[700, 645]], 'ULAZ · PARKING', '→ Lokacija');
     b.callout('04', [X(4.6), Y(7.65)], [[X(4.6), 490], [570, 490]], 'RECEPCIJA', '→ Upit / rezervacija');
     b.d(['15', '15.85'].map((x) => `M${X(+x)} ${Y(3.6)} h${0.7 * s} v${2 * s} h${-0.7 * s} Z M${X(+x)} ${Y(4.1)} h${0.7 * s}`).join(' '), 'lamp-fill');
-    b.lamp({ at: [X(15.78), Y(4.6)], d: [628, 80, 'up'], m: [536, 80, 'up'] });
+    b.lamp({ at: [X(15.78), Y(4.6)], d: [628, 80, 'up'], m: [536, 117, 'up'] });
   });
 }
