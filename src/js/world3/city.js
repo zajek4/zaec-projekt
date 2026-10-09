@@ -282,13 +282,11 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           if (hc > 0.87) sg = vec3(0.95, 0.42, 0.24);
           else if (hc < 0.07) sg = vec3(0.32, 0.4, 0.7);
           gl_FragColor.rgb = mix(gl_FragColor.rgb, sg * (0.22 + 0.8 * uWin) * (1.0 - 0.7 * max(ld.x, ld.y)), glass);
-          // zvonik iznad sata: iza žaluzina tek naslutljivo toplo svjetlo, jače pri dnu otvora. Otvori su u modelu
-          // tamna "vrata" (vrsta 2 kao cigla i škriljevac): od cigle ih dijeli tama, od škriljevca topliji ton
+          // zvonik iznad sata: otvoreni lukovi bez stakla i žaluzina; iz dubine tek naslutljivo toplo svjetlo,
+          // jednoliko, jače pri dnu otvora. Otvori su u modelu tamna "vrata" (vrsta 2 kao cigla i škriljevac): od
+          // cigle ih dijeli tama, od škriljevca topliji ton
           float bel = step(1.5, vKind) * step(vKind, 2.5) * step(vColor.r, 0.03) * step(vColor.b * 1.05, vColor.r) * step(45.8, vH) * step(vH, 60.9);
-          float sl = vH / 0.46;
-          float sw = fwidth(sl);
-          float gap = mix(1.0 - smoothstep(0.15, 0.15 + sw, abs(fract(sl) - 0.8)), 0.3, smoothstep(0.3, 0.8, sw));
-          gl_FragColor.rgb += vec3(1.0, 0.6, 0.3) * bel * gap * (0.35 + 0.65 * (1.0 - smoothstep(46.0, 59.5, vH))) * (0.03 + 0.15 * uFocus);
+          gl_FragColor.rgb += vec3(1.0, 0.6, 0.3) * bel * (0.3 + 0.7 * (1.0 - smoothstep(46.0, 59.5, vH))) * (0.012 + 0.05 * uFocus);
           // vrh tornja hvata svjetlo kad zgrada postane glavni motiv
           gl_FragColor.rgb += vec3(1.0, 0.8, 0.58) * smoothstep(58.0, 90.0, vH) * uFocus * 0.14 * (1.0 - glass);
           // skener: iznad crte ostaje samo nacrt (linije), zgrada se čisto reže; na crti tanka svjetla traka
@@ -297,7 +295,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           gl_FragColor.rgb += vec3(0.45, 0.62, 1.0) * band * 1.2;
           gl_FragColor.a *= uAlpha;`);
     };
-    m.customProgramCacheKey = () => 'zaec-cath-v5';
+    m.customProgramCacheKey = () => 'zaec-cath-v6';
     return m;
   }
   // sjaj vitraja: aditivni prsten oko prozora (iz modela), bez naknadne obrade slike
