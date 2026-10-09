@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="404 126 768 576" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:1}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:.75;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:2}.cut-w{stroke:var(--l);stroke-width:2.2;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:.8}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:1.2;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:.8;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:1;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:1.6;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:1.8;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:2;fill:none}
+.ln-dim{stroke:var(--l);stroke-opacity:.7;stroke-width:.8}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:.8}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:1.2}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="hz-ugostiteljstvo-i-smjestaj-t" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="hz2-ugostiteljstvo-i-smjestaj-t" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool-ugostiteljstvo-i-smjestaj-t" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="dots-ugostiteljstvo-i-smjestaj-t" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="wool-v-ugostiteljstvo-i-smjestaj-t" width="16" height="20" patternUnits="userSpaceOnUse"><path d="M8 0 Q0 5 8 10 T8 20" class="ln-h" fill="none"/></pattern><pattern id="grid-ugostiteljstvo-i-smjestaj-t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid-ugostiteljstvo-i-smjestaj-t)"/>
+<g class="nd nd-1">
+<polyline class="ln-sec" points="676,702 1156,702 1156,126 420,126 420,702 436,702" fill="none"/>
+<line class="ln-2" pathLength="1" x1="388" y1="730.8" x2="1188" y2="730.8"/>
+<line class="ln-con" x1="644" y1="142" x2="644" y2="494"/>
+<line class="ln-con" x1="1036" y1="158" x2="1036" y2="494"/>
+</g>
+<g class="nd nd-2">
+<rect class="wall" x="468" y="174" width="28.8" height="9.6"/>
+<rect class="wall" x="560.8" y="174" width="57.6" height="9.6"/>
+<rect class="wall" x="669.6" y="174" width="64" height="9.6"/>
+<rect class="wall" x="784.8" y="174" width="35.2" height="9.6"/>
+<rect class="wall" x="468" y="420.4" width="35.2" height="9.6"/>
+<rect class="wall" x="535.2" y="420.4" width="284.8" height="9.6"/>
+<rect class="wall" x="468" y="183.6" width="9.6" height="54.4"/>
+<rect class="wall" x="468" y="302" width="9.6" height="118.4"/>
+<rect class="wall" x="810.4" y="183.6" width="9.6" height="28.8"/>
+<rect class="wall" x="810.4" y="276.4" width="9.6" height="108.8"/>
+<rect class="wall" x="810.4" y="414" width="9.6" height="6.4"/>
+<rect class="wall" x="596" y="183.6" width="4.8" height="200"/>
+<rect class="wall" x="596" y="412.4" width="4.8" height="8"/>
+<rect class="wall" x="708" y="183.6" width="4.8" height="188.8"/>
+<rect class="wall" x="600.8" y="372.4" width="59.2" height="4.8"/>
+<rect class="wall" x="688.8" y="372.4" width="83.2" height="4.8"/>
+<rect class="wall" x="800.8" y="372.4" width="9.6" height="4.8"/>
+<rect class="wall" x="600.8" y="305.2" width="17.6" height="3.2"/>
+<rect class="wall" x="640.8" y="305.2" width="16" height="3.2"/>
+<rect class="wall" x="653.6" y="308.4" width="3.2" height="64"/>
+<rect class="wall" x="712.8" y="305.2" width="17.6" height="3.2"/>
+<rect class="wall" x="752.8" y="305.2" width="16" height="3.2"/>
+<rect class="wall" x="765.6" y="308.4" width="3.2" height="64"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="496.8" y="174" width="64" height="9.6"/>
+<line class="ln-h" x1="496.8" y1="178.8" x2="560.8" y2="178.8"/>
+<rect class="ln-2" pathLength="1" x="618.4" y="174" width="51.2" height="9.6"/>
+<line class="ln-h" x1="618.4" y1="178.8" x2="669.6" y2="178.8"/>
+<rect class="ln-2" pathLength="1" x="733.6" y="174" width="51.2" height="9.6"/>
+<line class="ln-h" x1="733.6" y1="178.8" x2="784.8" y2="178.8"/>
+<rect class="ln-2" pathLength="1" x="468" y="238" width="9.6" height="64"/>
+<line class="ln-h" x1="472.8" y1="238" x2="472.8" y2="302"/>
+<rect class="ln-2" pathLength="1" x="810.4" y="212.4" width="9.6" height="64"/>
+<line class="ln-2" pathLength="1" x1="535.2" y1="430" x2="535.2" y2="398"/>
+<path class="ln-h" d="M503.2 430 A32 32 0 0 1 535.2 398" fill="none"/>
+<line class="ln-2" pathLength="1" x1="600.8" y1="412.4" x2="629.6" y2="412.4"/>
+<path class="ln-h" d="M600.8 383.6 A28.799999999999983 28.799999999999983 0 0 1 629.6 412.4" fill="none"/>
+<line class="ln-2" pathLength="1" x1="688.8" y1="372.4" x2="688.8" y2="343.6"/>
+<path class="ln-h" d="M660 372.4 A28.799999999999983 28.799999999999983 0 0 1 688.8 343.6" fill="none"/>
+<line class="ln-2" pathLength="1" x1="800.8" y1="372.4" x2="800.8" y2="343.6"/>
+<path class="ln-h" d="M772 372.4 A28.799999999999983 28.799999999999983 0 0 1 800.8 343.6" fill="none"/>
+<line class="ln-2" pathLength="1" x1="810.4" y1="414" x2="839.2" y2="414"/>
+<path class="ln-h" d="M810.4 385.2 A28.80000000000001 28.80000000000001 0 0 1 839.2 414" fill="none"/>
+<path class="ln-2" pathLength="1" d="M548 346.8 L589.6 346.8 L589.6 391.6 L576.8 391.6 L576.8 359.6 L548 359.6 Z"/>
+<circle class="ln-2" pathLength="1" cx="508" cy="247.6" r="14.4"/>
+<circle class="ln-h" cx="508" cy="271.6" r="5.4" fill="none"/>
+<circle class="ln-h" cx="508" cy="223.6" r="5.4" fill="none"/>
+<circle class="ln-2" pathLength="1" cx="565.6" cy="247.6" r="14.4"/>
+<circle class="ln-h" cx="565.6" cy="271.6" r="5.4" fill="none"/>
+<circle class="ln-h" cx="565.6" cy="223.6" r="5.4" fill="none"/>
+<rect class="ln-2" pathLength="1" x="631.2" y="183.6" width="51.2" height="64"/>
+<line class="ln-h" x1="631.2" y1="198" x2="682.4" y2="198"/>
+<rect class="ln-2" pathLength="1" x="600.8" y="343.6" width="28.8" height="28.8"/>
+<path class="ln-h" d="M600.8 343.6 L629.6 372.4 M600.8 372.4 L629.6 343.6"/>
+<ellipse class="ln-2" cx="642.4" cy="358" rx="5.44" ry="8"/>
+<rect class="ln-2" pathLength="1" x="743.2" y="183.6" width="51.2" height="64"/>
+<line class="ln-h" x1="743.2" y1="198" x2="794.4" y2="198"/>
+<rect class="ln-2" pathLength="1" x="712.8" y="343.6" width="28.8" height="28.8"/>
+<path class="ln-h" d="M712.8 343.6 L741.6 372.4 M712.8 372.4 L741.6 343.6"/>
+<ellipse class="ln-2" cx="754.4" cy="358" rx="5.44" ry="8"/>
+</g>
+<g class="nd nd-4">
+<rect class="ln-2" pathLength="1" x="820" y="190" width="128" height="272"/>
+<line class="ln-tile" x1="820" y1="206" x2="948" y2="206"/>
+<line class="ln-tile" x1="820" y1="222" x2="948" y2="222"/>
+<line class="ln-tile" x1="820" y1="238" x2="948" y2="238"/>
+<line class="ln-tile" x1="820" y1="254" x2="948" y2="254"/>
+<line class="ln-tile" x1="820" y1="270" x2="948" y2="270"/>
+<line class="ln-tile" x1="820" y1="286" x2="948" y2="286"/>
+<line class="ln-tile" x1="820" y1="302" x2="948" y2="302"/>
+<line class="ln-tile" x1="820" y1="318" x2="948" y2="318"/>
+<line class="ln-tile" x1="820" y1="334" x2="948" y2="334"/>
+<line class="ln-tile" x1="820" y1="350" x2="948" y2="350"/>
+<line class="ln-tile" x1="820" y1="366" x2="948" y2="366"/>
+<line class="ln-tile" x1="820" y1="382" x2="948" y2="382"/>
+<line class="ln-tile" x1="820" y1="398" x2="948" y2="398"/>
+<line class="ln-tile" x1="820" y1="414" x2="948" y2="414"/>
+<line class="ln-tile" x1="820" y1="430" x2="948" y2="430"/>
+<line class="ln-tile" x1="820" y1="446" x2="948" y2="446"/>
+<rect class="ln-2" pathLength="1" x="825.8" y="317.4" width="7.7" height="7.7"/>
+<rect class="ln-2" pathLength="1" x="928.2" y="317.4" width="7.7" height="7.7"/>
+<rect class="ln-2" pathLength="1" x="825.8" y="445.4" width="7.7" height="7.7"/>
+<rect class="ln-2" pathLength="1" x="928.2" y="445.4" width="7.7" height="7.7"/>
+<rect class="ln-beyond" x="829.6" y="321.2" width="102.4" height="128"/>
+<line class="ln-beyond" x1="848.8" y1="321.2" x2="848.8" y2="449.2"/>
+<line class="ln-beyond" x1="868" y1="321.2" x2="868" y2="449.2"/>
+<line class="ln-beyond" x1="887.2" y1="321.2" x2="887.2" y2="449.2"/>
+<line class="ln-beyond" x1="906.4" y1="321.2" x2="906.4" y2="449.2"/>
+<line class="ln-beyond" x1="925.6" y1="321.2" x2="925.6" y2="449.2"/>
+<rect class="ln-2" pathLength="1" x="948" y="174" width="192" height="304"/>
+<rect class="ln-2" pathLength="1" x="964" y="206" width="144" height="224"/>
+<rect class="water" x="968.8" y="210.8" width="134.4" height="214.4"/>
+<path class="ln-h" d="M996 257.2 q8 -6.4 16 0 t16 0" fill="none"/>
+<path class="ln-h" d="M1047.2 295.6 q8 -6.4 16 0 t16 0" fill="none"/>
+<path class="ln-h" d="M1008.8 346.8 q8 -6.4 16 0 t16 0" fill="none"/>
+<path class="ln-h" d="M1060 385.2 q8 -6.4 16 0 t16 0" fill="none"/>
+<line class="ln-2" pathLength="1" x1="968.8" y1="404.4" x2="1008.8" y2="404.4"/>
+<line class="ln-2" pathLength="1" x1="968.8" y1="414" x2="1008.8" y2="414"/>
+<line class="ln-2" pathLength="1" x1="436" y1="532.4" x2="676" y2="532.4"/>
+<line class="ln-2" pathLength="1" x1="436" y1="532.4" x2="436" y2="702"/>
+<line class="ln-2" pathLength="1" x1="516" y1="532.4" x2="516" y2="702"/>
+<line class="ln-2" pathLength="1" x1="596" y1="532.4" x2="596" y2="702"/>
+<line class="ln-2" pathLength="1" x1="676" y1="532.4" x2="676" y2="702"/>
+<rect class="ln-beyond" x="447.2" y="548.4" width="57.6" height="137.6" rx="16"/>
+<line class="ln-2" pathLength="1" x1="496.8" y1="430" x2="496.8" y2="532.4"/>
+<line class="ln-2" pathLength="1" x1="541.6" y1="430" x2="541.6" y2="532.4"/>
+<line class="ln-tile" x1="496.8" y1="449.2" x2="541.6" y2="449.2"/>
+<line class="ln-tile" x1="496.8" y1="468.4" x2="541.6" y2="468.4"/>
+<line class="ln-tile" x1="496.8" y1="487.6" x2="541.6" y2="487.6"/>
+<line class="ln-tile" x1="496.8" y1="506.8" x2="541.6" y2="506.8"/>
+<line class="ln-tile" x1="496.8" y1="526" x2="541.6" y2="526"/>
+<circle class="ln-h" cx="1076" cy="606" r="38.4" fill="none"/>
+<circle class="nib" cx="1076" cy="606" r="2"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="468" y1="153.2" x2="820" y2="153.2"/>
+<line class="ln-dim" pathLength="1" x1="463.8" y1="149" x2="472.2" y2="157.4"/>
+<line class="ln-dim" pathLength="1" x1="815.8" y1="149" x2="824.2" y2="157.4"/>
+<text class="t-dim" text-anchor="middle" transform="translate(644 143.2) rotate(0)">11,00</text>
+</g>
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="964" y1="454" x2="1108" y2="454"/>
+<line class="ln-dim" pathLength="1" x1="959.8" y1="449.8" x2="968.2" y2="458.2"/>
+<line class="ln-dim" pathLength="1" x1="1103.8" y1="449.8" x2="1112.2" y2="458.2"/>
+<text class="t-dim" text-anchor="middle" transform="translate(1036 472) rotate(0)">4,50</text>
+</g>
+<text class="t-dim" x="532" y="318" text-anchor="middle">RECEPCIJA</text>
+<text class="t-dim" x="653.6" y="279.6" text-anchor="middle">SOBA 1</text>
+<text class="t-dim" x="762.4" y="279.6" text-anchor="middle">SOBA 2</text>
+<text class="t-dim" x="1036" y="321.2" text-anchor="middle">BAZEN</text>
+<text class="t-small" x="1175.2" y="752.8" text-anchor="end">ULICA</text>
+</g>
+<g class="nd nd-6">
+<path class="lamp-fill" pathLength="1" d="M900 225.2 h22.4 v64 h-22.4 Z M900 241.2 h22.4 M927.2 225.2 h22.4 v64 h-22.4 Z M927.2 241.2 h22.4"/>
+<g class="call lamp">
+<circle class="halo" cx="925" cy="257.2" r="30"/>
+<circle class="dot" cx="925" cy="257.2" r="3.5"/>
+</g>
+</g>
+</svg>
