@@ -7,7 +7,13 @@
 // pročelja (svjetlo ulice na zidu), izlozi i Drava (odsjaji svjetla s obale).
 import * as THREE from 'three';
 
-export const LM_R = 2600; // m — pola širine karte svjetla
+export const LM_R = 2600; // m — pola širine detaljne karte svjetla (oko konkatedrale)
+// široka karta: cijelo izgrađeno područje Osijeka iz OSM-a (Višnjevac na zapadu do kraja Donjega grada na istoku),
+// grublja (~5,5 m po pikselu); vidi se iz zraka i izvan detaljne karte. [zapad, jug, istok, sjever] u m.
+export const LM_WIDE = [-6400, -3600, 5600, 2600];
+// pojas uz rub detaljne karte (udio širine) u kojem se ona pretapa u široku; unutar LM_SPLIT m vrijedi samo detaljna
+const LM_BAND = 0.035;
+export const LM_SPLIT = Math.floor(LM_R * (1 - 2 * LM_BAND)) - 8;
 const RISE_R = 3200;
 
 /* ───────────────────────── karta svjetla ───────────────────────── */
@@ -16,18 +22,20 @@ const RISE_R = 3200;
  * OffscreenCanvas/Worker nisu dostupni, na glavnoj niti. Crtanje 2048² platna i čitanje piksela trajalo je
  * ~150 ms na stolnom računalu (više na mobitelu) — u Workeru ne blokira scroll.
  */
-function paintLightMap(cv, N, R, roads, zks, lamps, lampK, squares, shops, riverside) {
-  const k = N / (2 * R);
-  cv.width = cv.height = N;
+function paintLightMap(cv, NX, NY, B, roads, zks, lamps, lampK, squares, shops, riverside) {
+  // B = [zapad, jug, istok, sjever] u m; isti broj metara po pikselu u oba smjera
+  const k = NX / (B[2] - B[0]);
+  cv.width = NX;
+  cv.height = NY;
   const g = cv.getContext('2d', { willReadFrequently: true });
   g.fillStyle = '#000';
-  g.fillRect(0, 0, N, N);
+  g.fillRect(0, 0, NX, NY);
   g.globalCompositeOperation = 'lighter';
   g.lineCap = 'round';
   g.lineJoin = 'round';
-  // redak 0 = sjever (z = −R) → uv.y = (z + R) / 2R
-  const X = (x) => (x + R) * k;
-  const Y = (y) => (R - y) * k;
+  // redak 0 = sjever (z = −sjever) → uv.y = (z + sjever) / (sjever − jug)
+  const X = (x) => (x - B[0]) * k;
+  const Y = (y) => (B[3] - y) * k;
   const path = (r, close) => {
     g.beginPath();
     g.moveTo(X(r[0]), Y(r[1]));
@@ -59,9 +67,10 @@ function paintLightMap(cv, N, R, roads, zks, lamps, lampK, squares, shops, river
   g.lineWidth = 6 * k;
   for (const r of riverside) { path(r, true); g.strokeStyle = white(0.13); g.stroke(); }
   // svjetiljke: lokve svjetla (radijalni gradijent) — daju ritam ulice odozgo
-  const rad = 13 * k;
+  const rad = Math.max(1.2, 13 * k);
   for (let i = 0, n = lamps.length / 3; i < n; i++) {
     const x = X(lamps[i * 3]), y = Y(-lamps[i * 3 + 2]);
+    if (x < -rad || y < -rad || x > NX + rad || y > NY + rad) continue;
     const a = 0.3 * lampK[i];
     const gr = g.createRadialGradient(x, y, 0, x, y, rad);
     gr.addColorStop(0, white(a));
@@ -70,9 +79,9 @@ function paintLightMap(cv, N, R, roads, zks, lamps, lampK, squares, shops, river
     g.fillStyle = gr;
     g.fillRect(x - rad, y - rad, rad * 2, rad * 2);
   }
-  const img = g.getImageData(0, 0, N, N).data;
-  const data = new Uint8Array(N * N);
-  for (let i = 0; i < N * N; i++) data[i] = img[i * 4];
+  const img = g.getImageData(0, 0, NX, NY).data;
+  const data = new Uint8Array(NX * NY);
+  for (let i = 0; i < NX * NY; i++) data[i] = img[i * 4];
   return data;
 }
 
@@ -93,15 +102,22 @@ onmessage = (e) => { const a = e.data; const d = paint(new OffscreenCanvas(1, 1)
 
 /**
  * roads: [{ c, r, w }] (OSM rang 0…5, prsten x/sjever u m), lamps: [x, y, z…], lampK: jačina po lampi,
- * squares: prstenovi trgova, shops: prstenovi zgrada s izlozima. Vraća Promise<DataTexture> (R8, mipmape).
+ * squares: prstenovi trgova, shops: prstenovi zgrada s izlozima. Vraća Promise<[detaljna, široka]> (R8, mipmape).
  */
 export async function buildLightMap({ roads, lamps, lampK, squares, shops, riverside = [], zone, lite }) {
   const N = lite ? 1024 : 2048;
   const zks = roads.map((rd) => zone(rd.r[0], rd.r[1]) * (rd.w ? 1.8 : 1));
-  const args = [N, LM_R, roads.map((rd) => ({ c: rd.c, r: rd.r })), zks, lamps, lampK, squares, shops, riverside];
-  let data;
-  try { data = await paintInWorker(args); } catch { data = paintLightMap(document.createElement('canvas'), ...args); }
-  const tex = new THREE.DataTexture(data, N, N, THREE.RedFormat, THREE.UnsignedByteType);
+  const rs = roads.map((rd) => ({ c: rd.c, r: rd.r }));
+  const WX = lite ? 1024 : 2048, WY = Math.round((WX * (LM_WIDE[3] - LM_WIDE[1])) / (LM_WIDE[2] - LM_WIDE[0]));
+  const jobs = [[N, N, [-LM_R, -LM_R, LM_R, LM_R]], [WX, WY, LM_WIDE]].map(([nx, ny, b]) => {
+    const args = [nx, ny, b, rs, zks, lamps, lampK, squares, shops, riverside];
+    return paintInWorker(args).catch(() => paintLightMap(document.createElement('canvas'), ...args)).then((d) => toTex(d, nx, ny));
+  });
+  return Promise.all(jobs);
+}
+
+function toTex(data, NX, NY) {
+  const tex = new THREE.DataTexture(data, NX, NY, THREE.RedFormat, THREE.UnsignedByteType);
   tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
   tex.magFilter = THREE.LinearFilter;
   tex.minFilter = THREE.LinearMipmapLinearFilter;
@@ -121,22 +137,26 @@ export function emptyLightMap() {
 /* ───────────────────────── zajednički GLSL ───────────────────────── */
 export const CITY_GLSL = /* glsl */ `
   uniform sampler2D uLM;
+  uniform sampler2D uLMW; // široka karta (cijeli grad, grublja)
   uniform vec2 uFog;      // početak magle (m), 1 / duljina (1/m)
   uniform vec3 uFogCol;   // linearno
   uniform vec3 uCamL;     // kamera u lokalnim metrima
   uniform float uLamp;    // jačina uličnog svjetla 0…1
+  float lmIn(vec2 uv){ return step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0); }
+  // detaljna karta (±${LM_R} m): pročelja, trgovi, Drava i odsjaji — sve što se gradi stoji unutar nje
   float lmAt(vec2 p){
-    vec2 uv = (vec2(p.x, p.y) + ${LM_R.toFixed(1)}) / ${(2 * LM_R).toFixed(1)};
-    float m = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
-    return texture2D(uLM, clamp(uv, 0.0, 1.0)).r * m;
+    vec2 uv = (p + ${LM_R.toFixed(1)}) / ${(2 * LM_R).toFixed(1)};
+    return texture2D(uLM, clamp(uv, 0.0, 1.0)).r * lmIn(uv);
   }
   // natrij u sjeni prelazi u toplo bijelo gdje je svjetla najviše (LED glavnih ulica)
   // oštro uzorkovanje (bez mipmapa): pojedine svjetiljke ostaju zasebne pruge u odsjaju
   float lmSharp(vec2 p){
     vec2 uv = (p + ${LM_R.toFixed(1)}) / ${(2 * LM_R).toFixed(1)};
-    float m = step(0.0, uv.x) * step(uv.x, 1.0) * step(0.0, uv.y) * step(uv.y, 1.0);
-    return textureLod(uLM, clamp(uv, 0.0, 1.0), 0.5).r * m;
+    return textureLod(uLM, clamp(uv, 0.0, 1.0), 0.5).r * lmIn(uv);
   }
+  // samo tlo: izvan detaljne karte (i u pojasu uz njen rub) vrijedi široka; p = (x, z), z = −sjever
+  vec2 lmWideUv(vec2 p){ return (p - vec2(${LM_WIDE[0].toFixed(1)}, ${(-LM_WIDE[3]).toFixed(1)})) / vec2(${(LM_WIDE[2] - LM_WIDE[0]).toFixed(1)}, ${(LM_WIDE[3] - LM_WIDE[1]).toFixed(1)}); }
+  float lmEdge(vec2 uv){ return smoothstep(0.0, ${LM_BAND.toFixed(3)}, min(min(uv.x, 1.0 - uv.x), min(uv.y, 1.0 - uv.y))); }
   vec3 lampTone(float L){ return vec3(1.0, 0.42, 0.13) * L + vec3(1.0, 0.72, 0.42) * L * L * 1.4; }
   vec3 fogIt(vec3 c, vec3 p){ float d = length(p - uCamL); float f = 1.0 - exp(-max(d - uFog.x, 0.0) * uFog.y); return mix(c, uFogCol, f); }
   float ch(vec3 p){ return fract(sin(dot(p, vec3(12.9898, 78.233, 37.719))) * 43758.5453); }
@@ -148,6 +168,7 @@ export const CITY_GLSL = /* glsl */ `
 export function cityUniforms() {
   return {
     uLM: { value: emptyLightMap() },
+    uLMW: { value: emptyLightMap() },
     uFog: { value: new THREE.Vector2(1e5, 0) },
     uFogCol: { value: new THREE.Vector3(0.0027, 0.004, 0.0085) },
     uCamL: { value: new THREE.Vector3() },
@@ -278,10 +299,13 @@ export function buildingMaterial(C, { lite }) {
 /* ───────────────────────── tlo ───────────────────────── */
 // Premultiplicirano: tlo pokriva kartu (uOpacity), a sjaj ulica se dodaje i prije nego što tlo postane neprozirno
 // (uGlow) — iz visine se mreža ulica Osijeka rađa iz svjetla na karti Slavonije.
-export function groundMaterial(C) {
+// Tri materijala (dijele uniforme) za tri dijela tla, da svaki piksel čita samo jednu kartu svjetla:
+// 0 = unutrašnjost detaljne karte (±LM_SPLIT), 1 = pojas pretapanja do ruba detaljne, 2 = ostatak grada (široka).
+export function groundMaterials(C) {
   const U = Object.assign({ uOpacity: { value: 1 }, uGlow: { value: 0 } }, C);
-  return new THREE.ShaderMaterial({
+  return [0, 1, 2].map((mode) => new THREE.ShaderMaterial({
     uniforms: U,
+    defines: { LM_MODE: mode },
     transparent: true,
     depthWrite: false,
     blending: THREE.CustomBlending,
@@ -295,18 +319,32 @@ export function groundMaterial(C) {
       void main(){
         float d = length(vL.xz);
         float a = (1.0 - smoothstep(2200.0, 5000.0, d)) * uOpacity;
-        // tlo između ulica ostaje tamno: slabi oreoli se potiskuju, svijetle same ulice i lokve svjetiljki
-        float L = lmAt(vL.xz);
-        // izbliza se slabi oreoli potiskuju; izdaleka (mipmape usrednjuju ulice) mreža ostaje cijela
+        vec2 uw = lmWideUv(vL.xz);
+        float aw = lmEdge(uw) * lmIn(uw); // cijeli grad iz OSM-a
+        #if LM_MODE == 0
+          float L = lmAt(vL.xz);
+        #elif LM_MODE == 1
+          vec2 uv = (vL.xz + ${LM_R.toFixed(1)}) / ${(2 * LM_R).toFixed(1)};
+          float L = mix(texture2D(uLMW, clamp(uw, 0.0, 1.0)).r * lmIn(uw), texture2D(uLM, clamp(uv, 0.0, 1.0)).r, lmEdge(uv) * lmIn(uv));
+        #else
+          float L = texture2D(uLMW, clamp(uw, 0.0, 1.0)).r * lmIn(uw);
+        #endif
+        // tlo između ulica ostaje tamno: slabi oreoli se potiskuju, svijetle same ulice i lokve svjetiljki;
+        // izdaleka (mipmape usrednjuju ulice) mreža ostaje cijela
         float mpp = length(fwidth(vL.xz));
         L *= mix(smoothstep(0.035, 0.32, L), 1.0, smoothstep(1.5, 6.0, mpp));
         vec3 base = vec3(0.0021, 0.0033, 0.0068) + vec3(0.0016, 0.0024, 0.0048) * (grid(vL.xz, 50.0) * 0.6 + grid(vL.xz, 250.0));
-        vec3 lit = lampTone(L) * 0.16;
-        vec3 g = fogIt(base + lit * uLamp * uOpacity, vL);
-        vec3 glow = toOut(lampTone(L) * 0.24) * uGlow * (1.0 - uOpacity) * (1.0 - smoothstep(2000.0, 2600.0, d));
-        gl_FragColor = vec4(toOut(g) * a + glow + dith(), a);
+        vec3 lit = lampTone(L) * (0.16 * uLamp * uOpacity);
+        float f = 1.0 - exp(-max(length(vL - uCamL) - uFog.x, 0.0) * uFog.y);
+        vec3 col = a > 0.0 ? toOut(mix(base + lit, uFogCol, f)) * a : vec3(0.0);
+        // izvan tamne podloge (daleko od središta) ulice se dodaju kao svjetlo, bez podloge; prije nego što tlo
+        // postane neprozirno sjaj ulica (uGlow) izlazi iz karte Slavonije
+        float kf = (uOpacity - a) * aw, kg = uGlow * (1.0 - uOpacity) * aw;
+        if (kf > 0.0) col += toOut(lit * (1.0 - f)) * kf;
+        if (kg > 0.0) col += toOut(lampTone(L) * 0.24) * kg;
+        gl_FragColor = vec4(col + dith(), a);
       }`,
-  });
+  }));
 }
 
 /* ───────────────────────── trg, parkovi, travnjaci ───────────────────────── */
@@ -352,6 +390,8 @@ export function waterMaterial(C, { lite }) {
       void main(){
         vec2 p = vL.xz;
         float fw = length(fwidth(p));
+        // izvan 3,4 km rijeka je potpuno prozirna (fade): ne sjenča se
+        if (dot(p, p) > 3400.0 * 3400.0) discard;
         oK = 1.0 - smoothstep(0.08, 0.3, fw * vec3(0.11, 0.31, 0.9));
         float e = max(1.5, fw);
         float h0 = wav(p);
