@@ -183,17 +183,45 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           }`)
         .replace('#include <dithering_fragment>', `#include <dithering_fragment>
           float glass = step(2.5, vKind) * step(vKind, 3.5);
+          // ravna normala u prostoru modela (okrenuta kameri): razlikuje zid od krova i daje smjer zida.
+          // Strmi gotički krov ima |n.y| ≈ 0,5, plohe šiljka i fijala ≈ 0,15 (za reflektore su zid)
+          vec3 nL = normalize(cross(dFdx(vLoc), dFdy(vLoc)));
+          float wall = 1.0 - smoothstep(0.22, 0.42, abs(nL.y));
+          float tc = dot(vLoc.xz, normalize(vec2(-nL.z, nL.x) + 1e-5));
           // reflektori odozdo (topli) i hladna noć prema vrhu
           // iz daljine zgrada dijeli noćnu paletu grada; reflektori i toplina rastu tek kad postane motiv (uFocus)
           float flood = 1.0 - smoothstep(4.0, 78.0, vH);
-          float lit = clamp(flood * (0.5 + 0.5 * uGlow) * (0.3 + 0.7 * uFocus), 0.0, 1.0);
+          // reflektori u tlu svakih ~5,5 m: u podnožju lepeze svjetla, koje se s visinom šire i stapaju
+          float pu = fract(tc / 5.5 + 0.5) - 0.5;
+          float psp = 0.13 + vH * 0.018;
+          float pool = exp(-pu * pu / (psp * psp));
+          float fm = mix(1.0, 0.7 + 0.45 * pool, (1.0 - smoothstep(1.5, 24.0, vH)) * wall * (0.4 + 0.6 * uFocus));
+          // glavni reflektori stoje na trgu ispred tornja (+x): to pročelje svjetlije, bočna i stražnja tamnija;
+          // krovove svjetlo odozdo ne hvata, pa ostaju u hladnoj noći (topli zidovi, tamni krovovi)
+          fm *= mix(0.3, 0.8 + 0.28 * smoothstep(-0.3, 0.9, nL.x), wall);
+          float lit = clamp(flood * (0.5 + 0.5 * uGlow) * (0.3 + 0.7 * uFocus), 0.0, 1.0) * fm;
           vec3 night = mix(vec3(0.36, 0.40, 0.58), vec3(1.08, 0.88, 0.72), lit);
           gl_FragColor.rgb *= mix(vec3(1.0), night, 1.0 - glass);
           gl_FragColor.rgb += vec3(1.0, 0.5, 0.25) * uGlow * 0.05 * flood * (1.0 - glass);
-          // vitraji: toplo žuto svjetlo iznutra (blaga razlika između prozora); sjaj oko njih je zasebna mreža
+          // vitraji: toplo svjetlo iznutra, olovni okviri i blaga razlika stakala (jantar, ponegdje crveno-jantarno
+          // ili prigušeno plavo); okviri nestaju iz daljine prije nego što bi treperili. Sjaj oko njih je zasebna mreža
           float hw = hh(floor(vLoc * vec3(0.45, 0.2, 0.45)));
-          vec3 sg = mix(vec3(1.0, 0.82, 0.38), vec3(1.0, 0.68, 0.26), hw);
-          gl_FragColor.rgb = mix(gl_FragColor.rgb, sg * (0.32 + 1.35 * uWin), glass);
+          vec2 gc = vec2(tc / 0.4, vH / 0.52);
+          vec2 gw = fwidth(gc);
+          vec2 gd = abs(fract(gc) - 0.5);
+          vec2 ld = smoothstep(0.44 - gw, vec2(0.44), gd) * (1.0 - smoothstep(0.15, 0.45, gw));
+          float hc = hh(vec3(floor(gc), 17.0 + hw * 31.0));
+          vec3 sg = mix(vec3(1.0, 0.8, 0.4), vec3(1.0, 0.64, 0.26), hw) * (0.82 + 0.3 * fract(hc * 7.3));
+          if (hc > 0.87) sg = vec3(0.95, 0.42, 0.24);
+          else if (hc < 0.07) sg = vec3(0.32, 0.4, 0.7);
+          gl_FragColor.rgb = mix(gl_FragColor.rgb, sg * (0.22 + 0.8 * uWin) * (1.0 - 0.7 * max(ld.x, ld.y)), glass);
+          // zvonik iznad sata: iza žaluzina tek naslutljivo toplo svjetlo, jače pri dnu otvora. Otvori su u modelu
+          // tamna "vrata" (vrsta 2 kao cigla i škriljevac): od cigle ih dijeli tama, od škriljevca topliji ton
+          float bel = step(1.5, vKind) * step(vKind, 2.5) * step(vColor.r, 0.03) * step(vColor.b * 1.05, vColor.r) * step(48.5, vH) * step(vH, 61.4);
+          float sl = vH / 0.46;
+          float sw = fwidth(sl);
+          float gap = mix(1.0 - smoothstep(0.15, 0.15 + sw, abs(fract(sl) - 0.8)), 0.3, smoothstep(0.3, 0.8, sw));
+          gl_FragColor.rgb += vec3(1.0, 0.6, 0.3) * bel * gap * (0.35 + 0.65 * (1.0 - smoothstep(49.2, 59.5, vH))) * (0.03 + 0.15 * uFocus);
           // vrh tornja hvata svjetlo kad zgrada postane glavni motiv
           gl_FragColor.rgb += vec3(1.0, 0.8, 0.58) * smoothstep(58.0, 90.0, vH) * uFocus * 0.14 * (1.0 - glass);
           // skener: iznad crte ostaje samo nacrt (linije), zgrada se čisto reže; na crti tanka svjetla traka
@@ -202,7 +230,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           gl_FragColor.rgb += vec3(0.45, 0.62, 1.0) * band * 1.2;
           gl_FragColor.a *= uAlpha;`);
     };
-    m.customProgramCacheKey = () => 'zaec-cath-v3';
+    m.customProgramCacheKey = () => 'zaec-cath-v4';
     return m;
   }
   // sjaj vitraja: aditivni prsten oko prozora (iz modela), bez naknadne obrade slike
@@ -797,7 +825,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       cathU.uAlpha.value = solid * s.cathSolid;
       if (cath) cath.visible = s.cathSolid * solid > 0.01;
       // sjaj prozora raste s isticanjem; iz daljine je tek naslutljiv
-      haloU.uI.value = solid * s.cathSolid * (0.12 + 0.88 * s.focus) * 1.15;
+      haloU.uI.value = solid * s.cathSolid * (0.12 + 0.88 * s.focus) * 0.85;
       if (halo) halo.visible = haloU.uI.value > 0.004;
       flood.intensity = 14 * s.glow * solid * s.cathSolid * (1 - 0.6 * s.scan) * (0.2 + 0.8 * s.focus);
       // Hotel Osijek je sporedno sidro: kad konkatedrala postane motiv, povlači se u pozadinu
