@@ -399,6 +399,71 @@ function zaec_registry_industries() {
 			),
 			'related' => array( 'usluge/google-business-profil', 'djelatnosti/ugostiteljstvo-i-smjestaj', 'usluge/izrada-web-stranica' ),
 		),
+		// Nove stranice (strategija 03, točka 3): svaka ima stvaran projekt kao dokaz. Tvrdnje označene ⚑ vlasnik potvrđuje prije objave.
+		'strucne-usluge'            => array(
+			'tab' => 'Struka', 'sector' => 'strucne-usluge', 'label' => 'Stručne usluge', 'icon' => 'clipboard-check', 'prop' => 8, 'sign' => 'URED',
+			'title' => 'Stručne i poslovne usluge', 'name' => 'stručne i poslovne usluge',
+			'service_type' => 'Web stranica za stručne i poslovne usluge',
+			'seo_title' => 'Web stranica za stručne i poslovne usluge | ZAEC',
+			'description' => 'Web za računovodstvo, inženjering, laboratorije i savjetovanje: usluge jezikom klijenta, stručnost koja se vidi, reference i upit prema opsegu posla.',
+			'h1' => 'Web za stručne usluge: stručno, a <em>razumljivo</em>.',
+			'lead' => 'Klijent vas bira po stručnosti koju sam ne može procijeniti. Zato traži znakove: jasno opisane usluge, ljude iza posla, ovlaštenja i reference. Web koji ih pokaže prije prvog sastanka dovodi ozbiljnije upite.',
+			'short' => 'Klijent bira po stručnosti koju ne može sam provjeriti: jasne usluge, ljudi iza posla, ovlaštenja i reference, uz kratak put do upita.',
+			'onweb' => array( 'Usluge jezikom klijenta', 'Tim i ovlaštenja', 'Reference', 'Upit prema opsegu' ),
+			'searches' => array( 'knjigovodstvo za obrt', 'računovodstveni servis + grad', 'energetski certifikat cijena', 'laboratorijska analiza hrane', 'statičar + grad' ),
+			'problems' => array(
+				array( 'Usluge opisane jezikom struke', 'Klijent traži „knjigovodstvo za obrt”, a web nudi „računovodstvene usluge sukladno propisima”. Ne prepozna se i ode.' ),
+				array( 'Ne vidi se tko radi posao', 'Kod stručnih usluga ljudi kupuju povjerenje u osobu. Web bez imena, iskustva i ovlaštenja ne gradi ga.' ),
+				array( 'Svi upiti izgledaju isto', 'Bez nekoliko pitanja o opsegu na prvi razgovor dolaze i oni kojima ne možete pomoći.' ),
+			),
+			'deliver' => array(
+				array( 'Usluga po potrebi klijenta', 'Svaka usluga sa svojom stranicom: kome je namijenjena, što uključuje i kako izgleda suradnja.' ),
+				array( 'Ljudi, ovlaštenja i članstva', 'Tko radi posao, s kojim iskustvom i ovlaštenjima, vidljivo uz usluge i kontakt.' ),
+				array( 'Reference i primjeri rada', 'Projekti i klijenti koje smijete pokazati, s kratkim opisom problema i rješenja.' ),
+				array( 'Upit prema opsegu', 'Vrsta usluge, veličina tvrtke ili projekta i rok. Na prvi razgovor dolazite pripremljeni.' ),
+			),
+			'structure' => array( 'Hero: usluge i kome su namijenjene', 'Usluge (stranica za svaku)', 'Tim i ovlaštenja', 'Reference', 'Kako izgleda suradnja', 'FAQ', 'Upit prema opsegu' ),
+			'faq' => array(
+				// ⚑ obećanje procesa: vlasnik potvrđuje
+				array( 'Smijem li kao regulirana profesija predstavljati usluge na webu?', 'Pravila ovise o komori: odvjetnici, revizori i druge regulirane profesije imaju vlastita. Prije izrade ih zajedno pročitamo i web složimo tako da informira u okviru tih pravila.' ),
+				array( 'Trebam li web i na engleskom?', 'Ako radite sa stranim klijentima ili partnerima, da, barem za ključne usluge. Svaki jezik dobiva svoju adresu, pa ga Google može prikazati klijentima na tom jeziku.' ),
+			),
+			'proof' => 'eurokontrola.hr',
+			'related' => array( 'usluge/izrada-web-stranica', 'djelatnosti/ustanove-i-udruge', 'usluge/seo' ),
+		),
+		'ustanove-i-udruge'         => array(
+			'tab' => 'Ustanove', 'sector' => 'ustanove', 'label' => 'Ustanove i udruge', 'icon' => 'users-group-rounded', 'prop' => 9, 'sign' => 'USTANOVA',
+			'title' => 'Ustanove, udruge i obrazovanje', 'name' => 'ustanove i udruge',
+			'service_type' => 'Web stranica za ustanove i udruge',
+			'seo_title' => 'Web stranica za ustanove, udruge i škole | ZAEC',
+			'description' => 'Web za ustanove, udruge i obrazovanje: sadržaj složen po posjetiteljima, novosti i projekti koje sami uređujete, pristupačnost i jasni dokumenti.',
+			'h1' => 'Web za ustanove i udruge: da svatko nađe <em>svoje</em>.',
+			'lead' => 'Roditelji, korisnici, partneri, donatori i mediji dolaze s različitim pitanjima. Web složen po posjetiteljima, a ne po unutarnjoj organizaciji, odgovara svakome od njih i ne zatrpava ostale.',
+			'short' => 'Puno posjetitelja i puno sadržaja: svatko mora naći svoje bez lutanja, a novosti i projekte uređujete sami.',
+			'onweb' => array( 'Sadržaj po posjetiteljima', 'Novosti i projekti', 'Pristupačnost', 'Dokumenti' ),
+			'searches' => array( 'naziv ustanove', 'udruga + grad', 'upis u vrtić + grad', 'program + naziv ustanove', 'radno vrijeme + naziv ustanove' ),
+			'problems' => array(
+				array( 'Web složen po organizacijskoj shemi', 'Posjetitelj ne zna u kojem je odjelu ono što traži. Traži odgovor, ne organigram.' ),
+				array( 'Novosti koje nitko ne ažurira', 'Ako je za svaku objavu potreban vanjski programer, web zastari za nekoliko mjeseci.' ),
+				array( 'Dokumenti zakopani u PDF-ovima', 'Pravilnici, obrasci i natječaji bez reda i pretrage, i nečitljivi na mobitelu.' ),
+			),
+			'deliver' => array(
+				array( 'Ulaz za svakog posjetitelja', 'Roditelji, korisnici, stručnjaci i partneri odmah vide svoj put kroz sadržaj.' ),
+				array( 'Novosti i projekti koje uređujete sami', 'WordPress bez programera, uz kratku edukaciju pri primopredaji. Stranice EU projekata s oznakama financiranja.' ),
+				// ⚑ formulacija prema Zakonu o pristupačnosti mrežnih stranica (NN 17/19): vlasnik potvrđuje
+				array( 'Pristupačnost', 'Kontrast, veličina slova, rad tipkovnicom i čitačima ekrana. Tijela javnog sektora po zakonu moraju imati pristupačan web i izjavu o pristupačnosti.' ),
+				array( 'Dokumenti s redom', 'Obrasci, pravilnici i natječaji po kategorijama i datumu, s pretragom.' ),
+			),
+			'structure' => array( 'Hero: tko ste i ulazi za posjetitelje', 'Programi i usluge', 'Novosti i projekti', 'Dokumenti', 'O ustanovi i tim', 'Kontakt i lokacija' ),
+			'faq' => array(
+				// ⚑ vlasnik potvrđuje
+				array( 'Možete li poslati ponudu za jednostavnu nabavu ili projekt?', 'Da. Ponuda sadrži opseg, rok i fiksnu cijenu, u obliku koji vam treba za nabavu ili projektnu dokumentaciju.' ),
+				array( 'Hoćemo li sami objavljivati novosti?', 'Da. Pri primopredaji pokažemo kako objavljujete novosti, projekte, galerije i dokumente, bez programera.' ),
+			),
+			'faq_price' => array( 'Koliko košta web za ustanovu?', 'Ovisi o broju stranica i funkcija (npr. dokumenti s pretragom, novosti ili više jezika). Složite procjenu projekta — vaše područje je već odabrano — i dobit ćete pisanu ponudu s fiksnom cijenom.' ),
+			'proof' => 'cza-os.hr',
+			'related' => array( 'usluge/izrada-web-stranica', 'usluge/odrzavanje-weba', 'djelatnosti/strucne-usluge' ),
+		),
 	);
 
 	// Po djelatnosti: opis kadra (alt) i podnaslovi s nazivom zanata (umjesto istih H2 na svih osam stranica).
@@ -410,25 +475,41 @@ function zaec_registry_industries() {
 		'gradevina-i-adaptacije'    => array( 'Zgrada u gradnji noću: gotovi donji katovi, betonski skelet s iskrama zavarivanja, gornji katovi kao nacrt i toranjski kran.', 'Gdje izvođači radova <em>gube</em> upite.', 'Što web izvođača radova <em>mora</em> imati.' ),
 		'ugostiteljstvo-i-smjestaj' => array( 'Kuća za odmor s osvijetljenim bazenom i terasom pod lampicama; krilo sa sobama je tlocrt do kojeg stižu tragovi rezervacija.', 'Gdje restorani i smještaj <em>gube</em> goste.', 'Što web restorana i smještaja <em>mora</em> imati.' ),
 		'trgovine-i-webshop'        => array( 'Osvijetljeni izlog trgovine s plavom tendom; paketi odlijeću svjetlosnim lukovima prema kupcima, dio dućana je nacrt webshopa.', 'Gdje trgovine <em>gube</em> kupce.', 'Što web trgovine <em>mora</em> imati.' ),
-		'saloni-ljepote'            => array( 'Salon noću: stolica i okruglo ogledalo s prstenastim svjetlom; sljedeća radna mjesta su nacrt, a tragovi rezervacija stižu do ogledala.', 'Gdje saloni <em>gube</em> termine.', 'Što web salona <em>mora</em> imati.' ),
+		'saloni-ljepote'            => array( 'Salon noću: stolica i okruglo ogledalo s prstenastim svjetlom; sljedeća radna mjesta su nacrt, a tragovi rezervacija stižu do ogledala.', 'Gdje saloni <em>gube</em> termine.', 'Što web salona <em>mora</em> imati.' ),		'strucne-usluge'            => array( 'Tlocrt ureda: prijem, sala za sastanke, radna mjesta i arhiva.', 'Gdje stručne usluge <em>gube</em> klijente.', 'Što web stručne usluge <em>mora</em> imati.' ),
+		'ustanove-i-udruge'         => array( 'Tlocrt prizemlja ustanove: ulaz s rampom, info pult s oglasnom pločom, dvorana i arhiva.', 'Gdje ustanove <em>gube</em> posjetitelje.', 'Što web ustanove <em>mora</em> imati.' ),
 	);
 
 	// cilj stranice po djelatnosti (podnaslov strukture)
-	$goal = array( 'saloni-ljepote' => 'rezervacije', 'ugostiteljstvo-i-smjestaj' => 'rezervacije', 'trgovine-i-webshop' => 'kupnje', 'gradevina-i-adaptacije' => 'upita' );
+	$goal = array( 'saloni-ljepote' => 'rezervacije', 'ugostiteljstvo-i-smjestaj' => 'rezervacije', 'trgovine-i-webshop' => 'kupnje', 'gradevina-i-adaptacije' => 'upita', 'strucne-usluge' => 'upita', 'ustanove-i-udruge' => 'upita' );
 
 	foreach ( $industries as $slug => $d ) {
 		$c      = $copy[ $slug ] ?? array( $d['title'] . ': noćni kadar djelatnosti, pola stvarno, pola tehnički nacrt.', 'Gdje se <em>gube</em> pozivi.', 'Što vaš web <em>mora</em> imati.' );
 		$sector = zaec_sectors()[ $d['sector'] ];
+		$blocks = array(
+			array( 'type' => 'searches', 'items' => $d['searches'] ),
+			array( 'type' => 'problems', 'title' => $c[1], 'items' => $d['problems'] ),
+			array( 'type' => 'deliver', 'title' => $c[2], 'items' => array_map( static fn( $x ) => array( '', $x[0], $x[1] ), $d['deliver'] ), 'cols' => 2, 'numbered' => true ),
+		);
+		if ( ! empty( $d['proof'] ) ) {
+			// dokaz: samo stvaran, objavljen projekt (blok se ne prikaže ako ga nema)
+			$blocks[] = array( 'type' => 'projects', 'host' => $d['proof'], 'title' => 'Iz <em>prakse</em>.', 'lead' => 'Stvaran projekt iz ovog područja, s problemom, rješenjem i adresom koju možete otvoriti.' );
+		}
+		$blocks[] = array( 'type' => 'anatomy', 'title' => 'Struktura koja vodi do <em>' . ( $goal[ $slug ] ?? 'poziva' ) . '</em>.', 'lead' => 'Predložak redoslijeda za naslovnicu — prilagođavamo ga vašim uslugama, ali logika ostaje.', 'label' => 'nacrt — ' . $slug . '.pdf', 'parts' => array_map( null, $d['structure'] ) );
+		$faq_common = zaec_industry_common_faq();
+		if ( ! empty( $d['faq_price'] ) ) {
+			$faq_common[0] = $d['faq_price'];
+		}
+		$img = 'world/djelatnost-' . $slug . '.webp';
 		$r[ 'djelatnosti/' . $slug ] = array(
 			'type'         => 'industry',
 			'parent'       => 'djelatnosti',
 			'slug'         => $slug,
 			'title'        => $d['title'],
 			'name'         => $d['name'],
-			'service_type' => 'Web stranica i lokalni SEO za ' . $d['name'],
+			'service_type' => $d['service_type'] ?? 'Web stranica i lokalni SEO za ' . $d['name'],
 			'seo_title'    => $d['seo_title'],
 			'description'  => $d['description'],
-			'kicker'       => $sector['short'] . ' · ' . $d['label'],
+			'kicker'       => $sector['short'] === $d['label'] ? $d['label'] : $sector['short'] . ' · ' . $d['label'],
 			'h1'           => $d['h1'],
 			'lead'         => $d['lead'],
 			'short'        => $d['short'],
@@ -439,16 +520,11 @@ function zaec_registry_industries() {
 			'prop'         => $d['prop'],
 			'sign'         => $d['sign'],
 			'onweb'        => $d['onweb'],
-			'image'        => 'world/djelatnost-' . $slug . '.webp',
+			'image'        => is_readable( ZAEC_THEME_DIR . '/assets/img/' . $img ) ? $img : '',
 			'image_alt'    => $c[0],
 			'cta'          => array( 'Složite svoj projekt', 'cijene?djelatnost=' . rawurlencode( $slug ) . '#konfigurator' ),
-			'blocks'       => array(
-				array( 'type' => 'searches', 'items' => $d['searches'] ),
-				array( 'type' => 'problems', 'title' => $c[1], 'items' => $d['problems'] ),
-				array( 'type' => 'deliver', 'title' => $c[2], 'items' => array_map( static fn( $x ) => array( '', $x[0], $x[1] ), $d['deliver'] ), 'cols' => 2, 'numbered' => true ),
-				array( 'type' => 'anatomy', 'title' => 'Struktura koja vodi do <em>' . ( $goal[ $slug ] ?? 'poziva' ) . '</em>.', 'lead' => 'Predložak redoslijeda za naslovnicu — prilagođavamo ga vašim uslugama, ali logika ostaje.', 'label' => 'nacrt — ' . $slug . '.pdf', 'parts' => array_map( null, $d['structure'] ) ),
-			),
-			'faq'          => array_merge( $d['faq'], zaec_industry_common_faq() ),
+			'blocks'       => $blocks,
+			'faq'          => array_merge( $d['faq'], $faq_common ),
 			'related'      => $d['related'],
 		);
 	}

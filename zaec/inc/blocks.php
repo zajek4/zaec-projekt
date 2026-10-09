@@ -174,13 +174,14 @@ function zaec_block_guarantees( $b, $l, $alt ) {
 }
 
 function zaec_block_projects( $b, $l, $alt ) {
-	$projects = zaec_get_projects( 3 );
+	// host: samo taj objavljeni projekt (dokaz uz djelatnost); bez njega nema bloka
+	$projects = ! empty( $b['host'] ) ? array_filter( array( zaec_project_by_host( $b['host'] ) ) ) : zaec_get_projects( 3 );
 	if ( ! $projects ) {
 		return;
 	}
 	zaec_block_open( $alt );
 	zaec_block_head( $b['title'] ?? 'Radovi koje možete <em>otvoriti</em>.', $b['lead'] ?? 'Stvarni projekti — bez izmišljenih klijenata i brojki.', 'Radovi' );
-	echo '<div class="pgrid">';
+	echo '<div class="pgrid' . ( 1 === count( $projects ) ? ' pgrid--one' : '' ) . '">';
 	foreach ( $projects as $p ) {
 		get_template_part( 'template-parts/project-card', null, array( 'p' => $p ) );
 	}

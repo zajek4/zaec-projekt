@@ -55,6 +55,7 @@
 
 /* projekti */
 .pgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.pgrid.pgrid--one { grid-template-columns: minmax(0, 560px); }
 .pcard { display: grid; gap: 0; border-radius: var(--r-l); background: var(--card); border: 1px solid var(--line); overflow: hidden; transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); }
 .pcard:hover { transform: translateY(-5px); box-shadow: 0 30px 50px -30px rgba(20, 20, 20, 0.35); }
 .pcard-shot { display: block; position: relative; aspect-ratio: 16 / 10.5; overflow: hidden; background: var(--paper-2); }
