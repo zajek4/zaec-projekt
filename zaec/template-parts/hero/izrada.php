@@ -75,29 +75,32 @@ $style = $md && $mm ? sprintf(
 ) : '';
 ?>
 <section class="sh sh-izrada" data-hero="izrada" data-header-theme="night" aria-labelledby="sh-title" data-meta="<?php echo esc_attr( wp_json_encode( $meta ) ); ?>" style="<?php echo esc_attr( $style ); ?>">
-	<div class="sh-stage">
-		<div class="sh-frame">
-			<div class="sh-scene">
-				<?php zaec_hero_picture( 'izrada-plan', array( 'class' => 'sh-layer sh-plan', 'priority' => true ) ); ?>
-				<div class="sh-layer sh-real" aria-hidden="true"><?php zaec_hero_picture( 'izrada-real', array( 'class' => 'sh-layer' ) ); ?></div>
-				<h1 class="it-title" id="sh-title">
-					<span class="sr-only"><?php echo esc_html( wp_strip_all_tags( $h1 ) ); ?></span>
-					<?php
-					if ( $md && $mm ) {
-						$zaec_type( 'd', $md );
-						$zaec_type( 'm', $mm );
-					}
-					?>
-				</h1>
-				<div class="it-door">
-					<?php echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore ?>
+	<?php // pozornica je prikovana samo dok traje gradnja (.it-run): uvod na mobitelu dolazi ispod kule, ne preko nje ?>
+	<div class="it-pin">
+		<div class="sh-stage">
+			<div class="sh-frame">
+				<div class="sh-scene">
+					<?php zaec_hero_picture( 'izrada-plan', array( 'class' => 'sh-layer sh-plan', 'priority' => true ) ); ?>
+					<div class="sh-layer sh-real" aria-hidden="true"><?php zaec_hero_picture( 'izrada-real', array( 'class' => 'sh-layer' ) ); ?></div>
+					<h1 class="it-title" id="sh-title">
+						<span class="sr-only"><?php echo esc_html( wp_strip_all_tags( $h1 ) ); ?></span>
+						<?php
+						if ( $md && $mm ) {
+							$zaec_type( 'd', $md );
+							$zaec_type( 'm', $mm );
+						}
+						?>
+					</h1>
+					<div class="it-door">
+						<?php echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore ?>
+					</div>
 				</div>
 			</div>
+			<div class="sh-scan" aria-hidden="true"></div>
+			<p class="sh-hint mono" aria-hidden="true"><span></span><b>Skrolajte — gradimo od ulaza prema vrhu</b></p>
 		</div>
-		<div class="sh-scan" aria-hidden="true"></div>
-		<p class="sh-hint mono" aria-hidden="true"><span></span><b>Skrolajte — gradimo od ulaza prema vrhu</b></p>
+		<div class="it-run" aria-hidden="true"></div>
 	</div>
-	<div class="it-run" aria-hidden="true"></div>
 	<div class="wrap sh-copy it-copy">
 		<?php zaec_render_breadcrumbs(); ?>
 		<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?></p>

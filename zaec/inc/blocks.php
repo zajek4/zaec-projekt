@@ -227,7 +227,7 @@ function zaec_block_process( $b, $l, $alt ) {
  */
 function zaec_block_decisions( $b, $l, $alt ) {
 	zaec_block_open( $alt );
-	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Proces' );
+	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Odluke' );
 	echo '<ol class="decisions" role="list" data-stagger="0.06">';
 	foreach ( zaec_home_steps() as $i => $st ) {
 		printf(

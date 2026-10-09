@@ -91,6 +91,12 @@ Provjereno Playwrightom na lokalnom WP-u (build iz ove grane): prvi ekran na 360
 1920; slijed bloka s kulom na 390, 1024, 1440 i 1920 (paljenje etaža, sve upaljeno na kraju) i uz smanjeno kretanje;
 „Ukratko“ na O nama, Cijenama, SEO-u, hubu djelatnosti, lokalnoj stranici, provjeri i hubu usluga (jednom po stranici).
 
+Pregled 07 (design/07-pregled-izrade.md):
+- Na mobitelu je uvod nakon kraja pina klizio preko kule i gumba na ulazu, jer je pozornica bila prikovana do kraja
+  heroja. Pozornica i `.it-run` sada su u omotaču `.it-pin`, pa prikovanje završava s gradnjom: kula odlazi gore, a
+  uvod dolazi ispod nje. `07-provjera-izrade.mjs`: bez preklapanja na svih šest širina.
+- Kicker bloka „Što kupujete“ je „Odluke“ (bio je „Proces“).
+
 ## 6. Interno povezivanje i ljestvica ulaza (strategija 03 §2 i §4)
 
 - Izrada: `related` sada vodi i na glavnu lokalnu stranicu (Izrada web stranica Osijek, umjesto AI vidljivosti koja
