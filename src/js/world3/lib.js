@@ -124,12 +124,15 @@ export function createEarthField() {
         }
       }
     };
+    // klizni zbroj (isti rezultat kao zbrajanje prozora za svaki piksel, bez množenja s polumjerom)
     const blurY = (inp, out, r) => {
       for (let x = 0; x < W; x++) {
+        let s = 0, n = 0;
+        for (let k = 0; k <= Math.min(H - 1, r); k++) { s += inp[k * W + x]; n++; }
         for (let y = 0; y < H; y++) {
-          let s = 0, n = 0;
-          for (let k = Math.max(0, y - r); k <= Math.min(H - 1, y + r); k++) { s += inp[k * W + x]; n++; }
           out[y * W + x] = s / n;
+          if (y + r + 1 < H) { s += inp[(y + r + 1) * W + x]; n++; }
+          if (y - r >= 0) { s -= inp[(y - r) * W + x]; n--; }
         }
       }
     };

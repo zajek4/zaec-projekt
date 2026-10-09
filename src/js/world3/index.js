@@ -44,6 +44,8 @@ const herm = (y0, m0, y1, m1, t) => {
 export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapter, onFrame }) {
   const root = document.documentElement;
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
+  let disposed = false;
+  let linesSeq = 0;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   // lite: dodir, uski zaslon ili slab procesor. hardwareConcurrency broji logičke niti: 4 niti danas ima
   // tek slabiji prijenosnik (i3, Celeron, stariji 4c/4t), redovito sa slabom integriranom grafikom
@@ -93,10 +95,16 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     lite,
     dataUrl: assets.city,
     modelUrl: assets.model,
+    // crtež i morph trebaju tek u poglavlju nacrta: priprema (~35 ms, 4× više na sporom mobitelu) čeka mirni trenutak
     onLines: (g) => {
-      const w = toWorldLines(g); morph.setSource(w); w.dispose();
-      blueprint.setCathedral(g);
-      blueprint.setGrid(morph.gridInfo, cityScale);
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
+      const seq = ++linesSeq;
+      idle(() => {
+        if (disposed || seq !== linesSeq) return; // noviji model ima prednost
+        const w = toWorldLines(g); morph.setSource(w); w.dispose();
+        blueprint.setCathedral(g);
+        blueprint.setGrid(morph.gridInfo, cityScale);
+      }, { timeout: 2500 });
     },
     // novi model konkatedrale se prevodi u pozadini prije nego što zamijeni stari
     prepare: (mesh) => compile(mesh, scene).catch(() => {}),
@@ -680,6 +688,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     /** privremeno nadjačaj stanje (podešavanje kadrova u pregledniku) */
     debugOverride(o) { override = o; return this.debugStep(1); },
     dispose() {
+      disposed = true;
       cancelAnimationFrame(raf);
       running = false;
       ro.disconnect();

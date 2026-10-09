@@ -49,6 +49,40 @@ function pip(x, y, r) {
   return inside;
 }
 
+/**
+ * Maska vode (par-nepar preko svih prstenova: rijeka minus otoci) u ćelijama od `cell` m, popunjena
+ * vodoravnim linijama jednom. Provjera točke je tada jedno čitanje umjesto točke-u-poligonu po tisućama
+ * vrhova (prije ~280 ms pri učitavanju na sporijem mobitelu). Vraća (x, y) → bool.
+ */
+function waterMask(rings, cell) {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const r of rings) for (let i = 0; i < r.length; i += 2) { x0 = Math.min(x0, r[i]); x1 = Math.max(x1, r[i]); y0 = Math.min(y0, r[i + 1]); y1 = Math.max(y1, r[i + 1]); }
+  if (!(x1 > x0)) return () => false;
+  const W = Math.ceil((x1 - x0) / cell) + 1, H = Math.ceil((y1 - y0) / cell) + 1;
+  const m = new Uint8Array(W * H);
+  const xs = [];
+  for (let row = 0; row < H; row++) {
+    const y = y0 + (row + 0.5) * cell;
+    xs.length = 0;
+    for (const r of rings) {
+      const n = r.length / 2;
+      for (let i = 0, j = n - 1; i < n; j = i++) {
+        const yi = r[i * 2 + 1], yj = r[j * 2 + 1];
+        if (yi > y !== yj > y) xs.push(r[i * 2] + ((r[j * 2] - r[i * 2]) * (y - yi)) / (yj - yi));
+      }
+    }
+    xs.sort((p, q) => p - q);
+    for (let k = 0; k + 1 < xs.length; k += 2) {
+      const a = Math.max(0, Math.ceil((xs[k] - x0) / cell - 0.5)), b = Math.min(W - 1, Math.floor((xs[k + 1] - x0) / cell - 0.5));
+      m.fill(1, row * W + a, row * W + b + 1);
+    }
+  }
+  return (x, y) => {
+    const cx = Math.floor((x - x0) / cell), cy = Math.floor((y - y0) / cell);
+    return cx >= 0 && cy >= 0 && cx < W && cy < H && m[cy * W + cx] === 1;
+  };
+}
+
 /** Prsten pomaknut prema unutra za d (simetrala kuta, ograničena na oštrim kutovima). Prsten je CCW (x istok, y sjever). */
 function insetRing(r, d) {
   const n = r.length / 2;
@@ -257,17 +291,22 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
   let cath = null, cathMat = null, cathLines = null;
   let cathSeq = 0;
   const spire = new THREE.Vector3(33.8, 90, 1);
-  function setCathedral(geo, isFallback, haloGeo = null) {
+  // rubovi rezervnog modela (crtež i morph) računaju se tek ako pravi model ne stigne: inače bi se isti posao
+  // (rubovi + izvor morpha) pri učitavanju radio dvaput
+  let fallbackLines = null;
+  function setCathedral(geo, isFallback, haloGeo = null, lazyLines = false) {
     const seq = ++cathSeq;
     if (!geo.attributes.aKind) geo.setAttribute('aKind', new THREE.BufferAttribute(new Float32Array(geo.attributes.position.count), 1));
     const mat = cathMaterial();
     const mesh = new THREE.Mesh(geo, mat);
     mesh.renderOrder = 1;
     // rubovi za crtež i morph (iz stvarne geometrije modela)
-    const lines = new THREE.EdgesGeometry(geo, isFallback ? 22 : 30);
+    const lines = lazyLines ? null : new THREE.EdgesGeometry(geo, isFallback ? 22 : 30);
     const swap = () => {
       // zakašnjeli rezervni model nikad ne zamjenjuje pravi
-      if (seq !== cathSeq) { geo.dispose(); mat.dispose(); lines.dispose(); haloGeo?.dispose(); return; }
+      if (seq !== cathSeq) { geo.dispose(); mat.dispose(); lines?.dispose(); haloGeo?.dispose(); return; }
+      clearTimeout(fallbackLines?.timer);
+      fallbackLines = null;
       if (cath) { group.remove(cath); cath.geometry.dispose(); cathMat.dispose(); cathLines?.dispose(); }
       if (halo) { group.remove(halo); halo.geometry.dispose(); halo = null; }
       if (haloGeo) { halo = new THREE.Mesh(haloGeo, haloMat); halo.renderOrder = 5; halo.frustumCulled = false; group.add(halo); }
@@ -279,7 +318,11 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       anchors.cath.set(spire.x - 4, spire.y * 1.06, spire.z);
       cath = mesh; cathMat = mat; cathLines = lines;
       group.add(mesh);
-      onLines?.(lines, isFallback);
+      if (lines) onLines?.(lines, isFallback);
+      else {
+        const run = () => { if (seq !== cathSeq || cathLines) return; cathLines = new THREE.EdgesGeometry(geo, 22); onLines?.(cathLines, true); };
+        fallbackLines = { run, timer: setTimeout(run, 6000) };
+      }
       onModel?.(mesh);
     };
     // novi shader se prevodi prije zamjene (bez trzaja usred scrolla)
@@ -292,7 +335,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     g.scale(-7, 7, 7);
     g.translate(2, 0, -3.8);
     g.deleteAttribute('normal');
-    setCathedral(g, true);
+    setCathedral(g, true, null, !!modelUrl);
   }
   if (modelUrl) {
     const loader = new GLTFLoader();
@@ -335,7 +378,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       if (glow) { haloGeo = toFloat(glow.geometry, false); haloGeo.applyMatrix4(glow.matrixWorld); }
       gltf.scene.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose?.(); } });
       setCathedral(geo, false, haloGeo);
-    }, undefined, (err) => console.warn('[ZAEC] model konkatedrale nije učitan, koristi se rezervni', err));
+    }, undefined, (err) => { console.warn('[ZAEC] model konkatedrale nije učitan, koristi se rezervni', err); fallbackLines?.run(); });
   }
   // reflektor: svjetlo je stalno u sceni (dodaje ga engine u korijen), samo mu se mijenja jačina —
   // promjena broja svjetala inače prisiljava ponovno prevođenje svih osvijetljenih shadera usred scrolla
@@ -385,7 +428,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     const DEG = Math.PI / 180;
     // Drava: vanjski prsten + otoci (rupe); pomoćne provjere za mostove, šetnicu i odsjaje
     const outers = d.water.filter((w) => w.h[0] === 0), inners = d.water.filter((w) => w.h[0] === 1);
-    const inWater = (x, y) => outers.some((o) => pip(x, y, o.r)) && !inners.some((q) => pip(x, y, q.r));
+    const inWater = waterMask([...outers, ...inners].map((w) => w.r), 4);
     const nearWater = (x, y, m = 45) => inWater(x + m, y) || inWater(x - m, y) || inWater(x, y + m) || inWater(x, y - m);
     const riverside = [];
 
@@ -842,6 +885,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     },
     dispose() {
       disposed = true;
+      clearTimeout(fallbackLines?.timer);
       disposables.forEach((o) => o.dispose?.());
       cath?.geometry.dispose(); cathMat?.dispose(); cathLines?.dispose();
     },
