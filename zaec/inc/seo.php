@@ -52,6 +52,14 @@ function zaec_og_image() {
 	}
 	// landing stranice: JPG 1200×630 izrezan iz kadra stranice (tools/art/og.mjs), inače zadana slika
 	$l = zaec_get_landing();
+	// djelatnosti i njihov hub: list nacrta s naslovom (og/nacrt-<slug>.jpg, docs/signature/subpages.md)
+	$type = (string) ( $l['type'] ?? '' );
+	if ( in_array( $type, array( 'industry', 'hub-industries' ), true ) ) {
+		$og = 'og/nacrt-' . sanitize_file_name( 'hub-industries' === $type ? 'djelatnosti' : (string) ( $l['slug'] ?? '' ) ) . '.jpg';
+		if ( file_exists( ZAEC_THEME_DIR . '/assets/img/' . $og ) ) {
+			return zaec_img( $og );
+		}
+	}
 	if ( $l && ! empty( $l['image'] ) ) {
 		$og = 'og/' . pathinfo( (string) $l['image'], PATHINFO_FILENAME ) . '.jpg';
 		if ( file_exists( ZAEC_THEME_DIR . '/assets/img/' . $og ) ) {

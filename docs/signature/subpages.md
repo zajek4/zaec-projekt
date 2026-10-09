@@ -121,3 +121,13 @@ Provjereno Playwrightom na lokalnom WP-u (build iz ove grane): prvi ekran na 360
 - QA N3: na `paper-2` blokovima `--muted` je `#635f56` (4,9:1 umjesto 4,33:1). `.mk-in` je na naslovnici (3D nit).
 - Otvoreno: #11 (iste hero slike: SEO = Provjera vidljivosti, Lokalni SEO = Google Business profil) traži nove kadrove
   ili sustav nacrta za usluge; #14 podnožje je u 3D niti.
+
+## 9. Slike za dijeljenje (og:image) iz nacrta
+
+- Djelatnosti i hub djelatnosti dijele se s vlastitim listom nacrta: `assets/img/og/nacrt-<slug>.jpg` (hub:
+  `nacrt-djelatnosti.jpg`), 1200 × 630, lijevo naslov stranice i broj lista, desno list nacrta (desktop pogled).
+  `zaec_og_image()` ih uzima prije slike iz registra; ako datoteke nema, ostaje dosadašnje pravilo.
+- Izrada: `node tools/art/nacrt/og.mjs zaec/assets/img/og <slug>...` snima s lokalnog WP-a (stilovi i fontovi teme,
+  zato build iz grane). Playwright nije ovisnost repozitorija (globalno instaliran, `PW_FROM`), adresa `ZAEC_URL`.
+  Nakon promjene lista nacrta ili naslova djelatnosti sliku treba ponovno snimiti.
+- Svih 11 slika pregledano na kontaktnom listu; og:image provjeren u HTML-u svih 11 stranica.
