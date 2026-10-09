@@ -571,7 +571,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 			<?php zaec_heading( $h( 'final_title' ), 'h2', 'h2 h2--final', true, 'final-title' ); ?>
 			<p class="lead" data-reveal><?php echo esc_html( $h( 'final_lead' ) ); ?></p>
 		</div>
-		<div class="final-form" data-reveal>
+		<div class="final-form" data-reveal data-label-avoid>
 			<?php get_template_part( 'template-parts/goal-form', null, array( 'id' => 'kontakt-forma' ) ); ?>
 		</div>
 	</div>

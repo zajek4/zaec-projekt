@@ -117,6 +117,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
   const disposables = [];
   const track = (o) => { disposables.push(o); return o; };
   let loaded = false;
+  let disposed = false;
   const anchors = { cath: new THREE.Vector3(30, 99, -4), hotel: new THREE.Vector3(329, 66, -154), trg: new THREE.Vector3(105, 4, -78), drava: new THREE.Vector3(80, 4, -470) };
 
   /* ── tlo: tamno, mreža od 50 m koja se gubi prema rubu; ulice svijetle iz karte svjetla ── */
@@ -741,10 +742,15 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
 
     // karta svjetla: ulice, lokve svjetiljki, trgovi i izlozi → tlo, pročelja i odsjaji u Dravi
     const squares = d.areas.filter((a) => a.h[0] === 0 || a.h[0] === 3).map((a) => a.r);
-    const lm = track(buildLightMap({ roads: d.roads.map((rd) => ({ c: rd.h[0], r: rd.r, w: rd.w })), lamps: lamp, lampK, squares, shops, riverside, zone, lite }));
-    const old = C.uLM.value;
-    C.uLM.value = lm;
-    old.dispose();
+    // crta se izvan glavne niti; do tada tlo i pročelja koriste praznu kartu (grad je iza papira ili daleko)
+    buildLightMap({ roads: d.roads.map((rd) => ({ c: rd.h[0], r: rd.r, w: rd.w })), lamps: lamp, lampK, squares, shops, riverside, zone, lite })
+      .then((lm) => {
+        if (disposed) { lm.dispose(); return; }
+        const old = C.uLM.value;
+        C.uLM.value = track(lm);
+        old.dispose();
+      })
+      .catch((err) => console.warn('[ZAEC] karta svjetla nije nacrtana', err));
 
     // Hotel Osijek: orijentacija prema najduljem bridu tlocrta podija
     const hm = d.marks.find((m) => m.h[0] === 2);
@@ -835,6 +841,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       lampPts.uniforms.uWake.value = s.wake;
     },
     dispose() {
+      disposed = true;
       disposables.forEach((o) => o.dispose?.());
       cath?.geometry.dispose(); cathMat?.dispose(); cathLines?.dispose();
     },

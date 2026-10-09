@@ -2,7 +2,7 @@
 // Sve u lokalnim metrima grada (x = istok, y = gore, z = −sjever). Boje se računaju linearno, a na izlazu
 // se pretvaraju u prikaz (gama), pa se topla svjetla miješaju fizikalno uvjerljivo.
 //
-// Karta svjetla (lightmap) jedna je tekstura (R8) koju crta platno pri učitavanju: stvarne ulice prema rangu,
+// Karta svjetla (lightmap) jedna je tekstura (R8) koju crta platno pri učitavanju (u Workeru kad može): stvarne ulice prema rangu,
 // svjetiljke kao lokve svjetla, trgovi i pješačke zone. Iz nje čitaju tlo (ulice svijetle odozgo), donji dijelovi
 // pročelja (svjetlo ulice na zidu), izlozi i Drava (odsjaji svjetla s obale).
 import * as THREE from 'three';
@@ -12,13 +12,12 @@ const RISE_R = 3200;
 
 /* ───────────────────────── karta svjetla ───────────────────────── */
 /**
- * roads: [{ c, r }] (OSM rang 0…5, prsten x/sjever u m), lamps: Float32 [x, y, z…], lampK: jačina po lampi,
- * squares: prstenovi trgova, shops: prstenovi zgrada s izlozima. Vraća DataTexture (R8, mipmape).
+ * Crtanje karte (R8). Čista funkcija bez ičega izvan sebe: ista se pokreće u Workeru (kao tekst) ili, gdje
+ * OffscreenCanvas/Worker nisu dostupni, na glavnoj niti. Crtanje 2048² platna i čitanje piksela trajalo je
+ * ~150 ms na stolnom računalu (više na mobitelu) — u Workeru ne blokira scroll.
  */
-export function buildLightMap({ roads, lamps, lampK, squares, shops, riverside = [], zone, lite }) {
-  const N = lite ? 1024 : 2048;
-  const k = N / (2 * LM_R);
-  const cv = document.createElement('canvas');
+function paintLightMap(cv, N, R, roads, zks, lamps, lampK, squares, shops, riverside) {
+  const k = N / (2 * R);
   cv.width = cv.height = N;
   const g = cv.getContext('2d', { willReadFrequently: true });
   g.fillStyle = '#000';
@@ -27,8 +26,8 @@ export function buildLightMap({ roads, lamps, lampK, squares, shops, riverside =
   g.lineCap = 'round';
   g.lineJoin = 'round';
   // redak 0 = sjever (z = −R) → uv.y = (z + R) / 2R
-  const X = (x) => (x + LM_R) * k;
-  const Y = (y) => (LM_R - y) * k;
+  const X = (x) => (x + R) * k;
+  const Y = (y) => (R - y) * k;
   const path = (r, close) => {
     g.beginPath();
     g.moveTo(X(r[0]), Y(r[1]));
@@ -38,14 +37,14 @@ export function buildLightMap({ roads, lamps, lampK, squares, shops, riverside =
   // širina (m) i jačina sjaja ulice prema rangu: glavne prometnice, sabirne, stambene, servisne, pješačke, staze
   const W = [[11, 0.2, 30, 0.07], [9, 0.17, 24, 0.06], [6.5, 0.11, 15, 0.04], [4, 0.05, 8, 0.02], [7, 0.2, 18, 0.07], [2.4, 0.035, 0, 0]];
   const white = (a) => `rgba(255,255,255,${Math.min(1, a).toFixed(4)})`;
-  for (const rd of roads) {
+  for (let j = 0; j < roads.length; j++) {
+    const rd = roads[j];
     const w = W[rd.c];
     if (!w) continue;
-    const r = rd.r;
     // šetnica uz Dravu: svjetla uz vodu (odsjaji u rijeci) vrijede i izvan središta
-    const zk = zone(r[0], r[1]) * (rd.w ? 1.8 : 1);
+    const zk = zks[j];
     if (rd.c === 5 && zk < 0.7) continue;
-    path(r, false);
+    path(rd.r, false);
     if (w[2]) { g.lineWidth = w[2] * k; g.strokeStyle = white(w[3] * zk); g.stroke(); }
     g.lineWidth = w[0] * k;
     g.strokeStyle = white(w[1] * zk);
@@ -74,6 +73,34 @@ export function buildLightMap({ roads, lamps, lampK, squares, shops, riverside =
   const img = g.getImageData(0, 0, N, N).data;
   const data = new Uint8Array(N * N);
   for (let i = 0; i < N * N; i++) data[i] = img[i * 4];
+  return data;
+}
+
+function paintInWorker(args) {
+  if (typeof OffscreenCanvas === 'undefined' || typeof Worker === 'undefined') return Promise.reject(new Error('bez OffscreenCanvas'));
+  return new Promise((resolve, reject) => {
+    const src = `const paint = ${paintLightMap.toString()};
+onmessage = (e) => { const a = e.data; const d = paint(new OffscreenCanvas(1, 1), ...a); postMessage(d, [d.buffer]); };`;
+    const url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+    let w;
+    try { w = new Worker(url); } catch (e) { URL.revokeObjectURL(url); reject(e); return; }
+    const done = () => { w.terminate(); URL.revokeObjectURL(url); };
+    w.onmessage = (e) => { done(); resolve(e.data); };
+    w.onerror = (e) => { e.preventDefault?.(); done(); reject(new Error('worker')); };
+    w.postMessage(args);
+  });
+}
+
+/**
+ * roads: [{ c, r, w }] (OSM rang 0…5, prsten x/sjever u m), lamps: [x, y, z…], lampK: jačina po lampi,
+ * squares: prstenovi trgova, shops: prstenovi zgrada s izlozima. Vraća Promise<DataTexture> (R8, mipmape).
+ */
+export async function buildLightMap({ roads, lamps, lampK, squares, shops, riverside = [], zone, lite }) {
+  const N = lite ? 1024 : 2048;
+  const zks = roads.map((rd) => zone(rd.r[0], rd.r[1]) * (rd.w ? 1.8 : 1));
+  const args = [N, LM_R, roads.map((rd) => ({ c: rd.c, r: rd.r })), zks, lamps, lampK, squares, shops, riverside];
+  let data;
+  try { data = await paintInWorker(args); } catch { data = paintLightMap(document.createElement('canvas'), ...args); }
   const tex = new THREE.DataTexture(data, N, N, THREE.RedFormat, THREE.UnsignedByteType);
   tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
   tex.magFilter = THREE.LinearFilter;

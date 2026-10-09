@@ -33,7 +33,7 @@
   --abyss-line-2: rgba(150, 168, 255, 0.2);
   --abyss-fg: #e8ebf5;
   --abyss-muted: #8d95b0;
-  --abyss-dim: #5b6380;
+  --abyss-dim: #7a83a3; /* 5,4:1 na #04050b, 4,75:1 na #111729 (WCAG AA za sitni tekst) */
   --lamp: #ffcf8a;
 
   --font-sans: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;

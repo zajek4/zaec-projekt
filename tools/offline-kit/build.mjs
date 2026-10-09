@@ -2,6 +2,7 @@
 // Pokretanje iz korijena repozitorija: bun tools/offline-kit/build.mjs  (prethodno tools/offline-kit/setup.sh)
 import { rmSync, mkdirSync, copyFileSync, readdirSync, readFileSync, writeFileSync, renameSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
 const KIT = process.env.ZAEC_KIT || '/tmp/zaec-offline-kit';
 const out = process.argv[2] || 'zaec/assets/build';
 rmSync(out, { recursive: true, force: true });
@@ -17,6 +18,23 @@ if (!r.success) { for (const l of r.logs) console.error(l); process.exit(1); }
 const chunkFiles = () => ['app.js', 'home.js', ...readdirSync(`${out}/chunks`).map((c) => `chunks/${c}`)];
 if (chunkFiles().some((f) => readFileSync(`${out}/${f}`, 'utf8').includes('gates.js'))) throw new Error('gates.js je uvezen — provjeri podjelu chunkova');
 rmSync(`${out}/gates.js`);
+// Bun ne snižava sintaksu, a vite.config.mjs gradi za es2020: bez ovoga three chunk nosi `static {}` (Safari/iOS < 16.4
+// tada dobiva samo poster). TypeScript (globalni, ZAEC_TS) snižava na ES2020, Bun zatim ponovno sažima razmake;
+// acorn (ZAEC_ACORN) provjerava da izlaz parsira kao ES2020.
+const req = createRequire(import.meta.url);
+const ts = req(process.env.ZAEC_TS || '/opt/node22/lib/node_modules/typescript');
+const squeeze = new Bun.Transpiler({ loader: 'js', minifyWhitespace: true });
+let acorn = null;
+try { acorn = req(process.env.ZAEC_ACORN || '/opt/node-tools/node_modules/acorn'); } catch { console.warn('acorn nije pronađen — preskačem provjeru ES2020'); }
+for (const f of chunkFiles()) {
+  const p = `${out}/${f}`;
+  const low = ts.transpileModule(readFileSync(p, 'utf8'), {
+    compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext, useDefineForClassFields: true, removeComments: true },
+  }).outputText;
+  const code = squeeze.transformSync(low);
+  if (acorn) acorn.parse(code, { ecmaVersion: 2020, sourceType: 'module' });
+  writeFileSync(p, code);
+}
 // assets: fontovi iz kita (stalna imena), noise.png s hashom
 mkdirSync(`${out}/assets`, { recursive: true });
 for (const f of readdirSync(`${KIT}/assets`)) if (/\.(woff2?|png)$/.test(f) && !f.startsWith('noise')) copyFileSync(`${KIT}/assets/${f}`, `${out}/assets/${f}`);

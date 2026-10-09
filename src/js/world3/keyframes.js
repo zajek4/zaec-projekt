@@ -41,7 +41,7 @@ export const FRAMES = {
   arch: { ...city, tx: 0, ty: 6.4, tz: 0, az: 0, el: 4, dist: 31, sx: 0.17, hold: { sx: 0.42 }, glow: 0.4, dim: 0.8, lines: 0, focus: 0.5, beam: 0.3, scan: 1, wire: 1, fit: 14, m: { dist: 44, sx: 0, sy: 0.16 } },
   grid: { ...city, tx: 0.2, ty: 6.2, az: 0, el: 2, dist: 30, sx: 0.17, dim: 0.92, lines: 0, cathSolid: 0, scan: 1, wire: 1, morph: 1, glow: 0, fit: 14, m: { dist: 44, sx: 0, sy: 0.16 } },
   web: { ...web, tx: 0.4, ty: 4.7, az: 0, el: 0, dist: 23, sx: 0.15, fit: 13.5, m: { dist: 34, sx: 0, sy: 0.18 } },
-  flow: { ...web, fit: 31, tx: 0.3, ty: 4.7, az: 0, el: 0, dist: 42.5, sx: 0, sy: 0.085, flow: 1, labFlow: 1, m: { dist: 57, fit: 15, tx: 0.4, ty: 5, sy: 0.235 }, t: { dist: 43, sy: 0.12 } },
+  flow: { ...web, fit: 35, tx: 0.3, ty: 4.7, az: 0, el: 0, dist: 42.5, sx: 0, sy: 0.085, flow: 1, labFlow: 1, m: { dist: 57, fit: 15, tx: 0.4, ty: 5, sy: 0.235 }, t: { dist: 43, sy: 0.12 } },
   'layers-a': { ...web, wire: 0, tx: 0.6, ty: 4.2, az: -26, el: 32, dist: 35, sx: 0.17, layers: 0.14, layersA: 1, labLayers: 1, fit: 15, m: { dist: 54, sx: 0, sy: 0.17 } },
   'layers-b': { ...web, wire: 0, tx: 0.6, ty: 4.2, az: -22, el: 30, dist: 35, sx: 0.17, layers: 1, layersA: 1, labLayers: 1, fit: 15, m: { dist: 52, sx: 0, sy: 0.17 } },
   'layers-c': { ...web, wire: 0, tx: 0.4, ty: 4.2, az: -14, el: 22, dist: 33, sx: 0.25, layers: 1, layersA: 1, assemble: 1, labLayers: 0, fit: 14, m: { dist: 46, sx: 0, sy: 0.17 } },

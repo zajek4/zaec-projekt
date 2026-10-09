@@ -85,7 +85,7 @@ $zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_ki
 	</div>
 </header>
 
-<div class="mobile-menu" id="mobilni-izbornik" data-mobile-menu>
+<div class="mobile-menu" id="mobilni-izbornik" role="dialog" aria-label="Izbornik" data-mobile-menu>
 	<nav aria-label="Mobilna navigacija">
 		<ul class="mm-main">
 			<?php $zaec_n = 0; ?>

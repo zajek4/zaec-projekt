@@ -126,9 +126,23 @@ document.querySelectorAll('[data-sub]').forEach((li) => {
 /* ───────── mobilni izbornik ───────── */
 const menuBtn = document.querySelector('[data-menu-toggle]');
 const menu = document.querySelector('[data-mobile-menu]');
+// dok je izbornik otvoren, sve iza njega je inert (tipkovnica i čitač ekrana ostaju u izborniku);
+// gumb izbornika ostaje dostupan jer ga zatvara
+let inerted = [];
+function setInert(on) {
+  inerted.forEach((el) => (el.inert = false));
+  inerted = [];
+  if (!on) return;
+  const keep = (el) => el === menu || el.contains(menuBtn);
+  for (const el of document.body.children) if (!keep(el) && !el.inert) inerted.push(el);
+  const inner = menuBtn?.parentElement;
+  if (inner) for (const el of inner.children) if (el !== menuBtn && !el.inert) inerted.push(el);
+  inerted.forEach((el) => (el.inert = true));
+}
 function openMenu() {
   root.classList.add('menu-open');
   menuBtn?.setAttribute('aria-expanded', 'true');
+  setInert(true);
   header?.classList.remove('is-hidden');
   lenis?.stop();
   document.body.style.overflow = 'hidden';
@@ -139,6 +153,7 @@ function closeMenu() {
   if (!root.classList.contains('menu-open')) return;
   root.classList.remove('menu-open');
   menuBtn?.setAttribute('aria-expanded', 'false');
+  setInert(false);
   lenis?.start();
   document.body.style.overflow = '';
 }
