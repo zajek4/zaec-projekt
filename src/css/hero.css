@@ -279,6 +279,76 @@
 }
 .eh-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; transform-origin: 70% 50%; }
 .eh-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(4, 6, 12, 0.35), rgba(4, 6, 12, 0) 30%), linear-gradient(0deg, rgba(4, 6, 12, 0.55), rgba(4, 6, 12, 0) 26%); }
+/* ── Nacrt djelatnosti (design/02): tehnički list struke u noćnoj cijanotipiji umjesto 3D kadra ──
+   Tekst u crtežu je u jedinicama crteža (viewBox 1200 × 1000): 16 u = 12,4–15 px od 1280 do 1920 px,
+   tablet 17 u = 12,1 px, mobilni izrez 21 u = 12 px na 390 px. Ispod toga ne ići. */
+.nacrt { --sheet: #0d1631; --l: #e3e9ff; --lampc: var(--lamp); --grid: rgba(227, 233, 255, 0.05); }
+.eh-frame.nacrt { background: var(--sheet); }
+.eh-frame.nacrt::after { background: linear-gradient(90deg, rgba(4, 6, 12, 0.18), rgba(4, 6, 12, 0) 24%); }
+.nacrt svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.nacrt .sheet { fill: var(--sheet); }
+.nacrt .ln-grid { stroke: var(--grid); stroke-width: 1; }
+.nacrt .ln-frame { stroke: var(--l); stroke-opacity: 0.38; stroke-width: 1; fill: none; }
+.nacrt .ln-con { stroke: var(--l); stroke-opacity: 0.16; stroke-width: 0.75; stroke-dasharray: 14 6 2 6; fill: none; }
+.nacrt .cut { stroke: var(--l); stroke-width: 2; }
+.nacrt .cut-w { stroke: var(--l); stroke-width: 2.2; fill: none; }
+.nacrt .ln-h { stroke: var(--l); stroke-opacity: 0.5; stroke-width: 0.8; }
+.nacrt .wool { stroke: none; opacity: 0.55; }
+.nacrt .ln-2 { stroke: var(--l); stroke-opacity: 0.8; stroke-width: 1.2; fill: none; }
+.nacrt .ln-3 { stroke: var(--l); stroke-opacity: 0.6; stroke-width: 0.8; stroke-dasharray: 6 4; fill: none; }
+.nacrt .ln-beyond { stroke: var(--l); stroke-opacity: 0.45; stroke-width: 1; stroke-dasharray: 8 6; fill: none; }
+.nacrt .ln-sec { stroke: var(--l); stroke-opacity: 0.85; stroke-width: 1.4; stroke-dasharray: 18 5 3 5; }
+.nacrt .tile { stroke: var(--l); stroke-width: 1.6; fill: var(--sheet); }
+.nacrt .water { fill: rgba(227, 233, 255, 0.08); stroke: none; }
+.nacrt .mask { fill: var(--sheet); stroke: none; }
+.nacrt .lamp-fill { stroke: var(--lampc); stroke-width: 1.8; fill: color-mix(in srgb, var(--lampc) 22%, transparent); }
+.nacrt .ln-dim, .nacrt .ln-lead { stroke: var(--l); stroke-opacity: 0.7; stroke-width: 0.8; fill: none; }
+.nacrt .ln-lead { stroke-opacity: 0.6; }
+.nacrt .dot { fill: var(--l); }
+.nacrt .nib { fill: var(--l); stroke: none; opacity: 0.8; }
+.nacrt text { font-family: var(--font-mono); fill: var(--l); letter-spacing: 0.08em; paint-order: stroke; stroke: var(--sheet); stroke-width: 7px; stroke-linejoin: round; }
+.nacrt .t-dim { font-size: 15px; fill-opacity: 0.85; }
+.nacrt .t-call { font-size: 16px; fill-opacity: 0.9; }
+.nacrt .t-n { font-weight: 700; fill-opacity: 1; }
+.nacrt .t-web { font-size: 16px; fill-opacity: 0.55; letter-spacing: 0.02em; }
+.nacrt .t-key { font-size: 14px; font-weight: 600; }
+.nacrt .t-small { font-size: 15px; fill-opacity: 0.55; }
+.nacrt .t-tb { font-size: 15px; fill-opacity: 0.7; }
+.nacrt .t-tb-b { font-family: var(--font-sans); font-size: 26px; font-weight: 780; letter-spacing: -0.01em; font-variation-settings: 'wdth' 112; }
+.nacrt .tb-bg { fill: var(--sheet); stroke: var(--l); stroke-opacity: 0.38; }
+.nacrt .lamp .dot { fill: var(--lampc); }
+.nacrt .lamp .ln-lead { stroke: var(--lampc); stroke-opacity: 0.9; }
+.nacrt .lamp text { fill: var(--lampc); }
+.nacrt .lamp .t-web { fill-opacity: 0.62; } /* pretraga: 55 % bi bilo 4,48:1, ispod AA */
+.nacrt .lamp .halo { fill: var(--lampc); opacity: 0.12; }
+.nacrt svg.m { display: none; }
+.nacrt svg.m :is(.t-call, .t-web) { font-size: 21px; }
+.nacrt svg.m .t-dim { font-size: 18px; }
+/* iscrtavanje redom kojim se crta na papiru, jednom (bez JS-a i uz smanjen pokret: završno stanje) */
+html.motion-ok .nacrt .nd { animation: nd-in 0.5s var(--ease-out) both; }
+html.motion-ok .nacrt .nd [pathLength] { stroke-dasharray: 1; animation: nd-draw 0.6s var(--ease-out) both; animation-delay: inherit; }
+html.motion-ok .nacrt .nd-1 { animation-delay: 0.2s; }
+html.motion-ok .nacrt .nd-2 { animation-delay: 0.35s; }
+html.motion-ok .nacrt :is(.nd-3, .nd-4) { animation-delay: 0.55s; }
+html.motion-ok .nacrt .nd-5 { animation-delay: 0.85s; }
+html.motion-ok .nacrt .nd-6 { animation-delay: 1.05s; animation-duration: 0.4s; }
+html.motion-ok .nacrt .nd-6 [pathLength] { animation: none; stroke-dasharray: none; }
+html.motion-ok .nacrt .lamp .halo { animation: nd-lamp 0.5s var(--ease-out) 1.35s both; transform-box: fill-box; transform-origin: center; }
+html.motion-ok .nacrt .nd .lamp-fill { animation: nd-in 0.5s var(--ease-out) 1.35s both; }
+html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s both; }
+@keyframes nd-in { from { opacity: 0; } }
+@keyframes nd-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes nd-lamp { from { opacity: 0; transform: scale(0.2); } }
+@media (prefers-reduced-motion: reduce) { html.motion-ok .nacrt :is(.nd, .nd [pathLength], .halo, .lamp-fill, text) { animation: none; } }
+@media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 4/5) {
+  .nacrt svg.d :is(.t-call, .t-web, .t-n) { font-size: 17px; }
+  .nacrt svg.d .dim-33 { display: none; }
+}
+@media (max-aspect-ratio: 4/5), (max-width: 760px) {
+  .nacrt svg.d { display: none; }
+  .nacrt svg.m { display: block; }
+  .eh-frame.nacrt::after { background: linear-gradient(0deg, rgba(4, 6, 12, 0.85), rgba(4, 6, 12, 0.45) 16%, rgba(4, 6, 12, 0) 34%); }
+}
 .eh-slate {
   position: absolute; z-index: 1; left: clamp(18px, 2vw, 28px); bottom: clamp(16px, 1.8vw, 24px); right: 22%;
   display: flex; align-items: baseline; gap: 14px; margin: 0;

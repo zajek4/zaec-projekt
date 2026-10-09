@@ -79,6 +79,22 @@ function zaec_hero_preload() {
 }
 add_action( 'wp_head', 'zaec_hero_preload', 2 );
 
+/**
+ * Nacrt djelatnosti (design/02): oba pogleda lista kao inline SVG (stilovi i fontovi stranice moraju djelovati
+ * na tekst u crtežu, zato ne <img>). Generira ih tools/art/nacrt/build.mjs. Nema lista → null.
+ */
+function zaec_nacrt( $l ) {
+	$slug = (string) ( $l['slug'] ?? '' );
+	if ( '' === $slug || 'industry' !== ( $l['type'] ?? '' ) ) {
+		return null;
+	}
+	$dir = ZAEC_THEME_DIR . '/assets/img/nacrt/' . sanitize_file_name( $slug );
+	if ( ! is_readable( $dir . '-d.svg' ) || ! is_readable( $dir . '-m.svg' ) ) {
+		return null;
+	}
+	return array( (string) file_get_contents( $dir . '-d.svg' ), (string) file_get_contents( $dir . '-m.svg' ) );
+}
+
 /** Blokovi koje potpisni hero preuzima u svoju scenu (npr. anatomija na Izradi) ne ponavljaju se ispod. */
 function zaec_hero_prepare( $l ) {
 	$kind = zaec_hero_kind( $l );

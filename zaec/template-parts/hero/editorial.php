@@ -18,7 +18,8 @@ $dark  = ! empty( $l['dark'] );
 $cta   = $l['cta'] ?? array( 'Složite svoj projekt', 'cijene#konfigurator' );
 $href  = 0 === strpos( $cta[1], '#' ) ? $cta[1] : zaec_url( $cta[1] );
 $title = $l['h1'] ?? $l['title'];
-$img   = $l['image'] ?? '';
+$nacrt = zaec_nacrt( $l );
+$img   = $nacrt ? '' : ( $l['image'] ?? '' );
 $kick  = (string) ( $l['kicker'] ?? $l['title'] );
 // oznaka kadra: "U.04" iz kickera ("Usluga · U.04"), inače naziv stranice
 $code = preg_match( '~([A-ZČĆŽŠĐ]\.\d{2})~u', $kick, $zaec_m ) ? $zaec_m[1] : $kick;
@@ -33,14 +34,18 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 	}
 }
 ?>
-<section class="eh<?php echo $dark ? ' eh--dark' : ''; ?><?php echo $img ? '' : ' eh--noimg'; ?><?php echo $sheet ? ' eh--hub' : ''; ?>" data-hero="editorial"<?php echo $dark ? ' data-header-theme="night"' : ''; ?> aria-labelledby="eh-title">
+<section class="eh<?php echo $dark ? ' eh--dark' : ''; ?><?php echo $img || $nacrt ? '' : ' eh--noimg'; ?><?php echo $nacrt ? ' eh--nacrt' : ''; ?><?php echo $sheet ? ' eh--hub' : ''; ?>" data-hero="editorial"<?php echo $dark ? ' data-header-theme="night"' : ''; ?> aria-labelledby="eh-title">
 	<div class="eh-stage">
 		<div class="wrap eh-copy">
 			<div class="eh-head">
 				<?php zaec_render_breadcrumbs(); ?>
 				<p class="kicker"><?php echo esc_html( $kick ); ?></p>
 			</div>
-			<?php if ( $img ) : ?>
+			<?php if ( $nacrt ) : ?>
+				<figure class="eh-frame nacrt">
+					<?php echo $nacrt[0] . $nacrt[1]; // phpcs:ignore -- generirani SVG iz teme (tools/art/nacrt) ?>
+				</figure>
+			<?php elseif ( $img ) : ?>
 				<figure class="eh-frame">
 					<?php $zaec_srcset = zaec_img_srcset( $img ); ?>
 					<img class="eh-img" src="<?php echo esc_url( zaec_img( $img ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-aspect-ratio: 4/5) 100vw, (max-width: 760px) 100vw, 58vw"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
