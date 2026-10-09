@@ -617,8 +617,8 @@ function zaec_registry_special() {
 		'h1'          => 'Kako vas vide <em>Google</em> i AI? Provjerimo besplatno.',
 		'lead'        => 'Pošaljite naziv tvrtke i grad. Ručno provjeravamo Google profil, recenzije, web, brzinu i što o vama kažu ChatGPT i Google AI — uz usporedbu s tri konkurenta i tri koraka koja najviše donose.',
 		'answer'      => 'Besplatna provjera vidljivosti uključuje ručnu analizu Google Business profila, recenzija, web stranice (sadržaj, brzina, mobitel, mjerenje) i odgovora AI asistenata o vašoj tvrtki, usporedbu s tri lokalna konkurenta i kratko izvješće s tri prioritetna koraka.',
-		'image'       => 'world/usluga-seo.webp',
-		'image_alt'   => 'Povećalo iznad grada u nacrtu izdvaja jednu osvijetljenu zgradu — vaš obrt — prema kojoj stižu upiti.',
+		'image'       => 'world/usluga-provjera.webp',
+		'image_alt'   => 'Vaš obrt osvijetljen sprijeda, iza njega tri konkurenta u nacrtu; uz svaku zgradu kota visine, crta mjerila spaja vrhove.',
 		'cta'         => array( 'Pošalji za provjeru', '#upit' ),
 		'blocks'      => array(
 			array(

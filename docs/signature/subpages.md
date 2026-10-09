@@ -125,8 +125,14 @@ Pregled 07 (design/07-pregled-izrade.md):
 - #10: blok „Šest razloga da se javite danas“ ostaje samo na Cijenama (maknut s Usluga i O nama).
 - #16: problemi (P.01–P.03) tintom; boja greške ostaje samo za validaciju forme.
 - QA N3: na `paper-2` blokovima `--muted` je `#635f56` (4,9:1 umjesto 4,33:1). `.mk-in` je na naslovnici (3D nit).
-- Otvoreno: #11 (iste hero slike: SEO = Provjera vidljivosti, Lokalni SEO = Google Business profil) traži nove kadrove
-  ili sustav nacrta za usluge; #14 podnožje je u 3D niti.
+- #11: Provjera vidljivosti i Google Business profil dobili su vlastite kadrove (`tools/art/scenes/profil.js`,
+  lokalni render, bez troška). GBP: kartica profila nad oznakom na karti u nacrtu (fotografija radnje, zvjezdice,
+  gumbi poziv / ruta / web, recenzije), tragovi pretraga dolaze s desne strane, ne preko kartice. Provjera: vaš obrt
+  osvijetljen sprijeda, tri konkurenta u nacrtu iza svjetlosnog lista, uz svaku zgradu kota, crta mjerila preko vrhova.
+  Bez brojeva i ocjena u kadru. Kartica GBP-a je u srednjoj trećini kadra jer naslov na 1280–1440 px ulazi u lijevi
+  rub okvira. Provjereno na stranicama na 1440, 1280, 1024 i 390. Izvedenice (`-800.webp`, `og/*.jpg`) samo za ta
+  dva kadra, s parametrima iz `derive.mjs`. SEO i dalje ima povećalo (design/04 ga zove klišejem), ali više ga ne dijeli.
+- Otvoreno: #14 podnožje je u 3D niti.
 
 ## 9. Slike za dijeljenje (og:image) iz nacrta
 

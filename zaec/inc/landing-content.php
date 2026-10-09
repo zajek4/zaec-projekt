@@ -369,8 +369,8 @@ function zaec_registry_services() {
 		'h1'           => 'Google Business profil koji vas stavlja na <em>kartu</em>.',
 		'lead'         => 'Za većinu lokalnih usluga profil na Google karti donosi više poziva od same web stranice. Postavimo ga ispravno, povežemo s webom i održavamo ga živim.',
 		'answer'       => 'Google Business profil (bivši Google Moja tvrtka) je besplatni profil tvrtke na Google pretrazi i Kartama. ZAEC ga postavlja ili popravlja: primarna i sporedne kategorije, usluge, područje rada, fotografije, objave, poveznica na pravu stranicu weba i sustav za prikupljanje stvarnih recenzija.',
-		'image'        => 'world/usluga-lokalno.webp',
-		'image_alt'    => 'Oznaka vašeg obrta na karti Osijeka u nacrtu, s krugom područja rada i svjetlosnim tragovima upita iz okolice.',
+		'image'        => 'world/usluga-gbp.webp',
+		'image_alt'    => 'Kartica profila nad oznakom na karti u nacrtu: fotografija radnje, zvjezdice, gumbi za poziv, rutu i web, radno vrijeme i recenzije.',
 		'cta'          => array( 'Želim uređen profil', 'kontakt#upit' ),
 		'blocks'       => array(
 			array(
