@@ -189,7 +189,7 @@ const THUMB_CSS = `svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
 .tile{stroke:var(--l);stroke-width:1.6;fill:var(--sheet)}
 .lamp-fill{stroke:var(--lamp);stroke-width:1.8;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:2;fill:none}
 .ln-dim{stroke:var(--l);stroke-opacity:.7;stroke-width:.8}.nib{fill:var(--l);opacity:.8}
-.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:.8}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:.8}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:1.2}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}`;
 
 export function render(sheet, view) {
