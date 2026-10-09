@@ -14,6 +14,8 @@
 .phero-title em { color: var(--signal); }
 .phero-cta { display: flex; flex-wrap: wrap; gap: 14px 18px; margin-top: 6px; }
 .phero-more { font-size: 0.95rem; color: var(--ink-2); }
+/* mobitel: pozivi u heroju uvijek jedan ispod drugog, iste širine — kao .btn-row (design/04 #5) */
+@media (max-width: 560px) { .phero-cta { flex-direction: column; align-items: stretch; } .phero-cta > .btn { width: 100%; } }
 .phero-more .icon { color: var(--signal); }
 .phero-note { color: var(--muted); }
 .phero-art { margin: 0; position: relative; aspect-ratio: 4 / 3; }
@@ -40,7 +42,7 @@
 .block { --pad: clamp(72px, 8.5vw, 132px); padding-block: var(--pad); position: relative; }
 .block:not(.block--paper2):not(.block--ink):not(.kt-after) + .block:not(.block--paper2):not(.block--ink):not(.kt-after),
 .block--paper2 + .block--paper2 { padding-top: 0; }
-.block--paper2 { background: var(--paper-2); }
+.block--paper2 { background: var(--paper-2); --muted: #635f56; } /* sivi tekst 4,9:1 na paper-2 (globalni #6b675e je ovdje 4,33:1, QA N3) */
 .block--ink { background: var(--abyss-2); color: var(--abyss-fg); }
 .block--ink .kicker { color: var(--abyss-muted); }
 .block--ink .lead, .block--ink p { color: var(--abyss-muted); }

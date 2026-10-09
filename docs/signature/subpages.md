@@ -112,3 +112,12 @@ Provjereno Playwrightom na lokalnom WP-u (build iz ove grane): prvi ekran na 360
 - Slika `usluga-procjena.webp` ostaje u registru za dijeljenje (og:image).
 - Na mobitelu je presjek umanjen i bez natpisa katova. Provjereno: sinkronizacija kartice i procjene (miš i
   tipkovnica), najviša zgrada (webshop sa svim funkcijama) stane na 1440 i 390.
+
+## 8. Nedosljednosti iz design/04 i QA N3
+
+- #5: pozivi u heroju podstranica na ≤ 560 px uvijek su jedan ispod drugog, iste širine (kao `.btn-row`).
+- #10: blok „Šest razloga da se javite danas“ ostaje samo na Cijenama (maknut s Usluga i O nama).
+- #16: problemi (P.01–P.03) tintom; boja greške ostaje samo za validaciju forme.
+- QA N3: na `paper-2` blokovima `--muted` je `#635f56` (4,9:1 umjesto 4,33:1). `.mk-in` je na naslovnici (3D nit).
+- Otvoreno: #11 (iste hero slike: SEO = Provjera vidljivosti, Lokalni SEO = Google Business profil) traži nove kadrove
+  ili sustav nacrta za usluge; #14 podnožje je u 3D niti.

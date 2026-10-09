@@ -58,8 +58,7 @@ function zaec_registry_services() {
 					array( 'Nitko ne mjeri', 'Ne znate koliko je poziva došlo s weba, pa ne znate što popraviti ni gdje ulagati.' ),
 				),
 			),
-			array( 'type' => 'process' ),
-			array( 'type' => 'guarantees' ),
+			array( 'type' => 'process' ), // „Šest razloga“ ostaje samo na Cijenama (design/04 #10)
 		),
 		'faq'         => array(
 			array( 'Moram li uzeti sve usluge?', 'Ne. Prvo pogledamo gdje je najveća rupa — kod nekih je to Google profil, kod drugih web koji ne objašnjava ponudu ili nedostatak mjerenja. Krenemo od onoga što najbrže donosi kontakt.' ),

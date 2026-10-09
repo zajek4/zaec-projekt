@@ -687,8 +687,7 @@ function zaec_registry_special() {
 				),
 			),
 			array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ),
-			array( 'type' => 'about', 'part' => 'facts' ),
-			array( 'type' => 'guarantees' ),
+			array( 'type' => 'about', 'part' => 'facts' ), // „Šest razloga“ ostaje samo na Cijenama (design/04 #10)
 		),
 		'related'     => array( 'usluge/izrada-web-stranica', 'djelatnosti', 'cijene' ),
 	);
