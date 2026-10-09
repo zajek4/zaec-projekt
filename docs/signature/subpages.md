@@ -157,3 +157,18 @@ Pregled 07 (design/07-pregled-izrade.md):
   1440, 1920 i 1280 × 800, 1366 × 768, 1536 × 864, 1600 × 900): 110/110 za hub i 10 listova. Og slike ponovno
   snimljene (gdje se oznake sada vide, vide se i na slici za dijeljenje).
 - Svih 11 slika pregledano na kontaktnom listu; og:image provjeren u HTML-u svih 11 stranica.
+
+## 11. Potvrda 08 (art direkcija, design/08-potvrda-pr7.md)
+
+- A: na mobitelu (≤ 760 px ili uspravno) `.eh-copy` ima jedan stupac `minmax(0, 1fr)`. Kadar s `width: 100vw` i
+  `margin-left: −gutter` prije je rastezao auto stupac kroz desni padding, pa su uvod i gumbi pune širine dolazili do
+  ruba ekrana i gumbu se rezao kosi kut. Naslov je `min(--fs-d2, 10vw)` (bio 10.6vw), a donji razmak kartice na
+  Cijenama prati ga. Provjereno na 30 stranica × 360, 390, 414, 560: desni rub gumba, naslova i uvoda je
+  širina − gutter, bez vodoravnog skrola.
+- B: gumb forme na uskom ekranu smije u dva retka (`white-space: normal`), pa Provjera na 360 px nema skrol.
+- C: vrste u kartici Cijena su četiri u redu kad stanu (container query na `.est`: 342 px, mobilni gumbi 316 px),
+  inače 2 × 2; nikad 3 + 1. D: `.est .cfg-result { align-items: end }`, pa rok stoji u ravnini s opsegom i kad
+  „Okvirni rok izrade“ ide u dva retka. Oznaka „okvirni“ ostaje (procjena, ne obećanje).
+- E: og slike nacrta imaju znak ZAEC i riječ „ZAEC“ od 30 px (čitljivo u feedu na 500 px). Svaka stranica s vlastitom
+  slikom ima `og:image:alt`: list nacrta (naslov iz SVG-a), inače opis kadra iz registra.
+- Nakon promjena: nacrt 110/110 na 10 veličina, Izrada 6/6 (07-provjera-izrade).

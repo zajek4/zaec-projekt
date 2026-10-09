@@ -417,8 +417,12 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 }
 .eh-frame--est::after { display: none; }
 .est { width: min(420px, 100%); gap: 16px; box-shadow: inset 0 0 0 1px var(--abyss-line-2), 0 50px 90px -40px rgba(0, 0, 0, 0.8); }
+.est .cfg-result { align-items: end; } /* „Okvirni rok izrade“ u dva retka ne spušta rok ispod opsega (design/08, D) */
 .est .cfg-stack { height: 190px; } /* najviša zgrada (sve funkcije) stane kao u procjeni ispod */
-.est-types { display: flex; flex-wrap: wrap; gap: 6px; }
+/* vrste: četiri u redu kad stanu, inače 2 × 2 (nikad 3 + 1; design/08, C) */
+.est { container: est / inline-size; }
+.est-types { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+@container est (min-width: 342px) { .est-types { display: flex; } }
 .est-types[hidden] { display: none; }
 .est-type {
   min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--abyss-line-2); background: transparent;
@@ -476,18 +480,20 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 @media (max-aspect-ratio: 4/5), (max-width: 760px) {
   .eh { padding-top: calc(var(--header-h) + 8px); }
   .eh-stage { min-height: 0; display: block; }
-  .eh-copy { gap: 18px; padding-block: 0; }
+  /* jedan stupac minmax(0, 1fr): kadar (100vw, margin −gutter) inače rastegne auto stupac kroz desni padding, pa
+     uvod i gumbi pune širine dođu do ruba ekrana i gumbu se odreže kosi kut (design/08, A) */
+  .eh-copy { gap: 18px; padding-block: 0; grid-template-columns: minmax(0, 1fr); }
   .eh-head { max-width: none; gap: 10px; }
   .eh .crumbs { display: none; }
   .eh-frame { position: relative; inset: auto; width: 100vw; margin-left: calc(var(--gutter) * -1); aspect-ratio: 4 / 3.3; border-radius: 0; }
   .eh-slate { top: 14px; bottom: auto; left: var(--gutter); right: var(--gutter); }
   .eh-slate span { -webkit-line-clamp: 1; }
   .eh-frame::after { background: linear-gradient(180deg, rgba(4, 6, 12, 0.55), rgba(4, 6, 12, 0) 30%), linear-gradient(0deg, rgba(4, 6, 12, 0.82), rgba(4, 6, 12, 0.5) 14%, rgba(4, 6, 12, 0) 34%); }
-  .eh-title { max-width: none; font-size: min(var(--fs-d2), 10.6vw); margin-top: -1.22em; }
+  .eh-title { max-width: none; font-size: min(var(--fs-d2), 10vw); margin-top: -1.22em; }
   .eh-body { max-width: none; }
   .eh-sheet-list li { width: 148px; }
   /* Cijene: kartica u kadru od ruba do ruba; ispod nje mjesto za prvi redak naslova */
-  .eh-frame--est { aspect-ratio: auto; justify-items: center; padding: 20px var(--gutter) calc(1.4 * min(var(--fs-d2), 10.6vw) + 12px); }
+  .eh-frame--est { aspect-ratio: auto; justify-items: center; padding: 20px var(--gutter) calc(1.4 * min(var(--fs-d2), 10vw) + 12px); }
   .est { gap: 12px; padding: 18px; }
   /* niži presjek: ista zgrada umanjena, bez natpisa katova (ispod 11 px bi bili samo šum) */
   .est .cfg-stack { height: 112px; padding-bottom: 8px; }
@@ -495,6 +501,7 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
   .est .cfg-fl b { display: none; }
   .est .cfg-ground { bottom: 7px; }
   .est-type { padding: 0 11px; }
+  @container est (min-width: 316px) { .est-types { display: flex; } } /* uži gumbi: četiri stanu od 316 px */
   .est .cfg-tier b { font-size: 2rem; }
   .est .cfg-weeks { font-size: 1.2rem; }
 }

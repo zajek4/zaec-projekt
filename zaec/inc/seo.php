@@ -69,6 +69,26 @@ function zaec_og_image() {
 	return zaec_img( 'og/default.png' );
 }
 
+/** Opis slike za dijeljenje (og:image:alt): list nacrta, opis kadra iz registra ili istaknute slike. */
+function zaec_og_image_alt( $img ) {
+	if ( is_singular() && has_post_thumbnail() ) {
+		return (string) get_post_meta( (int) get_post_thumbnail_id(), '_wp_attachment_image_alt', true );
+	}
+	$l = zaec_get_landing();
+	if ( ! $l || false !== strpos( $img, '/og/default' ) ) {
+		return '';
+	}
+	if ( false !== strpos( $img, '/og/nacrt-' ) ) {
+		$n = zaec_nacrt( $l );
+		if ( ! $n || ! preg_match( '~<title[^>]*>([^<]+)</title>~', $n[0], $m ) ) {
+			return '';
+		}
+		$t = html_entity_decode( $m[1], ENT_QUOTES, 'UTF-8' );
+		return false === strpos( $t, 'Nacrt djelatnosti' ) ? 'Nacrt djelatnosti: ' . $t : $t; // kazalo već nosi naziv kompleta
+	}
+	return (string) ( $l['image_alt'] ?? '' );
+}
+
 function zaec_canonical() {
 	if ( is_front_page() ) {
 		return home_url( '/' );
@@ -121,6 +141,7 @@ function zaec_head_meta() {
 		$og['og:image:width']  = '1200';
 		$og['og:image:height'] = '630';
 	}
+	$og['og:image:alt'] = zaec_og_image_alt( $img );
 	foreach ( $og as $p => $c ) {
 		if ( $c ) {
 			printf( '<meta property="%s" content="%s">' . "\n", esc_attr( $p ), esc_attr( $c ) );

@@ -171,7 +171,8 @@
   .cform-done p:last-child { margin: 0; color: var(--muted); }
   .cform--dark .cform-done-t { color: #fff; }
   .cform--dark .cform-done p:last-child { color: #c8cee2; }
-  @media (max-width: 640px) { .cform-grid { grid-template-columns: 1fr; } .cform-submit { width: 100%; } }
+  /* na uskom ekranu natpis gumba smije u dva retka: bez toga 360 px dobije vodoravni skrol (design/08, B) */
+  @media (max-width: 640px) { .cform-grid { grid-template-columns: 1fr; } .cform-submit { width: 100%; white-space: normal; text-align: center; padding-block: 10px; } }
 
 /* telefon ili email: kako ćemo odgovoriti */
   .field-hint { font-size: 0.82rem; color: var(--ok); line-height: 1.35; }
