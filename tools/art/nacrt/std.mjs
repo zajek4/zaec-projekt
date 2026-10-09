@@ -9,7 +9,7 @@ export const H = 1000;
 export const TOTAL = 10; // listova u kompletu
 
 // pune crte se iscrtavaju (pathLength=1 → stroke-dashoffset 1 → 0); isprekidane i šrafure samo prozirnošću
-const SOLID = new Set(['cut', 'cut-w', 'tile', 'ln-2', 'ln-dim', 'ln-lead', 'lamp-fill', 'ln-frame']);
+const SOLID = new Set(['cut', 'cut-w', 'tile', 'ln-2', 'ln-dim', 'ln-lead', 'lamp-fill', 'lamp-ln', 'ln-frame']);
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 export const f = (n) => (Math.round(n * 10) / 10).toString();
@@ -123,10 +123,14 @@ export function builder(meta, view) {
         const q = view === 'm' ? searchShort || search : search;
         const right = lx > cx;
         const w = Math.max(time.length * 10.9, (q.length + 2) * 9.9) * k;
-        const shelf = ly + 10 * k;
-        b.poly([[cx, dir === 'up' ? cy - 8 : cy + 8], [cx, shelf], [right ? lx + w : lx, shelf]], 'ln-lead');
-        b.text(lx, ly - 20 * k, time, 't-call');
-        b.text(lx, ly, `„${q}“`, 't-web');
+        // 'h': vodoravna vodilica iz svjetla, tekst sjedi na njoj (kad je svjetlo na okomitoj crti)
+        const h = dir === 'h';
+        const shelf = h ? cy : ly + 10 * k;
+        const ty = h ? cy - 10 * k : ly;
+        const end = [right ? lx + w : lx, shelf];
+        b.poly(h ? [[right ? cx + 8 : cx - 8, cy], end] : [[cx, dir === 'up' ? cy - 8 : cy + 8], [cx, shelf], end], 'ln-lead');
+        b.text(lx, ty - 20 * k, time, 't-call');
+        b.text(lx, ty, `„${q}“`, 't-web');
       }
       o.push('</g>');
     },
@@ -183,7 +187,7 @@ const THUMB_CSS = `svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
 .ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:.8;stroke-dasharray:6 4;fill:none}
 .ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:1;stroke-dasharray:8 6;fill:none}
 .tile{stroke:var(--l);stroke-width:1.6;fill:var(--sheet)}
-.lamp-fill{stroke:var(--lamp);stroke-width:1.8;fill:rgba(255,207,138,.22)}
+.lamp-fill{stroke:var(--lamp);stroke-width:1.8;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:2;fill:none}
 .ln-dim{stroke:var(--l);stroke-opacity:.7;stroke-width:.8}.nib{fill:var(--l);opacity:.8}
 .water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:.8}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}`;

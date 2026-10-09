@@ -303,6 +303,7 @@
 .nacrt .mask { fill: var(--sheet); stroke: none; }
 .nacrt .ln-tile { stroke: var(--l); stroke-opacity: 0.1; stroke-width: 0.8; }
 .nacrt .lamp-fill { stroke: var(--lampc); stroke-width: 1.8; fill: color-mix(in srgb, var(--lampc) 22%, transparent); }
+.nacrt .lamp-ln { stroke: var(--lampc); stroke-width: 2; fill: none; }
 .nacrt .ln-dim, .nacrt .ln-lead { stroke: var(--l); stroke-opacity: 0.7; stroke-width: 0.8; fill: none; }
 .nacrt .ln-lead { stroke-opacity: 0.6; }
 .nacrt .dot { fill: var(--l); }
@@ -336,11 +337,12 @@ html.motion-ok .nacrt .nd-6 { animation-delay: 1.05s; animation-duration: 0.4s; 
 html.motion-ok .nacrt .nd-6 [pathLength] { animation: none; stroke-dasharray: none; }
 html.motion-ok .nacrt .lamp .halo { animation: nd-lamp 0.5s var(--ease-out) 1.35s both; transform-box: fill-box; transform-origin: center; }
 html.motion-ok .nacrt .nd .lamp-fill { animation: nd-in 0.5s var(--ease-out) 1.35s both; }
+html.motion-ok .nacrt .nd .lamp-ln { stroke-dasharray: 1; animation: nd-draw 0.7s var(--ease-out) 1.35s both; }
 html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s both; }
 @keyframes nd-in { from { opacity: 0; } }
 @keyframes nd-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes nd-lamp { from { opacity: 0; transform: scale(0.2); } }
-@media (prefers-reduced-motion: reduce) { html.motion-ok .nacrt :is(.nd, .nd [pathLength], .halo, .lamp-fill, text) { animation: none; } }
+@media (prefers-reduced-motion: reduce) { html.motion-ok .nacrt :is(.nd, .nd [pathLength], .halo, .lamp-fill, .lamp-ln, text) { animation: none; } }
 @media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 4/5) {
   .nacrt svg.d :is(.t-call, .t-web, .t-n) { font-size: 17px; }
   .nacrt svg.d .dim-33 { display: none; }
