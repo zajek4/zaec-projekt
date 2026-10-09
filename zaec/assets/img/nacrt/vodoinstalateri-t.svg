@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="360 150 840 630" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:1}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:.75;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:2}.cut-w{stroke:var(--l);stroke-width:2.2;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:.8}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:1.2;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:.8;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:1;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:1.6;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:1.8;fill:rgba(255,207,138,.22)}
+.ln-dim{stroke:var(--l);stroke-opacity:.7;stroke-width:.8}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:.8}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="hz-vodoinstalateri-t" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="hz2-vodoinstalateri-t" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool-vodoinstalateri-t" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="dots-vodoinstalateri-t" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="wool-v-vodoinstalateri-t" width="16" height="20" patternUnits="userSpaceOnUse"><path d="M8 0 Q0 5 8 10 T8 20" class="ln-h" fill="none"/></pattern><pattern id="grid-vodoinstalateri-t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid-vodoinstalateri-t)"/>
+<g class="nd nd-1">
+<line class="ln-tile" x1="380" y1="796" x2="1180" y2="796"/>
+<line class="ln-tile" x1="380" y1="712" x2="1180" y2="712"/>
+<line class="ln-tile" x1="380" y1="628" x2="1180" y2="628"/>
+<line class="ln-tile" x1="380" y1="544" x2="1180" y2="544"/>
+<line class="ln-tile" x1="380" y1="460" x2="1180" y2="460"/>
+<line class="ln-tile" x1="380" y1="376" x2="1180" y2="376"/>
+<line class="ln-tile" x1="380" y1="292" x2="1180" y2="292"/>
+<line class="ln-tile" x1="380" y1="208" x2="1180" y2="208"/>
+<line class="ln-tile" x1="548" y1="152" x2="548" y2="880"/>
+<line class="ln-tile" x1="716" y1="152" x2="716" y2="880"/>
+<line class="ln-tile" x1="884" y1="152" x2="884" y2="880"/>
+<line class="ln-tile" x1="1052" y1="152" x2="1052" y2="880"/>
+<line class="ln-con" x1="910" y1="522" x2="910" y2="910"/>
+<line class="ln-con" x1="663" y1="232" x2="663" y2="910"/>
+</g>
+<g class="nd nd-2">
+<line class="ln-2" pathLength="1" x1="380" y1="152" x2="1180" y2="152"/>
+<rect class="cut" pathLength="1" x="380" y="880" width="800" height="44" fill="url(#hz-vodoinstalateri-t)"/>
+<polyline class="ln-2" pathLength="1" points="380,142 380,508 374,513 386,519 380,524 380,890" fill="none"/>
+<line class="ln-3" x1="1068" y1="152" x2="1068" y2="880"/>
+<line class="ln-3" x1="1099" y1="152" x2="1099" y2="880"/>
+<line class="cut-w" pathLength="1" x1="1135" y1="152" x2="1135" y2="880"/>
+</g>
+<g class="nd nd-3">
+<rect class="cut-w" pathLength="1" x="600" y="292" width="126" height="224" rx="30"/>
+<rect class="ln-3" x="610" y="302" width="106" height="194" rx="24"/>
+<rect class="ln-2" pathLength="1" x="620" y="310" width="14" height="8"/>
+<rect class="ln-2" pathLength="1" x="692" y="310" width="14" height="8"/>
+<rect class="ln-2" pathLength="1" x="648" y="498" width="30" height="12"/>
+<circle class="ln-2" pathLength="1" cx="663" cy="458" r="9"/>
+<path class="cut-w" pathLength="1" d="M820 642 H1000 V652 Q982 702 910 704 Q838 702 820 652 Z"/>
+<path class="ln-2" pathLength="1" d="M900 642 V616 H932 V624 H912 V642"/>
+<circle class="ln-2" pathLength="1" cx="880" cy="726" r="6"/>
+<line class="ln-2" pathLength="1" x1="880" y1="720" x2="880" y2="678"/>
+<circle class="ln-2" pathLength="1" cx="940" cy="726" r="6"/>
+<line class="ln-2" pathLength="1" x1="940" y1="720" x2="940" y2="678"/>
+</g>
+<g class="nd nd-4">
+<polyline class="ln-2" pathLength="1" points="1135,726 940,726" fill="none"/>
+<polyline class="ln-2" pathLength="1" points="940,726 640,726 640,516" fill="none"/>
+<path class="ln-2" pathLength="1" d="M628 572 L652 584 V572 L628 584 Z"/>
+<polyline class="ln-2" pathLength="1" points="652,578 670,578 670,612" fill="none"/>
+<path class="ln-2" pathLength="1" d="M662 612 H678 L673 624 H667 Z"/>
+<polyline class="ln-2" pathLength="1" points="686,516 686,748 880,748 880,732" fill="none"/>
+<rect class="ln-2" pathLength="1" x="1078" y="612" width="92" height="88"/>
+<path class="ln-2" pathLength="1" d="M1126 646 L1144 664 V646 L1126 664 Z"/>
+<line class="ln-2" pathLength="1" x1="1135" y1="655" x2="1157" y2="642"/>
+<path class="ln-2" pathLength="1" d="M910 704 V700 Q910 722 926 722 Q942 722 942 708 V700"/>
+<polyline class="ln-2" pathLength="1" points="942,708 960,708 960,744" fill="none"/>
+<line class="ln-3" x1="960" y1="744" x2="1068" y2="749"/>
+<path class="ln-dim" pathLength="1" d="M1046 741 l10 5 -10 5"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="790" y1="880" x2="790" y2="642"/>
+<line class="ln-dim" pathLength="1" x1="785.8" y1="884.2" x2="794.2" y2="875.8"/>
+<line class="ln-dim" pathLength="1" x1="785.8" y1="646.2" x2="794.2" y2="637.8"/>
+<text class="t-dim" text-anchor="middle" transform="translate(778 761) rotate(-90)">+0,85</text>
+</g>
+<line class="ln-dim" pathLength="1" x1="790" y1="642" x2="816" y2="642"/>
+<text class="t-dim" x="970" y="772">PAD 2 %</text>
+<text class="t-dim" x="1040" y="192" text-anchor="end">Ø 110</text>
+</g>
+<g class="nd nd-6">
+<rect class="lamp-fill" pathLength="1" x="679" y="522" width="14" height="12"/>
+<path class="lamp-fill" pathLength="1" d="M686 540 Q691 548 686 552 Q681 548 686 540 Z"/>
+<g class="call lamp">
+<circle class="halo" cx="686" cy="534" r="30"/>
+<circle class="dot" cx="686" cy="534" r="3.5"/>
+</g>
+</g>
+</svg>

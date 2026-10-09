@@ -301,6 +301,7 @@
 .nacrt .tile { stroke: var(--l); stroke-width: 1.6; fill: var(--sheet); }
 .nacrt .water { fill: rgba(227, 233, 255, 0.08); stroke: none; }
 .nacrt .mask { fill: var(--sheet); stroke: none; }
+.nacrt .ln-tile { stroke: var(--l); stroke-opacity: 0.1; stroke-width: 0.8; }
 .nacrt .lamp-fill { stroke: var(--lampc); stroke-width: 1.8; fill: color-mix(in srgb, var(--lampc) 22%, transparent); }
 .nacrt .ln-dim, .nacrt .ln-lead { stroke: var(--l); stroke-opacity: 0.7; stroke-width: 0.8; fill: none; }
 .nacrt .ln-lead { stroke-opacity: 0.6; }
