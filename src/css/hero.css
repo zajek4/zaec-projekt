@@ -339,11 +339,22 @@
 .nacrt .lamp .halo { fill: var(--lampc); opacity: 0.12; }
 .nacrt svg.m { display: none; }
 .nacrt svg.m text { font-size: 23px; }
-/* oznake lijevo od zone čitanja (x < 508 u) samo kad ih kadar prikazuje cijele: vidljivo od x = 1200 − 1000 · (š/v),
-   pa je za oznaku od x ≈ 160 u potreban omjer kadra ≥ 1,05 (design/02, točka 4.2) */
+/* oznake i ključ lijevo od zone čitanja (x < 508 u) samo kad ih kadar prikazuje cijele: vidljivo od
+   x = 1200 − 1000 · (š/v). Generator za svaki takav element daje prag (1200 − x)/1000 zaokružen gore na 0,05
+   (c-a70 … c-a120; tools/art/nacrt/std.mjs, aspectClass), pa se oznaka od 444 u vidi već od omjera 0,8 */
 .eh-frame.nacrt { container: nacrt / size; }
 .nacrt svg.d .c-wide { display: none; }
-@container nacrt (min-aspect-ratio: 105/100) { .nacrt svg.d .c-wide { display: inline; } }
+@container nacrt (min-aspect-ratio: 70/100) { .nacrt svg.d .c-a70 { display: inline; } }
+@container nacrt (min-aspect-ratio: 75/100) { .nacrt svg.d .c-a75 { display: inline; } }
+@container nacrt (min-aspect-ratio: 80/100) { .nacrt svg.d .c-a80 { display: inline; } }
+@container nacrt (min-aspect-ratio: 85/100) { .nacrt svg.d .c-a85 { display: inline; } }
+@container nacrt (min-aspect-ratio: 90/100) { .nacrt svg.d .c-a90 { display: inline; } }
+@container nacrt (min-aspect-ratio: 95/100) { .nacrt svg.d .c-a95 { display: inline; } }
+@container nacrt (min-aspect-ratio: 100/100) { .nacrt svg.d .c-a100 { display: inline; } }
+@container nacrt (min-aspect-ratio: 105/100) { .nacrt svg.d .c-a105 { display: inline; } }
+@container nacrt (min-aspect-ratio: 110/100) { .nacrt svg.d .c-a110 { display: inline; } }
+@container nacrt (min-aspect-ratio: 115/100) { .nacrt svg.d .c-a115 { display: inline; } }
+@container nacrt (min-aspect-ratio: 120/100) { .nacrt svg.d .c-a120 { display: inline; } }
 /* iscrtavanje redom kojim se crta na papiru, jednom (bez JS-a i uz smanjen pokret: završno stanje) */
 html.motion-ok .nacrt .nd { animation: nd-in 0.5s var(--ease-out) both; }
 html.motion-ok .nacrt .nd [pathLength] { stroke-dasharray: 1; animation: nd-draw 0.6s var(--ease-out) both; animation-delay: inherit; }

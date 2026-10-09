@@ -12,7 +12,7 @@ mkdirSync(out, { recursive: true });
 const only = process.argv[2];
 const registry = readFileSync(join(here, '../../../zaec/inc/landing-industries.php'), 'utf8');
 
-for (const file of readdirSync(here).filter((n) => n.endsWith('.mjs') && !['std.mjs', 'build.mjs'].includes(n))) {
+for (const file of readdirSync(here).filter((n) => n.endsWith('.mjs') && !['std.mjs', 'build.mjs', 'og.mjs'].includes(n))) {
   const sheet = await import(join(here, file));
   const { slug, lamp } = sheet.meta;
   if (only && only !== slug) continue;

@@ -81,7 +81,7 @@
 <text class="t-call" text-anchor="end" x="752" y="805"><tspan class="t-n">03</tspan>  SIFON · ODVOD</text>
 <text class="t-web" text-anchor="end" x="752" y="825">→ Prije / poslije</text>
 </g>
-<g class="call c04 c-wide">
+<g class="call c04 c-wide c-a85">
 <circle class="dot" cx="640" cy="690" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="640,690 600,650 590,650"/>
 <text class="t-call" text-anchor="end" x="582" y="655"><tspan class="t-n">04</tspan>  SPOJ</text>

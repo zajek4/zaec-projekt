@@ -8,6 +8,12 @@ export const W = 1200;
 export const H = 1000;
 export const TOTAL = 10; // listova u kompletu
 export const READ_X = 508; // zona čitanja: od ovog x tekst se vidi na svakoj desktop širini
+/**
+ * Prag kadra za element lijevo od zone čitanja: list je desno poravnat (xMaxYMid slice), pa se vidi od
+ * x = 1200 − 1000 · (š/v). Element s lijevim rubom x (uz 8 u zaliha) cijel je od omjera (1200 − x)/1000, zaokruženo
+ * gore na 0,05 → klasa c-a75 … c-a120 (container query u hero.css, design/06 ponovni pregled).
+ */
+export const aspectClass = (x) => `c-a${Math.round(Math.max(0.7, Math.ceil(((1200 - (x - 8)) / 1000) * 20 - 1e-9) / 20) * 100)}`;
 export const TB = [732, 836, 440, 112]; // sastavnica
 // širina znaka u jedinicama crteža na 16 u (JetBrains Mono 0,6 em + razmak slova): oznake .08em, pretraga .02em
 export const CH = { call: 10.9, web: 9.9 };
@@ -121,8 +127,11 @@ export function builder(meta, view, tvb = meta.tvb) {
       const ta = end ? ' text-anchor="end"' : '';
       const tx = end ? lx - 8 : lx + 8;
       const tw = Math.max((t1.length + 4) * CH.call, (t2 || '').length * CH.web) * (17 / 16);
-      const wide = view === 'd' && (end ? tx - tw : tx) < READ_X;
-      o.push(`<g class="call c${n}${wide ? ' c-wide' : ''}">`);
+      const left = end ? tx - tw : tx;
+      const wide = view === 'd' && left < READ_X;
+      // prag za cijelu oznaku: tekst, vodilica i točka na dijelu
+      const cls = wide ? ` c-wide ${aspectClass(Math.min(left, ax, ...path.map((p) => p[0])))}` : '';
+      o.push(`<g class="call c${n}${cls}">`);
       b.circle(ax, ay, 3.5, 'dot');
       b.poly([anchor, ...path], 'ln-lead');
       o.push(`<text class="t-call"${ta} x="${f(tx)}" y="${f(ly + 5)}"><tspan class="t-n">${n}</tspan>  ${esc(t1)}</text>`);
@@ -187,7 +196,7 @@ export function builder(meta, view, tvb = meta.tvb) {
       o.push('<g class="nd nd-5 key">');
       fn();
       const xs = [...o.slice(i + 1).join(' ').matchAll(/\b(?:x|x1|x2)="(-?[\d.]+)"|[ML](-?[\d.]+)[ ,]/g)].map((m) => +(m[1] ?? m[2]));
-      if (Math.min(...xs) < READ_X) o[i] = '<g class="nd nd-5 key c-wide">';
+      if (Math.min(...xs) < READ_X) o[i] = `<g class="nd nd-5 key c-wide ${aspectClass(Math.min(...xs))}">`;
       o.push('</g>');
     },
   };

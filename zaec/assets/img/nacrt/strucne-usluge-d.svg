@@ -106,7 +106,7 @@
 <text class="t-call" x="594" y="705"><tspan class="t-n">01</tspan>  PRIJEM</text>
 <text class="t-web" x="594" y="725">→ Upit prema opsegu</text>
 </g>
-<g class="call c02 c-wide">
+<g class="call c02 c-wide c-a75">
 <circle class="dot" cx="474" cy="276" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="474,276 474,70 486,70"/>
 <text class="t-call" x="494" y="75"><tspan class="t-n">02</tspan>  SASTANAK</text>

@@ -26,9 +26,9 @@
 <path class="ln-h" d="M812 418L819 429M810 427L812 440M805 434L802 447M797 439L789 449M788 440L776 446M779 437L766 438M772 431L760 427M768 423L759 414M768 413L764 402M772 405L773 392M779 399L785 387M788 396L798 388M797 397L809 394M805 402L817 403M810 409L821 416"/>
 <path class="ln-2" pathLength="1" d="M828 414 V426 H854 V414"/>
 <path class="ln-beyond" d="M806 470L808 482M815 470L817 482M824 470L826 482M833 470L835 482"/>
-<polyline class="ln-2" pathLength="1" points="720,467 703,467 447,488 421,488"/>
-<polyline class="ln-2" pathLength="1" points="720,477 703,477 447,498 421,498"/>
-<polyline class="ln-3" points="841,426 841,438 724,438 724,489 703,489 447,510 433,510 433,980"/>
+<polyline class="ln-2" pathLength="1" points="720,467 703,467 447,488 431,488"/>
+<polyline class="ln-2" pathLength="1" points="720,477 703,477 447,498 431,498"/>
+<polyline class="ln-3" points="841,426 841,438 724,438 724,489 703,489 447,510 443,510 443,980"/>
 </g>
 <g class="nd nd-4">
 <path class="ln-2" pathLength="1" d="M285 902 V821 Q285 801 306 801 Q327 801 327 821 V902"/>

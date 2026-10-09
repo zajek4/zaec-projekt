@@ -142,4 +142,18 @@ Pregled 07 (design/07-pregled-izrade.md):
 - Izrada: `node tools/art/nacrt/og.mjs zaec/assets/img/og <slug>...` snima s lokalnog WP-a (stilovi i fontovi teme,
   zato build iz grane). Playwright nije ovisnost repozitorija (globalno instaliran, `PW_FROM`), adresa `ZAEC_URL`.
   Nakon promjene lista nacrta ili naslova djelatnosti sliku treba ponovno snimiti.
+
+## 10. Nacrt: prag vidljivosti po oznaci (design/06, ponovni pregled)
+
+- Umjesto jednog praga (omjer kadra ≥ 1,05) za sve što je lijevo od zone čitanja, generator za svaku takvu oznaku i
+  ključ računa lijevi rub cijele grupe (tekst, vodilica, točka) i daje klasu `c-a70` … `c-a120`: prag
+  (1200 − x + 8)/1000 zaokružen gore na 0,05 (`aspectClass` u `std.mjs`, container queryji u `hero.css`). Legenda
+  građevine i ključevi trgovina i ugostiteljstva sada se vide od omjera 0,8, saloni 04 i stručne 02 od 0,75, vodo
+  04 od 0,85; klima 04 i krov 03 i dalje traže širok kadar (1,05 i 1,10).
+- Klima: na 1600 × 900 zadnji red naslova ulazi u list do x ≈ 199 u i dirao je oznaku 04. Tekst oznake sada počinje
+  na x 214, a cijevi i odvod kondenzata su uz samo pročelje (x 427–443), desno od teksta.
+- `build.mjs` preskače `og.mjs` (prije bi ga uvezao kao list).
+- Provjera nacrta (`02-prototip/provjera-nacrta.mjs`, proširena na 10 veličina: uz 360, 390, 1024, 1280 × 720,
+  1440, 1920 i 1280 × 800, 1366 × 768, 1536 × 864, 1600 × 900): 110/110 za hub i 10 listova. Og slike ponovno
+  snimljene (gdje se oznake sada vide, vide se i na slici za dijeljenje).
 - Svih 11 slika pregledano na kontaktnom listu; og:image provjeren u HTML-u svih 11 stranica.

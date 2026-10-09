@@ -96,7 +96,7 @@
 <text class="t-dim" x="1036" y="321" text-anchor="middle">BAZEN</text>
 <text class="t-small" x="1175" y="753" text-anchor="end">ULICA</text>
 </g>
-<g class="nd nd-5 key c-wide">
+<g class="nd nd-5 key c-wide c-a80">
 <path class="ln-h" d="M444 744h40v30h-40zM488 744h34v30h-34zM444 778h40v26h-40zM526 744h30v30h-30z"/>
 <rect class="ln-2" pathLength="1" x="488" y="778" width="68" height="26"/>
 <line class="ln-2" pathLength="1" x1="438" y1="812" x2="564" y2="812"/>

@@ -29,13 +29,13 @@
 <path class="ln-h" d="M812 418L819 429M810 427L812 440M805 434L802 447M797 439L789 449M788 440L776 446M779 437L766 438M772 431L760 427M768 423L759 414M768 413L764 402M772 405L773 392M779 399L785 387M788 396L798 388M797 397L809 394M805 402L817 403M810 409L821 416"/>
 <path class="ln-2" pathLength="1" d="M828 414 V426 H854 V414"/>
 <path class="ln-beyond" d="M806 470L808 482M815 470L817 482M824 470L826 482M833 470L835 482"/>
-<polyline class="ln-2" pathLength="1" points="720,467 703,467 447,488 421,488"/>
-<polyline class="ln-2" pathLength="1" points="720,477 703,477 447,498 421,498"/>
-<polyline class="ln-3" points="841,426 841,438 724,438 724,489 703,489 447,510 433,510 433,980"/>
+<polyline class="ln-2" pathLength="1" points="720,467 703,467 447,488 431,488"/>
+<polyline class="ln-2" pathLength="1" points="720,477 703,477 447,498 431,498"/>
+<polyline class="ln-3" points="841,426 841,438 724,438 724,489 703,489 447,510 443,510 443,980"/>
 </g>
 <g class="nd nd-4">
-<polyline class="ln-2" pathLength="1" points="421,488 417,488 417,840 381,840"/>
-<polyline class="ln-2" pathLength="1" points="421,498 425,498 425,864 381,864"/>
+<polyline class="ln-2" pathLength="1" points="431,488 427,488 427,840 381,840"/>
+<polyline class="ln-2" pathLength="1" points="431,498 435,498 435,864 381,864"/>
 <rect class="cut-w" pathLength="1" x="171" y="574" width="210" height="336"/>
 <rect class="cut" pathLength="1" x="359" y="590" width="12" height="304" fill="url(#hz01d)"/>
 <rect class="ln-2" pathLength="1" x="232" y="720" width="20" height="44"/>
@@ -90,11 +90,11 @@
 <text class="t-call" x="728" y="735"><tspan class="t-n">03</tspan>  PROBOJ I CIJEVI</text>
 <text class="t-web" x="728" y="755">→ Upit za termin</text>
 </g>
-<g class="call c04 c-wide">
+<g class="call c04 c-wide c-a105">
 <circle class="dot" cx="178" cy="574" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="178,574 178,538 180,538"/>
-<text class="t-call" x="188" y="543"><tspan class="t-n">04</tspan>  VANJSKA JEDINICA</text>
-<text class="t-web" x="188" y="563">→ Radovi i recenzije</text>
+<polyline class="ln-lead" pathLength="1" points="178,574 178,538 206,538"/>
+<text class="t-call" x="214" y="543"><tspan class="t-n">04</tspan>  VANJSKA JEDINICA</text>
+<text class="t-web" x="214" y="563">→ Radovi i recenzije</text>
 </g>
 <path class="lamp-fill" pathLength="1" d="M796 488 L846 471 L848 477 L798 494 Z"/>
 <g class="call lamp">

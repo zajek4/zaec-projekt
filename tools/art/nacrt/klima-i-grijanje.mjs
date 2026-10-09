@@ -70,16 +70,16 @@ export function draw(b) {
     for (let x = 806; x < 840; x += 9) b.line(x, 470, x + 2, 482, 'ln-beyond'); // okomite lamele iza
     // cijevi iz stražnjeg dijela u proboj, odvod kondenzata isprekidano
     for (const [dy, cls] of [[12, 'ln-2'], [22, 'ln-2']]) {
-      b.poly([[U.x0 + 14, sl.i[0] + dy], [wi + 3, sl.i[0] + dy], [wo - 4, sl.e[0] + dy], [wo - 30, sl.e[0] + dy]], cls);
+      b.poly([[U.x0 + 14, sl.i[0] + dy], [wi + 3, sl.i[0] + dy], [wo - 4, sl.e[0] + dy], [wo - 20, sl.e[0] + dy]], cls);
     }
-    b.poly([[841, 426], [841, 438], [U.x0 + 18, 438], [U.x0 + 18, sl.i[0] + 34], [wi + 3, sl.i[0] + 34], [wo - 4, sl.e[0] + 34], [wo - 18, sl.e[0] + 34], [wo - 18, 980]], 'ln-3');
+    b.poly([[841, 426], [841, 438], [U.x0 + 18, 438], [U.x0 + 18, sl.i[0] + 34], [wi + 3, sl.i[0] + 34], [wo - 4, sl.e[0] + 34], [wo - 8, sl.e[0] + 34], [wo - 8, 980]], 'ln-3');
   });
 
   // 4 pročelje: vanjska jedinica na konzoli
   b.g('nd nd-4', () => {
-    // cijevi uz pročelje (između jedinice i zida), da oznaka 04 iznad jedinice ne leži na njima
-    b.poly([[wo - 30, sl.e[0] + 12], [wo - 34, sl.e[0] + 12], [wo - 34, O.y1 - 70], [O.x1, O.y1 - 70]], 'ln-2');
-    b.poly([[wo - 30, sl.e[0] + 22], [wo - 26, sl.e[0] + 22], [wo - 26, O.y1 - 46], [O.x1, O.y1 - 46]], 'ln-2');
+    // cijevi uz pročelje (između jedinice i zida, uz samo lice), da oznaka 04 iznad jedinice ne leži na njima
+    b.poly([[wo - 20, sl.e[0] + 12], [wo - 24, sl.e[0] + 12], [wo - 24, O.y1 - 70], [O.x1, O.y1 - 70]], 'ln-2');
+    b.poly([[wo - 20, sl.e[0] + 22], [wo - 16, sl.e[0] + 22], [wo - 16, O.y1 - 46], [O.x1, O.y1 - 46]], 'ln-2');
     b.rect(O.x0, O.y0, O.x1 - O.x0, O.y1 - O.y0, 'cut-w');
     b.rect(O.x1 - 22, O.y0 + 16, 12, O.y1 - O.y0 - 32, 'cut', ` fill="${b.url('hz')}"`); // izmjenjivač
     b.rect(232, oc - 22, 20, 44, 'ln-2'); // glavčina ventilatora
@@ -122,7 +122,8 @@ export function draw(b) {
     b.callout('01', [790, 291], [[870, 210], [890, 210]], 'FILTER', '→ FAQ: koliko često servis');
     b.callout('02', [U.x1, 365], [[870, 340], [882, 340]], 'UNUTARNJA JEDINICA', '→ Montaža · servis · čišćenje', false, { p: [[880, 365], [880, 300], [888, 300]], t2: '→ Montaža · servis' });
     b.callout('03', [612, 486], [[612, 730], [720, 730]], 'PROBOJ I CIJEVI', '→ Upit za termin');
-    b.callout('04', [178, O.y0], [[178, 538], [180, 538]], 'VANJSKA JEDINICA', '→ Radovi i recenzije');
+    // tekst od x 214: zadnji red naslova na 1600 × 900 ulazi u list do x ≈ 199 u; cijevi su desno od teksta (427+)
+    b.callout('04', [178, O.y0], [[178, 538], [206, 538]], 'VANJSKA JEDINICA', '→ Radovi i recenzije');
     b.P('<path class="lamp-fill" pathLength="1" d="M796 488 L846 471 L848 477 L798 494 Z"/>');
     b.lamp({ at: [822, 483], d: [890, 590, 'down'], m: [834, 600, 'down'] });
   });

@@ -92,7 +92,7 @@
 <text class="t-call" x="820" y="101"><tspan class="t-n">03</tspan>  OGLEDALA</text>
 <text class="t-web" x="820" y="121">→ Galerija i tim</text>
 </g>
-<g class="call c04 c-wide">
+<g class="call c04 c-wide c-a75">
 <circle class="dot" cx="466" cy="448" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="466,448 466,760 478,760"/>
 <text class="t-call" x="486" y="765"><tspan class="t-n">04</tspan>  ČEKAONICA</text>
