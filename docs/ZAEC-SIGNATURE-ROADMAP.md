@@ -10,6 +10,8 @@ Ništa se ne spaja u `main` bez odobrenja. Produkcijski WordPress se ne dira.
    - normalno: `npm ci && npm run build`
    - ako `registry.npmjs.org` nije dostupan (mrežna pravila cloud okruženja): `bash tools/offline-kit/setup.sh && bun tools/offline-kit/build.mjs`
      (izvori three r186 / gsap 3.15.0 / lenis 1.3.26 s GitHuba, fontovi iz postojećeg builda; izlaz je isti raspored kao Vite).
+     Kit nakon Buna snižava izlaz na ES2020 globalnim TypeScriptom (`ZAEC_TS`) i provjerava ga acornom (`ZAEC_ACORN`),
+     kao `target: 'es2020'` u Viteu. Prije spajanja u `main` ipak pokrenuti `npm ci && npm run build` gdje je registar dostupan.
 3. Lokalni WordPress za vizualni QA (bez MySQL-a): WordPress 6.8.3 i `sqlite-database-integration` kloniraju se s GitHuba,
    tema se poveže simboličkom vezom, `php -S 127.0.0.1:8080 router.php`. Screenshotovi: Playwright + Chromium (swiftshader WebGL).
 4. Pročitati "Otvoreno" i "Sljedeći korak" na dnu.
@@ -135,6 +137,31 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   10 px. Naslovi stupaca i pravni red u footeru prešli na `--abyss-muted` (kontrast 6,8 : 1). Natpis usporedbe dobio
   tamnu podlogu (na mobitelu je prelazio preko svijetle polovice i nije se mogao pročitati).
 
+- **Primarni poziv (odluka, vrijedi za sve niti):** primarni gumb u sadržaju ostaje signal plava. Iznimka su
+  stalno vidljive pozicije na noći — gumb u zaglavlju i donja traka upita na mobitelu — gdje je gumb **papir**
+  (`--paper`, tinta) na `#04050b`. Tako je korisnik izričito tražio za mobilnu traku ("tamna #04050b, svijetli ili
+  diskretno topli CTA", bez zelenog "Nazovite" i intenzivno plavog gumba); papir drži jedan primarni poziv po
+  kadru i ne natječe se s plavim gumbom poglavlja. "Nazovite" nije ni u jednoj sticky ili primarnoj poziciji;
+  telefon je na stranici Kontakt i u stupcu kontakta u footeru. `zaec_inquiry_url()` vodi na formu na istoj
+  stranici (naslovnica `#kontakt`, Kontakt `#upit`) ili na formu na Kontaktu.
+- **Izbornik usluga:** tri skupine kao na naslovnici (Izgradnja → Vidljivost → Rast), isti URL-ovi; na mobitelu
+  naslovi skupina iznad popisa poveznica.
+- **Noćni prozori:** svaka zgrada ima razinu aktivnosti (dio gotovo taman, dio živ), stanovi se pale po jedinicama,
+  dio prozora tek prigušen ili hladan (zaslon); izlozi različito otvoreni. Bez treperenja (promjene svakih ~140 s
+  samo za mali dio jedinica).
+- **Konkatedrala (bez novog modela):** vitraji s olovnim okvirima i manje zasićeni; krovovi u hladnoj noći, zidovi
+  topli, reflektori u podnožju u lepezama, pročelje prema trgu svjetlije; u zvoniku iznad sata iza žaluzina tek
+  naslutljivo toplo svjetlo. Geometrija tornja se nije mijenjala: `gltfpack` (npm) nije dostupan u ovom okruženju,
+  a bez referentnih fotografija promjena proporcija bila bi nagađanje. Potrebne fotografije: vidi "Otvoreno".
+- **Snop s tornja:** najviše ~60 % prijašnje jačine, uži, iznad ~100 m prelazi u nit; križ ostaje vidljiv. Ostaje kao
+  motiv (fizički grad → digitalna točka), ali više ne nadjačava toranj.
+- **Lite način:** ostaje na `hardwareConcurrency <= 4`. Broj su logičke niti: 4 niti danas imaju slabiji prijenosnici
+  (i3, Celeron, stariji 4c/4t) sa slabom integriranom grafikom; snažniji 4-jezgreni imaju 8 niti. Regulator DPR-a
+  se sada i oporavlja (nakon ~10 s glatkih sličica), ne broji zagušenje dok se grad priprema, a razinu koja je
+  dvaput bila spora više ne vraća.
+- **QA N4 (daj-gric.jpg):** slika ostaje u temi namjerno: projekt je u wp-adminu prebačen u skicu, ne obrisan,
+  i njegov zapis i dalje pokazuje na nju. Javno se nigdje ne koristi.
+
 ## Faze
 
 | Faza | Stanje |
@@ -149,7 +176,7 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 8 Izrada web stranica | predano niti za podstranice |
 | 9 Djelatnosti, cijene, o nama, kontakt | djelomično: bug procjene ✓; ostalo predano niti za podstranice |
 | 10 SEO i sadržaj | otvoreno |
-| 11 Performanse, pristupačnost, QA | otvoreno |
+| 11 Performanse, pristupačnost, QA | ✓ nalazi QA za 3D/naslovnicu (V1, V2, S1–S8, S14, N1, N2, N5); mjerenje na stvarnim uređajima otvoreno |
 | 12 Završna art direkcija i PR | otvoreno |
 
 ## Testiranje (stvarno izvršeno)
@@ -184,6 +211,25 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   CPU renderer pretjeruje cijenu fragment shadera; na GPU-u mjeriti u fazi 11. Postojeći regulator spušta DPR
   kad sličica traje > 24 ms.
 
+- Završni prolaz (prozori, konkatedrala, CTA, QA): snimke prije/poslije 1440×900 (3600, 4050, 4500, 5400) i 390×844
+  (3714, 4150, 4558, 5458), krupni kadrovi konkatedrale i zvonika (DPR 2), nacrt 6300, mreža 7200, web 8100, mobitel
+  6302/7146; 360×640 i 320×640 za traku upita. `qa/zavrsni-prolaz/` u projektnim datotekama.
+- Build snižen na ES2020: 0 `static {}` i 0 logičkih dodjela u izlazu, acorn parsira sve datoteke kao ES2020;
+  naslovnica (3D kroz poglavlja) i konfigurator na /cijene/ rade u Chromiumu bez JS grešaka. U starom Safariju nije
+  provjereno (nema ga u okruženju).
+- Kontrast (vlastita skripta, približno: najbliža neprozirna pozadina): footer i sažetak procjene više se ne javljaju;
+  preostali nalazi su lažno pozitivni (gumbi crtaju ispunu pseudo-elementom) ili postojeći `.mk-in` (N3).
+- Tipkovnica: mobilni izbornik, 40 Tab koraka → 34 u izborniku, 3 na gumbu izbornika, 3 u pregledniku, 0 na stranici
+  iza; Escape vraća fokus, `inert` uklonjen. Vrh naslovnice: 25 Tab koraka, 0 nevidljivih.
+- Oznake: "Vaša tvrtka" na 390 i 1024 skrivena kad bi bila ispod forme, na 1440 vidljiva; oznake kanala na 1024 od
+  26 px od ruba (prije −10 px). Naslovi na 1920: poglavlja u 2–3 retka (prije do 4).
+- Performanse (SwiftShader, CPU; relativno, ne GPU): vrijeme sličice nakon završnog prolaza jednako prijašnjem unutar
+  šuma (desktop 78–83 / 78 / 172–181 ms na 3600 / 4050 / 5400; mobitel 4× CPU 25–29 / 33–38 / 70–80 ms). Karta svjetla
+  (~150 ms na glavnoj niti na desktopu) sada se crta u Workeru; maska Drave skratila učitavanje grada ~470 → ~380 ms
+  (profil, 4× CPU). Ukupno dugih zadaća u prvih 12 s na mobitelu 4× CPU: 2,4–2,5 s → 2,2–2,7 s (šum veći od razlike);
+  najdulja 640–670 → 580–650 ms. Ostatak je prevođenje shadera i slanje tekstura pri prvom crtanju.
+  Napomena: okruženje ima 4 niti, pa desktop ovdje radi u lite načinu.
+
 ## Samokritika (0–10)
 
 | Faza | Dizajn | Kreativnost | Upotrebljivost | Tehnika | Napomena |
@@ -192,11 +238,25 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 6 Nacrt | 8 | 8 | 8 | 7,5 | Kota i pravci daju nacrtu smisao; na desktopu toranj na trenutak prolazi ispod teksta |
 | 7 Poglavlje 08 | 8 | 8 | 8,5 | 8 | Motiv filma nastavljen na papiru; odgovara tko/što/za koga/kako početi |
 | 2 Skala i gumbi | 8 | 7 | 8,5 | 8 | Jedan sustav umjesto procjene od slučaja do slučaja; filmski naslovi namjerno izvan skale |
+| Završni prolaz: prozori | 8 | 7,5 | — | 8 | Grad više ne izgleda "sav upaljen"; iz zraka i dalje nedostaje istok (podaci) |
+| Završni prolaz: konkatedrala | 8 | 7,5 | — | 7,5 | Ravnoteža toplih zidova i tamnih krovova, tih snop; geometrija tornja nepromijenjena |
+| Mobilni CTA | 8,5 | 7 | 9 | 8,5 | Jedan poziv, ne prekriva formu ni footer |
 
 ## Otvoreno
 
-- `registry.npmjs.org` je blokiran mrežnim pravilima okruženja; build je Bunom (vidi gore). Pri prvoj prilici
-  pokrenuti `npm ci && npm run build` i usporediti.
+- `registry.npmjs.org` je blokiran mrežnim pravilima okruženja; build je Bunom, snižen na ES2020 (vidi gore). Prije
+  spajanja u `main` pokrenuti `npm ci && npm run build` gdje je registar dostupan i commitati taj izlaz.
+- **Svjetla grada iz zraka i centar oko trga (zahtjev korisnika, točke 1 i 2) čekaju podatke.** `overpass-api.de`,
+  `api.openstreetmap.org`, `upload.wikimedia.org` i `commons.wikimedia.org` vraćaju 403 (pravila mreže okruženja).
+  Postojeći `osijek-city.bin` pokriva 18,650–18,712° E: istočni dio grada (Donji grad prema 18,73°) nije u njemu,
+  a zgrade iz OSM relacija (multipoligoni) nisu uvezene, pa u blokovima oko konkatedrale ima rupa. Bez podataka se
+  praznine ne popunjavaju izmišljenim zgradama. Kad se domene dopuste: proširiti bbox, uvesti relacije, ponovno
+  izgraditi `osijek-city.bin` (`npm run city`).
+- **Konkatedrala, za vjernost tornja trebaju fotografije:** (1) toranj frontalno s Trga Ante Starčevića, cijela visina
+  od portala do križa; (2) toranj dijagonalno (kut sjeveroistok ili jugoistok), da se vide dvije strane zvonika;
+  (3) krupno: kat sa satom i zvonik iznad njega (otvori, žaluzine, vimperzi, fijale); (4) prijelaz zvonika u šiljak
+  (galerija, lukarne); (5) noćna fotografija iz iste točke kao (1), za raspored reflektora; (6) zračna ili s visine
+  (dron / Hotel Osijek) prema lađi i krovovima. Uz to `gltfpack` (npm) za ponovnu izgradnju modela.
 - Sekcija iznad footera na nekim podstranicama (CTA traka) još koristi sivu `--ink`; ujednačiti s `--abyss` (faza 12).
 - Nacrt, desktop: riješeno zadrškom kanala (`hold`); lađa na ~6000 px još malo dira naslov nacrta.
 - Osijek: krovovi izbliza i dalje dosta tamni; Drava na kadru Osijeka tamna (obalne svjetiljke se iz tog kuta
@@ -207,8 +267,8 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 
 ## Sljedeći korak
 
-Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; QA nalazi za vlastite datoteke;
-3D dorada (krovovi izbliza, cijena shadera grada); faza 12.
+Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; podaci za istok grada i centar čim
+mreža dopusti OSM; faza 12.
 
 ## Commitovi
 
@@ -224,3 +284,8 @@ Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; QA nal
 - `7ffe5f0` Naslovnica: most iz priče u posao
 - `c4b28ae` (faza 7) Poglavlje 08 — ZAEC prema smjernicama za sadržaj; oznake bez preklapanja; zadrška tornja
 - `28d86c2` Tipografska skala i sustav gumba prema smjernicama dizajna
+- `ea6ef9d` Jedan primarni poziv na upit; izbornik usluga u tri skupine
+- `d26a0c7` Grad i konkatedrala: prirodnija noćna svjetla, tiši snop s tornja
+- `3265d61` Nalazi QA: ES2020 build, kontrast, modalni izbornik, oznake, karta svjetla izvan glavne niti
+- `b2aca60` 3D: lakše pokretanje (maska Drave, brži blur, odgođena priprema nacrta)
+- `4152c6f` Nalazi QA (nisko): slojevi, oznake uz rub, traka upita na uskim zaslonima
