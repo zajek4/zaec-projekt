@@ -1,11 +1,12 @@
 <?php
 /**
- * Potpisni hero: Kontakt — zgrada je forma.
- * Pročelje kuće snimljeno je sprijeda; svaka etaža ima jednu traku prozora i u njoj stoji polje forme (ime na
- * vrhu … poruka na prvom katu). Vrata u prizemlju su gumb za slanje. Naslov je neonski natpis na krovu (živi
- * SVG tekst poravnat na čeličnu konstrukciju iz kadra) koji se pali nakon slanja. Susjedi u nizu već svijetle —
- * svako ispunjeno polje pali svoj prozor (maska po etažama nad osvijetljenim izrezom iste kamere).
- * Forma je ista kao drugdje (template-parts/contact-form.php): radi bez JS-a, a raspored je samo CSS.
+ * Potpisni hero: Kontakt — svako polje pali jedan kat.
+ * Kuća stoji u lijevoj trećini kadra, a forma je staklena ploča desno od nje (na mobitelu ispod kuće). Polja su
+ * obične veličine (oznaka 12 px, polje 54 px, poruka šest redaka); kat po kat odozgo: ime, kontakt, djelatnost,
+ * usluga, poruka. Svako ispravno ispunjeno polje pali svoj kat (maska po etažama nad osvijetljenim izrezom iste
+ * kamere). Naslov je natpis na krovu (živi SVG tekst poravnat na konstrukciju iz kadra): čitljiv od početka, nakon
+ * slanja se pali toplim svjetlom, a potvrda ostaje na stranici.
+ * Forma je ista kao drugdje (template-parts/contact-form.php): radi bez JS-a.
  *
  * @package ZAEC
  * @var array $args { landing }
@@ -62,26 +63,6 @@ $zaec_sign = static function ( $c, $m ) use ( $h1 ) {
 	);
 };
 
-$vars = array();
-foreach ( array( '' => $md, 'm' => $mm ) as $zaec_k => $zaec_m ) {
-	if ( ! $zaec_m ) {
-		continue;
-	}
-	foreach ( $zaec_m['floors'] as $i => $f ) {
-		$vars[] = "--w{$i}t{$zaec_k}:{$f['wtop']}";
-		$vars[] = "--w{$i}b{$zaec_k}:{$f['wbottom']}";
-	}
-	$vars[] = "--wl{$zaec_k}:{$zaec_m['win']['left']}";
-	$vars[] = "--wr{$zaec_k}:{$zaec_m['win']['right']}";
-	$vars[] = "--dl{$zaec_k}:{$zaec_m['door']['left']}";
-	$vars[] = "--dr{$zaec_k}:{$zaec_m['door']['right']}";
-	$vars[] = "--dt{$zaec_k}:{$zaec_m['door']['top']}";
-	$vars[] = "--db{$zaec_k}:{$zaec_m['door']['bottom']}";
-	$vars[] = "--gt{$zaec_k}:{$zaec_m['ground']['top']}";
-	$vars[] = "--gb{$zaec_k}:{$zaec_m['ground']['bottom']}";
-	$vars[] = "--hl{$zaec_k}:{$zaec_m['left']}";
-	$vars[] = "--hr{$zaec_k}:{$zaec_m['right']}";
-}
 $zaec_direct = static function () use ( $o ) {
 	?>
 	<ul class="kt-direct" role="list">
@@ -94,10 +75,10 @@ $zaec_direct = static function () use ( $o ) {
 	<?php
 };
 ?>
-<section class="sh sh-kontakt" data-hero="kontakt" data-header-theme="night" aria-labelledby="sh-title" style="<?php echo esc_attr( implode( ';', $vars ) ); ?>">
+<section class="sh sh-kontakt" data-hero="kontakt" data-header-theme="night" aria-labelledby="sh-title">
 	<div class="sh-stage kt-stage">
 		<div class="sh-frame">
-			<div class="sh-scene" id="upit">
+			<div class="sh-scene">
 				<?php zaec_hero_picture( 'kontakt-bg', array( 'class' => 'sh-layer sh-bg', 'priority' => true ) ); ?>
 				<?php if ( $md && $mm ) : ?>
 					<?php foreach ( array( 'd' => $md, 'm' => $mm ) as $zaec_c => $zaec_m ) : ?>
@@ -112,27 +93,22 @@ $zaec_direct = static function () use ( $o ) {
 						$zaec_sign( 'm', $mm );
 						?>
 					</h1>
+				<?php else : ?>
+					<h1 class="kt-title kt-title--text" id="sh-title"><?php echo wp_kses( $h1, array( 'em' => array() ) ); ?></h1>
 				<?php endif; ?>
-				<div class="kt-form">
-					<?php get_template_part( 'template-parts/contact-form', null, array( 'id' => 'upit-forma-kontakt', 'theme' => 'dark', 'rows' => 2 ) ); ?>
-				</div>
 			</div>
 		</div>
-		<div class="kt-side kt-side--l">
-			<?php zaec_render_breadcrumbs(); ?>
-			<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?> · <?php echo esc_html( $o['city'] ); ?></p>
-			<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
-			<p class="kt-how mono">Svaki prozor je jedno polje. Dva su obavezna. Vrata šalju upit.</p>
+		<div class="wrap kt-col">
+			<div class="kt-main">
+				<?php zaec_render_breadcrumbs(); ?>
+				<?php if ( ! empty( $l['lead'] ) ) : ?><p class="kt-lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
+				<div class="kt-panel" id="upit">
+					<p class="kt-how">Svako polje pali jedan kat. Dva su obavezna.</p>
+					<?php get_template_part( 'template-parts/contact-form', null, array( 'id' => 'upit-forma-kontakt', 'theme' => 'dark', 'rows' => 6, 'inline' => true ) ); ?>
+				</div>
+				<?php $zaec_direct(); ?>
+			</div>
 		</div>
-		<div class="kt-side kt-side--r">
-			<?php $zaec_direct(); ?>
-		</div>
-	</div>
-	<div class="wrap kt-below">
-		<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?> · <?php echo esc_html( $o['city'] ); ?></p>
-		<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
-		<?php $zaec_direct(); ?>
-		<p class="kt-privacy">Podatke koristimo samo za odgovor. Bez newslettera i ustupanja trećima. <a href="<?php echo esc_url( zaec_url( 'privatnost' ) ); ?>">Privatnost</a></p>
 	</div>
 </section>
 <?php zaec_hero_answer( $l, 'sh-answer' ); ?>

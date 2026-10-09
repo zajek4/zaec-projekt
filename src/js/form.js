@@ -97,7 +97,11 @@ function init(form) {
     const el = form.elements[n];
     if (!el) return;
     el.addEventListener('blur', () => el.value && validate(n));
-    el.addEventListener('input', () => el.closest('.field').classList.contains('has-error') && validate(n));
+    el.addEventListener('input', () => {
+      if (!el.closest('.field').classList.contains('has-error')) return;
+      // ispravljeno zadnje neispravno polje: poruka "Provjerite: …" više ne vrijedi
+      if (validate(n) && status.classList.contains('is-error') && !form.querySelector('.has-error')) setStatus('');
+    });
   });
 
   let started2 = false;
@@ -140,7 +144,17 @@ function init(form) {
         // na stranici (Kontakt), inače prelazak na zahvalu
         const via = MAIL_RE.test((kontakt?.value || '').trim()) ? 'email' : 'phone';
         form.dispatchEvent(new CustomEvent('zaec:sent', { bubbles: true, detail: { via, name: (form.elements.ime?.value || '').trim() } }));
-        if ('inlineSuccess' in form.dataset) form.classList.add('is-sent');
+        if ('inlineSuccess' in form.dataset) {
+          form.classList.add('is-sent');
+          const done = form.querySelector('[data-done]');
+          if (done) {
+            const hours = done.dataset.hours ? ` (${done.dataset.hours})` : '';
+            done.querySelector('.cform-done-t').textContent = (json.data && json.data.message) || 'Upit je stigao.';
+            done.querySelector('[data-done-via]').textContent = via === 'email' ? 'Odgovaramo emailom u radno vrijeme.' : `Javljamo se pozivom u radno vrijeme${hours}.`;
+            done.hidden = false;
+            done.focus({ preventScroll: true });
+          }
+        }
         else if (CFG.thanks) setTimeout(() => (location.href = CFG.thanks), +form.dataset.sentDelay || 500);
         else form.reset();
         return;

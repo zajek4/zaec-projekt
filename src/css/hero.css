@@ -96,7 +96,8 @@
   .it-copy > * { max-width: none; }
   .it-copy .crumbs { display: none; }
   .sh-izrada.is-live .it-run { height: 90vh; }
-  .sh-izrada.is-live .sh-hint { left: var(--gutter); right: auto; bottom: 16%; }
+  /* na mobitelu bez poziva na skrolanje: preklapao je gumb na ulazu (QA S9), a pokret se otkrije i sam */
+  .sh-izrada.is-live .sh-hint { display: none; }
 }
 
 /* ═════════ O nama — "Mali studio. Velika odgovornost." — tipografija kao mjera ═════════ */
@@ -131,126 +132,117 @@
   .on-caption { position: static; margin-top: 22px; }
 }
 
-/* ═════════ Kontakt — zgrada je forma ═════════ */
-/* Polja stoje u trakama prozora, vrata su gumb, naslov je neon na krovu. Sve se pozicionira u postocima kadra
-   (vrijednosti iz kadra: --w{i}t/b, --wl/wr, --dl/dr/dt/db; mobitel: isto s nastavkom m). */
+/* ═════════ Kontakt — svako polje pali jedan kat ═════════ */
+/* Kuća je u lijevoj trećini kadra (desktop), forma je staklena ploča desno od nje; na tabletu i mobitelu kadar
+   prikazuje natpis i kuću, a ploča je ispod. Pozornica raste sa sadržajem (min. visina ekrana), a kadar je
+   "cover" na okvir (cq jedinice okvira), pa maska katova i natpis ostaju na slici pri svakoj visini. */
+.kt-stage { height: auto; min-height: max(100svh, 560px); display: grid; }
+.sh-kontakt .sh-frame { container-type: size; }
+.sh-kontakt .sh-scene { width: max(100cqw, 100cqh * 16 / 9); }
 .kt-lit { position: absolute; pointer-events: none; }
 .kt-lit img { display: block; width: 100%; height: 100%; }
 .kt-lit--m { display: none; }
 .kt-title { position: absolute; inset: 0; margin: 0; pointer-events: none; }
 .kt-sign { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .kt-sign--m { display: none; }
-.kt-neon { fill: rgba(196, 206, 240, 0.05); stroke: rgba(196, 206, 240, 0.62); stroke-width: 1.2px; vector-effect: non-scaling-stroke; transition: fill 0.6s var(--ease-out), stroke 0.6s var(--ease-out); }
+/* natpis prije slanja: neupaljene cijevi, ali čitljive (oko 6:1 na nebu); nakon slanja toplo svjetlo */
+.kt-neon { fill: rgba(206, 214, 242, 0.72); stroke: rgba(226, 232, 255, 0.5); stroke-width: 1px; vector-effect: non-scaling-stroke; transition: fill 0.6s var(--ease-out), stroke 0.6s var(--ease-out); }
 .kt-neon-s { font-family: var(--font-sans); font-weight: 800; font-stretch: 112%; font-variation-settings: 'wdth' 112; }
 .kt-neon-em { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-variation-settings: normal; }
 .sh-kontakt.is-sent .kt-neon { fill: #ffe6c0; stroke: #ffd9a0; filter: drop-shadow(0 0 3px rgba(255, 196, 120, 0.95)) drop-shadow(0 0 14px rgba(255, 150, 50, 0.65)); }
 .sh-kontakt.is-sent .kt-neon-em { fill: #ffbf66; }
+.kt-title--text { inset: auto; left: 8%; top: 14%; font-size: var(--fs-d2); line-height: 0.95; color: var(--sh-fg); }
 
-.kt-form { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
-.kt-form .cform { position: absolute; inset: 0; display: block; }
-.kt-form .cform-grid, .kt-form .cform-foot { display: contents; }
-.kt-form .field, .kt-form .cform-submit, .kt-form .cform-privacy, .kt-form .cform-status, .kt-form .cform-config { pointer-events: auto; }
-.kt-form .field { position: absolute; margin: 0; left: calc(var(--wl) * 1%); width: calc((var(--wr) - var(--wl)) * 1%); }
-.kt-form .field:nth-child(1) { top: calc(var(--w0t) * 1%); height: calc((var(--w0b) - var(--w0t)) * 1%); }
-.kt-form .field:nth-child(2) { top: calc(var(--w1t) * 1%); height: calc((var(--w1b) - var(--w1t)) * 1%); }
-.kt-form .field:nth-child(3) { top: calc(var(--w2t) * 1%); height: calc((var(--w2b) - var(--w2t)) * 1%); }
-.kt-form .field:nth-child(4) { top: calc(var(--w3t) * 1%); height: calc((var(--w3b) - var(--w3t)) * 1%); }
-.kt-form .field:nth-child(5) { top: calc(var(--w4t) * 1%); height: calc((var(--w4b) - var(--w4t)) * 1%); }
-/* oznaka polja: natpis na zidu iznad prozora */
-.kt-form .field label { position: absolute; left: 0; bottom: calc(100% + 0.7cqh); margin: 0; font: 500 max(10px, 0.5cqw) / 1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: #b4bcdb; white-space: nowrap; }
-.kt-form .field label .opt { color: #6f7894; text-transform: none; letter-spacing: 0.02em; }
-.kt-form .input, .kt-form .select, .kt-form .textarea {
-  width: 100%; height: 100%; min-height: 0; margin: 0; border: 0; border-radius: 0;
-  background: transparent; color: #eef0f7; box-shadow: none;
-  font-size: max(14px, 0.95cqw); padding: 0 1.1cqw;
-  transition: background 0.3s, box-shadow 0.3s, color 0.6s var(--ease-out);
+/* stupac: putanja, uvod, ploča s formom, izravni kontakti */
+.kt-col { position: relative; z-index: 4; display: grid; justify-items: end; align-items: center; padding-block: calc(var(--header-h) + 20px) 28px; }
+.kt-main { width: min(600px, calc(100vw - 480px)); display: grid; align-content: start; gap: 16px; }
+.kt-lead { margin: 0; max-width: 54ch; font-size: 1rem; line-height: 1.5; color: #c8cee2; }
+.kt-panel {
+  scroll-margin-top: calc(var(--header-h) + 12px);
+  padding: clamp(20px, 2vw, 28px); border-radius: 18px;
+  background: rgba(9, 12, 26, 0.74); border: 1px solid var(--abyss-line-2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1); backdrop-filter: blur(14px) saturate(1.1);
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.85);
 }
-.kt-form .select { padding-right: 2.6cqw; background-position: calc(100% - 1.4cqw) 50%, calc(100% - 1cqw) 50%; }
-.kt-form .textarea { resize: none; padding-top: 0.55cqw; line-height: 1.35; }
-.kt-form .input::placeholder, .kt-form .textarea::placeholder { color: rgba(200, 208, 236, 0.38); }
-.kt-form .input:focus, .kt-form .select:focus, .kt-form .textarea:focus { outline: none; background: rgba(255, 178, 63, 0.05); box-shadow: inset 0 0 0 1.5px rgba(255, 178, 63, 0.85); }
-/* upaljen prozor: tekst postaje tinta na toplom staklu */
-.kt-form .field.is-lit .input, .kt-form .field.is-lit .select, .kt-form .field.is-lit .textarea { color: #1d1006; font-weight: 600; }
-.kt-form .field.is-lit label { color: #f6dcb1; }
-.kt-form .field-error { position: absolute; left: 0; top: calc(100% + 0.4cqh); margin: 0; font-size: 11px; color: #ffab9b; white-space: nowrap; }
-.kt-form .cform-submit {
-  position: absolute; left: calc(var(--dl) * 1%); width: calc((var(--dr) - var(--dl)) * 1%); top: calc(var(--dt) * 1%); height: calc((var(--db) - var(--dt)) * 1%);
-  justify-content: center; padding-inline: 8px; border-radius: 4px; font-size: max(14px, 0.9cqw);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15), 0 0 46px -8px rgba(35, 71, 255, 0.9);
-}
-.kt-form .cform-privacy { position: absolute; left: calc(var(--hl) * 1%); width: calc((var(--hr) - var(--hl)) * 1%); top: calc(var(--gb) * 1% + 1.1cqh); margin: 0; max-width: none; font-size: 11px; line-height: 1.4; text-align: center; color: #8e96b2; }
-.kt-form .cform-privacy a { color: #c9cfe3; }
-.kt-form .cform-status { position: absolute; left: calc(var(--hl) * 1% - 6%); width: calc((var(--hr) - var(--hl)) * 1% + 12%); top: calc(var(--gb) * 1% + 5.2cqh); margin: 0; text-align: center; font-size: 13px; color: #eef0f7; }
-.kt-form .cform-status.is-ok { color: #9ef0b7; }
-.kt-form .cform-status.is-error { color: #ffab9b; }
-.kt-form .cform-config { position: absolute; left: calc(var(--hr) * 1% + 2%); top: calc(var(--w4t) * 1%); width: 22%; }
-.kt-n { font: 500 1em/1 var(--font-mono); letter-spacing: 0.08em; color: #7d87a8; margin-right: 8px; }
-.field.is-lit .kt-n { color: var(--amber); }
+.kt-how { margin: 0 0 18px; font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--abyss-muted); line-height: 1.5; }
+.kt-panel .cform { gap: 18px; }
+.kt-panel .cform-grid { gap: 14px; }
+.kt-panel .textarea { height: clamp(120px, 19svh, 168px); min-height: 120px; }
+.kt-panel .cform-foot { flex-wrap: nowrap; gap: 18px; }
+.kt-panel .cform-submit { flex: none; }
+.kt-panel .cform-privacy { margin: 0; font-size: 0.8rem; }
+.kt-panel .cform-status:empty { display: none; }
+/* broj kata uz oznaku polja: upali se zajedno s katom */
+.kt-n { font: 500 1em/1 var(--font-mono); letter-spacing: 0.08em; color: var(--abyss-muted); margin-right: 8px; }
+.field.is-lit .kt-n { color: var(--lamp); }
 
-/* strane: uvod lijevo, izravni kontakti desno (kuća je u sredini kadra) */
-.kt-side { position: absolute; z-index: 4; top: 0; bottom: 0; display: grid; align-content: center; gap: 18px; width: min(27vw, 400px); padding-top: var(--header-h); }
-.kt-side--l { left: var(--gutter); }
-.kt-side--l .crumbs { position: absolute; top: calc(var(--header-h) + 24px); }
-.kt-side--r { right: var(--gutter); justify-items: end; text-align: right; align-content: end; padding-bottom: 12vh; }
-.kt-side .lead { font-size: 1rem; color: #c8cee2; }
-.kt-how { font-size: var(--fs-label); letter-spacing: 0.12em; text-transform: uppercase; color: #f6dcb1; line-height: 1.6; }
-.kt-direct { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.kt-direct a { display: inline-flex; align-items: center; gap: 12px; color: #eef0f7; text-decoration: none; }
-.kt-side--r .kt-direct a { flex-direction: row-reverse; }
-.kt-direct a .icon { color: var(--amber); flex: none; }
-.kt-direct b { display: block; font-weight: 650; }
+.kt-direct { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px 26px; }
+.kt-direct a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: #eef0f7; text-decoration: none; }
+.kt-direct a .icon { color: var(--sh-blue); flex: none; }
+.kt-direct b { display: block; font-weight: 650; font-size: 0.95rem; }
 .kt-direct small { display: block; color: #a3abc4; font-size: 0.8rem; }
 .kt-direct a:hover b { text-decoration: underline; text-underline-offset: 3px; }
-.kt-below { display: none; }
-.kt-privacy { font-size: 0.82rem; color: #8e96b2; }
-.kt-privacy a { color: #c9cfe3; }
 
-/* nastavak: ista noć, koraci nakon upita pale se kao etaže */
+@media (max-height: 800px) and (min-width: 961px) {
+  .kt-col { padding-block: calc(var(--header-h) + 12px) 18px; }
+  .kt-main { gap: 12px; }
+  .kt-how { margin-bottom: 12px; }
+  .kt-panel .cform { gap: 14px; }
+  .kt-panel .input, .kt-panel .select { min-height: 48px; padding-block: 11px; }
+  .kt-panel .textarea { height: 104px; min-height: 104px; }
+  .kt-panel .field { gap: 6px; }
+}
+
 .kt-after { background: #04060c; color: #eef0f7; padding-block: clamp(56px, 9vw, 120px) clamp(64px, 10vw, 140px); }
 .kt-after .kicker { color: #9fb4ff; }
 .kt-after .h2 { color: #fff; }
-.kt-after .h2 em { color: var(--amber); }
+.kt-after .h2 em { color: var(--sh-blue); }
 .kt-after-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px) clamp(28px, 6vw, 100px); align-items: start; }
 .kt-steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(178, 192, 255, 0.16); }
 .kt-step { display: grid; grid-template-columns: 54px 1fr; gap: 18px; padding: 24px 0; border-bottom: 1px solid rgba(178, 192, 255, 0.16); transition: opacity 0.6s var(--ease-out); }
-.kt-step-n { display: grid; place-items: center; width: 42px; height: 30px; border-radius: 4px; font-size: 0.74rem; letter-spacing: 0.08em; color: var(--ink); background: var(--amber); box-shadow: 0 0 22px rgba(255, 178, 63, 0.45); transition: background 0.6s var(--ease-out), box-shadow 0.6s var(--ease-out), color 0.6s var(--ease-out); }
+/* koraci su oznake, ne svjetlo: papir na noći (amber je u sustavu samo svjetlo) */
+.kt-step-n { display: grid; place-items: center; width: 42px; height: 30px; border-radius: 4px; font-size: var(--fs-label); letter-spacing: 0.08em; color: var(--ink); background: var(--paper); transition: background 0.6s var(--ease-out), color 0.6s var(--ease-out); }
 .kt-step b { font-size: 1.14rem; font-weight: 680; color: #fff; }
 .kt-step p { color: #a3abc4; margin-top: 4px; }
 .kt-after.is-live .kt-step { opacity: 0.45; }
 .kt-after.is-live .kt-step .kt-step-n { background: rgba(178, 192, 255, 0.1); color: #9fb4ff; box-shadow: inset 0 0 0 1px rgba(178, 192, 255, 0.25); }
 .kt-after.is-live .kt-step.is-on { opacity: 1; }
-.kt-after.is-live .kt-step.is-on .kt-step-n { background: var(--amber); color: var(--ink); box-shadow: 0 0 22px rgba(255, 178, 63, 0.45); }
+.kt-after.is-live .kt-step.is-on .kt-step-n { background: var(--paper); color: var(--ink); box-shadow: none; }
 .kt-ways { grid-column: 2; display: grid; gap: 14px; }
 .kt-ways-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .kt-ways-list a { display: grid; grid-template-columns: 22px 1fr; gap: 14px; align-items: center; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(178, 192, 255, 0.16); color: #eef0f7; text-decoration: none; transition: border-color 0.3s, background 0.3s; }
-.kt-ways-list a:hover { border-color: rgba(255, 178, 63, 0.6); background: rgba(255, 178, 63, 0.05); }
-.kt-ways-list .icon { color: var(--amber); }
+.kt-ways-list a:hover { border-color: rgba(159, 180, 255, 0.6); background: rgba(159, 180, 255, 0.06); }
+.kt-ways-list .icon { color: var(--sh-blue); }
 .kt-ways-list b { display: block; font-weight: 650; }
 .kt-ways-list small { display: block; color: #8f98b6; font-size: 0.82rem; }
 
-@media (max-width: 1100px), (max-aspect-ratio: 5/4) {
-  .kt-side { display: none; }
-  .kt-below { display: grid; gap: 18px; padding-block: 32px 48px; }
-}
-@media (max-aspect-ratio: 4/5), (max-width: 760px) {
-  .kt-lit--d, .kt-sign--d { display: none; }
-  .kt-lit--m, .kt-sign--m { display: block; }
-  .kt-form .field { left: calc(var(--wlm) * 1%); width: calc((var(--wrm) - var(--wlm)) * 1%); }
-  .kt-form .field:nth-child(1) { top: calc(var(--w0tm) * 1%); height: calc((var(--w0bm) - var(--w0tm)) * 1%); }
-  .kt-form .field:nth-child(2) { top: calc(var(--w1tm) * 1%); height: calc((var(--w1bm) - var(--w1tm)) * 1%); }
-  .kt-form .field:nth-child(3) { top: calc(var(--w2tm) * 1%); height: calc((var(--w2bm) - var(--w2tm)) * 1%); }
-  .kt-form .field:nth-child(4) { top: calc(var(--w3tm) * 1%); height: calc((var(--w3bm) - var(--w3tm)) * 1%); }
-  .kt-form .field:nth-child(5) { top: calc(var(--w4tm) * 1%); height: calc((var(--w4bm) - var(--w4tm)) * 1%); }
-  .kt-form .field label { font-size: var(--fs-label); letter-spacing: 0.06em; }
-  .kt-form .field label .opt { display: none; }
-  .kt-form .input, .kt-form .select, .kt-form .textarea { font-size: 16px; padding-inline: 10px; }
-  .kt-form .cform-submit { left: calc(var(--dlm) * 1%); width: calc((var(--drm) - var(--dlm)) * 1%); top: calc(var(--dtm) * 1%); height: calc((var(--dbm) - var(--dtm)) * 1%); font-size: 14px; }
-  .kt-form .cform-privacy { display: none; }
-  .kt-form .cform-status { left: 4%; width: 92%; top: calc(var(--gbm) * 1% + 0.6cqh); font-size: 12px; }
-  .kt-form .cform-config { left: 4%; width: 92%; top: calc(var(--gbm) * 1% + 0.6cqh); }
+/* tablet i mobitel: kadar s natpisom i kućom, ispod njega ploča s formom */
+@media (max-width: 960px), (max-aspect-ratio: 5/4) {
+  .kt-stage { display: block; min-height: 0; }
+  /* široki kadar kao traka: natpis (11,5 %) odmah ispod zaglavlja, pločnik (91,5 %) na dnu okvira */
+  .sh-kontakt .sh-frame { position: relative; inset: auto; height: calc(var(--header-h) + 8px + 45vw); }
+  .sh-kontakt .sh-scene { left: 0; top: calc(var(--header-h) + 8px); translate: 0 -11.5%; width: 100cqw; }
+  .kt-col { justify-items: stretch; padding-block: 8px 48px; }
+  .kt-main { width: 100%; max-width: 680px; margin-inline: auto; }
+  .kt-col .crumbs { display: none; }
   .kt-after-grid { grid-template-columns: 1fr; }
   .kt-ways { grid-column: auto; }
+}
+/* uspravno (slika 9:16, isti prag kao <picture>): natpis (20 %) do pločnika (92 %) između zaglavlja i dna okvira */
+@media (max-aspect-ratio: 4/5) {
+  .kt-lit--d, .kt-sign--d { display: none; }
+  .kt-lit--m, .kt-sign--m { display: block; }
+  .sh-kontakt .sh-frame { height: min(88svh, max(520px, calc(128vw + var(--header-h) + 8px))); }
+  .sh-kontakt .sh-scene { left: 50%; top: auto; bottom: 0; translate: -50% 8%; width: calc((100cqh - var(--header-h) - 8px) / 0.72 * 9 / 16); }
+  .kt-panel { padding: 18px 16px; border-radius: 14px; }
+  .kt-panel .cform-foot { flex-wrap: wrap; }
+  .kt-panel .cform-submit { width: 100%; }
   .kt-ways-list { grid-template-columns: 1fr; }
+}
+/* uspravni tablet: kadar uži od ekrana, rubovi se stapaju s noći, forma počinje u prvom ekranu */
+@media (max-aspect-ratio: 4/5) and (min-width: 601px) {
+  .sh-kontakt .sh-frame { height: min(76svh, max(520px, calc(128vw + var(--header-h) + 8px))); }
+  .sh-kontakt .sh-scene { -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
 }
 
 /* ═════════ Razina 2 — urednički hero ═════════ */

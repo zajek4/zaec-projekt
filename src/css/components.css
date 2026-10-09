@@ -75,7 +75,7 @@
   .cfg-drivers li { padding: 5px 10px; border-radius: 99px; border: 1px solid var(--abyss-line-2); font-size: 0.82rem; color: var(--abyss-fg); }
   .cfg-sum { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: 0.88rem; color: #c9cfe4; }
   .cfg-sum li { display: grid; grid-template-columns: 96px 1fr; gap: 10px; }
-  .cfg-sum li b { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--abyss-dim); font-weight: 500; padding-top: 3px; }
+  .cfg-sum li b { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--abyss-muted); font-weight: 500; padding-top: 3px; }
   .cfg-sum li.is-empty span { color: var(--abyss-muted); }
   .cfg-fix { margin-left: 6px; padding: 0; border: 0; background: none; color: #9fb4ff; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .cfg-fix:hover { color: #fff; }
@@ -132,6 +132,7 @@
   .cform { display: grid; gap: 22px; position: relative; }
   .cform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 16px; }
   .field--full { grid-column: 1 / -1; }
+  .cform .field { align-content: start; }
   .cform-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; }
   .cform-privacy { font-size: 0.82rem; color: var(--muted); max-width: 40ch; line-height: 1.45; }
   .cform-status { font-weight: 600; }
@@ -143,11 +144,33 @@
   .cform-config span { display: block; font-size: 0.82rem; color: var(--ink-3); white-space: pre-line; line-height: 1.45; margin-top: 4px; }
   .cform-x { border: 0; background: none; padding: 4px; border-radius: 6px; color: var(--ink-3); }
   .cform-x:hover { background: rgba(0, 0, 0, 0.06); }
-  .cform--dark .field label { color: #d8d3c8; }
-  .cform--dark .input, .cform--dark .select, .cform--dark .textarea { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.2); color: #fff; }
-  .cform--dark .input:focus, .cform--dark .select:focus, .cform--dark .textarea:focus { background: rgba(255, 255, 255, 0.1); }
+  /* noćna varijanta (Kontakt): iste mjere kao papirna, boje s noći; primjer u polju 60 % (oko 5:1) */
+  .cform--dark .field label { color: #dfe4f3; }
+  .cform--dark .field label .opt { color: var(--abyss-muted); }
+  .cform--dark .input, .cform--dark .select, .cform--dark .textarea { background: rgba(255, 255, 255, 0.05); border-color: rgba(178, 192, 255, 0.3); color: #fff; }
+  .cform--dark .input::placeholder, .cform--dark .textarea::placeholder { color: rgba(214, 220, 240, 0.6); }
+  .cform--dark .input:hover, .cform--dark .select:hover, .cform--dark .textarea:hover { border-color: rgba(178, 192, 255, 0.55); }
+  .cform--dark .input:focus, .cform--dark .select:focus, .cform--dark .textarea:focus { background: rgba(255, 255, 255, 0.08); border-color: #8ea2ff; box-shadow: 0 0 0 4px rgba(90, 120, 255, 0.28); }
+  .cform--dark .field.has-error .input, .cform--dark .field.has-error .textarea, .cform--dark .field.has-error .select { border-color: #ff8f7a; }
+  .cform--dark .field-error, .cform--dark .cform-status.is-error { color: #ffab9b; }
+  .cform--dark .cform-status.is-ok { color: #9ef0b7; }
   .cform--dark .select option { color: #141414; }
-  .cform--dark .cform-privacy { color: #a9a49a; }
+  .cform--dark .cform-privacy { color: #a3abc4; }
+  .cform--dark .cform-privacy a { color: #dfe4f3; }
+  .cform--dark .cform-config { background: rgba(90, 120, 255, 0.12); color: var(--abyss-fg); border-color: rgba(142, 162, 255, 0.35); }
+  .cform--dark .cform-config .icon { color: #9fb4ff; }
+  .cform--dark .cform-config span, .cform--dark .cform-x { color: #b9c0d8; }
+  .cform--dark .cform-x:hover { background: rgba(255, 255, 255, 0.08); }
+  /* potvrda na mjestu (data-inline-success): polja se sklanjaju, status ostaje za čitač ekrana */
+  .cform.is-sent > .cform-grid, .cform.is-sent > .cform-foot, .cform.is-sent > .cform-config { display: none; }
+  .cform.is-sent > .cform-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .cform-done { display: grid; gap: 6px; }
+  .cform-done[hidden] { display: none; }
+  .cform-done:focus { outline: none; }
+  .cform-done-t { margin: 0; font-size: clamp(1.4rem, 2.2vw, 1.8rem); font-weight: 700; letter-spacing: -0.01em; }
+  .cform-done p:last-child { margin: 0; color: var(--muted); }
+  .cform--dark .cform-done-t { color: #fff; }
+  .cform--dark .cform-done p:last-child { color: #c8cee2; }
   @media (max-width: 640px) { .cform-grid { grid-template-columns: 1fr; } .cform-submit { width: 100%; } }
 
 /* telefon ili email: kako ćemo odgovoriti */

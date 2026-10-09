@@ -1,7 +1,7 @@
-// Kontakt — zgrada je forma.
-// U nizu osvijetljenih kuća jedna je tamna; njezini prozori su polja forme. Svako ispravno ispunjeno polje
-// pali svoj prozor (odozgo: ime, kontakt, djelatnost, usluga, poruka), a tekst u njemu postaje tinta na toplom
-// staklu. Slanje (vrata) pali prizemlje i neonski natpis na krovu — naslov stranice.
+// Kontakt — svako polje pali jedan kat.
+// U nizu osvijetljenih kuća jedna je tamna; forma je ploča uz nju. Svako ispravno ispunjeno polje pali svoj kat
+// (odozgo: ime, kontakt, djelatnost, usluga, poruka), a broj kata uz oznaku polja zasvijetli s njim. Slanje pali
+// prizemlje i natpis na krovu (naslov stranice); potvrda ostaje u ploči.
 // Interakcija radi i uz smanjeno kretanje — tada bez treperenja. Bez JS-a forma radi klasično, kuća ostaje tamna.
 import { gsap, motionOK } from './core.js';
 
@@ -16,9 +16,9 @@ const FILLED = {
   poruka: (v) => v.trim().length >= 12,
 };
 const NOTE = {
-  ready: 'Može se poslati — vrata su otvorena. Ostali prozori po želji.',
-  full: 'Svi prozori svijetle. Vrata šalju upit.',
-  sent: 'Upit je stigao. Natpis na krovu je upaljen.',
+  ready: 'Može se poslati. Ostala polja po želji.',
+  full: 'Svi katovi svijetle. Upit je spreman.',
+  sent: 'Natpis na krovu je upaljen.',
 };
 
 export default function kontakt(sec) {
@@ -80,6 +80,12 @@ export default function kontakt(sec) {
 
   form.addEventListener('zaec:sent', () => {
     sent = true;
+    // potvrda je kraća od forme. Desktop: stupac zadrži visinu, pa ploča ostane na mjestu i samo se skrati.
+    // Tablet i mobitel (kuća je iznad forme): kadar se vrati na ekran da se vidi kako se kuća pali.
+    const main = form.closest('.kt-main');
+    if (window.matchMedia('(max-width: 960px), (max-aspect-ratio: 5/4)').matches) {
+      requestAnimationFrame(() => sec.scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'start' }));
+    } else if (main) main.style.minHeight = `${main.offsetHeight}px`;
     FIELDS.forEach((_, i) => { if (!on[i]) { on[i] = true; light(`--f${i}`, 1); } });
     gsap.to(sec, { '--fg': 1, duration: motion ? 0.6 : 0.3, ease: 'power2.out' });
     gsap.to(sec, { '--fc': 1, duration: motion ? 0.9 : 0.3, delay: motion ? 0.35 : 0, ease: 'power2.out' });
@@ -87,11 +93,10 @@ export default function kontakt(sec) {
     render();
   });
 
-  // špica: kadar je već tu; strane i natpisi polja ulaze mirno
+  // špica: kadar je već tu; uvod i ploča ulaze mirno
   if (motion) {
-    const sides = sec.querySelectorAll('.kt-side > *');
-    if (sides.length) gsap.from(sides, { opacity: 0, y: 16, duration: 1.1, ease: 'power3.out', stagger: 0.07, delay: 0.2, clearProps: 'opacity,transform' });
-    gsap.from(form.querySelectorAll('.field label'), { opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.08, delay: 0.5, clearProps: 'opacity' });
+    const parts = sec.querySelectorAll('.kt-main > *');
+    if (parts.length) gsap.from(parts, { opacity: 0, y: 16, duration: 1.1, ease: 'power3.out', stagger: 0.07, delay: 0.2, clearProps: 'opacity,transform' });
   }
 
   // nastavak: koraci nakon upita pale se redom dok prolaze sredinom ekrana

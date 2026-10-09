@@ -102,5 +102,11 @@ $err   = static fn( $f ) => esc_attr( $fid . '-' . $f . '-err' );
 		</button>
 		<p class="cform-privacy">Podatke koristimo samo za odgovor. Bez newslettera i ustupanja trećima. <a href="<?php echo esc_url( zaec_url( 'privatnost' ) ); ?>">Privatnost</a></p>
 	</div>
+	<?php if ( ! empty( $args['inline'] ) ) : ?>
+		<div class="cform-done" data-done data-hours="<?php echo esc_attr( (string) zaec_option( 'hours' ) ); ?>" hidden tabindex="-1">
+			<p class="cform-done-t">Upit je stigao.</p>
+			<p data-done-via>Javljamo se u radno vrijeme.</p>
+		</div>
+	<?php endif; ?>
 	<div class="cform-status<?php echo 'error' === $state ? ' is-error' : ''; ?>" role="status" aria-live="polite" data-status><?php echo 'error' === $state ? esc_html( 'Slanje nije uspjelo. Pokušajte ponovno ili nazovite ' . zaec_option( 'phone_display' ) . '.' ) : ''; ?></div>
 </form>
