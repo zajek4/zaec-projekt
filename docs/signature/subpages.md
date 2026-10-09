@@ -90,3 +90,14 @@ Nisu dirani (izvan opsega podstranica): `.quote`, `.stats`, `.next-card`, `.arti
 Provjereno Playwrightom na lokalnom WP-u (build iz ove grane): prvi ekran na 360, 390, 900 × 1000, 1024, 1280, 1440 i
 1920; slijed bloka s kulom na 390, 1024, 1440 i 1920 (paljenje etaža, sve upaljeno na kraju) i uz smanjeno kretanje;
 „Ukratko“ na O nama, Cijenama, SEO-u, hubu djelatnosti, lokalnoj stranici, provjeri i hubu usluga (jednom po stranici).
+
+## 6. Interno povezivanje i ljestvica ulaza (strategija 03 §2 i §4)
+
+- Izrada: `related` sada vodi i na glavnu lokalnu stranicu (Izrada web stranica Osijek, umjesto AI vidljivosti koja
+  ima dolazne veze s SEO-a, lokalnog SEO-a i GBP-a; rešetka ima tri mjesta).
+- Hub djelatnosti dobiva `related`: Osijek, besplatna provjera vidljivosti, cijene. O nama ga je već imao.
+- Google Business profil: uvod bloka „Što radimo na profilu“ razgraničava profil i lokalni SEO, s poveznicom. Uvodi
+  blokova zato prolaze kroz `zaec_kses_text` (a, em, strong, br) umjesto `esc_html`.
+- Stranice djelatnosti: ispod znakova povjerenja redak „Ili prvo besplatna provjera vidljivosti“ (`cta_industry_audit`).
+  Na desktopu je izvan toka (`position: absolute` ispod tijela), jer je list nacrta smješten prema naslovu: redak ne
+  mijenja visinu heroja. Provjera nacrta nakon toga i dalje 66/66.

@@ -387,6 +387,11 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh-title em { color: #c7a31b; }
 .eh-body { display: grid; gap: 22px; max-width: min(calc(var(--edge) - var(--wl) - 3vw), 560px); }
 .eh-body .lead { max-width: 44ch; }
+/* djelatnosti: list nacrta smješten je prema naslovu, pa redak „Ili prvo…“ ne smije mijenjati visinu heroja */
+@media (min-width: 761px) and (min-aspect-ratio: 4/5) {
+  .eh-body { position: relative; }
+  .eh-body .phero-more { position: absolute; top: 100%; left: 0; margin-top: 14px; }
+}
 .eh--noimg .eh-title { max-width: 16ch; }
 .eh--noimg .eh-body { max-width: 640px; }
 

@@ -13,6 +13,8 @@
 .phero-title { font-size: min(var(--fs-d2), 10.6vw); max-width: 12ch; }
 .phero-title em { color: var(--signal); }
 .phero-cta { display: flex; flex-wrap: wrap; gap: 14px 18px; margin-top: 6px; }
+.phero-more { font-size: 0.95rem; color: var(--ink-2); }
+.phero-more .icon { color: var(--signal); }
 .phero-note { color: var(--muted); }
 .phero-art { margin: 0; position: relative; aspect-ratio: 4 / 3; }
 /* kadar: noćna scena kao kartica — tamni ekran na papiru, isti jezik kao naslovnica */

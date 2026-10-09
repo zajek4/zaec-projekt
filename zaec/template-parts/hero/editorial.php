@@ -70,6 +70,10 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 						<li><?php zaec_the_icon( 'chat-round-dots', 16 ); ?> Prvi razgovor besplatno</li>
 					</ul>
 				<?php endif; ?>
+				<?php if ( 'industry' === ( $l['type'] ?? '' ) && false === strpos( $cta[1], 'provjera-vidljivosti' ) ) : ?>
+					<?php // manji korak za posjetitelja koji još nije spreman za cijeli web (strategy/03, ljestvica ulaza) ?>
+					<p class="phero-more"><a class="link-arrow" href="<?php echo esc_url( zaec_url( 'provjera-vidljivosti' ) ); ?>" data-track="cta_industry_audit">Ili prvo besplatna provjera vidljivosti <?php zaec_the_icon( 'arrow-right', 16 ); ?></a></p>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>

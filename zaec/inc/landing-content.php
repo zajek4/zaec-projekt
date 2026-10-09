@@ -156,7 +156,7 @@ function zaec_registry_services() {
 			array( 'Pišete li i tekstove?', 'Pomažemo složiti strukturu i poruku, a pisanje cijelih tekstova može ući u opseg. Vi date znanje o poslu, mi ga pretvorimo u jasnu stranicu.' ),
 			array( 'Imam stari web — trebam li novi?', 'Ne nužno. Prvo napravimo besplatnu provjeru i iskreno kažemo isplati li se popravak ili nova izrada.' ),
 		),
-		'related'      => array( 'usluge/seo', 'usluge/ga4-i-pracenje-konverzija', 'usluge/ai-vidljivost' ),
+		'related'      => array( 'izrada-web-stranica-osijek', 'usluge/seo', 'usluge/ga4-i-pracenje-konverzija' ),
 	);
 
 	$r['usluge/webshop'] = array(
@@ -386,6 +386,7 @@ function zaec_registry_services() {
 			array(
 				'type'  => 'deliver',
 				'title' => 'Što radimo na <em>profilu</em>.',
+				'lead'  => 'Profil je prvi korak lokalnog SEO-a. Kad je uređen, sljedeći je web koji odgovara na iste pretrage po uslugama i mjestima: to radimo kroz <a href="' . esc_url( zaec_url( 'usluge/lokalni-seo' ) ) . '">lokalni SEO</a>.',
 				'items' => array(
 					array( 'shield-check', 'Postavljanje ili preuzimanje', 'Potvrda vlasništva, kategorije, područje rada, radno vrijeme, kontakt.' ),
 					array( 'list', 'Usluge i opis', 'Usluge onako kako ih ljudi traže i opis koji jasno kaže što radite i gdje.' ),

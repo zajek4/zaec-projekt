@@ -38,7 +38,7 @@ function zaec_block_head( $title, $lead = '', $kicker = '' ) {
 	}
 	echo '</div>';
 	if ( $lead ) {
-		echo '<p class="lead" data-reveal>' . esc_html( $lead ) . '</p>';
+		echo '<p class="lead" data-reveal>' . zaec_kses_text( $lead ) . '</p>'; // phpcs:ignore -- kses
 	}
 	echo '</div>';
 }

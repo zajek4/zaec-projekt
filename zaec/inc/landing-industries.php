@@ -172,6 +172,7 @@ function zaec_registry_industries() {
 		'faq'         => array(
 			array( 'Moje djelatnosti nema na popisu.', 'Odaberite „Nešto drugo” ili najbliži sektor. Isti pristup radi za svaki posao koji kupci traže i uspoređuju na webu. U razgovoru složimo strukturu za vaš.' ),
 		),
+		'related'     => array( 'izrada-web-stranica-osijek', 'provjera-vidljivosti', 'cijene' ),
 	);
 
 	$industries = array(
