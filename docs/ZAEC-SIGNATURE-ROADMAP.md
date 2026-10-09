@@ -161,6 +161,17 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   73,4–90 m (prije je počinjao na 64 m bez tambura). Na bočnim pročeljima tornja: velik prozor s mrežištem pod
   vimpergom u prizemlju i dva niža lanceta uz veliki prozor prvog kata. GLB 76 → 89 kB, 6315 → 7519 trokuta.
   Sjaj zvonika u shaderu prati nove visine otvora. Fotografije služe samo kao referenca, ne objavljuju se.
+- **Osijek iz zraka i centar (2026-10-09):** OSM podaci stigli preko Overture Maps izdanja 2026-09-23.1 (OSM snimak
+  2026-09-06; zadržane samo značajke s izvorom OpenStreetMap i njihovim OSM id-jevima, atribucija ostaje
+  "© OpenStreetMap suradnici"). **Centar:** unutar 600 m od konkatedrale novi izvoz ima 475 zgrada, stari 476 —
+  praznine oko trga su stvarna dvorišta i otvoreni prostori, pa ništa nije dodano izvan podataka (26 zgrada iz
+  relacija, 29 dvorišta). **Istok i zapad:** ulice se zapisuju za cijelo izgrađeno područje (Višnjevac do kraja
+  Donjega grada, 12 × 6,2 km), zgrade i dalje do 2,65 km. Dio ulice je osvijetljen samo gdje u okolici stvarno stoje
+  OSM zgrade (gustoća iz svih zgrada izvoza, u alatu; glavne ceste traže gušću izgrađenost), pa polja i ceste između
+  naselja ostaju tamne: 468 od 491 km ulica. Uz detaljnu kartu svjetla (±2,6 km) nova je široka karta cijelog grada.
+  Tlo je u tri dijela (detaljna, pojas pretapanja, široka) da svaki piksel čita jednu kartu; prva verzija koja je
+  čitala obje bila je ~20 % sporija iz zraka. Drava se reže na vidljivi dio (gasi se do 3,4 km). Podaci 256 → 309 kB
+  (gzip 188 → 222 kB).
 - **Snop s tornja:** najviše ~60 % prijašnje jačine, uži, iznad ~100 m prelazi u nit; križ ostaje vidljiv. Ostaje kao
   motiv (fizički grad → digitalna točka), ali više ne nadjačava toranj.
 - **Lite način:** ostaje na `hardwareConcurrency <= 4`. Broj su logičke niti: 4 niti danas imaju slabiji prijenosnici
@@ -237,6 +248,11 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   (profil, 4× CPU). Ukupno dugih zadaća u prvih 12 s na mobitelu 4× CPU: 2,4–2,5 s → 2,2–2,7 s (šum veći od razlike);
   najdulja 640–670 → 580–650 ms. Ostatak je prevođenje shadera i slanje tekstura pri prvom crtanju.
   Napomena: okruženje ima 4 niti, pa desktop ovdje radi u lite načinu.
+- Osijek iz zraka (OSM): A/B izmjenično stara/nova verzija u istom okruženju (SwiftShader, lite, medijan 12 sličica):
+  desktop 4050 74–76 → 78–81 ms, 5400 173–178 → 174–197 ms (šum); mobitel 390×844 3714 / 4150 / 5458:
+  23–26 / 33–37 / 78 → 25 / 32–33 / 79–82 ms. Lampe 4344 → 7186 točaka; izmjereno da ne mijenjaju vrijeme sličice.
+  Snimke 1440×900 na 4050 i 4500 pregledane (bez šava između karata, bez ravnog ruba tla);
+  `qa/zavrsni-prolaz/10-osijek-iz-zraka-osm.jpg`. Bez JS grešaka u konzoli.
 
 ## Samokritika (0–10)
 
@@ -246,7 +262,8 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 6 Nacrt | 8 | 8 | 8 | 7,5 | Kota i pravci daju nacrtu smisao; na desktopu toranj na trenutak prolazi ispod teksta |
 | 7 Poglavlje 08 | 8 | 8 | 8,5 | 8 | Motiv filma nastavljen na papiru; odgovara tko/što/za koga/kako početi |
 | 2 Skala i gumbi | 8 | 7 | 8,5 | 8 | Jedan sustav umjesto procjene od slučaja do slučaja; filmski naslovi namjerno izvan skale |
-| Završni prolaz: prozori | 8 | 7,5 | — | 8 | Grad više ne izgleda "sav upaljen"; iz zraka i dalje nedostaje istok (podaci) |
+| Završni prolaz: prozori | 8 | 7,5 | — | 8 | Grad više ne izgleda "sav upaljen" |
+| Završni prolaz: Osijek iz zraka | 8 | 7,5 | — | 8,5 | Cijeli grad iz stvarnih podataka; istok i zapad svijetle samo gdje ima zgrada |
 | Završni prolaz: konkatedrala | 8,5 | 7,5 | — | 8,5 | Toranj prema fotografijama: sat, galerije, zvonik, tambur i šiljak u stvarnom redoslijedu i omjerima |
 | Mobilni CTA | 8,5 | 7 | 9 | 8,5 | Jedan poziv, ne prekriva formu ni footer |
 
@@ -255,13 +272,9 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 - Build je od 2026-10-09 ponovno Vite (`npm run build`): pomoćna nit je napravila `npm ci --ignore-scripts` iz
   `package-lock.json` (arhiva i sha256 u `/mnt/project-files/zaec-signature/build-cache/`); izlaz parsira kao
   ES2020 (acorn). Offline kit (Bun) ostaje kao rezerva.
-- **Svjetla grada iz zraka i centar oko trga (zahtjev korisnika, točke 1 i 2) čekaju podatke.** Overpass
-  (`overpass-api.de`) i dalje prekida TLS nakon ~8 s, i iz nove sesije; zrcala vraćaju 403. Postojeći
-  `osijek-city.bin` pokriva 18,650–18,712° E: istočni dio grada (Donji grad prema 18,73°) nije u njemu, a zgrade iz
-  OSM relacija (multipoligoni) nisu uvezene, pa u blokovima oko konkatedrale ima rupa. Bez podataka se praznine ne
-  popunjavaju izmišljenim zgradama. Alat je spreman (`7b37929`): `ZAEC_OSM=… npm run city` spaja izvoze, uvozi
-  relacije s dvorištima i šire reže Dravu; city.js gradi dvorišta. Zatim proširiti kartu svjetla i rast grada prema
-  istoku. Moguć zamjenski izvor: izvadak za Hrvatsku s `download.geofabrik.de` (traži dopuštenje domene).
+- Osijek iz zraka: zgrade izvan 2,65 km se ne grade (iz zraka su ispod piksela, a na kadru Osijeka su u magli);
+  ako bude trebalo, nisko izdizanje rubnih naselja moguće je iz istih podataka. Microsoft ML zgrade s ruba grada
+  (`osm/ml-zgrade-microsoft.json`) namjerno nisu korištene: nisu OSM i nisu provjerene.
 - Konkatedrala: jedna fotografija s popisa (`Osijek, Županijska, chrám III.jpg`) nije preuzeta (Wikimedia 429);
   autori i licence fotografija nisu automatski dohvaćeni (`commons.wikimedia.org` nedostupan), provjeriti prije
   bilo kakve objave. Daljnja vjernost: kontrafori kao dijagonalni stupovi sa stepenastim kamenim kapama, kukice
@@ -276,8 +289,7 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 
 ## Sljedeći korak
 
-Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; podaci za istok grada i centar čim
-mreža dopusti OSM; faza 12.
+Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; faza 12.
 
 ## Commitovi
 
@@ -299,4 +311,5 @@ mreža dopusti OSM; faza 12.
 - `b2aca60` 3D: lakše pokretanje (maska Drave, brži blur, odgođena priprema nacrta)
 - `4152c6f` Nalazi QA (nisko): slojevi, oznake uz rub, traka upita na uskim zaslonima
 - `7b37929` Grad: zgrade iz OSM multipoligona s dvorištima, spajanje više OSM izvoza (čeka podatke)
-- Konkatedrala: toranj prema fotografijama (sat, galerije, zvonik, tambur, šiljak); build ponovno Vite
+- `1b8ff1a` Konkatedrala: toranj prema fotografijama (sat, galerije, zvonik, tambur, šiljak); build ponovno Vite
+- `90d277d` Osijek iz zraka: cijeli grad iz OSM-a, osvijetljene ulice prema stvarnoj izgrađenosti
