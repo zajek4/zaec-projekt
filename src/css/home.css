@@ -108,11 +108,14 @@
 .film-rail a span { width: 24px; text-align: right; position: relative; opacity: 0.5; transition: opacity 0.3s; }
 .film-rail a span::after { content: ''; position: absolute; right: 0; bottom: -3px; height: 1px; width: 8px; background: currentColor; transition: width 0.5s var(--ease-out), background 0.3s; }
 .film-rail a b { font-weight: 500; opacity: 0; translate: 6px 0; transition: opacity 0.3s, translate 0.45s var(--ease-out); }
-.film-rail:hover a b, .film-rail a:focus-visible b, .film-rail a.is-active b { opacity: 1; translate: 0 0; }
+/* naziv poglavlja tek na hover/fokus: aktivni naziv ponavljao je kicker poglavlja i sudarao se s naslovom desnog stupca */
+.film-rail:hover a b, .film-rail a:focus-visible b { opacity: 1; translate: 0 0; }
 .film-rail a.is-active { color: var(--cine-fg); }
 .film-rail a.is-active span { opacity: 1; }
 .film-rail a.is-active span::after { width: 24px; background: var(--glow); }
 .rail-hide .film-rail { opacity: 0; pointer-events: none; }
+/* skrivena traka i zasluga i dalje su u redu tipkovnice: kad fokus uđe u njih, vide se */
+.rail-hide .film-rail:focus-within, .stage-credit:focus-within { opacity: 1; pointer-events: auto; }
 @media (max-width: 1180px) { .film-rail { display: none; } }
 
 /* ═════════ KINO ═════════ */
@@ -127,8 +130,14 @@
 .cine-copy { position: relative; display: grid; gap: 22px; max-width: 560px; }
 .cine-copy::before {
   content: ''; position: absolute; inset: -18% -22%; z-index: -1; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(4, 6, 12, 0.72), rgba(4, 6, 12, 0.35) 60%, transparent);
+  background: radial-gradient(closest-side, rgba(4, 6, 12, 0.8), rgba(4, 6, 12, 0.66) 45%, rgba(4, 6, 12, 0.3) 75%, transparent);
 }
+/* desni stupac se odmiče od trake poglavlja (vidljiva od 1181 px) */
+@media (min-width: 1181px) { .cine-grid--right .cine-copy { margin-right: 48px; } }
+/* veliki zasloni: naslov raste do 84 px, a stupac je ostajao 560 px (četiri retka, riječ sama u retku) */
+@media (min-width: 1600px) { .cine-copy { max-width: min(40vw, 760px); } }
+/* odlomak preko osvijetljenog grada: mekana tamna aureola oko slova (bez vidljive kutije) */
+.cine .lead, .cine-copy > p { text-shadow: 0 0 14px rgba(4, 6, 12, 0.9), 0 1px 3px rgba(4, 6, 12, 0.8); }
 .cine .kicker { color: var(--glow); }
 .cine .h2 { color: #fff; }
 .cine .h2 em, .cine .h1 em { color: var(--glow); }
@@ -139,6 +148,7 @@
 /* hero */
 .cine-hero { min-height: 100vh; min-height: 100svh; padding-bottom: 120px; }
 .hero-copy { max-width: 640px; gap: 26px; }
+@media (min-width: 1600px) { .hero-copy { max-width: min(44vw, 840px); } }
 .hero-title { font-size: clamp(2.7rem, 5.7vw, 6.6rem); line-height: var(--lh-d); color: #fff; max-width: 11.5ch; }
 .hero-title em { color: var(--glow); }
 .hero-copy .lead { font-size: clamp(1.05rem, 1.25vw, 1.25rem); max-width: 46ch; }

@@ -2,7 +2,7 @@
 // Sve u lokalnim metrima grada (x = istok, y = gore, z = −sjever). Boje se računaju linearno, a na izlazu
 // se pretvaraju u prikaz (gama), pa se topla svjetla miješaju fizikalno uvjerljivo.
 //
-// Karta svjetla (lightmap) jedna je tekstura (R8) koju crta platno pri učitavanju: stvarne ulice prema rangu,
+// Karta svjetla (lightmap) jedna je tekstura (R8) koju crta platno pri učitavanju (u Workeru kad može): stvarne ulice prema rangu,
 // svjetiljke kao lokve svjetla, trgovi i pješačke zone. Iz nje čitaju tlo (ulice svijetle odozgo), donji dijelovi
 // pročelja (svjetlo ulice na zidu), izlozi i Drava (odsjaji svjetla s obale).
 import * as THREE from 'three';
@@ -12,13 +12,12 @@ const RISE_R = 3200;
 
 /* ───────────────────────── karta svjetla ───────────────────────── */
 /**
- * roads: [{ c, r }] (OSM rang 0…5, prsten x/sjever u m), lamps: Float32 [x, y, z…], lampK: jačina po lampi,
- * squares: prstenovi trgova, shops: prstenovi zgrada s izlozima. Vraća DataTexture (R8, mipmape).
+ * Crtanje karte (R8). Čista funkcija bez ičega izvan sebe: ista se pokreće u Workeru (kao tekst) ili, gdje
+ * OffscreenCanvas/Worker nisu dostupni, na glavnoj niti. Crtanje 2048² platna i čitanje piksela trajalo je
+ * ~150 ms na stolnom računalu (više na mobitelu) — u Workeru ne blokira scroll.
  */
-export function buildLightMap({ roads, lamps, lampK, squares, shops, riverside = [], zone, lite }) {
-  const N = lite ? 1024 : 2048;
-  const k = N / (2 * LM_R);
-  const cv = document.createElement('canvas');
+function paintLightMap(cv, N, R, roads, zks, lamps, lampK, squares, shops, riverside) {
+  const k = N / (2 * R);
   cv.width = cv.height = N;
   const g = cv.getContext('2d', { willReadFrequently: true });
   g.fillStyle = '#000';
@@ -27,8 +26,8 @@ export function buildLightMap({ roads, lamps, lampK, squares, shops, riverside =
   g.lineCap = 'round';
   g.lineJoin = 'round';
   // redak 0 = sjever (z = −R) → uv.y = (z + R) / 2R
-  const X = (x) => (x + LM_R) * k;
-  const Y = (y) => (LM_R - y) * k;
+  const X = (x) => (x + R) * k;
+  const Y = (y) => (R - y) * k;
   const path = (r, close) => {
     g.beginPath();
     g.moveTo(X(r[0]), Y(r[1]));
@@ -38,14 +37,14 @@ export function buildLightMap({ roads, lamps, lampK, squares, shops, riverside =
   // širina (m) i jačina sjaja ulice prema rangu: glavne prometnice, sabirne, stambene, servisne, pješačke, staze
   const W = [[11, 0.2, 30, 0.07], [9, 0.17, 24, 0.06], [6.5, 0.11, 15, 0.04], [4, 0.05, 8, 0.02], [7, 0.2, 18, 0.07], [2.4, 0.035, 0, 0]];
   const white = (a) => `rgba(255,255,255,${Math.min(1, a).toFixed(4)})`;
-  for (const rd of roads) {
+  for (let j = 0; j < roads.length; j++) {
+    const rd = roads[j];
     const w = W[rd.c];
     if (!w) continue;
-    const r = rd.r;
     // šetnica uz Dravu: svjetla uz vodu (odsjaji u rijeci) vrijede i izvan središta
-    const zk = zone(r[0], r[1]) * (rd.w ? 1.8 : 1);
+    const zk = zks[j];
     if (rd.c === 5 && zk < 0.7) continue;
-    path(r, false);
+    path(rd.r, false);
     if (w[2]) { g.lineWidth = w[2] * k; g.strokeStyle = white(w[3] * zk); g.stroke(); }
     g.lineWidth = w[0] * k;
     g.strokeStyle = white(w[1] * zk);
@@ -74,6 +73,34 @@ export function buildLightMap({ roads, lamps, lampK, squares, shops, riverside =
   const img = g.getImageData(0, 0, N, N).data;
   const data = new Uint8Array(N * N);
   for (let i = 0; i < N * N; i++) data[i] = img[i * 4];
+  return data;
+}
+
+function paintInWorker(args) {
+  if (typeof OffscreenCanvas === 'undefined' || typeof Worker === 'undefined') return Promise.reject(new Error('bez OffscreenCanvas'));
+  return new Promise((resolve, reject) => {
+    const src = `const paint = ${paintLightMap.toString()};
+onmessage = (e) => { const a = e.data; const d = paint(new OffscreenCanvas(1, 1), ...a); postMessage(d, [d.buffer]); };`;
+    const url = URL.createObjectURL(new Blob([src], { type: 'text/javascript' }));
+    let w;
+    try { w = new Worker(url); } catch (e) { URL.revokeObjectURL(url); reject(e); return; }
+    const done = () => { w.terminate(); URL.revokeObjectURL(url); };
+    w.onmessage = (e) => { done(); resolve(e.data); };
+    w.onerror = (e) => { e.preventDefault?.(); done(); reject(new Error('worker')); };
+    w.postMessage(args);
+  });
+}
+
+/**
+ * roads: [{ c, r, w }] (OSM rang 0…5, prsten x/sjever u m), lamps: [x, y, z…], lampK: jačina po lampi,
+ * squares: prstenovi trgova, shops: prstenovi zgrada s izlozima. Vraća Promise<DataTexture> (R8, mipmape).
+ */
+export async function buildLightMap({ roads, lamps, lampK, squares, shops, riverside = [], zone, lite }) {
+  const N = lite ? 1024 : 2048;
+  const zks = roads.map((rd) => zone(rd.r[0], rd.r[1]) * (rd.w ? 1.8 : 1));
+  const args = [N, LM_R, roads.map((rd) => ({ c: rd.c, r: rd.r })), zks, lamps, lampK, squares, shops, riverside];
+  let data;
+  try { data = await paintInWorker(args); } catch { data = paintLightMap(document.createElement('canvas'), ...args); }
   const tex = new THREE.DataTexture(data, N, N, THREE.RedFormat, THREE.UnsignedByteType);
   tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
   tex.magFilter = THREE.LinearFilter;
@@ -183,7 +210,7 @@ export function buildingMaterial(C, { lite }) {
         if (wall > 0.5 && prof > 0.5) {
           // sjeme je kvantizirano (središte razreda): interpolacija konstante smije malo odstupiti, a hash ne smije
           float seed = floor(fract(vWin.w) * 1000.0) / 1000.0;
-          vec4 P = prof < 1.5 ? vec4(3.6, 3.0, 0.2, 0.7) : prof < 2.5 ? vec4(3.0, 2.85, 0.3, 0.7) : prof < 3.5 ? vec4(3.4, 3.7, 0.26, 4.3) : vec4(6.0, 4.5, 0.07, 1.2);
+          vec4 P = prof < 1.5 ? vec4(3.6, 3.0, 0.17, 0.7) : prof < 2.5 ? vec4(3.0, 2.85, 0.28, 0.7) : prof < 3.5 ? vec4(3.4, 3.7, 0.2, 4.3) : vec4(6.0, 4.5, 0.06, 1.2);
           vec2 gq = vec2(vWin.x / P.x, (vL.y - P.w) / P.y);
           vec2 c = floor(gq), e = fract(gq);
           vec2 fw = max(fwidth(gq), vec2(1e-4));
@@ -192,20 +219,39 @@ export function buildingMaterial(C, { lite }) {
           float wx = clamp((0.24 - abs(e.x - 0.5)) / fw.x + 0.5, 0.0, 1.0);
           float wy = clamp((0.25 - abs(e.y - 0.56)) / fw.y + 0.5, 0.0, 1.0);
           float win = wx * wy * inC;
-          float h0 = ch(vec3(c, seed * 517.0));
-          // petina prozora se s vremena na vrijeme upali ili ugasi (grad živi), ostali miruju
-          float ep = floor(uTime / 90.0 + h0 * 9.0) * step(0.8, fract(h0 * 31.7));
-          float h1 = ch(vec3(c + ep * 3.1, seed * 517.0 + 1.7));
-          float litP = P.z * (0.65 + 0.7 * seed);
-          float lit = step(h1, litP);
-          float hc = fract(h1 * 53.3 + seed * 7.0);
-          vec3 wc = hc < 0.52 ? vec3(1.0, 0.5, 0.2) : hc < 0.92 ? vec3(1.0, 0.68, 0.38) : vec3(0.36, 0.45, 0.75);
-          float wi = (0.35 + 0.65 * fract(h1 * 91.7)) * uWinI;
+          // Noćna raspodjela (nije svaki prozor upaljen): zgrada ima svoju "budnost" — dio kuća je potpuno taman,
+          // većina je mirna, poneka vrlo živa. Svjetla se pale po stanovima/uredima (skupina susjednih prozora na
+          // katu), a ne pojedinačno. Uz glavne ulice (karta svjetla) grad je budniji nego na rubu.
+          float hb = ch(vec3(seed * 91.0, 3.3, 7.7));
+          float act = hb < 0.22 ? 0.08 : hb < 0.82 ? 0.7 + 0.6 * (hb - 0.22) / 0.6 : 1.6;
+          act *= mix(0.7, 1.2, smoothstep(0.04, 0.35, lmAt(vL.xz + n.xz * 4.0)));
+          float uw = prof < 2.5 ? 2.0 : prof < 3.5 ? 3.0 : 4.0;
+          vec2 unit = vec2(floor(c.x / uw), c.y);
+          float h0 = ch(vec3(unit, seed * 517.0 + 9.0));
+          // poneki stan se s vremena na vrijeme upali ili ugasi (grad živi), bez treperenja
+          float ep = floor(uTime / 140.0 + h0 * 9.0) * step(0.88, fract(h0 * 31.7));
+          float pOcc = clamp(P.z * act * 1.1, 0.0, 0.9);
+          float occ = step(ch(vec3(unit + ep * 3.1, seed * 517.0 + 4.1)), pOcc);
+          float h1 = ch(vec3(c, seed * 517.0 + 1.7));
+          float lit = occ * step(h1, 0.62);
+          // vrsta svjetla: prigušeno (zastor, dublja soba), toplo unutarnje, hladno (ekran, ured, stubište)
+          float hk = fract(h1 * 53.3 + seed * 7.0);
+          float hi = fract(h1 * 91.7);
+          float coolP = prof > 2.5 ? 0.2 : 0.07;
+          vec3 wc = mix(vec3(1.0, 0.6, 0.3), vec3(1.0, 0.76, 0.5), fract(h1 * 13.1));
+          float wi = 0.42 + 0.5 * hi;
+          if (hk < coolP) { wc = vec3(0.52, 0.64, 1.0); wi = 0.12 + 0.16 * hi; }
+          else if (hk < coolP + 0.36) { wc = vec3(1.0, 0.52, 0.24); wi = 0.05 + 0.11 * hi; }
+          wi *= uWinI;
           vec3 glass = vec3(0.0012, 0.0016, 0.003) + vec3(0.01, 0.013, 0.022) * pow(1.0 - abs(dot(n, V)), 3.0);
           vec3 wcol = mix(glass, wc * wi, lit);
           float lod = smoothstep(0.2, 0.5, max(fw.x, fw.y));
           float band = row * step(0.0, gq.y) * step(vL.y, vWin.y - 0.6);
-          vec3 avg = mix(col, vec3(1.0, 0.6, 0.3) * 0.6 * uWinI * litP + glass * (1.0 - litP), 0.24 * band);
+          // izdaleka: očekivani sjaj baš ove zgrade (ne jednolika traka), s razlikom po katovima dok se katovi još vide
+          float pLit = pOcc * 0.62;
+          float meanI = coolP * 0.2 + 0.36 * 0.1 + (0.64 - coolP) * 0.67;
+          float fk = mix(1.0, mix(0.25, 1.75, ch(vec3(c.y, 5.0, seed * 517.0))), 1.0 - smoothstep(0.35, 0.9, fw.y));
+          vec3 avg = mix(col, vec3(1.0, 0.62, 0.32) * meanI * uWinI * pLit * fk + glass * (1.0 - pLit), 0.24 * band);
           col = mix(mix(col, wcol, win), avg, lod);
           // izlozi u prizemlju: širi, svjetliji, toplo bijeli — svako svjetlo je nečiji posao
           if (prof > 2.5 && prof < 3.5) {
@@ -213,8 +259,10 @@ export function buildingMaterial(C, { lite }) {
             float fy = max(fwidth(sy), 1e-4);
             float sh = clamp((0.42 - abs(e.x - 0.5)) / fw.x + 0.5, 0.0, 1.0) * clamp((0.5 - abs(sy - 0.5)) / fy + 0.5, 0.0, 1.0) * row;
             float hs = ch(vec3(c.x, 9.0, seed * 211.0));
-            float on = step(hs, 0.64);
-            vec3 shop = mix(vec3(1.0, 0.64, 0.34), vec3(1.0, 0.82, 0.62), fract(hs * 7.0)) * (0.55 + 0.6 * fract(hs * 17.0)) * uShop;
+            // navečer je dio izloga zatvoren (samo noćno svjetlo u dubini), ostali su različito jaki i topli
+            float on = step(hs, 0.62);
+            float open = step(hs, 0.4);
+            vec3 shop = mix(vec3(1.0, 0.6, 0.3), vec3(1.0, 0.78, 0.56), fract(hs * 7.0)) * mix(0.1 + 0.08 * fract(hs * 17.0), 0.4 + 0.5 * fract(hs * 17.0), open) * uShop;
             float sl = smoothstep(0.25, 0.6, max(fw.x, fy));
             col = mix(col, mix(glass, shop, on), sh * (1.0 - sl));
             col += shop * on * 0.3 * sl * row * step(0.45, vL.y) * step(vL.y, 3.65);

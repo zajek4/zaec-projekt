@@ -44,7 +44,11 @@ const herm = (y0, m0, y1, m1, t) => {
 export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapter, onFrame }) {
   const root = document.documentElement;
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
+  let disposed = false;
+  let linesSeq = 0;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // lite: dodir, uski zaslon ili slab procesor. hardwareConcurrency broji logičke niti: 4 niti danas ima
+  // tek slabiji prijenosnik (i3, Celeron, stariji 4c/4t), redovito sa slabom integriranom grafikom
   const lite = !finePointer || innerWidth < 760 || (navigator.hardwareConcurrency || 8) <= 4;
 
   /* ── renderer ── */
@@ -53,6 +57,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const maxDpr = lite ? 1.35 : 1.75;
   let dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+  let dprCeil = dpr; // najviši DPR koji regulator smije vratiti
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 6000);
@@ -90,10 +95,16 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     lite,
     dataUrl: assets.city,
     modelUrl: assets.model,
+    // crtež i morph trebaju tek u poglavlju nacrta: priprema (~35 ms, 4× više na sporom mobitelu) čeka mirni trenutak
     onLines: (g) => {
-      const w = toWorldLines(g); morph.setSource(w); w.dispose();
-      blueprint.setCathedral(g);
-      blueprint.setGrid(morph.gridInfo, cityScale);
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
+      const seq = ++linesSeq;
+      idle(() => {
+        if (disposed || seq !== linesSeq) return; // noviji model ima prednost
+        const w = toWorldLines(g); morph.setSource(w); w.dispose();
+        blueprint.setCathedral(g);
+        blueprint.setGrid(morph.gridInfo, cityScale);
+      }, { timeout: 2500 });
     },
     // novi model konkatedrale se prevodi u pozadini prije nego što zamijeni stari
     prepare: (mesh) => compile(mesh, scene).catch(() => {}),
@@ -300,6 +311,9 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   labels.forEach((L) => { L.p = prio(L); });
   const collidable = labels.filter((L) => L.p >= 0).sort((a, b) => a.p - b.p);
   const boxes = [];
+  // sadržaj ima prednost pred oznakama: oznaka koja bi završila ispod njega (npr. forma u završnoj sceni) se povlači
+  const avoidEls = [...document.querySelectorAll('[data-label-avoid]')];
+  const avoid = [];
   const v3 = new THREE.Vector3();
   const n3 = new THREE.Vector3();
   const t3 = new THREE.Vector3();
@@ -352,6 +366,9 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   }
 
   function placeLabels(ctx, visible, dt = 0.016) {
+    // čitanje prije pisanja transformacija (bez prisilnog izračuna stila)
+    avoid.length = 0;
+    if (visible) for (const el of avoidEls) { const r = el.getBoundingClientRect(); if (r.bottom > 0 && r.top < vh && r.width) avoid.push([r.left, r.top, r.right, r.bottom]); }
     for (const L of labels) {
       let o = visible ? labelWorld(L.key, ctx) : 0;
       if (o > 0.01) {
@@ -384,7 +401,14 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       L.hide = reduceMQ.matches ? +hit : damp(L.hide, hit ? 1 : 0, 10, dt);
     }
     for (const L of labels) {
-      let o = L.want * (1 - L.hide);
+      let blocked = false;
+      if (L.want > 0.05 && avoid.length) {
+        if (!L.w) { L.w = L.el.offsetWidth; L.h = L.el.offsetHeight; }
+        const x0 = L.x - L.w / 2, x1 = L.x + L.w / 2, y0 = L.y - L.h, y1 = L.y;
+        blocked = avoid.some((b) => x0 < b[2] && x1 > b[0] && y0 < b[3] && y1 > b[1]);
+      }
+      L.block = reduceMQ.matches ? +blocked : damp(L.block || 0, blocked ? 1 : 0, 10, dt);
+      let o = L.want * (1 - L.hide) * (1 - L.block);
       o = Math.round(clamp(o) * 100) / 100;
       if (o !== L.o) {
         L.el.style.opacity = String(o);
@@ -416,6 +440,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   let ready = false;
   let running = false;
   let slowFrames = 0;
+  let fastFrames = 0;
+  let raisedTo = 0;
   let frameEMA = 16;
   let labelsHidden = false;
   let override = null;
@@ -582,17 +608,27 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       idle(() => prewarm().finally(() => { warming = false; }), { timeout: 1200 });
     }
 
-    /* upravitelj kvalitete: niži DPR ako je sporo */
-    if (!forcedDt) {
+    /* upravitelj kvalitete: niži DPR ako je sporo, a nakon ~10 s glatkih sličica pokušaj korak natrag.
+       Zagušenje dok se grad priprema (warming) ne broji se; razina koja je dvaput bila spora više se ne vraća. */
+    if (!forcedDt && !warming) {
       frameEMA = frameEMA * 0.95 + dt * 1000 * 0.05;
       if (frameEMA > 24 && dpr > 1) {
+        fastFrames = 0;
         if (++slowFrames > 90) {
+          if (dpr === raisedTo) dprCeil = dpr - 0.25;
           dpr = Math.max(1, dpr - 0.25);
           slowFrames = 0;
           frameEMA = 16;
           resize(true);
         }
-      } else slowFrames = 0;
+      } else if (frameEMA < 18 && dpr < dprCeil) {
+        slowFrames = 0;
+        if (++fastFrames > 600) {
+          dpr = raisedTo = Math.min(dprCeil, dpr + 0.25);
+          fastFrames = 0;
+          resize(true);
+        }
+      } else { slowFrames = 0; fastFrames = 0; }
     }
   }
 
@@ -652,6 +688,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     /** privremeno nadjačaj stanje (podešavanje kadrova u pregledniku) */
     debugOverride(o) { override = o; return this.debugStep(1); },
     dispose() {
+      disposed = true;
       cancelAnimationFrame(raf);
       running = false;
       ro.disconnect();

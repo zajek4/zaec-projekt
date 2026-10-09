@@ -49,6 +49,40 @@ function pip(x, y, r) {
   return inside;
 }
 
+/**
+ * Maska vode (par-nepar preko svih prstenova: rijeka minus otoci) u ćelijama od `cell` m, popunjena
+ * vodoravnim linijama jednom. Provjera točke je tada jedno čitanje umjesto točke-u-poligonu po tisućama
+ * vrhova (prije ~280 ms pri učitavanju na sporijem mobitelu). Vraća (x, y) → bool.
+ */
+function waterMask(rings, cell) {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const r of rings) for (let i = 0; i < r.length; i += 2) { x0 = Math.min(x0, r[i]); x1 = Math.max(x1, r[i]); y0 = Math.min(y0, r[i + 1]); y1 = Math.max(y1, r[i + 1]); }
+  if (!(x1 > x0)) return () => false;
+  const W = Math.ceil((x1 - x0) / cell) + 1, H = Math.ceil((y1 - y0) / cell) + 1;
+  const m = new Uint8Array(W * H);
+  const xs = [];
+  for (let row = 0; row < H; row++) {
+    const y = y0 + (row + 0.5) * cell;
+    xs.length = 0;
+    for (const r of rings) {
+      const n = r.length / 2;
+      for (let i = 0, j = n - 1; i < n; j = i++) {
+        const yi = r[i * 2 + 1], yj = r[j * 2 + 1];
+        if (yi > y !== yj > y) xs.push(r[i * 2] + ((r[j * 2] - r[i * 2]) * (y - yi)) / (yj - yi));
+      }
+    }
+    xs.sort((p, q) => p - q);
+    for (let k = 0; k + 1 < xs.length; k += 2) {
+      const a = Math.max(0, Math.ceil((xs[k] - x0) / cell - 0.5)), b = Math.min(W - 1, Math.floor((xs[k + 1] - x0) / cell - 0.5));
+      m.fill(1, row * W + a, row * W + b + 1);
+    }
+  }
+  return (x, y) => {
+    const cx = Math.floor((x - x0) / cell), cy = Math.floor((y - y0) / cell);
+    return cx >= 0 && cy >= 0 && cx < W && cy < H && m[cy * W + cx] === 1;
+  };
+}
+
 /** Prsten pomaknut prema unutra za d (simetrala kuta, ograničena na oštrim kutovima). Prsten je CCW (x istok, y sjever). */
 function insetRing(r, d) {
   const n = r.length / 2;
@@ -117,6 +151,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
   const disposables = [];
   const track = (o) => { disposables.push(o); return o; };
   let loaded = false;
+  let disposed = false;
   const anchors = { cath: new THREE.Vector3(30, 99, -4), hotel: new THREE.Vector3(329, 66, -154), trg: new THREE.Vector3(105, 4, -78), drava: new THREE.Vector3(80, 4, -470) };
 
   /* ── tlo: tamno, mreža od 50 m koja se gubi prema rubu; ulice svijetle iz karte svjetla ── */
@@ -183,17 +218,45 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           }`)
         .replace('#include <dithering_fragment>', `#include <dithering_fragment>
           float glass = step(2.5, vKind) * step(vKind, 3.5);
+          // ravna normala u prostoru modela (okrenuta kameri): razlikuje zid od krova i daje smjer zida.
+          // Strmi gotički krov ima |n.y| ≈ 0,5, plohe šiljka i fijala ≈ 0,15 (za reflektore su zid)
+          vec3 nL = normalize(cross(dFdx(vLoc), dFdy(vLoc)));
+          float wall = 1.0 - smoothstep(0.22, 0.42, abs(nL.y));
+          float tc = dot(vLoc.xz, normalize(vec2(-nL.z, nL.x) + 1e-5));
           // reflektori odozdo (topli) i hladna noć prema vrhu
           // iz daljine zgrada dijeli noćnu paletu grada; reflektori i toplina rastu tek kad postane motiv (uFocus)
           float flood = 1.0 - smoothstep(4.0, 78.0, vH);
-          float lit = clamp(flood * (0.5 + 0.5 * uGlow) * (0.3 + 0.7 * uFocus), 0.0, 1.0);
+          // reflektori u tlu svakih ~5,5 m: u podnožju lepeze svjetla, koje se s visinom šire i stapaju
+          float pu = fract(tc / 5.5 + 0.5) - 0.5;
+          float psp = 0.13 + vH * 0.018;
+          float pool = exp(-pu * pu / (psp * psp));
+          float fm = mix(1.0, 0.7 + 0.45 * pool, (1.0 - smoothstep(1.5, 24.0, vH)) * wall * (0.4 + 0.6 * uFocus));
+          // glavni reflektori stoje na trgu ispred tornja (+x): to pročelje svjetlije, bočna i stražnja tamnija;
+          // krovove svjetlo odozdo ne hvata, pa ostaju u hladnoj noći (topli zidovi, tamni krovovi)
+          fm *= mix(0.3, 0.8 + 0.28 * smoothstep(-0.3, 0.9, nL.x), wall);
+          float lit = clamp(flood * (0.5 + 0.5 * uGlow) * (0.3 + 0.7 * uFocus), 0.0, 1.0) * fm;
           vec3 night = mix(vec3(0.36, 0.40, 0.58), vec3(1.08, 0.88, 0.72), lit);
           gl_FragColor.rgb *= mix(vec3(1.0), night, 1.0 - glass);
           gl_FragColor.rgb += vec3(1.0, 0.5, 0.25) * uGlow * 0.05 * flood * (1.0 - glass);
-          // vitraji: toplo žuto svjetlo iznutra (blaga razlika između prozora); sjaj oko njih je zasebna mreža
+          // vitraji: toplo svjetlo iznutra, olovni okviri i blaga razlika stakala (jantar, ponegdje crveno-jantarno
+          // ili prigušeno plavo); okviri nestaju iz daljine prije nego što bi treperili. Sjaj oko njih je zasebna mreža
           float hw = hh(floor(vLoc * vec3(0.45, 0.2, 0.45)));
-          vec3 sg = mix(vec3(1.0, 0.82, 0.38), vec3(1.0, 0.68, 0.26), hw);
-          gl_FragColor.rgb = mix(gl_FragColor.rgb, sg * (0.32 + 1.35 * uWin), glass);
+          vec2 gc = vec2(tc / 0.4, vH / 0.52);
+          vec2 gw = fwidth(gc);
+          vec2 gd = abs(fract(gc) - 0.5);
+          vec2 ld = smoothstep(0.44 - gw, vec2(0.44), gd) * (1.0 - smoothstep(0.15, 0.45, gw));
+          float hc = hh(vec3(floor(gc), 17.0 + hw * 31.0));
+          vec3 sg = mix(vec3(1.0, 0.8, 0.4), vec3(1.0, 0.64, 0.26), hw) * (0.82 + 0.3 * fract(hc * 7.3));
+          if (hc > 0.87) sg = vec3(0.95, 0.42, 0.24);
+          else if (hc < 0.07) sg = vec3(0.32, 0.4, 0.7);
+          gl_FragColor.rgb = mix(gl_FragColor.rgb, sg * (0.22 + 0.8 * uWin) * (1.0 - 0.7 * max(ld.x, ld.y)), glass);
+          // zvonik iznad sata: iza žaluzina tek naslutljivo toplo svjetlo, jače pri dnu otvora. Otvori su u modelu
+          // tamna "vrata" (vrsta 2 kao cigla i škriljevac): od cigle ih dijeli tama, od škriljevca topliji ton
+          float bel = step(1.5, vKind) * step(vKind, 2.5) * step(vColor.r, 0.03) * step(vColor.b * 1.05, vColor.r) * step(48.5, vH) * step(vH, 61.4);
+          float sl = vH / 0.46;
+          float sw = fwidth(sl);
+          float gap = mix(1.0 - smoothstep(0.15, 0.15 + sw, abs(fract(sl) - 0.8)), 0.3, smoothstep(0.3, 0.8, sw));
+          gl_FragColor.rgb += vec3(1.0, 0.6, 0.3) * bel * gap * (0.35 + 0.65 * (1.0 - smoothstep(49.2, 59.5, vH))) * (0.03 + 0.15 * uFocus);
           // vrh tornja hvata svjetlo kad zgrada postane glavni motiv
           gl_FragColor.rgb += vec3(1.0, 0.8, 0.58) * smoothstep(58.0, 90.0, vH) * uFocus * 0.14 * (1.0 - glass);
           // skener: iznad crte ostaje samo nacrt (linije), zgrada se čisto reže; na crti tanka svjetla traka
@@ -202,7 +265,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           gl_FragColor.rgb += vec3(0.45, 0.62, 1.0) * band * 1.2;
           gl_FragColor.a *= uAlpha;`);
     };
-    m.customProgramCacheKey = () => 'zaec-cath-v3';
+    m.customProgramCacheKey = () => 'zaec-cath-v4';
     return m;
   }
   // sjaj vitraja: aditivni prsten oko prozora (iz modela), bez naknadne obrade slike
@@ -228,17 +291,22 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
   let cath = null, cathMat = null, cathLines = null;
   let cathSeq = 0;
   const spire = new THREE.Vector3(33.8, 90, 1);
-  function setCathedral(geo, isFallback, haloGeo = null) {
+  // rubovi rezervnog modela (crtež i morph) računaju se tek ako pravi model ne stigne: inače bi se isti posao
+  // (rubovi + izvor morpha) pri učitavanju radio dvaput
+  let fallbackLines = null;
+  function setCathedral(geo, isFallback, haloGeo = null, lazyLines = false) {
     const seq = ++cathSeq;
     if (!geo.attributes.aKind) geo.setAttribute('aKind', new THREE.BufferAttribute(new Float32Array(geo.attributes.position.count), 1));
     const mat = cathMaterial();
     const mesh = new THREE.Mesh(geo, mat);
     mesh.renderOrder = 1;
     // rubovi za crtež i morph (iz stvarne geometrije modela)
-    const lines = new THREE.EdgesGeometry(geo, isFallback ? 22 : 30);
+    const lines = lazyLines ? null : new THREE.EdgesGeometry(geo, isFallback ? 22 : 30);
     const swap = () => {
       // zakašnjeli rezervni model nikad ne zamjenjuje pravi
-      if (seq !== cathSeq) { geo.dispose(); mat.dispose(); lines.dispose(); haloGeo?.dispose(); return; }
+      if (seq !== cathSeq) { geo.dispose(); mat.dispose(); lines?.dispose(); haloGeo?.dispose(); return; }
+      clearTimeout(fallbackLines?.timer);
+      fallbackLines = null;
       if (cath) { group.remove(cath); cath.geometry.dispose(); cathMat.dispose(); cathLines?.dispose(); }
       if (halo) { group.remove(halo); halo.geometry.dispose(); halo = null; }
       if (haloGeo) { halo = new THREE.Mesh(haloGeo, haloMat); halo.renderOrder = 5; halo.frustumCulled = false; group.add(halo); }
@@ -250,7 +318,11 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       anchors.cath.set(spire.x - 4, spire.y * 1.06, spire.z);
       cath = mesh; cathMat = mat; cathLines = lines;
       group.add(mesh);
-      onLines?.(lines, isFallback);
+      if (lines) onLines?.(lines, isFallback);
+      else {
+        const run = () => { if (seq !== cathSeq || cathLines) return; cathLines = new THREE.EdgesGeometry(geo, 22); onLines?.(cathLines, true); };
+        fallbackLines = { run, timer: setTimeout(run, 6000) };
+      }
       onModel?.(mesh);
     };
     // novi shader se prevodi prije zamjene (bez trzaja usred scrolla)
@@ -263,7 +335,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     g.scale(-7, 7, 7);
     g.translate(2, 0, -3.8);
     g.deleteAttribute('normal');
-    setCathedral(g, true);
+    setCathedral(g, true, null, !!modelUrl);
   }
   if (modelUrl) {
     const loader = new GLTFLoader();
@@ -306,7 +378,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       if (glow) { haloGeo = toFloat(glow.geometry, false); haloGeo.applyMatrix4(glow.matrixWorld); }
       gltf.scene.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose?.(); } });
       setCathedral(geo, false, haloGeo);
-    }, undefined, (err) => console.warn('[ZAEC] model konkatedrale nije učitan, koristi se rezervni', err));
+    }, undefined, (err) => { console.warn('[ZAEC] model konkatedrale nije učitan, koristi se rezervni', err); fallbackLines?.run(); });
   }
   // reflektor: svjetlo je stalno u sceni (dodaje ga engine u korijen), samo mu se mijenja jačina —
   // promjena broja svjetala inače prisiljava ponovno prevođenje svih osvijetljenih shadera usred scrolla
@@ -356,7 +428,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     const DEG = Math.PI / 180;
     // Drava: vanjski prsten + otoci (rupe); pomoćne provjere za mostove, šetnicu i odsjaje
     const outers = d.water.filter((w) => w.h[0] === 0), inners = d.water.filter((w) => w.h[0] === 1);
-    const inWater = (x, y) => outers.some((o) => pip(x, y, o.r)) && !inners.some((q) => pip(x, y, q.r));
+    const inWater = waterMask([...outers, ...inners].map((w) => w.r), 4);
     const nearWater = (x, y, m = 45) => inWater(x + m, y) || inWater(x - m, y) || inWater(x, y + m) || inWater(x, y - m);
     const riverside = [];
 
@@ -713,10 +785,15 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
 
     // karta svjetla: ulice, lokve svjetiljki, trgovi i izlozi → tlo, pročelja i odsjaji u Dravi
     const squares = d.areas.filter((a) => a.h[0] === 0 || a.h[0] === 3).map((a) => a.r);
-    const lm = track(buildLightMap({ roads: d.roads.map((rd) => ({ c: rd.h[0], r: rd.r, w: rd.w })), lamps: lamp, lampK, squares, shops, riverside, zone, lite }));
-    const old = C.uLM.value;
-    C.uLM.value = lm;
-    old.dispose();
+    // crta se izvan glavne niti; do tada tlo i pročelja koriste praznu kartu (grad je iza papira ili daleko)
+    buildLightMap({ roads: d.roads.map((rd) => ({ c: rd.h[0], r: rd.r, w: rd.w })), lamps: lamp, lampK, squares, shops, riverside, zone, lite })
+      .then((lm) => {
+        if (disposed) { lm.dispose(); return; }
+        const old = C.uLM.value;
+        C.uLM.value = track(lm);
+        old.dispose();
+      })
+      .catch((err) => console.warn('[ZAEC] karta svjetla nije nacrtana', err));
 
     // Hotel Osijek: orijentacija prema najduljem bridu tlocrta podija
     const hm = d.marks.find((m) => m.h[0] === 2);
@@ -797,7 +874,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       cathU.uAlpha.value = solid * s.cathSolid;
       if (cath) cath.visible = s.cathSolid * solid > 0.01;
       // sjaj prozora raste s isticanjem; iz daljine je tek naslutljiv
-      haloU.uI.value = solid * s.cathSolid * (0.12 + 0.88 * s.focus) * 1.15;
+      haloU.uI.value = solid * s.cathSolid * (0.12 + 0.88 * s.focus) * 0.85;
       if (halo) halo.visible = haloU.uI.value > 0.004;
       flood.intensity = 14 * s.glow * solid * s.cathSolid * (1 - 0.6 * s.scan) * (0.2 + 0.8 * s.focus);
       // Hotel Osijek je sporedno sidro: kad konkatedrala postane motiv, povlači se u pozadinu
@@ -807,6 +884,8 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       lampPts.uniforms.uWake.value = s.wake;
     },
     dispose() {
+      disposed = true;
+      clearTimeout(fallbackLines?.timer);
       disposables.forEach((o) => o.dispose?.());
       cath?.geometry.dispose(); cathMat?.dispose(); cathLines?.dispose();
     },

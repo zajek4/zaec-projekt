@@ -44,13 +44,14 @@ export function createBeam() {
         float halo = exp(-x * x * 4.5) * 0.22 + exp(-x * x * 26.0) * 0.3;
         // rast: snop se izvlači iz vrha šiljka, s mekim vrhom
         float grow = smoothstep(uLen + 0.002, uLen - 0.06, y);
-        // atmosferski pad svjetline s visinom; mekan početak na samom vrhu tornja
-        float fall = smoothstep(0.0, 0.0012, y) * pow(1.0 - y, 1.6);
+        // atmosferski pad svjetline s visinom; mekan početak na samom vrhu tornja. Iznad ~100 m snop se
+        // stanji u tihu nit: signal, a ne reflektor koji nadjača toranj
+        float fall = smoothstep(0.0, 0.0012, y) * pow(1.0 - y, 2.2) * mix(1.0, 0.42, smoothstep(0.0, 0.12, y));
         // paketi svjetla putuju uvis (podaci), samo u jezgri
         float pk = exp(-pow((fract(y * uRep - uTime * 0.7) - 0.5) * 9.0, 2.0)) * 0.6;
         // toplo svjetlo grada samo u samom izvoru, odmah zatim hladno digitalno; jezgra gotovo bijela
         vec3 col = mix(uWarm, uCool, smoothstep(0.0, 0.006, y));
-        col = mix(col, vec3(1.0), core * 0.55);
+        col = mix(col, vec3(1.0), core * 0.3);
         float a = (core * (1.0 + pk) * 1.25 + halo) * grow * fall * uI;
         gl_FragColor = vec4(col * a, a);
       }`,
@@ -88,11 +89,11 @@ export function createBeam() {
       const dx = s.camera.position.x - s.at.x, dz = s.camera.position.z - s.at.z;
       quad.rotation.y = Math.atan2(dx, dz);
       const L = 900 * s.unit; // ~900 m snopa iznad tornja
-      const W = 11 * s.unit * (0.4 + 0.6 * Math.min(1, b * 1.4)); // oreol (~11 m); stanji se kad snop slabi
+      const W = 8 * s.unit * (0.4 + 0.6 * Math.min(1, b * 1.4)); // oreol (~8 m); stanji se kad snop slabi
       quad.scale.set(W, L, 1);
       U.uLen.value = Math.min(1, b * 1.6);
-      U.uI.value = Math.min(1, b * 1.25);
-      U.uCore.value = 0.06 + 0.05 * Math.min(1, b * 1.4);
+      U.uI.value = Math.min(0.62, b * 0.8); // najviše ~60 %: toranj ostaje glavni motiv kadra
+      U.uCore.value = 0.045 + 0.035 * Math.min(1, b * 1.4);
       U.uRep.value = 900 / 34; // paket svakih ~34 m
       U.uTime.value = s.time;
       if (s.unit !== tipUnit) {
@@ -102,7 +103,7 @@ export function createBeam() {
         tip.geometry.attributes.position.needsUpdate = true;
       }
       tip.uniforms.uPR.value = s.pr;
-      tip.uniforms.uOpacity.value = Math.min(1, b * 2);
+      tip.uniforms.uOpacity.value = Math.min(0.65, b * 2); // križ na vrhu ostaje vidljiv
       tip.uniforms.uSize.value = 10 * s.unit;
     },
     dispose() { geo.dispose(); mat.dispose(); tip.geometry.dispose(); tip.material.dispose(); },
