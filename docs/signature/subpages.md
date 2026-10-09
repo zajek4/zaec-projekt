@@ -172,3 +172,21 @@ Pregled 07 (design/07-pregled-izrade.md):
 - E: og slike nacrta imaju znak ZAEC i riječ „ZAEC“ od 30 px (čitljivo u feedu na 500 px). Svaka stranica s vlastitom
   slikom ima `og:image:alt`: list nacrta (naslov iz SVG-a), inače opis kadra iz registra.
 - Nakon promjena: nacrt 110/110 na 10 veličina, Izrada 6/6 (07-provjera-izrade).
+
+## 12. Pregled 09 (art direkcija, design/09-pregled-6f961c0.md)
+
+- A (uski prozori): prozori 761–1100 px uži od kvadrata (npr. pola ekrana od 1920 px) dobivaju složeni raspored
+  kao mobitel i uspravni tablet: uvjet postojećih mobilnih blokova proširen je s
+  `(max-width: 1100px) and (max-aspect-ratio: 1/1)`, a tabletni pojas 761–1100 px vrijedi samo za prozore šire od
+  kvadrata (`min-aspect-ratio: 1001/1000`, da se na točno 1 : 1 ne preklapaju). Isti uvjet imaju `sizes` slike u
+  `editorial.php` i otvaranje kadra u `editorial.js`. Mobilni izrez nacrta na 761–1100 px ima tekst 15 u (17–24 px).
+  Naslov u složenom rasporedu ima `max-width: 8.6em`, pa je prvi redak (u kadru) kratak.
+- Ostaci na visokim desktop prozorima: FID 30 mA (električari) spušten uz toroid (y 340), ključ krova pomaknut na
+  x 632 (uži, 150 u), naziv ključa trgovina iznad skice. Og slike tih triju listova ponovno snimljene.
+- B (naglasak u kadru): `editorial.js` stavlja `<br class="eh-br">` ispred naglašene riječi kad bi ušla u kadar
+  (barem trećina kutije retka; riječ koja već počinje redak se ne dira). Vrijedi i za složeni raspored. Tamni hero
+  (Održavanje) se preskače jer je naglasak na noćnom papiru ionako zlatan. Bez JS-a ostaje prijelom iz CSS-a.
+  GA4: „Znajte koji euro donosi *posao*.“ (naglasak u drugom retku).
+- Provjera: nacrt 275/275 (11 listova × 25 veličina, uključujući 780 × 960, 900 × 1000, 960 × 1000, 1000 × 1000,
+  1100 × 1000, 1100 × 1100, 1200 × 1200, 1280 × 1300, 1440 × 1200, 1920 × 1200); naglasak u kadru 0 na desktopu, na
+  složenom rasporedu samo kutija drugog retka (3–16 %) i Održavanje; mobilni rub 120/120; Izrada 6/6.

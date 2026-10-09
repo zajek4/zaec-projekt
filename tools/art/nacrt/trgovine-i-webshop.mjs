@@ -99,7 +99,8 @@ export function draw(b) {
     b.line(kx + 70, ky + 120, kx + 70, ky + 90, 'ln-sec');
     b.d(`M${kx + 64} ${ky + 100} L${kx + 70} ${ky + 88} L${kx + 76} ${ky + 100}`, 'ln-2');
     b.text(kx + 80, ky + 118, 'A', 't-key');
-    b.text(kx, ky + 150, 'KLJUČ · TLOCRT', 't-small');
+    // naziv iznad skice: ispod nje (y 255–274) ga na visokim prozorima prekriva prvi red naslova (design/09, A)
+    b.text(kx, ky - 14, 'KLJUČ · TLOCRT', 't-small');
   });
 
   // 6 oznake i svjetlo: jedan proizvod na podestu

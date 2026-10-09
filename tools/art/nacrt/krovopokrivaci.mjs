@@ -123,17 +123,18 @@ export function draw(b) {
 
   // ključ: tlocrt krova (streha dolje i gore, sljeme po sredini); presjek A–A ide okomito preko sljemena
   b.key(() => {
-    const [kx, ky] = [560, 64];
-    b.rect(kx, ky + 14, 170, 100, 'ln-2');
-    b.line(kx, ky + 64, kx + 170, ky + 64, 'ln-2');
+    // od x 632: na visokim prozorima (1200 × 1200) drugi red naslova seže do x ≈ 622 u (design/09, A)
+    const [kx, ky] = [632, 64];
+    b.rect(kx, ky + 14, 150, 100, 'ln-2');
+    b.line(kx, ky + 64, kx + 150, ky + 64, 'ln-2');
     // nagib: strelice niz krovne plohe, od sljemena prema strehi
     for (const [y0, y1] of [[ky + 54, ky + 28], [ky + 74, ky + 100]]) {
       const d = y1 > y0 ? -6 : 6;
       b.d(`M${kx + 40} ${y0} V${y1} m-4 ${d} l4 ${-d} l4 ${d}`, 'ln-dim');
     }
-    b.line(kx + 118, ky - 4, kx + 118, ky + 132, 'ln-sec');
-    b.text(kx + 122, ky - 8, 'A', 't-key');
-    b.text(kx + 122, ky + 148, 'A', 't-key');
+    b.line(kx + 104, ky - 4, kx + 104, ky + 132, 'ln-sec');
+    b.text(kx + 108, ky - 8, 'A', 't-key');
+    b.text(kx + 108, ky + 148, 'A', 't-key');
     b.text(kx, ky + 178, 'KLJUČ · TLOCRT KROVA', 't-small');
   });
 

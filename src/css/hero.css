@@ -372,15 +372,21 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 @keyframes nd-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes nd-lamp { from { opacity: 0; transform: scale(0.2); } }
 @media (prefers-reduced-motion: reduce) { html.motion-ok .nacrt :is(.nd, .nd [pathLength], .halo, .lamp-fill, .lamp-ln, text) { animation: none; } }
-@media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 4/5) {
+@media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 1001/1000) {
   .nacrt svg.d text { font-size: 17px; }
   .nacrt svg.d .t-tb-b { font-size: 26px; }
   .nacrt svg.d .dim-33 { display: none; }
 }
-@media (max-aspect-ratio: 4/5), (max-width: 760px) {
+/* složeni raspored (mobitel, uspravni tablet i prozori 761–1100 px uži od kvadrata, npr. pola ekrana od 1920 px):
+   kadar je tamo uži od zone čitanja lista (omjer < 0,69), pa list ide od ruba do ruba iznad naslova (design/09, A) */
+@media (max-aspect-ratio: 4/5), (max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1) {
   .nacrt svg.d { display: none; }
   .nacrt svg.m { display: block; }
   .eh-frame.nacrt::after { background: linear-gradient(0deg, rgba(4, 6, 12, 0.85), rgba(4, 6, 12, 0.45) 16%, rgba(4, 6, 12, 0) 34%); }
+}
+/* mobilni izrez na 761–1100 px: 15 u = 17–24 px (23 u bi bilo do 37 px) */
+@media (min-width: 761px) and (max-width: 1100px) and (max-aspect-ratio: 1/1) {
+  .nacrt svg.m text { font-size: 15px; }
 }
 .eh-slate {
   position: absolute; z-index: 1; left: clamp(18px, 2vw, 28px); bottom: clamp(16px, 1.8vw, 24px); right: 22%;
@@ -399,7 +405,7 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh-body { display: grid; gap: 22px; max-width: min(calc(var(--edge) - var(--wl) - 3vw), 560px); }
 .eh-body .lead { max-width: 44ch; }
 /* djelatnosti: list nacrta smješten je prema naslovu, pa redak „Ili prvo…“ ne smije mijenjati visinu heroja */
-@media (min-width: 761px) and (min-aspect-ratio: 4/5) {
+@media (min-width: 1101px) and (min-aspect-ratio: 4/5), (min-width: 761px) and (min-aspect-ratio: 1001/1000) {
   .eh-body { position: relative; }
   .eh-body .phero-more { position: absolute; top: 100%; left: 0; margin-top: 14px; }
 }
@@ -469,15 +475,16 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh-sheet-list a:hover .eh-sheet-img--nacrt img, .eh-sheet-list a:focus-visible .eh-sheet-img--nacrt img { transform: scale(1.03); }
 .eh--hub .eh-stage { min-height: clamp(440px, calc(100svh - var(--header-h) - 300px), 760px); }
 
-/* između uspravnog i uskog desktopa: kadar uži, naslov manji */
-@media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 4/5) {
+/* između uspravnog i uskog desktopa: kadar uži, naslov manji (samo prozori širi od kvadrata; uži su složeni, ispod) */
+@media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 1001/1000) {
   .eh { --edge: 47vw; }
   .eh-title { font-size: min(var(--fs-d2), 5.4vw); } /* 55 px na 1024: naslov ne prekriva oznake u kadru (design/01-tokens.css) */
   /* nacrt: kadar visok barem 712 px, pa 17 u teksta u crtežu ostaje ≥ 12 px (mjerilo ≥ 0,71) */
   .eh--nacrt .eh-stage { min-height: 712px; }
 }
-/* mobitel: kadar od ruba do ruba, naslov sjeda na njegov donji rub (prvi redak u kadru, ostatak na papiru) */
-@media (max-aspect-ratio: 4/5), (max-width: 760px) {
+/* mobitel, uspravni tablet i uski prozori do 1100 px: kadar od ruba do ruba, naslov sjeda na njegov donji rub
+   (prvi redak u kadru, ostatak na papiru) */
+@media (max-aspect-ratio: 4/5), (max-width: 760px), (max-width: 1100px) and (max-aspect-ratio: 1/1) {
   .eh { padding-top: calc(var(--header-h) + 8px); }
   .eh-stage { min-height: 0; display: block; }
   /* jedan stupac minmax(0, 1fr): kadar (100vw, margin −gutter) inače rastegne auto stupac kroz desni padding, pa
@@ -489,7 +496,8 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
   .eh-slate { top: 14px; bottom: auto; left: var(--gutter); right: var(--gutter); }
   .eh-slate span { -webkit-line-clamp: 1; }
   .eh-frame::after { background: linear-gradient(180deg, rgba(4, 6, 12, 0.55), rgba(4, 6, 12, 0) 30%), linear-gradient(0deg, rgba(4, 6, 12, 0.82), rgba(4, 6, 12, 0.5) 14%, rgba(4, 6, 12, 0) 34%); }
-  .eh-title { max-width: none; font-size: min(var(--fs-d2), 10vw); margin-top: -1.22em; }
+  /* 8,6 em: prvi redak (u kadru) kratak, pa naglašena riječ ostaje na papiru i na 768–1100 px (design/09, A) */
+  .eh-title { max-width: 8.6em; font-size: min(var(--fs-d2), 10vw); margin-top: -1.22em; }
   .eh-body { max-width: none; }
   .eh-sheet-list li { width: 148px; }
   /* Cijene: kartica u kadru od ruba do ruba; ispod nje mjesto za prvi redak naslova */

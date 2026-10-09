@@ -465,7 +465,7 @@ function zaec_registry_services() {
 		'seo_title'    => 'GA4, GTM i e-commerce praćenje konverzija | ZAEC',
 		'description'  => 'GA4 i Google Tag Manager: praćenje poziva, upita i prodaje, Consent Mode v2 i konverzije za Google Ads i Metu — uz izvještaje koje razumijete.',
 		'kicker'       => 'Usluga · U.08',
-		'h1'           => 'Znajte koji <em>euro</em> donosi posao.',
+		'h1'           => 'Znajte koji euro donosi <em>posao</em>.', // naglasak u drugom retku: prvi je na mobitelu u kadru (design/09, B)
 		'lead'         => 'Bez mjerenja svaka odluka je nagađanje. Postavljamo GA4 i Google Tag Manager tako da vidite pozive, upite i prodaju — po kanalu, kampanji i stranici — uz poštivanje privole posjetitelja.',
 		'answer'       => 'ZAEC postavlja Google Analytics 4 i Google Tag Manager: praćenje klikova na poziv i WhatsApp, poslanih formi, GA4 e-commerce događaja (view_item, add_to_cart, begin_checkout, purchase s vrijednošću), Consent Mode v2, konverzije za Google Ads i Meta te pregledan izvještaj u Looker Studiju.',
 		'image'        => 'world/usluga-ga4.webp',

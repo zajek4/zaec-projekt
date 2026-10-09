@@ -108,7 +108,8 @@ export function draw(b) {
     b.text(feed, 95, 'kWh', 't-dim', ' text-anchor="middle"');
     b.text(feed + 36, 95, 'BROJILO', 't-dim');
     b.text(feed + 40, 192, 'GLAVNA SKLOPKA', 't-dim'); // na 1024 px prvi red naslova seže do x ≈ 587
-    if (b.v !== 'm') b.text(594, 316, 'FID 30 mA', 't-dim', ' text-anchor="end"'); // mobilni izrez je reže
+    // uz toroid, ispod releja: na visokim prozorima (1100 × 1000) prvi red naslova seže do y ≈ 310 u (design/09, A)
+    if (b.v !== 'm') b.text(594, 340, 'FID 30 mA', 't-dim', ' text-anchor="end"'); // mobilni izrez je reže
     b.text(986, 316, 'FID 30 mA', 't-dim', ' text-anchor="end"');
     b.text(1062, 230, 'B16 · 3P', 't-dim', ' text-anchor="end"');
     b.text(ev + 10, 444, 'C16 · 3P', 't-dim');

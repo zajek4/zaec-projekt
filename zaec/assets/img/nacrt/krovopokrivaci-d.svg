@@ -56,14 +56,14 @@
 <text class="t-dim" text-anchor="middle" transform="translate(1154 534.3) rotate(-90)">+2,52</text>
 </g>
 <g class="nd nd-5 key">
-<rect class="ln-2" pathLength="1" x="560" y="78" width="170" height="100"/>
-<line class="ln-2" pathLength="1" x1="560" y1="128" x2="730" y2="128"/>
-<path class="ln-dim" pathLength="1" d="M600 118 V92 m-4 6 l4 -6 l4 6"/>
-<path class="ln-dim" pathLength="1" d="M600 138 V164 m-4 -6 l4 6 l4 -6"/>
-<line class="ln-sec" x1="678" y1="60" x2="678" y2="196"/>
-<text class="t-key" x="682" y="56">A</text>
-<text class="t-key" x="682" y="212">A</text>
-<text class="t-small" x="560" y="242">KLJUČ · TLOCRT KROVA</text>
+<rect class="ln-2" pathLength="1" x="632" y="78" width="150" height="100"/>
+<line class="ln-2" pathLength="1" x1="632" y1="128" x2="782" y2="128"/>
+<path class="ln-dim" pathLength="1" d="M672 118 V92 m-4 6 l4 -6 l4 6"/>
+<path class="ln-dim" pathLength="1" d="M672 138 V164 m-4 -6 l4 6 l4 -6"/>
+<line class="ln-sec" x1="736" y1="60" x2="736" y2="196"/>
+<text class="t-key" x="740" y="56">A</text>
+<text class="t-key" x="740" y="212">A</text>
+<text class="t-small" x="632" y="242">KLJUČ · TLOCRT KROVA</text>
 </g>
 <g class="nd nd-6">
 <g class="call c01">

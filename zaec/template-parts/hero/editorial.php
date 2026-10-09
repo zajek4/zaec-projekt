@@ -59,7 +59,7 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 			<?php elseif ( $img ) : ?>
 				<figure class="eh-frame">
 					<?php $zaec_srcset = zaec_img_srcset( $img ); ?>
-					<img class="eh-img" src="<?php echo esc_url( zaec_img( $img ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-aspect-ratio: 4/5) 100vw, (max-width: 760px) 100vw, 58vw"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
+					<img class="eh-img" src="<?php echo esc_url( zaec_img( $img ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-aspect-ratio: 4/5) 100vw, (max-width: 760px) 100vw, (max-width: 1100px) and (max-aspect-ratio: 1/1) 100vw, 58vw"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
 					<?php if ( ! empty( $l['image_alt'] ) ) : ?>
 						<figcaption class="eh-slate mono" aria-hidden="true"><b><?php echo esc_html( $code ); ?></b><span><?php echo esc_html( $l['image_alt'] ); ?></span></figcaption>
 					<?php endif; ?>

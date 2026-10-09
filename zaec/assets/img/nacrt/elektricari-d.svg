@@ -78,7 +78,7 @@
 <text class="t-dim" x="560" y="95" text-anchor="middle">kWh</text>
 <text class="t-dim" x="596" y="95">BROJILO</text>
 <text class="t-dim" x="600" y="192">GLAVNA SKLOPKA</text>
-<text class="t-dim" x="594" y="316" text-anchor="end">FID 30 mA</text>
+<text class="t-dim" x="594" y="340" text-anchor="end">FID 30 mA</text>
 <text class="t-dim" x="986" y="316" text-anchor="end">FID 30 mA</text>
 <text class="t-dim" x="1062" y="230" text-anchor="end">B16 · 3P</text>
 <text class="t-dim" x="1010" y="444">C16 · 3P</text>
