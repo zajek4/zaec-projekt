@@ -21,6 +21,29 @@ $types  = array(
 	array( 'shop', 'Webshop', 'Prodaja proizvoda online', 'cart' ),
 	array( 'redesign', 'Redizajn', 'Postojeći web ne donosi upite', 'refresh' ),
 );
+
+// Kartica „Vaša procjena“ u heroju Cijena (design/04 #12, 05-reference): isti rezultat kao procjena ispod, živ.
+// Vrsta projekta bira se i ovdje (mijenja prvo pitanje procjene); ostalih pet pitanja je ispod.
+if ( ! empty( $args['mirror'] ) ) :
+	?>
+	<div class="est cfg-out-inner" data-cfg-mirror="<?php echo esc_attr( $args['mirror'] ); ?>">
+		<p class="mono cfg-out-k">Vaša procjena</p>
+		<div class="est-types" role="group" aria-label="Vrsta projekta" data-est-types hidden>
+			<?php foreach ( $types as $zaec_i => $zaec_t ) : ?>
+				<button type="button" class="est-type" data-type="<?php echo esc_attr( $zaec_t[0] ); ?>" aria-pressed="<?php echo 1 === $zaec_i ? 'true' : 'false'; ?>"><?php echo esc_html( strtok( $zaec_t[1], ' ' ) ); ?></button>
+			<?php endforeach; ?>
+		</div>
+		<div class="cfg-stack" aria-hidden="true" data-stack><span class="cfg-ground"></span></div>
+		<div class="cfg-result">
+			<div><p class="cfg-label">Opseg</p><p class="cfg-tier"><b data-tier>M</b> <span data-tier-name>Poslovno</span></p></div>
+			<div><p class="cfg-label">Okvirni rok izrade</p><p class="cfg-weeks" data-weeks>2–4 tjedna</p></div>
+		</div>
+		<div class="cfg-meter" aria-hidden="true"><span data-meter></span><i style="left:28%"></i><i style="left:48%"></i><i style="left:75%"></i></div>
+		<p class="est-more"><a class="link-arrow" href="#<?php echo esc_attr( $args['mirror'] ); ?>">Još pet pitanja ispod <?php zaec_the_icon( 'arrow-down', 16 ); ?></a><span class="est-q">Djelatnost, opseg, funkcije, rok i sadržaj</span></p>
+	</div>
+	<?php
+	return;
+endif;
 // Funkcije po skupinama (strategija 05, nalaz 5). [vrijednost, naziv, ikona, kratko, utjecaj na opseg 1–3]
 // Utjecaj je samo oznaka za čitatelja; računa se u configurator.js (FEAT), ovdje se ne zbraja ništa.
 $groups = array(
@@ -143,7 +166,7 @@ $step   = static function ( $n, $q, $ans, $help = '' ) use ( $cid ) {
 			<div class="cfg-stack" aria-hidden="true" data-stack><span class="cfg-ground"></span></div>
 			<div class="cfg-result">
 				<div><p class="cfg-label">Opseg</p><p class="cfg-tier"><b data-tier>M</b> <span data-tier-name>Poslovno</span></p></div>
-				<div><p class="cfg-label">Okvirni rok izrade</p><p class="cfg-weeks" data-weeks>3–5 tjedana</p></div>
+				<div><p class="cfg-label">Okvirni rok izrade</p><p class="cfg-weeks" data-weeks>2–4 tjedna</p></div>
 				<p class="cfg-tier-desc" data-tier-desc></p>
 			</div>
 			<div class="cfg-meter" aria-hidden="true"><span data-meter></span><i style="left:28%"></i><i style="left:48%"></i><i style="left:75%"></i></div>
@@ -159,7 +182,7 @@ $step   = static function ( $n, $q, $ans, $help = '' ) use ( $cid ) {
 	</aside>
 
 	<div class="cfg-dock" data-cfg-dock aria-hidden="true">
-		<span class="cfg-dock-r"><b data-dock-tier>M</b><span data-dock-weeks>3–5 tjedana</span></span>
+		<span class="cfg-dock-r"><b data-dock-tier>M</b><span data-dock-weeks>2–4 tjedna</span></span>
 		<button type="button" class="cfg-dock-btn" tabindex="-1" data-dock-go>Procjena <?php zaec_the_icon( 'arrow-down', 16 ); ?></button>
 	</div>
 </div>

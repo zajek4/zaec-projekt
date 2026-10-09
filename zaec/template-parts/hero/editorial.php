@@ -19,7 +19,9 @@ $cta   = $l['cta'] ?? array( 'Složite svoj projekt', 'cijene#konfigurator' );
 $href  = 0 === strpos( $cta[1], '#' ) ? $cta[1] : zaec_url( $cta[1] );
 $title = $l['h1'] ?? $l['title'];
 $nacrt = zaec_nacrt( $l );
-$img   = $nacrt ? '' : ( $l['image'] ?? '' );
+// Cijene: umjesto slike kartica „Vaša procjena“ iz procjene na stranici (slika ostaje za dijeljenje, og:image)
+$est   = 'pricing' === ( $l['type'] ?? '' ) && in_array( 'configurator', array_column( (array) ( $l['blocks'] ?? array() ), 'type' ), true );
+$img   = $nacrt || $est ? '' : ( $l['image'] ?? '' );
 $kick  = (string) ( $l['kicker'] ?? $l['title'] );
 // oznaka kadra: "U.04" iz kickera ("Usluga · U.04"), inače naziv stranice
 $code = preg_match( '~([A-ZČĆŽŠĐ]\.\d{2})~u', $kick, $zaec_m ) ? $zaec_m[1] : $kick;
@@ -39,7 +41,7 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 	}
 }
 ?>
-<section class="eh<?php echo $dark ? ' eh--dark' : ''; ?><?php echo $img || $nacrt ? '' : ' eh--noimg'; ?><?php echo $nacrt ? ' eh--nacrt' : ''; ?><?php echo $sheet ? ' eh--hub' : ''; ?>" data-hero="editorial"<?php echo $dark ? ' data-header-theme="night"' : ''; ?> aria-labelledby="eh-title">
+<section class="eh<?php echo $dark ? ' eh--dark' : ''; ?><?php echo $img || $nacrt || $est ? '' : ' eh--noimg'; ?><?php echo $est ? ' eh--est' : ''; ?><?php echo $nacrt ? ' eh--nacrt' : ''; ?><?php echo $sheet ? ' eh--hub' : ''; ?>" data-hero="editorial"<?php echo $dark ? ' data-header-theme="night"' : ''; ?> aria-labelledby="eh-title">
 	<div class="eh-stage">
 		<div class="wrap eh-copy">
 			<div class="eh-head">
@@ -50,6 +52,10 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 				<figure class="eh-frame nacrt">
 					<?php echo $nacrt[0] . $nacrt[1]; // phpcs:ignore -- generirani SVG iz teme (tools/art/nacrt) ?>
 				</figure>
+			<?php elseif ( $est ) : ?>
+				<div class="eh-frame eh-frame--est">
+					<?php get_template_part( 'template-parts/configurator', null, array( 'mirror' => 'konfigurator' ) ); ?>
+				</div>
 			<?php elseif ( $img ) : ?>
 				<figure class="eh-frame">
 					<?php $zaec_srcset = zaec_img_srcset( $img ); ?>

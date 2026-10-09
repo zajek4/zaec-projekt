@@ -141,57 +141,77 @@ function init(root) {
   // Presjek zgrade: temelj (SEO + mjerenje), tijelo (vrsta projekta), katovi (funkcije) — svaki kat ima svoje
   // stalno mjesto (redoslijed popisa), pa novi kat nikad ne "upada" između drugih. Elementi se ne grade iznova:
   // postojeći katovi samo mijenjaju visinu, novi rastu iz nule, uklonjeni se skupljaju i tek onda nestaju.
+  // Isti presjek crta se i u kartici u heroju Cijena (data-cfg-mirror): svaki stog ima svoje katove.
   const featOrder = [...form.querySelectorAll('input[name="features"]')].map((i) => i.value);
-  const bld = document.createElement('div');
-  bld.className = 'cfg-bld';
-  stack.appendChild(bld);
-  const floors = new Map();
   const BASE_H = { landing: 22, web: 34, redesign: 34, shop: 44 };
 
-  function floorEl(k, label, kind) {
-    let el = floors.get(k);
-    if (el) {
-      clearTimeout(el._t);
-      el.classList.remove('is-leave');
-    } else {
-      el = document.createElement('div');
-      el.className = `cfg-fl cfg-fl--${kind}${reduce ? '' : ' is-enter'}`;
-      el.dataset.k = k;
-      el.innerHTML = '<b></b>';
-      floors.set(k, el);
-      if (!reduce) {
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          el.classList.remove('is-enter');
-          el.classList.add('is-lit');
-          el._lit = setTimeout(() => el.classList.remove('is-lit'), 1400);
-        }));
-      }
-    }
-    el.querySelector('b').textContent = label;
-    return el;
-  }
+  const makeStack = (stack) => {
+    const bld = document.createElement('div');
+    bld.className = 'cfg-bld';
+    stack.appendChild(bld);
+    const floors = new Map();
 
-  function renderStack(s) {
-    const want = [['_found', 'SEO + mjerenje', 'found', -2], ['_base', TYPE[s.type].block + (s.type === 'web' || s.type === 'redesign' ? ` · ${s.pages} str.` : ''), 'base', -1]];
-    s.features.forEach((f) => {
-      const el = featEl(f);
-      want.push([f, el?.dataset.short || el?.dataset.label || f, 'feat', featOrder.indexOf(f)]);
+    function floorEl(k, label, kind) {
+      let el = floors.get(k);
+      if (el) {
+        clearTimeout(el._t);
+        el.classList.remove('is-leave');
+      } else {
+        el = document.createElement('div');
+        el.className = `cfg-fl cfg-fl--${kind}${reduce ? '' : ' is-enter'}`;
+        el.dataset.k = k;
+        el.innerHTML = '<b></b>';
+        floors.set(k, el);
+        if (!reduce) {
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            el.classList.remove('is-enter');
+            el.classList.add('is-lit');
+            el._lit = setTimeout(() => el.classList.remove('is-lit'), 1400);
+          }));
+        }
+      }
+      el.querySelector('b').textContent = label;
+      return el;
+    }
+
+    return function renderStack(s) {
+      const want = [['_found', 'SEO + mjerenje', 'found', -2], ['_base', TYPE[s.type].block + (s.type === 'web' || s.type === 'redesign' ? ` · ${s.pages} str.` : ''), 'base', -1]];
+      s.features.forEach((f) => {
+        const el = featEl(f);
+        want.push([f, el?.dataset.short || el?.dataset.label || f, 'feat', featOrder.indexOf(f)]);
+      });
+      const keep = new Set(want.map((w) => w[0]));
+      want.forEach(([k, label, kind, ord]) => { const el = floorEl(k, label, kind); el._ord = ord; });
+      floors.forEach((el, k) => {
+        if (keep.has(k) || el.classList.contains('is-leave')) return;
+        el.classList.add('is-leave');
+        el._t = setTimeout(() => { el.remove(); floors.delete(k); }, reduce ? 0 : 520);
+      });
+      // visina kata: stog uvijek stane u kadar; promjena visine je ista tranzicija kao rast kata
+      const nFeat = s.features.length;
+      const fh = nFeat ? Math.max(9, Math.min(22, (148 - BASE_H[s.type]) / nFeat)) : 22;
+      stack.style.setProperty('--fh', `${fh.toFixed(1)}px`);
+      stack.style.setProperty('--bh', `${BASE_H[s.type]}px`);
+      stack.classList.toggle('is-dense', fh < 15);
+      [...floors.values()].sort((x, y) => x._ord - y._ord).forEach((el) => bld.appendChild(el));
+    };
+  };
+  const mirrors = root.id ? [...document.querySelectorAll(`[data-cfg-mirror="${CSS.escape(root.id)}"]`)] : [];
+  const stacks = [stack, ...mirrors.map((m) => m.querySelector('[data-stack]'))].filter(Boolean).map(makeStack);
+  mirrors.forEach((m) => {
+    m.querySelectorAll('.cfg-meter i').forEach((el, i) => { el.style.left = `${meterAt(TIERS[i][0]).toFixed(1)}%`; });
+    const types = m.querySelector('[data-est-types]');
+    if (!types) return;
+    types.hidden = false;
+    // vrsta u kartici je prvo pitanje procjene: mijenja isti odabir u obrascu ispod
+    types.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-type]');
+      const r = b && form.querySelector(`input[name="type"][value="${CSS.escape(b.dataset.type)}"]`);
+      if (!r || r.checked) return;
+      r.checked = true;
+      r.dispatchEvent(new Event('change', { bubbles: true }));
     });
-    const keep = new Set(want.map((w) => w[0]));
-    want.forEach(([k, label, kind, ord]) => { const el = floorEl(k, label, kind); el._ord = ord; });
-    floors.forEach((el, k) => {
-      if (keep.has(k) || el.classList.contains('is-leave')) return;
-      el.classList.add('is-leave');
-      el._t = setTimeout(() => { el.remove(); floors.delete(k); }, reduce ? 0 : 520);
-    });
-    // visina kata: stog uvijek stane u kadar; promjena visine je ista tranzicija kao rast kata
-    const nFeat = s.features.length;
-    const fh = nFeat ? Math.max(9, Math.min(22, (148 - BASE_H[s.type]) / nFeat)) : 22;
-    stack.style.setProperty('--fh', `${fh.toFixed(1)}px`);
-    stack.style.setProperty('--bh', `${BASE_H[s.type]}px`);
-    stack.classList.toggle('is-dense', fh < 15);
-    [...floors.values()].sort((x, y) => x._ord - y._ord).forEach((el) => bld.appendChild(el));
-  }
+  });
 
   const driverText = (d) => (FEAT[d] ? featEl(d)?.dataset.short || d : d);
 
@@ -234,7 +254,14 @@ function init(root) {
         return `<li${empty ? ' class="is-empty"' : ''}><b>${k}</b><span>${esc(v)}${empty ? ' <button type="button" class="cfg-fix" data-fix="trade">Odaberite</button>' : ''}</span></li>`;
       })
       .join('');
-    renderStack(s);
+    stacks.forEach((render) => render(s));
+    mirrors.forEach((m) => {
+      m.querySelector('[data-tier]').textContent = r.tier;
+      m.querySelector('[data-tier-name]').textContent = r.tierName;
+      m.querySelector('[data-weeks]').textContent = r.weeks;
+      m.querySelector('[data-meter]').style.width = `${Math.round(r.meter)}%`;
+      m.querySelectorAll('[data-type]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.type === s.type)));
+    });
     const dt = $('[data-dock-tier]'), dw = $('[data-dock-weeks]');
     if (dt) { dt.textContent = r.tier; dw.textContent = r.weeks; }
     const said = `Opseg ${r.tier}, ${r.tierName.toLowerCase()}, ${r.weeks}`;

@@ -395,6 +395,32 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh--noimg .eh-title { max-width: 16ch; }
 .eh--noimg .eh-body { max-width: 640px; }
 
+/* Cijene: kadar je kartica „Vaša procjena“ (živa, vezana uz procjenu ispod), ne slika. Kartica stoji desno od
+   dijela naslova koji ulazi u kadar (do 11vw), poravnata s desnim rubom rešetke. */
+.eh-frame--est {
+  display: grid; align-items: center; justify-items: end;
+  padding: clamp(24px, 3vw, 48px) var(--wl) clamp(24px, 3vw, 48px) calc(11vw + 32px);
+  background-color: var(--night);
+  background-image: linear-gradient(rgba(150, 168, 255, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(150, 168, 255, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px; background-position: -1px -1px;
+}
+.eh-frame--est::after { display: none; }
+.est { width: min(420px, 100%); gap: 16px; box-shadow: inset 0 0 0 1px var(--abyss-line-2), 0 50px 90px -40px rgba(0, 0, 0, 0.8); }
+.est .cfg-stack { height: 190px; } /* najviša zgrada (sve funkcije) stane kao u procjeni ispod */
+.est-types { display: flex; flex-wrap: wrap; gap: 6px; }
+.est-types[hidden] { display: none; }
+.est-type {
+  min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--abyss-line-2); background: transparent;
+  color: #c9cfe4; font: 600 0.88rem/1 var(--font-sans); cursor: pointer; transition: border-color 0.25s, background 0.25s, color 0.25s;
+}
+.est-type:hover { border-color: rgba(159, 180, 255, 0.6); color: #fff; }
+.est-type[aria-pressed='true'] { background: var(--signal); border-color: var(--signal); color: #fff; }
+.est-type:focus-visible { outline: 2px solid #9fb4ff; outline-offset: 2px; }
+.est-more { display: grid; gap: 6px; font-size: 0.95rem; color: #e8ebf5; }
+.est-more .est-q { font-size: 0.86rem; color: var(--abyss-muted); }
+.est-more a { color: inherit; }
+.est-more .icon { color: #9fb4ff; }
+
 /* tamna inačica (npr. održavanje): ista logika, noćni papir */
 .eh--dark { background: var(--night); color: var(--on-night); }
 .eh--dark::before { background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px); }
@@ -449,6 +475,17 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
   .eh-title { max-width: none; font-size: min(var(--fs-d2), 10.6vw); margin-top: -1.22em; }
   .eh-body { max-width: none; }
   .eh-sheet-list li { width: 148px; }
+  /* Cijene: kartica u kadru od ruba do ruba; ispod nje mjesto za prvi redak naslova */
+  .eh-frame--est { aspect-ratio: auto; justify-items: center; padding: 20px var(--gutter) calc(1.4 * min(var(--fs-d2), 10.6vw) + 12px); }
+  .est { gap: 12px; padding: 18px; }
+  /* niži presjek: ista zgrada umanjena, bez natpisa katova (ispod 11 px bi bili samo šum) */
+  .est .cfg-stack { height: 112px; padding-bottom: 8px; }
+  .est .cfg-bld { transform: scale(0.56); transform-origin: 50% 100%; }
+  .est .cfg-fl b { display: none; }
+  .est .cfg-ground { bottom: 7px; }
+  .est-type { padding: 0 11px; }
+  .est .cfg-tier b { font-size: 2rem; }
+  .est .cfg-weeks { font-size: 1.2rem; }
 }
 
 /* ═════════ Razina 3 — tihi hero (vodiči, pomoćne stranice) ═════════ */

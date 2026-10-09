@@ -101,3 +101,14 @@ Provjereno Playwrightom na lokalnom WP-u (build iz ove grane): prvi ekran na 360
 - Stranice djelatnosti: ispod znakova povjerenja redak „Ili prvo besplatna provjera vidljivosti“ (`cta_industry_audit`).
   Na desktopu je izvan toka (`position: absolute` ispod tijela), jer je list nacrta smješten prema naslovu: redak ne
   mijenja visinu heroja. Provjera nacrta nakon toga i dalje 66/66.
+
+## 7. Cijene: hero je kartica „Vaša procjena“ (design/04 #12, 05-reference)
+
+- Umjesto slike monitora kadar nosi karticu „Vaša procjena“ iz procjene na stranici (`configurator.php` s argumentom
+  `mirror`). Isti rezultat (opseg, okvirni rok, mjerač, presjek zgrade) računa `configurator.js` za obje kartice;
+  vrsta projekta bira se i u kartici i mijenja prvo pitanje procjene ispod. Ostalih pet pitanja je ispod.
+- Bez JS-a kartica pokazuje početno stanje bez gumba za vrstu. Početni rok u HTML-u sada je onaj koji procjena i
+  izračuna (2–4 tjedna), pa se pri učitavanju ništa ne mijenja.
+- Slika `usluga-procjena.webp` ostaje u registru za dijeljenje (og:image).
+- Na mobitelu je presjek umanjen i bez natpisa katova. Provjereno: sinkronizacija kartice i procjene (miš i
+  tipkovnica), najviša zgrada (webshop sa svim funkcijama) stane na 1440 i 390.
