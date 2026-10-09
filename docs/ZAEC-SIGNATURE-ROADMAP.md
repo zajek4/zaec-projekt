@@ -149,10 +149,18 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 - **Noćni prozori:** svaka zgrada ima razinu aktivnosti (dio gotovo taman, dio živ), stanovi se pale po jedinicama,
   dio prozora tek prigušen ili hladan (zaslon); izlozi različito otvoreni. Bez treperenja (promjene svakih ~140 s
   samo za mali dio jedinica).
-- **Konkatedrala (bez novog modela):** vitraji s olovnim okvirima i manje zasićeni; krovovi u hladnoj noći, zidovi
+- **Konkatedrala, svjetlo:** vitraji s olovnim okvirima i manje zasićeni; krovovi u hladnoj noći, zidovi
   topli, reflektori u podnožju u lepezama, pročelje prema trgu svjetlije; u zvoniku iznad sata iza žaluzina tek
-  naslutljivo toplo svjetlo. Geometrija tornja se nije mijenjala: `gltfpack` (npm) nije dostupan u ovom okruženju,
-  a bez referentnih fotografija promjena proporcija bila bi nagađanje. Potrebne fotografije: vidi "Otvoreno".
+  naslutljivo toplo svjetlo.
+- **Konkatedrala, toranj prema fotografijama (2026-10-09):** 15 fotografija s Wikimedia Commons (popis iz
+  korisnikovog paketa, preuzete na njegov izričit zahtjev; `/mnt/project-files/zaec-signature/reference/foto/`,
+  izvori u `IZVORI-I-LICENCE.csv`). Visine su izmjerene na dvije fotografije s ispravljenim vertikalama, umjereno
+  prema vrhu šiljka na 90 m: sat ~40 m (bio 43,7), istaknuta galerija s mrežištem na konzolama iznad sata (~44,5 m)
+  i ispod dvostrukih prozora (~30 m), zvonik 46–60,5 m s kamenim nadsvjetlom pri dnu otvora (bio 49–61), vimperzi
+  do ~67 m, novi osmerokutni tambur 63,4–72,2 m sa slijepim lancetama, vijencem, galerijom i fijalama, šiljak
+  73,4–90 m (prije je počinjao na 64 m bez tambura). Na bočnim pročeljima tornja: velik prozor s mrežištem pod
+  vimpergom u prizemlju i dva niža lanceta uz veliki prozor prvog kata. GLB 76 → 89 kB, 6315 → 7519 trokuta.
+  Sjaj zvonika u shaderu prati nove visine otvora. Fotografije služe samo kao referenca, ne objavljuju se.
 - **Snop s tornja:** najviše ~60 % prijašnje jačine, uži, iznad ~100 m prelazi u nit; križ ostaje vidljiv. Ostaje kao
   motiv (fizički grad → digitalna točka), ali više ne nadjačava toranj.
 - **Lite način:** ostaje na `hardwareConcurrency <= 4`. Broj su logičke niti: 4 niti danas imaju slabiji prijenosnici
@@ -239,24 +247,25 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 7 Poglavlje 08 | 8 | 8 | 8,5 | 8 | Motiv filma nastavljen na papiru; odgovara tko/što/za koga/kako početi |
 | 2 Skala i gumbi | 8 | 7 | 8,5 | 8 | Jedan sustav umjesto procjene od slučaja do slučaja; filmski naslovi namjerno izvan skale |
 | Završni prolaz: prozori | 8 | 7,5 | — | 8 | Grad više ne izgleda "sav upaljen"; iz zraka i dalje nedostaje istok (podaci) |
-| Završni prolaz: konkatedrala | 8 | 7,5 | — | 7,5 | Ravnoteža toplih zidova i tamnih krovova, tih snop; geometrija tornja nepromijenjena |
+| Završni prolaz: konkatedrala | 8,5 | 7,5 | — | 8,5 | Toranj prema fotografijama: sat, galerije, zvonik, tambur i šiljak u stvarnom redoslijedu i omjerima |
 | Mobilni CTA | 8,5 | 7 | 9 | 8,5 | Jedan poziv, ne prekriva formu ni footer |
 
 ## Otvoreno
 
-- `registry.npmjs.org` je blokiran mrežnim pravilima okruženja; build je Bunom, snižen na ES2020 (vidi gore). Prije
-  spajanja u `main` pokrenuti `npm ci && npm run build` gdje je registar dostupan i commitati taj izlaz.
-- **Svjetla grada iz zraka i centar oko trga (zahtjev korisnika, točke 1 i 2) čekaju podatke.** `overpass-api.de`,
-  `api.openstreetmap.org`, `upload.wikimedia.org` i `commons.wikimedia.org` vraćaju 403 (pravila mreže okruženja).
-  Postojeći `osijek-city.bin` pokriva 18,650–18,712° E: istočni dio grada (Donji grad prema 18,73°) nije u njemu,
-  a zgrade iz OSM relacija (multipoligoni) nisu uvezene, pa u blokovima oko konkatedrale ima rupa. Bez podataka se
-  praznine ne popunjavaju izmišljenim zgradama. Kad se domene dopuste: proširiti bbox, uvesti relacije, ponovno
-  izgraditi `osijek-city.bin` (`npm run city`).
-- **Konkatedrala, za vjernost tornja trebaju fotografije:** (1) toranj frontalno s Trga Ante Starčevića, cijela visina
-  od portala do križa; (2) toranj dijagonalno (kut sjeveroistok ili jugoistok), da se vide dvije strane zvonika;
-  (3) krupno: kat sa satom i zvonik iznad njega (otvori, žaluzine, vimperzi, fijale); (4) prijelaz zvonika u šiljak
-  (galerija, lukarne); (5) noćna fotografija iz iste točke kao (1), za raspored reflektora; (6) zračna ili s visine
-  (dron / Hotel Osijek) prema lađi i krovovima. Uz to `gltfpack` (npm) za ponovnu izgradnju modela.
+- Build je od 2026-10-09 ponovno Vite (`npm run build`): pomoćna nit je napravila `npm ci --ignore-scripts` iz
+  `package-lock.json` (arhiva i sha256 u `/mnt/project-files/zaec-signature/build-cache/`); izlaz parsira kao
+  ES2020 (acorn). Offline kit (Bun) ostaje kao rezerva.
+- **Svjetla grada iz zraka i centar oko trga (zahtjev korisnika, točke 1 i 2) čekaju podatke.** Overpass
+  (`overpass-api.de`) i dalje prekida TLS nakon ~8 s, i iz nove sesije; zrcala vraćaju 403. Postojeći
+  `osijek-city.bin` pokriva 18,650–18,712° E: istočni dio grada (Donji grad prema 18,73°) nije u njemu, a zgrade iz
+  OSM relacija (multipoligoni) nisu uvezene, pa u blokovima oko konkatedrale ima rupa. Bez podataka se praznine ne
+  popunjavaju izmišljenim zgradama. Alat je spreman (`7b37929`): `ZAEC_OSM=… npm run city` spaja izvoze, uvozi
+  relacije s dvorištima i šire reže Dravu; city.js gradi dvorišta. Zatim proširiti kartu svjetla i rast grada prema
+  istoku. Moguć zamjenski izvor: izvadak za Hrvatsku s `download.geofabrik.de` (traži dopuštenje domene).
+- Konkatedrala: jedna fotografija s popisa (`Osijek, Županijska, chrám III.jpg`) nije preuzeta (Wikimedia 429);
+  autori i licence fotografija nisu automatski dohvaćeni (`commons.wikimedia.org` nedostupan), provjeriti prije
+  bilo kakve objave. Daljnja vjernost: kontrafori kao dijagonalni stupovi sa stepenastim kamenim kapama, kukice
+  na vimperzima, dublji glavni portal.
 - Sekcija iznad footera na nekim podstranicama (CTA traka) još koristi sivu `--ink`; ujednačiti s `--abyss` (faza 12).
 - Nacrt, desktop: riješeno zadrškom kanala (`hold`); lađa na ~6000 px još malo dira naslov nacrta.
 - Osijek: krovovi izbliza i dalje dosta tamni; Drava na kadru Osijeka tamna (obalne svjetiljke se iz tog kuta
@@ -289,3 +298,5 @@ mreža dopusti OSM; faza 12.
 - `3265d61` Nalazi QA: ES2020 build, kontrast, modalni izbornik, oznake, karta svjetla izvan glavne niti
 - `b2aca60` 3D: lakše pokretanje (maska Drave, brži blur, odgođena priprema nacrta)
 - `4152c6f` Nalazi QA (nisko): slojevi, oznake uz rub, traka upita na uskim zaslonima
+- `7b37929` Grad: zgrade iz OSM multipoligona s dvorištima, spajanje više OSM izvoza (čeka podatke)
+- Konkatedrala: toranj prema fotografijama (sat, galerije, zvonik, tambur, šiljak); build ponovno Vite
