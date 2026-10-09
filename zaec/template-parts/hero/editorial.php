@@ -28,7 +28,12 @@ $code = preg_match( '~([A-ZČĆŽŠĐ]\.\d{2})~u', $kick, $zaec_m ) ? $zaec_m[1]
 $sheet = array();
 if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! empty( $l['key'] ) ) {
 	foreach ( zaec_landing_registry() as $zaec_k => $zaec_r ) {
-		if ( 0 === strpos( $zaec_k, $l['key'] . '/' ) && ! empty( $zaec_r['image'] ) ) {
+		if ( 0 !== strpos( $zaec_k, $l['key'] . '/' ) ) {
+			continue;
+		}
+		// djelatnosti: kazalo listova nacrta (sitni list bez oznaka), ostalo: kadar stranice
+		$zaec_r['thumb'] = zaec_nacrt_thumb( $zaec_r );
+		if ( $zaec_r['thumb'] || ! empty( $zaec_r['image'] ) ) {
 			$sheet[ $zaec_k ] = $zaec_r;
 		}
 	}
@@ -78,7 +83,11 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 					?>
 					<li>
 						<a href="<?php echo esc_url( zaec_url( $zaec_k ) ); ?>">
-							<span class="eh-sheet-img"><img src="<?php echo esc_url( zaec_img( preg_replace( '/\.webp$/', '-800.webp', $zaec_r['image'] ) ) ); ?>" alt="" width="800" height="600" loading="lazy" decoding="async"></span>
+							<?php if ( $zaec_r['thumb'] ) : ?>
+								<span class="eh-sheet-img eh-sheet-img--nacrt"><img src="<?php echo esc_url( $zaec_r['thumb'] ); ?>" alt="" width="800" height="600" loading="lazy" decoding="async"></span>
+							<?php else : ?>
+								<span class="eh-sheet-img"><img src="<?php echo esc_url( zaec_img( preg_replace( '/\.webp$/', '-800.webp', $zaec_r['image'] ) ) ); ?>" alt="" width="800" height="600" loading="lazy" decoding="async"></span>
+							<?php endif; ?>
 							<span class="eh-sheet-n mono"><?php echo esc_html( zaec_pad( $zaec_i ) ); ?></span>
 							<b><?php echo esc_html( $zaec_r['title'] ); ?></b>
 						</a>

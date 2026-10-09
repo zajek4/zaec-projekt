@@ -398,6 +398,10 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh-sheet-list b { font-size: 0.9rem; font-weight: 640; line-height: 1.25; }
 .eh-sheet-list a:hover .eh-sheet-img img, .eh-sheet-list a:focus-visible .eh-sheet-img img { transform: scale(1.06); filter: none; }
 .eh-sheet-list a:hover .eh-sheet-n { color: var(--signal); }
+/* kazalo listova nacrta: list je već noćni crtež, bez filtera; na hover se list samo malo primakne */
+.eh-sheet-img--nacrt { background: #0d1631; }
+.eh-sheet-img--nacrt img { filter: none; }
+.eh-sheet-list a:hover .eh-sheet-img--nacrt img, .eh-sheet-list a:focus-visible .eh-sheet-img--nacrt img { transform: scale(1.03); }
 .eh-answer { padding-top: clamp(28px, 4vw, 56px); }
 .eh--hub .eh-stage { min-height: clamp(440px, calc(100svh - var(--header-h) - 300px), 760px); }
 

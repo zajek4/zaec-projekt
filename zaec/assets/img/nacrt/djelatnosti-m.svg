@@ -1,0 +1,53 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="440 128 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="hz-djelatnosti-m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="hz2-djelatnosti-m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool-djelatnosti-m" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="dots-djelatnosti-m" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="wool-v-djelatnosti-m" width="16" height="20" patternUnits="userSpaceOnUse"><path d="M8 0 Q0 5 8 10 T8 20" class="ln-h" fill="none"/></pattern><pattern id="grid-djelatnosti-m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid-djelatnosti-m)"/>
+<g class="nd nd-1">
+<line class="cut-w" pathLength="1" x1="470" y1="200" x2="1180" y2="200"/>
+<line class="cut-w" pathLength="1" x1="470" y1="618" x2="1180" y2="618"/>
+</g>
+<g class="nd nd-2">
+<text class="t-call" x="470" y="148" font-weight="700">KAZALO LISTOVA</text>
+<text class="t-small" x="474" y="188">LIST</text>
+<text class="t-small" x="532" y="188">DJELATNOST</text>
+</g>
+<g class="nd nd-3">
+<text class="t-call" x="474" y="226" font-weight="700">01</text>
+<text class="t-call" x="532" y="226">Klima i grijanje</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="238" x2="1180" y2="238"/>
+<text class="t-call" x="474" y="264" font-weight="700">02</text>
+<text class="t-call" x="532" y="264">Vodoinstalateri</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="276" x2="1180" y2="276"/>
+<text class="t-call" x="474" y="302" font-weight="700">03</text>
+<text class="t-call" x="532" y="302">Električari</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="314" x2="1180" y2="314"/>
+<text class="t-call" x="474" y="340" font-weight="700">04</text>
+<text class="t-call" x="532" y="340">Krovopokrivači</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="352" x2="1180" y2="352"/>
+<text class="t-call" x="474" y="378" font-weight="700">05</text>
+<text class="t-call" x="532" y="378">Građevina i adaptacije</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="390" x2="1180" y2="390"/>
+</g>
+<g class="nd nd-4">
+<text class="t-call" x="474" y="416" font-weight="700">06</text>
+<text class="t-call" x="532" y="416">Ugostiteljstvo i smještaj</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="428" x2="1180" y2="428"/>
+<text class="t-call" x="474" y="454" font-weight="700">07</text>
+<text class="t-call" x="532" y="454">Trgovine i webshop</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="466" x2="1180" y2="466"/>
+<text class="t-call" x="474" y="492" font-weight="700">08</text>
+<text class="t-call" x="532" y="492">Saloni ljepote</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="504" x2="1180" y2="504"/>
+<text class="t-call" x="474" y="530" font-weight="700">09</text>
+<text class="t-call" x="532" y="530">Stručne usluge</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="542" x2="1180" y2="542"/>
+<text class="t-call" x="474" y="568" font-weight="700">10</text>
+<text class="t-call" x="532" y="568">Ustanove i udruge</text>
+<line class="ln-frame" pathLength="1" x1="470" y1="580" x2="1180" y2="580"/>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<text class="t-call" x="474" y="606" font-weight="700">11</text>
+<text class="t-call" x="532" y="606">Vaša djelatnost</text>
+</g>
+</g>
+</svg>

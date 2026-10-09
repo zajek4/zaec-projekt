@@ -16,7 +16,7 @@ for (const file of readdirSync(here).filter((n) => n.endsWith('.mjs') && !['std.
   const sheet = await import(join(here, file));
   const { slug, lamp } = sheet.meta;
   if (only && only !== slug) continue;
-  if (!registry.includes(`'${lamp.search}'`)) console.warn(`! ${slug}: pretraga "${lamp.search}" nije u registru (searches)`);
+  if (lamp && !registry.includes(`'${lamp.search}'`)) console.warn(`! ${slug}: pretraga "${lamp.search}" nije u registru (searches)`);
   const sizes = [];
   for (const v of ['d', 'm', 't']) {
     const svg = render(sheet, v);
