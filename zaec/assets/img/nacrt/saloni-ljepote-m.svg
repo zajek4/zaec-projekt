@@ -1,0 +1,79 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="440 60 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="hz-saloni-ljepote-m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="hz2-saloni-ljepote-m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="wool-saloni-ljepote-m" width="20" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><path d="M0 8 Q5 0 10 8 T20 8" class="ln-h" fill="none"/></pattern><pattern id="dots-saloni-ljepote-m" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="wool-v-saloni-ljepote-m" width="16" height="20" patternUnits="userSpaceOnUse"><path d="M8 0 Q0 5 8 10 T8 20" class="ln-h" fill="none"/></pattern><pattern id="grid-saloni-ljepote-m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid-saloni-ljepote-m)"/>
+<g class="nd nd-1">
+<line class="ln-con" x1="606.4" y1="191.6" x2="606.4" y2="351.6"/>
+<line class="ln-con" x1="702.4" y1="191.6" x2="702.4" y2="351.6"/>
+<line class="ln-con" x1="798.4" y1="191.6" x2="798.4" y2="351.6"/>
+<line class="ln-con" x1="894.4" y1="191.6" x2="894.4" y2="351.6"/>
+<line class="ln-con" x1="401.6" y1="290.8" x2="990.4" y2="290.8"/>
+</g>
+<g class="nd nd-2">
+<rect class="cut" pathLength="1" x="424" y="214" width="544" height="16" fill="url(#hz-saloni-ljepote-m)"/>
+<rect class="cut" pathLength="1" x="424" y="230" width="16" height="384" fill="url(#hz-saloni-ljepote-m)"/>
+<rect class="cut" pathLength="1" x="952" y="230" width="16" height="384" fill="url(#hz-saloni-ljepote-m)"/>
+<rect class="cut" pathLength="1" x="424" y="614" width="54.4" height="16" fill="url(#hz-saloni-ljepote-m)"/>
+<rect class="cut" pathLength="1" x="542.4" y="614" width="25.6" height="16" fill="url(#hz-saloni-ljepote-m)"/>
+<rect class="cut" pathLength="1" x="811.2" y="614" width="156.8" height="16" fill="url(#hz-saloni-ljepote-m)"/>
+</g>
+<g class="nd nd-3">
+<line class="ln-2" pathLength="1" x1="577.6" y1="233.2" x2="635.2" y2="233.2"/>
+<circle class="ln-3" cx="606.4" cy="290.8" r="48"/>
+<path class="ln-2" pathLength="1" d="M574.4 230 H638.4 V252.4 H574.4 Z M588.48 290.8 a17.92 17.92 0 1 0 35.84 0 a17.92 17.92 0 1 0 -35.84 0 Z"/>
+<path class="ln-2" pathLength="1" d="M591.04 303.6 A20.48 20.48 0 0 0 621.76 303.6"/>
+<line class="ln-2" pathLength="1" x1="673.6" y1="233.2" x2="731.2" y2="233.2"/>
+<circle class="ln-3" cx="702.4" cy="290.8" r="48"/>
+<line class="ln-2" pathLength="1" x1="769.6" y1="233.2" x2="827.2" y2="233.2"/>
+<circle class="ln-3" cx="798.4" cy="290.8" r="48"/>
+<path class="ln-2" pathLength="1" d="M766.4 230 H830.4 V252.4 H766.4 Z M780.48 290.8 a17.92 17.92 0 1 0 35.84 0 a17.92 17.92 0 1 0 -35.84 0 Z"/>
+<path class="ln-2" pathLength="1" d="M783.04 303.6 A20.48 20.48 0 0 0 813.76 303.6"/>
+<line class="ln-2" pathLength="1" x1="865.6" y1="233.2" x2="923.2" y2="233.2"/>
+<circle class="ln-3" cx="894.4" cy="290.8" r="48"/>
+<path class="ln-2" pathLength="1" d="M862.4 230 H926.4 V252.4 H862.4 Z M876.48 290.8 a17.92 17.92 0 1 0 35.84 0 a17.92 17.92 0 1 0 -35.84 0 Z"/>
+<path class="ln-2" pathLength="1" d="M879.04 303.6 A20.48 20.48 0 0 0 909.76 303.6"/>
+</g>
+<g class="nd nd-4">
+<rect class="ln-2" pathLength="1" x="920" y="415.6" width="32" height="38.4"/>
+<ellipse class="ln-2" cx="936.64" cy="434.8" rx="9.6" ry="12.8"/>
+<rect class="ln-2" pathLength="1" x="843.2" y="416.9" width="73.6" height="35.8" rx="7.68"/>
+<line class="ln-h" x1="894.4" y1="416.9" x2="894.4" y2="452.7"/>
+<rect class="ln-2" pathLength="1" x="920" y="479.6" width="32" height="38.4"/>
+<ellipse class="ln-2" cx="936.64" cy="498.8" rx="9.6" ry="12.8"/>
+<rect class="ln-2" pathLength="1" x="843.2" y="480.9" width="73.6" height="35.8" rx="7.68"/>
+<line class="ln-h" x1="894.4" y1="480.9" x2="894.4" y2="516.7"/>
+<path class="cut-w" pathLength="1" d="M580.8 505.2 H670.4 V524.4 Q625.6 559.6 580.8 524.4 Z"/>
+<circle class="ln-2" pathLength="1" cx="625.6" cy="482.8" r="14.1"/>
+<rect class="ln-2" pathLength="1" x="440" y="383.6" width="51.2" height="128"/>
+<line class="ln-h" x1="452.8" y1="383.6" x2="452.8" y2="511.6"/>
+<line class="ln-h" x1="452.8" y1="426.5" x2="491.2" y2="426.5"/>
+<line class="ln-h" x1="452.8" y1="468.7" x2="491.2" y2="468.7"/>
+<circle class="ln-2" pathLength="1" cx="529.6" cy="447.6" r="22.4"/>
+<rect class="ln-2" pathLength="1" x="440" y="268.4" width="22.4" height="89.6"/>
+<line class="ln-h" x1="440" y1="290.8" x2="462.4" y2="290.8"/>
+<line class="ln-h" x1="440" y1="313.2" x2="462.4" y2="313.2"/>
+<line class="ln-h" x1="440" y1="335.6" x2="462.4" y2="335.6"/>
+<line class="ln-2" pathLength="1" x1="542.4" y1="614" x2="542.4" y2="550"/>
+<path class="ln-h" d="M478.4 614 A64 64 0 0 1 542.4 550" fill="none"/>
+<rect class="ln-2" pathLength="1" x="568" y="614" width="243.2" height="16"/>
+<line class="ln-h" x1="568" y1="622" x2="811.2" y2="622"/>
+</g>
+<g class="nd nd-5">
+<text class="t-dim" x="798.4" y="474.5" text-anchor="middle">PRANJE</text>
+</g>
+<g class="nd nd-6">
+<g class="call c03">
+<circle class="dot" cx="798.4" cy="233.2" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="798.4,233.2 798.4,96 812.4,96" fill="none"/>
+<text class="t-call" x="820.4" y="101"><tspan class="t-n">03</tspan>  OGLEDALA</text>
+<text class="t-web" x="820.4" y="121">→ Galerija i tim</text>
+</g>
+<path class="lamp-fill" pathLength="1" d="M670.4 230 H734.4 V252.4 H670.4 Z M684.48 290.8 a17.92 17.92 0 1 0 35.84 0 a17.92 17.92 0 1 0 -35.84 0 Z"/>
+<g class="call lamp">
+<circle class="halo" cx="702.4" cy="290.8" r="30"/>
+<circle class="dot" cx="702.4" cy="290.8" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="702.4,282.8 702.4,189.1 497,189.1" fill="none"/>
+<text class="t-call" x="497" y="149.8">UTORAK · 17:30</text>
+<text class="t-web" x="497" y="176">„frizer + grad“</text>
+</g>
+</g>
+</svg>
