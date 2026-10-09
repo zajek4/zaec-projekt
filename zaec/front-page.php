@@ -235,7 +235,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 		</header>
 		<ol class="sys-layers" role="list">
 			<?php foreach ( $layers as $i => $ly ) : ?>
-				<li class="sys-layer" data-layer="<?php echo (int) $i; ?>"<?php echo 0 === $i ? ' data-cam="layers-a"' : ( 6 === $i ? ' data-cam="layers-b"' : '' ); ?> tabindex="0">
+				<li class="sys-layer" data-layer="<?php echo (int) $i; ?>"<?php echo 0 === $i ? ' data-cam="layers-a"' : ( 6 === $i ? ' data-cam="layers-b"' : '' ); ?>>
 					<span class="sys-n mono"><?php echo esc_html( $ly[0] ); ?></span>
 					<div>
 						<h3><?php zaec_the_icon( $ly[3], 20 ); ?> <?php echo esc_html( $ly[1] ); ?></h3>
