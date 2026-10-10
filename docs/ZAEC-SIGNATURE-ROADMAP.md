@@ -300,8 +300,9 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   bilo kakve objave. Daljnja vjernost: kontrafori kao dijagonalni stupovi sa stepenastim kamenim kapama; portal
   bočnog broda na fotografiji djeluje viši od modela (perspektiva nesigurna); glavni portal svjetliji kamen od
   ostalih kamenih detalja.
-- Prije spajanja u `main` podići `ZAEC_VERSION` (sada 2.3.0 i na `main` i na grani): model konkatedrale, podaci grada
-  i karta svjetla dobivaju `?v=` iz te verzije, pa bi preglednici inače zadržali stare datoteke.
+- PR #6 spojen u `main` 2026-10-10 bez podizanja verzije; `ZAEC_VERSION` 2.3.0 → 2.4.0 je u zasebnom PR-u
+  (model konkatedrale, podaci grada i karta svjetla dobivaju `?v=` iz te verzije, pa bi preglednici inače zadržali
+  stare datoteke uz novi JS).
 - Sekcija iznad footera na nekim podstranicama (CTA traka) još koristi sivu `--ink`; ujednačiti s `--abyss` (faza 12).
 - Nacrt, desktop: riješeno zadrškom kanala (`hold`); lađa na ~6000 px još malo dira naslov nacrta.
 - Osijek: krovovi izbliza i dalje dosta tamni; Drava na kadru Osijeka tamna (obalne svjetiljke se iz tog kuta
