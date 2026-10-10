@@ -1,11 +1,16 @@
 // Scena 01 — planet iz niske orbite: kopno iz stvarne maske (2048×1024), digitalna matrica točaka,
-// osvjetljenje sunca s gornje desne strane, odsjaj oceana, topli rub sumraka, rijetka noćna svjetla
-// na tamnoj strani i tanka atmosfera. Bez oblaka: čista silueta, a fragment shader ostaje jeftin.
+// sunce iza gornjeg desnog ruba. Površina dijeli materijalni jezik s kartom (lib.js, EARTH_GLSL):
+// ocean dublji daleko od obale i plići na šelfu, kopno slojevito (obala, unutrašnjost, visoke širine),
+// odsjaj sunca na moru s Fresnelom, sumrak u dva tona. Atmosfera je jednostruko raspršenje (Rayleigh + Mie)
+// kroz ljusku, pa su plavi rub, toplina uz terminator i prijelaz u svemir posljedica svjetla, a ne maske.
+// Bez oblaka: čista silueta.
 // Mreža komunikacija je zaseban modul (network.js) u istom koordinatnom sustavu (jedinična sfera).
 import * as THREE from 'three';
-import { ll2v, OSIJEK, DEG, glowPoints, lineMat } from './lib.js';
+import { ll2v, OSIJEK, DEG, glowPoints, lineMat, createEarthField, EARTH_GLSL, CIVIC } from './lib.js';
 
-export function createGlobe({ geo, lite, landUrl }) {
+const ATMO_R = 1.032;
+
+export function createGlobe({ geo, lite, landUrl, lightsUrl }) {
   const group = new THREE.Group();
   group.name = 'planet';
   const spin = new THREE.Group();
@@ -21,14 +26,25 @@ export function createGlobe({ geo, lite, landUrl }) {
   group.quaternion.setFromRotationMatrix(new THREE.Matrix4().multiplyMatrices(tgt, src.clone().transpose()));
 
   /* ── planet ── */
-  const land = new THREE.TextureLoader().load(landUrl);
+  const field = createEarthField();
+  const land = new THREE.TextureLoader().load(landUrl, (t) => field.fill(t.image));
   land.colorSpace = THREE.NoColorSpace;
   land.format = THREE.RedFormat; // maska kopna: jedan kanal (¼ memorije i prijenosa na GPU)
   land.minFilter = THREE.LinearFilter; // bez mipmapa → nema šava na antimeridijanu
   land.generateMipmaps = false;
   land.wrapS = THREE.RepeatWrapping;
+  // noćna svjetla (NASA/NOAA, tools/build-lights.py): oštra tekstura za točke + zamućeni sjaj u polju
+  const lights = new THREE.TextureLoader().load(lightsUrl, (t) => field.fillLights(t.image));
+  lights.colorSpace = THREE.NoColorSpace;
+  lights.format = THREE.RedFormat;
+  lights.minFilter = THREE.LinearFilter;
+  lights.generateMipmaps = false;
+  lights.wrapS = THREE.RepeatWrapping;
   const U = {
     uLand: { value: land },
+    uField: { value: field.texture },
+    uLights: { value: lights },
+    uCivic: CIVIC,
     uSun: { value: new THREE.Vector3(0.78, 0.46, -0.95).normalize() },
     uTime: { value: 0 },
     uAlpha: { value: 1 },
@@ -50,15 +66,14 @@ export function createGlobe({ geo, lite, landUrl }) {
     fragmentShader: /* glsl */ `
       uniform sampler2D uLand; uniform vec3 uSun; uniform float uTime; uniform float uAlpha; uniform float uDots; uniform float uNight;
       varying vec3 vObj; varying vec3 vN; varying vec3 vW;
-      float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      ${EARTH_GLSL}
       void main(){
         vec3 o = normalize(vObj);
         float lat = asin(clamp(o.y, -1.0, 1.0));
         float lon = atan(o.x, o.z);
         vec2 uv = vec2((lon + 3.14159265) / 6.2831853, (lat + 1.5707963) / 3.14159265);
         float land = smoothstep(0.25, 0.75, texture2D(uLand, uv).r);
-        // obala: kopno uz more (dva dodatna uzorka) — tamo su gradovi gušći
-        float coast = land * (1.0 - smoothstep(0.25, 0.75, min(texture2D(uLand, uv + vec2(0.004, 0.0)).r, texture2D(uLand, uv - vec2(0.0, 0.006)).r)));
+        vec4 F = texture2D(uField, uv);
         // digitalna matrica točaka na kopnu (razmak ~0,36°, ispravljen za širinu)
         vec2 g = vec2(lon * cos(lat), lat) / (0.36 * 0.0174533);
         vec2 f = fract(g) - 0.5;
@@ -66,26 +81,32 @@ export function createGlobe({ geo, lite, landUrl }) {
         float dots = (1.0 - smoothstep(0.17 - aa, 0.17 + aa, length(f))) * land;
         vec3 n = normalize(vN);
         vec3 v = normalize(cameraPosition - vW);
+        float mu = max(dot(n, v), 0.0);
         float ndl = dot(n, uSun);
         float day = smoothstep(-0.12, 0.38, ndl);
-        vec3 ocean = mix(vec3(0.006, 0.013, 0.036), vec3(0.012, 0.024, 0.058), pow(max(dot(n, v), 0.0), 2.0));
-        vec3 landC = vec3(0.036, 0.055, 0.085) + dots * uDots * vec3(0.10, 0.2, 0.42);
-        vec3 col = mix(ocean, landC, land);
+        vec3 landC = landTone(F, lat, lon) + dots * uDots * vec3(0.10, 0.2, 0.42);
+        vec3 col = mix(oceanTone(F, mu), landC, land);
         col *= 0.2 + 1.35 * day;
-        // rub sumraka: tanka topla traka gdje sunce zalazi
-        float term = exp(-pow((ndl - 0.03) / 0.08, 2.0));
-        col += vec3(0.26, 0.12, 0.05) * term * (0.25 + 0.75 * land) * 0.4;
-        // odsjaj sunca na moru
+        col += twilightTone(ndl, 0.03, 0.075) * (0.3 + 0.7 * land) * 0.42;
+        // odsjaj sunca na moru: uska jezgra i široki mekani trag, jači pod kosim kutom (Fresnel)
         vec3 h = normalize(uSun + v);
-        col += vec3(0.55, 0.62, 0.8) * pow(max(dot(n, h), 0.0), 60.0) * (1.0 - land) * day * 0.55;
-        // noćna strana: matrica i rijetka topla svjetla (gušća uz obalu)
+        float nh = max(dot(n, h), 0.0);
+        float fr = 0.02 + 0.98 * pow(1.0 - mu, 5.0);
+        float glint = (pow(nh, 110.0) * 0.8 + pow(nh, 16.0) * 0.07) * (0.35 + 2.6 * fr);
+        col += vec3(0.62, 0.72, 0.9) * glint * (1.0 - land) * smoothstep(-0.02, 0.22, ndl) * 0.62;
+        // noćna strana: tiha matrica i svjetla naselja prema stvarnoj snimci; približavanjem Europi
+        // gustoća naselja nazire se i danju (uCivic), kao tihi topli sloj u matrici
         float night = 1.0 - smoothstep(-0.06, 0.2, ndl);
         col += dots * uDots * vec3(0.08, 0.16, 0.38) * (1.0 - day) * 0.45;
-        float lit = step(1.0 - (0.07 + 0.38 * coast), h21(floor(g))) * dots;
-        col += vec3(1.0, 0.6, 0.26) * lit * night * 0.6 * uNight;
-        // atmosferska izmaglica prema rubu (jače na osunčanoj strani)
-        float fres = pow(1.0 - max(dot(n, v), 0.0), 2.6);
-        col += vec3(0.16, 0.42, 1.0) * fres * (0.14 + 1.05 * smoothstep(-0.2, 0.6, ndl));
+        vec2 gc = floor(g) + 0.5;
+        float latc = gc.y * 0.0062832;
+        vec2 uvc = vec2((gc.x * 0.0062832 / max(cos(latc), 0.05) + 3.14159265) / 6.2831853, (latc + 1.5707963) / 3.14159265);
+        vec4 cl = cityLights(uvc, eHash(floor(g)), dots, F, 1.0);
+        float civ = uCivic * (1.0 - night);
+        // danju je naselje jantarna točka u plavoj matrici (podatkovni sloj), noću stvarno svjetlo
+        col = mix(col, civicTone(day), clamp(cl.a * civ, 0.0, 1.0));
+        col += cl.rgb * night * uNight;
+        col += hazeTone(mu, ndl);
         gl_FragColor = vec4(col, uAlpha);
       }`,
   });
@@ -93,30 +114,99 @@ export function createGlobe({ geo, lite, landUrl }) {
   planet.renderOrder = 0;
   spin.add(planet);
 
-  /* ── atmosfera: tanka ljuska, osvijetljena sa stražnje strane ── */
+  /* ── atmosfera: jednostruko raspršenje (Rayleigh + Mie) kroz tanku ljusku ──
+     Zraka iz kamere siječe ljusku i (ako je pogodi) planet; duž nje se zbraja svjetlo sunca raspršeno
+     prema kameri, oslabljeno optičkom dubinom prema suncu i prema kameri, uz sjenu planeta. Plavi rub,
+     topliji ton uz terminator i mekani prijelaz u svemir proizlaze iz fizike, ne iz ručne maske.
+     Debljina i visine skale su uvećane (~4×) da se rub čita na zaslonu; omjeri ostaju Zemljini. */
   const atmoU = { uSun: U.uSun, uAlpha: { value: 1 } };
   const atmo = new THREE.Mesh(
-    new THREE.SphereGeometry(1.028, 96, 64),
+    new THREE.SphereGeometry(ATMO_R, lite ? 72 : 112, lite ? 48 : 72),
     new THREE.ShaderMaterial({
       uniforms: atmoU,
-      side: THREE.BackSide,
+      side: THREE.FrontSide,
       transparent: true,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
-      vertexShader: /* glsl */ `varying vec3 vN; varying vec3 vW; void main(){ vN = normalize(mat3(modelMatrix) * position); vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
-      fragmentShader: /* glsl */ `uniform vec3 uSun; uniform float uAlpha; varying vec3 vN; varying vec3 vW;
+      vertexShader: /* glsl */ `
+        varying vec3 vW; varying vec3 vC; varying float vR;
         void main(){
-          vec3 n = normalize(vN); vec3 v = normalize(cameraPosition - vW);
-          float rim = pow(clamp(-dot(n, v), 0.0, 1.0), 0.55);
-          float edge = smoothstep(0.0, 0.35, 1.0 - rim);
-          float sun = smoothstep(-0.35, 0.7, dot(n, uSun));
-          float fwd = pow(max(dot(normalize(-v), uSun), 0.0), 6.0); // naspramno svjetlo uz rub
-          vec3 c = mix(vec3(0.10, 0.22, 0.75), vec3(0.45, 0.7, 1.0), sun);
-          float a = rim * edge * (0.12 + 0.9 * sun + 0.8 * fwd);
-          gl_FragColor = vec4(c * a, a * uAlpha);
+          vec4 w = modelMatrix * vec4(position, 1.0);
+          vW = w.xyz;
+          vC = modelMatrix[3].xyz;
+          vR = length(modelMatrix[0].xyz);
+          gl_Position = projectionMatrix * viewMatrix * w;
+        }`,
+      fragmentShader: /* glsl */ `
+        uniform vec3 uSun; uniform float uAlpha;
+        varying vec3 vW; varying vec3 vC; varying float vR;
+        #define NV ${lite ? 7 : 10}
+        const float RA = ${ATMO_R.toFixed(3)};
+        const float HR = 0.0072;
+        const float HM = 0.0024;
+        const vec3 BR = vec3(2.1, 4.9, 11.6);
+        const float BM = 2.2;
+        vec2 rsi(vec3 ro, vec3 rd, float r){
+          float b = dot(ro, rd), c = dot(ro, ro) - r * r, d = b * b - c;
+          if (d < 0.0) return vec2(1e5, -1e5);
+          d = sqrt(d);
+          return vec2(-b - d, -b + d);
+        }
+        // optička dubina prema suncu bez unutarnje petlje: Chapmanova funkcija (aproksimacija Schüler 2012)
+        float chU(float X, float c){ float k = sqrt(1.5707963 * X); return k / ((k - 1.0) * c + 1.0); }
+        float lightOD(float r, float c, float H){
+          if (c >= 0.0) return H * exp(-(r - 1.0) / H) * chU(r / H, c);
+          float rt = r * sqrt(max(1.0 - c * c, 0.0)); // najniža točka zrake prema suncu
+          return H * (2.0 * sqrt(1.5707963 * rt / H) * exp(-max(rt - 1.0, -0.02) / H) - exp(-(r - 1.0) / H) * chU(r / H, -c));
+        }
+        void main(){
+          vec3 ro = (cameraPosition - vC) / vR;
+          vec3 rd = normalize(vW - cameraPosition);
+          vec2 ta = rsi(ro, rd, RA);
+          float t0 = max(ta.x, 0.0), t1 = ta.y;
+          vec2 tp = rsi(ro, rd, 1.0);
+          bool hit = tp.x < tp.y && tp.x > 0.0;
+          if (hit) t1 = min(t1, tp.x);
+          if (t1 <= t0) discard;
+          // nad diskom je put kroz atmosferu kratak i jednoličan: dovoljno je manje uzoraka
+          float inc = hit ? max(-dot(normalize(ro + rd * tp.x), rd), 0.0) : 0.0;
+          int n = hit ? int(mix(float(NV), 4.0, smoothstep(0.12, 0.5, inc))) : NV;
+          float ds = (t1 - t0) / float(n);
+          vec3 sumR = vec3(0.0); vec3 sumM = vec3(0.0);
+          float odR = 0.0, odM = 0.0;
+          for (int i = 0; i < NV; i++){
+            if (i >= n) break;
+            vec3 p = ro + rd * (t0 + ds * (float(i) + 0.5));
+            float r = length(p);
+            float dR = exp(-(r - 1.0) / HR) * ds, dM = exp(-(r - 1.0) / HM) * ds;
+            odR += dR; odM += dM;
+            // sjena planeta: mekani rub (polusjena) umjesto tvrdog praga
+            float along = dot(p, uSun);
+            float lit = along > 0.0 ? 1.0 : smoothstep(0.985, 1.012, length(p - uSun * along));
+            if (lit <= 0.0) continue;
+            float cz = along / r;
+            // ekstinkcija je ublažena (×0,55): pri tangencijalnom pogledu rub ostaje plavobijel, a ne maslinast
+            vec3 tau = (BR * (odR + lightOD(r, cz, HR)) + BM * 1.1 * (odM + lightOD(r, cz, HM))) * 0.55;
+            vec3 att = exp(-tau) * lit;
+            sumR += dR * att; sumM += dM * att;
+          }
+          float c = dot(rd, uSun);
+          float pR = 0.0597 * (1.0 + c * c);
+          const float g = 0.78;
+          float pM = 0.1194 * ((1.0 - g * g) * (1.0 + c * c)) / ((2.0 + g * g) * pow(1.0 + g * g - 2.0 * g * c, 1.5));
+          vec3 L = 15.0 * (sumR * BR * pR + sumM * BM * pM);
+          // nad diskom planeta raspršenje ostaje suzdržano (tamna kugla, čitljiva matrica);
+          // prema rubu diska raste do pune vrijednosti pa između diska i ruba nema stepenice
+          if (hit) L *= mix(0.45, 1.0, exp(-inc * 9.0));
+          // tihi noćni sjaj gornje atmosfere: rub se nazire i na tamnoj strani
+          float hmin = length(ro + rd * max(-dot(ro, rd), 0.0)) - 1.0;
+          L += vec3(0.035, 0.07, 0.2) * exp(-pow((hmin - 0.012) / 0.007, 2.0)) * (hit ? 0.0 : 1.0);
+          L = 1.0 - exp(-L * 1.15);
+          gl_FragColor = vec4(L, uAlpha);
         }`,
     }),
   );
+  atmo.renderOrder = 1;
   group.add(atmo);
 
   /* ── granice Europe i Hrvatske (tanke, digitalne) ── */
@@ -146,6 +236,8 @@ export function createGlobe({ geo, lite, landUrl }) {
     spin,
     sun: U.uSun.value,
     land,
+    lights,
+    field: field.texture,
     /** s: { alpha, spin, net, finale, dive, time, pr, reduce } */
     update(s) {
       group.visible = s.alpha > 0.002;
@@ -168,7 +260,7 @@ export function createGlobe({ geo, lite, landUrl }) {
       return out.copy(osijek).multiplyScalar(1.02).applyMatrix4(spin.matrixWorld);
     },
     dispose() {
-      planet.geometry.dispose(); planetMat.dispose(); land.dispose();
+      planet.geometry.dispose(); planetMat.dispose(); land.dispose(); lights.dispose(); field.texture.dispose();
       atmo.geometry.dispose(); atmo.material.dispose();
       borderGeo.dispose(); borderMat.dispose();
       hub.geometry.dispose(); hub.material.dispose();

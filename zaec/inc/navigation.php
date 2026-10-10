@@ -9,15 +9,54 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Usluge grupirane kao na naslovnici (Izgradnja → Vidljivost → Rast): deset jednakih stavki djelovalo je
+ * kao katalog velike agencije. URL-ovi se ne mijenjaju; usluga koja nije ni u jednoj skupini ide u zadnju.
+ */
+function zaec_nav_service_groups() {
+	$by_key = array();
+	foreach ( zaec_services() as $s ) {
+		$by_key[ $s['key'] ] = array( 'label' => $s['title'], 'url' => zaec_url( $s['key'] ), 'note' => zaec_service_blurb( $s['key'] ) );
+	}
+	$groups = array();
+	foreach ( zaec_service_clusters() as $c ) {
+		$items = array();
+		foreach ( $c['keys'] as $k ) {
+			if ( isset( $by_key[ $k ] ) ) {
+				$items[] = $by_key[ $k ];
+				unset( $by_key[ $k ] );
+			}
+		}
+		if ( $items ) {
+			$groups[] = array( 'label' => $c['name'], 'note' => $c['note'], 'children' => $items );
+		}
+	}
+	if ( $by_key && $groups ) {
+		$last = count( $groups ) - 1;
+		$groups[ $last ]['children'] = array_merge( $groups[ $last ]['children'], array_values( $by_key ) );
+	} elseif ( $by_key ) {
+		$groups[] = array( 'label' => 'Usluge', 'note' => '', 'children' => array_values( $by_key ) );
+	}
+	return $groups;
+}
+
+/**
+ * Kamo vodi glavni poziv "Pošaljite upit": forma na istoj stranici (naslovnica, Kontakt) ili forma na Kontaktu.
+ * Upit preko forme je primarni cilj; telefon je na stranici Kontakt, ne u glavnim pozivima.
+ */
+function zaec_inquiry_url() {
+	if ( is_front_page() ) {
+		return '#kontakt';
+	}
+	$kontakt = zaec_url( 'kontakt' );
+	return ( zaec_is_current_url( $kontakt ) ? '' : $kontakt ) . '#upit';
+}
+
 /** Zadana struktura navigacije. */
 function zaec_nav_items() {
-	$services = array();
-	foreach ( zaec_services() as $s ) {
-		$services[] = array( 'label' => $s['title'], 'url' => zaec_url( $s['key'] ), 'note' => zaec_service_blurb( $s['key'] ) );
-	}
 	$posts_page = (int) get_option( 'page_for_posts' );
 	return array(
-		array( 'label' => 'Usluge', 'url' => zaec_url( 'usluge' ), 'children' => $services ),
+		array( 'label' => 'Usluge', 'url' => zaec_url( 'usluge' ), 'children' => zaec_nav_service_groups() ),
 		array( 'label' => 'Djelatnosti', 'url' => zaec_url( 'djelatnosti' ) ),
 		array( 'label' => 'Radovi', 'url' => get_post_type_archive_link( 'projekti' ) ?: home_url( '/radovi/' ) ),
 		array( 'label' => 'Cijene', 'url' => zaec_url( 'cijene' ) ),

@@ -32,7 +32,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 </div>
 <div class="stage-labels" data-stage-labels aria-hidden="true">
 	<span class="sl sl--pin" data-l="osijek"><b>Osijek</b><small>45,55° N · 18,70° E</small></span>
-	<span class="sl sl--you" data-l="you"><i></i><b data-you-name>Vaša tvrtka</b><small>Osijek → cijela Hrvatska</small></span>
+	<span class="sl sl--you" data-l="you"><i></i><b data-you-name>Vaša tvrtka</b></span>
 	<?php foreach ( array( 'Osijek', 'Zagreb', 'Split', 'Rijeka', 'Zadar', 'Dubrovnik', 'Varaždin', 'Pula' ) as $c ) : ?>
 		<span class="sl sl--city<?php echo 'Osijek' === $c ? ' sl--home' : ''; ?>" data-l="city-<?php echo esc_attr( $c ); ?>"><b><?php echo esc_html( $c ); ?></b></span>
 	<?php endforeach; ?>
@@ -40,6 +40,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 		<span class="sl sl--town<?php echo $i < 8 ? ( 4 === $i ? ' sl--m-hide' : '' ) : ' sl--minor'; ?>" data-l="town-<?php echo (int) $i; ?>"><b><?php echo esc_html( $t ); ?></b></span>
 	<?php endforeach; ?>
 	<span class="sl sl--pin" data-l="cath"><b>Konkatedrala<span class="sl-long"> sv. Petra i Pavla</span></b><small>toranj 90 m</small></span>
+	<span class="sl sl--dim" data-l="dim"><b>90 m</b><small>visina tornja</small></span>
 	<span class="sl sl--soft" data-l="drava"><b>Drava</b></span>
 	<span class="sl sl--pin sl--small" data-l="hotel"><b>Hotel Osijek</b></span>
 	<span class="sl sl--soft sl--trg" data-l="trg"><b>Trg Ante Starčevića</b></span>
@@ -79,7 +80,6 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 			<p class="lead" data-hero-in><?php echo esc_html( $h( 'hero_lead' ) ); ?></p>
 			<div class="hero-cta" data-hero-in>
 				<?php echo zaec_button( $h( 'hero_cta' ), '#kontakt', 'signal', array( 'magnetic' => true, 'track' => 'cta_hero_goal' ) ); // phpcs:ignore ?>
-				<a class="btn btn--ghost-light" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
 			</div>
 			<ul class="hero-trust" role="list" data-hero-in>
 				<li><?php zaec_the_icon( 'document', 18 ); ?><span><?php echo esc_html( $h( 'hero_trust_1' ) ); ?></span></li>
@@ -102,7 +102,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine cine--duo" id="hrvatska" data-header-theme="night" aria-labelledby="hr-title">
+<section class="cine cine--duo" id="hrvatska" data-header-theme="night" data-lens aria-labelledby="hr-title">
 	<div class="cine-beat" data-cam="europe">
 		<div class="wrap cine-grid">
 			<div class="cine-copy">
@@ -122,7 +122,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine cine--duo" id="osijek" data-header-theme="night" aria-labelledby="os-title">
+<section class="cine cine--duo" id="osijek" data-header-theme="night" data-lens aria-labelledby="os-title">
 	<div class="cine-beat" data-cam="slavonia">
 		<div class="wrap cine-grid cine-grid--right">
 			<div class="cine-copy">
@@ -143,7 +143,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine" id="konkatedrala" data-cam="cathedral" data-header-theme="night" aria-labelledby="cath-title">
+<section class="cine" id="konkatedrala" data-cam="cathedral" data-header-theme="night" data-lens aria-labelledby="cath-title">
 	<div class="wrap cine-grid cine-grid--right">
 		<div class="cine-copy">
 			<p class="kicker"><?php echo esc_html( $h( 'cath_kicker' ) ); ?></p>
@@ -153,7 +153,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	</div>
 </section>
 
-<section class="cine cine--duo" id="nacrt" data-header-theme="night" aria-labelledby="plan-title">
+<section class="cine cine--duo" id="nacrt" data-header-theme="night" data-lens aria-labelledby="plan-title">
 	<div class="cine-beat" data-cam="arch">
 		<div class="wrap cine-grid">
 			<div class="cine-copy">
@@ -203,7 +203,8 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 				</div>
 				<div class="path-out">
 					<p class="mono path-of">Od 1.000 posjetitelja</p>
-					<p class="path-num" aria-live="polite"><b data-path-num>12</b> <span data-path-unit>upita</span></p>
+					<p class="path-num" aria-hidden="true"><b data-path-num>12</b> <span data-path-unit>upita</span></p>
+					<p class="sr-only" aria-live="polite" data-path-live></p>
 					<ol class="path-funnel" role="list" aria-label="Koliko posjetitelja prođe kroz svaka vrata" data-path-funnel>
 						<?php foreach ( $gates as $i => $g ) : ?>
 							<li><span class="mono"><?php echo esc_html( $g[0] ); ?></span><i style="--w:0"></i><b></b></li>
@@ -234,7 +235,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 		</header>
 		<ol class="sys-layers" role="list">
 			<?php foreach ( $layers as $i => $ly ) : ?>
-				<li class="sys-layer" data-layer="<?php echo (int) $i; ?>"<?php echo 0 === $i ? ' data-cam="layers-a"' : ( 6 === $i ? ' data-cam="layers-b"' : '' ); ?> tabindex="0">
+				<li class="sys-layer" data-layer="<?php echo (int) $i; ?>"<?php echo 0 === $i ? ' data-cam="layers-a"' : ( 6 === $i ? ' data-cam="layers-b"' : '' ); ?>>
 					<span class="sys-n mono"><?php echo esc_html( $ly[0] ); ?></span>
 					<div>
 						<h3><?php zaec_the_icon( $ly[3], 20 ); ?> <?php echo esc_html( $ly[1] ); ?></h3>
@@ -253,16 +254,31 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 <!-- ═════════ PAPIR ═════════ -->
 <div class="paper" data-cover data-cam="layers-c" data-cam-at="top">
 
-	<section class="sec recog" id="prepoznajete" aria-labelledby="recog-title">
-		<div class="wrap">
-			<div class="sec-head">
+	<section class="sec recog" id="zaec" aria-labelledby="recog-title">
+		<div class="wrap recog-grid">
+			<div class="recog-head">
 				<p class="kicker"><?php echo esc_html( $h( 'recog_kicker' ) ); ?></p>
 				<?php zaec_heading( $h( 'recog_title' ), 'h2', 'h2', true, 'recog-title' ); ?>
 				<p class="lead" data-reveal><?php echo esc_html( $h( 'recog_lead' ) ); ?></p>
+				<div class="recog-start" data-reveal>
+					<a class="link-arrow recog-cta" href="#kontakt" data-track="cta_recog_goal"><?php echo esc_html( $h( 'recog_cta' ) ); ?> <?php zaec_the_icon( 'arrow-right', 18 ); ?></a>
+					<p class="recog-note"><?php echo esc_html( $h( 'recog_start' ) ); ?></p>
+				</div>
 			</div>
 			<ol class="recog-list" role="list" data-stagger="0.08">
-				<?php foreach ( zaec_home_pains() as $p ) : ?>
-					<li class="recog-item" data-reveal><span class="recog-n mono"><?php echo esc_html( $p[0] ); ?></span><h3><?php echo esc_html( $p[1] ); ?></h3><p><?php echo esc_html( $p[2] ); ?></p></li>
+				<?php foreach ( zaec_home_about_rows() as $r ) : ?>
+					<li class="recog-row" data-reveal>
+						<span class="recog-n mono" aria-hidden="true"><i class="recog-win"></i><?php echo esc_html( $r[0] ); ?></span>
+						<h3><?php echo esc_html( $r[1] ); ?></h3>
+						<div class="recog-body">
+							<p><?php echo esc_html( $r[2] ); ?></p>
+							<ul class="recog-tags" role="list">
+								<?php foreach ( $r[3] as $l ) : ?>
+									<li><a href="<?php echo esc_url( 0 === strpos( $l[0], '#' ) ? $l[0] : zaec_url( $l[0] ) ); ?>"><?php echo esc_html( $l[1] ); ?></a></li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					</li>
 				<?php endforeach; ?>
 			</ol>
 		</div>
@@ -532,7 +548,7 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 			<div class="faq-side">
 				<p class="kicker"><?php echo esc_html( $h( 'faq_kicker' ) ); ?></p>
 				<?php zaec_heading( $h( 'faq_title' ), 'h2', 'h2', true, 'faq-title' ); ?>
-				<p class="muted" data-reveal>Nema odgovora koji tražite? Nazovite <a href="<?php echo esc_attr( zaec_phone_href() ); ?>"><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a> — <?php echo esc_html( zaec_option( 'hours' ) ); ?>.</p>
+				<p class="muted" data-reveal>Nema odgovora koji tražite? <a href="#kontakt">Pitajte nas u upitu</a> — javljamo se u radno vrijeme.</p>
 			</div>
 			<div class="faq-list" data-reveal>
 				<?php foreach ( zaec_home_faq() as $i => $f ) : ?>
@@ -555,12 +571,8 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 			<?php zaec_heading( $h( 'final_title' ), 'h2', 'h2 h2--final', true, 'final-title' ); ?>
 			<p class="lead" data-reveal><?php echo esc_html( $h( 'final_lead' ) ); ?></p>
 		</div>
-		<div class="final-form" data-reveal>
+		<div class="final-form" data-reveal data-label-avoid>
 			<?php get_template_part( 'template-parts/goal-form', null, array( 'id' => 'kontakt-forma' ) ); ?>
-		</div>
-		<div class="final-contact" data-reveal>
-			<a class="tel-big" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><span class="dot" aria-hidden="true"></span><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
-			<p class="mono"><?php echo esc_html( zaec_option( 'hours' ) . ' · ' . zaec_option( 'city' ) ); ?></p>
 		</div>
 	</div>
 </section>

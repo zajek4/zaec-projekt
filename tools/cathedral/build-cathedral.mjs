@@ -208,17 +208,111 @@ function wimperg(o, n, w, h, depth = 0.35) {
   const top = [o[0] + nu * depth * 0.5, o[1] + h, o[2] + nw * depth * 0.5];
   spire(top[0], top[2], 0.22, top[1] - 0.2, top[1] + 1.1, 4, Math.PI / 4);
 }
+/** kameni okulus (bez stakla): prsten, tamnija ispuna i četverolist (portalni vimperzi) */
+function roundel(o, n, r) {
+  const circ = (rr, seg = 16) => Array.from({ length: seg }, (_, i) => { const a = (i / seg) * Math.PI * 2; return [Math.cos(a) * rr, r + Math.sin(a) * rr]; });
+  use('stone', 0); panel(o, n, circ(r + 0.2), 0.06);
+  use('stoneD', 0.02); panel(o, n, circ(r), 0.09);
+  use('stone', 0); panel(o, n, foilPts(r * 0.78, r), 0.12);
+}
+/** obris četverolista polumjera r sa središtem na visini cy (s, t) */
+function foilPts(r, cy, seg = 24) {
+  return Array.from({ length: seg }, (_, i) => { const a = (i / seg) * Math.PI * 2, q = r * (0.62 + 0.38 * Math.abs(Math.cos(2 * a))); return [Math.cos(a) * q, cy + Math.sin(a) * q]; });
+}
+/**
+ * gotički portal na ravnom zidu: kameni špalet s arhivoltama koje se spuštaju u stupiće s kapitelima,
+ * nadvratnik, timpanon s reljefom i tamna vrata; po želji vimperg s kukicama (opečna ispuna iza arhivolti),
+ * kameni okulus i fijala. o = sredina praga na licu zida, n = vanjska normala.
+ * w / apex: vanjski luk; wi: unutarnji luk (timpanon); lintel: gornji rub nadvratnika; dw: širina vrata.
+ */
+function portal(o, n, { w, apex, rings = 4, wi, lintel, dw, gable = null, rose: ro = null }) {
+  const [nu, nw] = n, ru = -nw, rw = nu;
+  const U_ = (s, d) => o[0] + ru * s + nu * d, W_ = (s, d) => o[2] + rw * s + nw * d;
+  const pt = (s, t, d) => P(U_(s, d), o[1] + t, W_(s, d));
+  const spring = apex - w * 0.866;
+  if (gable) {
+    gableFrame(o, n, gable);
+    if (ro) roundel([o[0], o[1] + ro.y - ro.r, o[2]], n, ro.r);
+  }
+  // špalet: tamniji kamen iza arhivolti (dubina portala)
+  use('stoneD', 0.02); panel(o, n, archPts(w, apex), 0.06);
+  // arhivolte: koncentrični lukovi s istim uporištem, unutarnji uvučeniji; dolje prelaze u stupiće
+  for (let k = 0; k < rings; k++) {
+    const wk = w - ((w - wi) * k) / Math.max(1, rings - 1) - 0.22, hk = spring + wk * 0.866;
+    const d = 0.42 - 0.06 * k;
+    const out = archPts(wk, hk, w > 5 ? 4 : 3).map(([sx, t], i) => [sx, i < 2 ? 0.6 : t]);
+    use(k % 2 ? 'stoneD' : 'stone', 0.02);
+    for (let i = 1; i < out.length; i++) {
+      const a = out[i], b = out[(i + 1) % out.length];
+      beam(pt(a[0], a[1], d), pt(b[0], b[1], d), 0.24);
+    }
+    use('stone', 0.02);
+    for (const sd of [-1, 1]) boxC(U_(sd * wk / 2, d), W_(sd * wk / 2, d), o[1] + spring - 0.4, o[1] + spring, 0.2, 0.2); // kapitel
+  }
+  // timpanon s reljefom (tri lika) iznad nadvratnika
+  const wt = wi - 0.5, top = spring + wt * 0.866;
+  use('stone', 0.02); panel(o, n, archPts(wt, top, 6).map(([sx, t]) => [sx, Math.max(t, lintel)]), 0.1);
+  use('stoneD', 0.03);
+  for (const [sx, k] of [[-wt * 0.24, 0.7], [0, 0.92], [wt * 0.24, 0.7]]) panel([U_(sx, 0), o[1] + lintel + 0.25, W_(sx, 0)], n, archPts(wt * 0.13, (top - lintel) * 0.62 * k, 3), 0.14);
+  // nadvratnik, vrata, prag
+  use('stone', 0.02); panel(o, n, [[-wt / 2 - 0.15, lintel - 0.45], [wt / 2 + 0.15, lintel - 0.45], [wt / 2 + 0.15, lintel], [-wt / 2 - 0.15, lintel]], 0.16);
+  use('door', 0.04); panel(o, n, [[-dw / 2, 0], [dw / 2, 0], [dw / 2, lintel - 0.45], [-dw / 2, lintel - 0.45]], 0.1);
+  use('stone', 0.02); panel(o, n, [[-w / 2, 0], [w / 2, 0], [w / 2, 0.6], [-w / 2, 0.6]], 0.2);
+}
+/** vimperg kojem luk ulazi u zabat: opečna ispuna tik uz zid (iza prozora i arhivolti), kameni kosi rubovi
+ *  s kukicama i fijala na vrhu. o = točka na licu zida (dno, sredina), base/top = visine od o */
+function gableFrame(o, n, { base, top, width, edge = 0.4, crock = 1.1 }) {
+  const [nu, nw] = n, ru = -nw, rw = nu;
+  const U_ = (s, d) => o[0] + ru * s + nu * d, W_ = (s, d) => o[2] + rw * s + nw * d;
+  const pt = (s, t, d) => P(U_(s, d), o[1] + t, W_(s, d));
+  use('brickD', 0.02); tri(pt(-width / 2, base, 0.03), pt(width / 2, base, 0.03), pt(0, top, 0.03));
+  use('stone', 0.02);
+  const e = edge * 0.3, d = edge * 0.6;
+  beam(pt(-width / 2 - e, base - e, d), pt(0, top + e, d), edge);
+  beam(pt(width / 2 + e, base - e, d), pt(0, top + e, d), edge);
+  const m = Math.max(3, Math.round(Math.hypot(width / 2, top - base) / crock));
+  for (const sd of [-1, 1]) for (let i = 1; i < m; i++) {
+    const f = i / m, sx = sd * ((width / 2) * (1 - f) + edge * 0.75), t = base + (top - base) * f + edge * 0.25;
+    spire(U_(sx, d), W_(sx, d), edge * 0.32, o[1] + t, o[1] + t + edge * 1.1, 4, Math.PI / 4);
+  }
+  boxC(U_(0, d), W_(0, d), o[1] + top, o[1] + top + edge * 1.2, edge * 0.5, edge * 0.5);
+  spire(U_(0, d), W_(0, d), edge * 0.75, o[1] + top + edge * 1.2, o[1] + top + edge * 4.2, 4, Math.PI / 4);
+}
 /** vijenac / kameni pojas oko zadanog pravokutnika */
 function band(u0, u1, w0, w1, y, h, out = 0.25) {
   use('stone', 0.02);
   box(u0 - out, u1 + out, y, y + h, w0 - out, w1 + out);
 }
 
+/** istaknuta kamena galerija oko kvadratnog tornja: ploča na konzolama i ograda s tamnim prorezima (mrežište) */
+function balustrade(u, half, y, n = 11) {
+  use('stone', 0.02);
+  boxC(u, 0, y, y + 0.4, half + 0.6, half + 0.6);
+  boxC(u, 0, y + 0.4, y + 1.25, half + 0.5, half + 0.5);
+  for (const [nu, nw] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+    const ru = -nw, rw = nu, f = half + 0.52;
+    for (let i = 0; i < 4; i++) {
+      // konzole ispod ploče
+      const d = (i - 1.5) * ((2 * half) / 4.4);
+      use('stone', 0.02);
+      boxC(u + nu * (half + 0.28) + ru * d, nw * (half + 0.28) + rw * d, y - 0.75, y, 0.22 + Math.abs(nu) * 0.06, 0.22 + Math.abs(nw) * 0.06);
+    }
+    // prorezi pokazuju zid iza ograde (tamnija opeka), ne crnilo: izdaleka se čitaju kao čipkasti pojas
+    use('brickD', 0.04);
+    for (let i = 0; i < n; i++) {
+      const d = (i - (n - 1) / 2) * ((2 * half) / (n + 0.6)), hw = (half / (n + 0.6)) * 0.5;
+      const a = P(u + nu * f + ru * (d - hw), y + 0.62, nw * f + rw * (d - hw)), b = P(u + nu * f + ru * (d + hw), y + 0.62, nw * f + rw * (d + hw));
+      const c = P(u + nu * f + ru * (d + hw), y + 1.02, nw * f + rw * (d + hw)), e = P(u + nu * f + ru * (d - hw), y + 1.02, nw * f + rw * (d - hw));
+      quad(a, b, c, e);
+    }
+  }
+}
+
 /* ═════════════════════════ KONKATEDRALA ═════════════════════════ */
 const NAVE_W = 6.5; // polovica širine glavnog broda
 const EAVE = 24, RIDGE = 37.5;
 const AISLE_W = 13.5, AISLE_E = 12.5, AISLE_R = 16.5;
-const TOWER_U = 32.5;
+const TOWER_U = 30.5; // os tornja: čelo kutnih stupova na 38 m, portal na 40 m (OSM: 37,5 i 39,9)
 const APSE_U = -27, APSE_R = 7.0;
 const apseEndU = APSE_U + APSE_R * 0.3827; // −24,32
 
@@ -270,12 +364,11 @@ for (const s of [-1, 1]) {
     use('stone'); box(u - 0.72, u + 0.72, 6.7, 7.05, s > 0 ? AISLE_W : -AISLE_W - 2.25, s > 0 ? AISLE_W + 2.25 : -AISLE_W);
     pinnacle(u, s * (AISLE_W + 0.75), AISLE_E + 0.6, 5.0, 0.42);
   }
-  // istočna pročelja bočnih brodova uz toranj: mali portal i zabat
+  // istočna pročelja bočnih brodova uz toranj: kameni portal s timpanonom pod vimpergom s okulusom,
+  // iznad njega tri lanceta (fotografija s trga)
   const wm = s * (NAVE_W + AISLE_W) / 2;
-  use('door'); panel([27.55, 0, wm], [1, 0], archPts(2.0, 4.6), 0.06);
-  use('stone'); panel([27.55, -0.2, wm], [1, 0], archPts(2.6, 5.1), 0.03);
-  wimperg([27.6, 4.3, wm], [1, 0], 3.2, 4.6, 0.3);
-  window([27.55, 6.6, wm], [1, 0], 1.8, 4.4);
+  portal([27.55, 0, wm], [1, 0], { w: 3.2, apex: 6.4, rings: 2, wi: 2.2, lintel: 3.9, dw: 1.8, gable: { base: 4.4, top: 9.6, width: 3.8 }, rose: { y: 7.7, r: 0.36 } });
+  for (const d of [-0.9, 0, 0.9]) window([27.55, 10.1, wm + d], [1, 0], 0.62, d ? 2.0 : 2.4);
 }
 
 /* ── 3. transept: zabatna pročelja s rozetom, kutni tornjići ── */
@@ -289,9 +382,7 @@ for (const s of [-1, 1]) {
   const uc = (TU0 + TU1) / 2;
   const wf = s * (TW + 0.02);
   rose([uc, 14.6, wf], [0, s], 3.0);
-  use('door'); panel([uc, 0, wf], [0, s], archPts(2.8, 6.4), 0.08);
-  use('stone'); panel([uc, -0.2, wf], [0, s], archPts(3.6, 7.0), 0.04);
-  wimperg([uc, 5.8, s * (TW + 0.05)], [0, s], 4.4, 5.6, 0.35);
+  portal([uc, 0, wf], [0, s], { w: 3.8, apex: 7.6, rings: 3, wi: 2.4, lintel: 3.6, dw: 2.0, gable: { base: 5.6, top: 11.2, width: 4.6 } });
   for (const du of [-1.3, 1.3]) window([uc + du, 26.5, wf], [0, s], 0.9, 4.2);
   // kameni rub zabata
   use('stone');
@@ -409,14 +500,21 @@ const apsePt = (r, a) => [APSE_U - Math.cos(a) * r, Math.sin(a) * r];
   use('gold'); beam(P(u, 55.2, w), P(u, 57.6, w), 0.14); beam(P(u, 56.9, w - 0.55), P(u, 56.9, w + 0.55), 0.12);
 }
 
-/* ── 8. toranj: pet katova sa stepenastim kutnim stupovima, sat, zvonik, vimperzi, osmerokutni šiljak ── */
+/* ── 8. toranj: kvadratni dio s četiri kata i stepenastim kutnim stupovima, sat, osmerokutni zvonik, tambur, šiljak ──
+   Visine prema fotografijama s trga (Wikimedia Commons, ispravljene vertikale, umjereno prema vrhu šiljka na 90 m)
+   i snimci dronom (korisnik, 2026-10-09): galerija ~30 m, dvostruki prozori 31–36 m, sat ~40 m, galerija nad satom
+   ~44,5 m. Iznad nje toranj prelazi u OSMEROKUT (apotema 4,35 m): na svakoj od osam stranica visok taman otvor za
+   zvona (46–59,4 m, bez stakla i mrežišta) pod vimpergom, fijale na uglovima; kutni stupovi kvadratnog dijela
+   nastavljaju se kao samostojne fijale ispred kosih stranica. Zatim osmerokutni tambur 63,4–72,2 m s malim
+   četverolistima i okulusima, galerija u dnu šiljka, šiljak 73,4–90 m. Glavni portal: kameni, širok ~7 m, luk do
+   ~13,8 m, vimperg s okulusom do ~18,6 m, između masivnih kontrafora (trijem 10,5 m, OSM 11,4 m). */
 {
   const U = TOWER_U;
-  const tiers = [[0, 17.5, 5.5], [17.5, 31, 5.3], [31, 41, 5.0], [41, 47, 4.7], [47, 64, 4.35]];
+  const tiers = [[0, 17.5, 5.8], [17.5, 30.4, 5.3], [30.4, 37.2, 5.0], [37.2, 45, 4.7]];
   use('brick');
   for (const [y0, y1, h] of tiers) boxC(U, 0, y0, y1, h, h);
   // kutni stupovi (čitaju se kao po dva kontrafora na svakom pročelju), uvlače se po katovima
-  const pier = [[0, 17.5, 1.45], [17.5, 31, 1.2], [31, 41, 0.95]];
+  const pier = [[0, 17.5, 1.75], [17.5, 30.4, 1.2], [30.4, 37.2, 0.95]];
   for (const su of [-1, 1]) for (const sw of [-1, 1]) {
     for (const [y0, y1, p] of pier) {
       const h = tiers.find((t) => t[0] === y0)[2];
@@ -424,27 +522,41 @@ const apsePt = (r, a) => [APSE_U - Math.cos(a) * r, Math.sin(a) * r];
       use('stone'); boxC(U + su * h, sw * h, y1 - 0.45, y1, p + 0.08, p + 0.08);
     }
     // fijale na vrhu svakog uvlačenja (stepenasti, "nazubljeni" obris tornja s fotografija)
-    pinnacle(U + su * (5.5 + 0.7), sw * (5.5 + 0.7), 17.5, 4.0, 0.42);
-    pinnacle(U + su * (5.3 + 0.55), sw * (5.3 + 0.55), 31, 4.6, 0.4);
-    pinnacle(U + su * 5.0, sw * 5.0, 41, 7.2, 0.62);
-    // fijale zvonika
-    use('brick'); boxC(U + su * 4.35, sw * 4.35, 47, 63.5, 0.75, 0.75);
-    pinnacle(U + su * 4.35, sw * 4.35, 63.5, 8.0, 0.62);
+    pinnacle(U + su * (5.8 + 0.85), sw * (5.8 + 0.85), 17.5, 4.2, 0.46);
+    pinnacle(U + su * (5.3 + 0.55), sw * (5.3 + 0.55), 30.4, 4.6, 0.4);
+    pinnacle(U + su * 5.0, sw * 5.0, 37.2, 7.2, 0.62);
+    // kutni stupovi zvonika: samostojne fijale ispred kosih stranica osmerokuta, u dva stupnja
+    const cu = U + su * 4.15, cw = sw * 4.15;
+    use('brick'); boxC(cu, cw, 45, 52.4, 0.62, 0.62);
+    use('stone'); boxC(cu, cw, 52.1, 52.5, 0.7, 0.7);
+    for (const [gu, gw] of [[su, 0], [0, sw]]) wimperg([cu + gu * 0.63, 52.4, cw + gw * 0.63], [gu, gw], 1.1, 1.5, 0.2);
+    use('brick'); boxC(cu, cw, 52.5, 58.6, 0.46, 0.46);
+    use('stone'); boxC(cu, cw, 58.3, 58.7, 0.54, 0.54);
+    pinnacle(cu, cw, 58.7, 6.6, 0.42);
   }
-  // kameni pojasevi i galerije
-  for (const [y, h, half] of [[17.1, 0.5, 5.75], [30.4, 0.9, 5.65], [40.6, 0.5, 5.3], [46.4, 0.9, 5.15], [63.4, 0.7, 4.75]]) { use('stone', 0.02); boxC(U, 0, y, y + h, half, half); }
-  use('stone', 0.02); boxC(U, 0, 0, 1.1, 5.75, 5.75);
+  // kameni pojasevi; ispod dvostrukih prozora i iznad sata istaknute galerije s mrežištem
+  for (const [y, h, half] of [[17.1, 0.5, 6.05], [36.8, 0.5, 5.3]]) { use('stone', 0.02); boxC(U, 0, y, y + h, half, half); }
+  use('stone', 0.02); boxC(U, 0, 0, 1.1, 6.05, 6.05);
+  balustrade(U, 5.0, 29.7);
+  balustrade(U, 4.7, 44.3);
   const faces = [[1, 0], [-1, 0], [0, 1], [0, -1]];
   for (const [nu, nw] of faces) {
     const at = (h, y) => [U + nu * (h + 0.02), y, nw * (h + 0.02)];
-    // 1. kat: veliki prozor (na istoku iznad portala)
+    const off = (h, d, y) => [U + nu * h + -nw * d, y, nw * h + nu * d];
+    // 1. kat: veliki prozor s mrežištem i dva niža bočna (na istoku iznad portala)
     window(at(5.3, 19.6), [nu, nw], 3.2, 9.6, { mull: true });
+    for (const d of [-2.85, 2.85]) window(off(5.32, d, 19.6), [nu, nw], 1.0, 6.4);
     wimperg(at(5.32, 27.3), [nu, nw], 4.6, 4.2, 0.3);
+    // bočna pročelja: u prizemlju velik prozor s mrežištem pod vimpergom
+    if (nw !== 0) {
+      window(at(5.8, 4.0), [nu, nw], 3.4, 8.2, { mull: true });
+      wimperg(at(5.82, 11.6), [nu, nw], 5.4, 4.6, 0.32);
+    }
     // 2. kat: dvostruki prozori
-    for (const d of [-1.1, 1.1]) window([U + nu * 5.02 + -nw * d, 32.3, nw * 5.02 + nu * d], [nu, nw], 1.2, 6.6);
+    for (const d of [-1.1, 1.1]) window(off(5.02, d, 31.4), [nu, nw], 1.2, 5.0);
     // 3. kat: sat
     {
-      const c = at(4.7, 42.1);
+      const c = at(4.7, 38.75);
       use('stone', 0); panel(c, [nu, nw], Array.from({ length: 16 }, (_, i) => { const a = (i / 16) * Math.PI * 2; return [Math.cos(a) * 1.55, 1.55 + Math.sin(a) * 1.55]; }), 0.06);
       use('door', 0); panel(c, [nu, nw], Array.from({ length: 16 }, (_, i) => { const a = (i / 16) * Math.PI * 2; return [Math.cos(a) * 1.25, 1.55 + Math.sin(a) * 1.25]; }), 0.1);
       use('gold', 0);
@@ -453,31 +565,68 @@ const apsePt = (r, a) => [APSE_U - Math.cos(a) * r, Math.sin(a) * r];
       beam(P(cc[0], cc[1], cc[2]), P(cc[0], cc[1] + 0.95, cc[2]), 0.12);
       beam(P(cc[0], cc[1], cc[2]), P(cc[0] + ru * 0.65, cc[1] - 0.25, cc[2] + rw * 0.65), 0.12);
     }
-    // zvonik: visoki dvostruki otvori (žaluzine) i veliki vimperg na dnu šiljka
-    for (const d of [-1.05, 1.05]) window([U + nu * 4.37 + -nw * d, 49.2, nw * 4.37 + nu * d], [nu, nw], 1.35, 11.6, { glass: 'door' });
-    wimperg(at(4.37, 60.6), [nu, nw], 6.2, 8.6, 0.45);
-    // mali vitki vrhovi uz vimperg: kruna tornja kao grozd fijala
-    for (const d of [-2.2, 2.2]) pinnacle(U + nu * 4.55 + -nw * d, nw * 4.55 + nu * d, 62.8, 5.6, 0.26);
   }
-  // portal na istočnom pročelju: istaknuti trijem sa zabatom i rozetom
-  use('brick'); box(U + 5.5, U + 7.4, 0, 12.6, -3.3, 3.3);
-  use('stone', 0.02); box(U + 5.5, U + 7.6, 12.2, 12.8, -3.5, 3.5);
-  use('door'); panel([U + 7.42, 0, 0], [1, 0], archPts(3.0, 8.4), 0.06);
-  use('stone'); panel([U + 7.42, -0.2, 0], [1, 0], archPts(4.4, 9.4), 0.03);
-  wimperg([U + 7.5, 12.8, 0], [1, 0], 6.4, 6.8, 0.4);
-  rose([U + 7.95, 14.2, 0], [1, 0], 0.9);
-  // osmerokutni šiljak s kamenim rebrima, galerijom i lukarnama
-  const S0 = 64.1, S1 = 90.0, R0 = 3.75, rot = Math.PI / 8;
+  // glavni portal (istok, prema trgu): istaknuti trijem između masivnih kontrafora, kameni portal s
+  // arhivoltama, timpanonom s reljefom i vimpergom s okulusom; iza vimperga mali krov do zida tornja
+  {
+    const PF = 40.0, PH = 5.25, back = U + 5.8;
+    use('brick'); box(back, PF, 0, 9.9, -PH, PH);
+    use('stone', 0.02); box(back, PF + 0.05, 9.6, 9.95, -PH - 0.05, PH + 0.05);
+    gableRoof(back, PF, -4.25, 4.25, 9.95, 18.3, 'u', 'slate', 'brick');
+    // kontrafori uz portal (fotografija s trga): opeka s kamenim uvlačenjem na ~5 m, uz vimperg rastu do ~16 m;
+    // na dnu vimperga kameni izljevi (gargojli)
+    for (const s of [-1, 1]) {
+      const bx = (u1, y0, y1, a, b) => box(back, u1, y0, y1, Math.min(s * a, s * b), Math.max(s * a, s * b));
+      use('brick'); bx(PF + 0.7, 0, 5.0, 3.7, PH);
+      use('stone', 0.02); bx(PF + 0.76, 4.7, 5.1, 3.66, PH + 0.04);
+      use('brick'); bx(PF + 0.5, 5.1, 16.2, 3.8, PH - 0.1);
+      use('stone', 0.02); bx(PF + 0.56, 15.85, 16.3, 3.76, PH - 0.06);
+      use('brick'); bx(PF - 0.6, 16.3, 17.4, 3.95, PH - 0.25);
+      use('stone', 0.02); beam(P(PF + 0.3, 10.05, s * 4.15), P(PF + 1.25, 9.9, s * 4.3), 0.28);
+    }
+    portal([PF, 0, 0], [1, 0], { w: 7.0, apex: 13.8, rings: 5, wi: 4.0, lintel: 6.0, dw: 2.8, gable: { base: 9.95, top: 18.6, width: 8.3 }, rose: { y: 15.4, r: 0.78 } });
+  }
+  // zvonik: osmerokut iznad galerije sa satom; na svakoj stranici visok taman otvor (bez stakla i mrežišta),
+  // nad njim vimperg, na uglovima fijale (gusti vijenac fijala oko tambura)
+  const A8 = 4.35, R8 = A8 / Math.cos(Math.PI / 8), B0 = 45, rot = Math.PI / 8, D0 = 63.4;
+  use('brick'); prism(U, 0, R8, B0, D0, 8, rot, false);
+  use('stone', 0.02); prism(U, 0, R8 + 0.06, 52.3, 52.6, 8, rot, false); // iza tamnih otvora, vidljiv samo na stupcima
+  for (let k = 0; k < 8; k++) {
+    const a = (k / 8) * Math.PI * 2, nu = Math.cos(a), nw = Math.sin(a);
+    const at8 = (y) => [U + nu * (A8 + 0.02), y, nw * (A8 + 0.02)];
+    gableFrame(at8(0), [nu, nw], { base: 57.6, top: 64.6, width: 3.4, edge: 0.3, crock: 1.0 });
+    window(at8(46.0), [nu, nw], 1.9, 13.4, { glass: 'door', frame: 0.36 });
+    const v = a + Math.PI / 8;
+    pinnacle(U + Math.cos(v) * (R8 + 0.05), Math.sin(v) * (R8 + 0.05), 59.4, 5.6, 0.22);
+  }
+  use('stone', 0.02); prism(U, 0, R8 + 0.3, D0 - 0.2, D0 + 0.35, 8, rot);
+  // osmerokutni tambur: mali četverolisti i okulusi (tamni), vijenac i galerija u dnu šiljka
+  const RD = 4.0, D1 = 72.2;
+  use('brick'); prism(U, 0, RD, D0, D1, 8, rot, false);
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2, nu = Math.cos(a), nw = Math.sin(a), fr = RD * Math.cos(Math.PI / 8);
+    const o = [U + nu * (fr + 0.02), 66.4, nw * (fr + 0.02)];
+    const circ = (r) => Array.from({ length: 12 }, (_, j) => { const t = (j / 12) * Math.PI * 2; return [Math.cos(t) * r, 0.82 + Math.sin(t) * r]; });
+    use('stone', 0); panel(o, [nu, nw], circ(0.82), 0.05);
+    use('door', 0); panel(o, [nu, nw], i % 2 ? circ(0.55) : foilPts(0.66, 0.82, 16), 0.09);
+  }
+  use('stone', 0.02); prism(U, 0, RD + 0.15, D1 - 0.7, D1, 8, rot);
+  use('stone', 0.02); prism(U, 0, RD + 0.45, D1, D1 + 0.5, 8, rot);
+  use('stone', 0.02); prism(U, 0, RD + 0.32, D1 + 0.5, D1 + 1.25, 8, rot);
+  // male fijale na uglovima galerije
+  for (let i = 0; i < 8; i++) { const a = rot + (i / 8) * Math.PI * 2; pinnacle(U + Math.cos(a) * (RD + 0.32), Math.sin(a) * (RD + 0.32), D1 + 0.5, 2.6, 0.17); }
+  // šiljak s kamenim rebrima i lukarnama
+  const S0 = D1 + 1.2, S1 = 90.0, R0 = 3.55;
   use('brick'); spire(U, 0, R0, S0, S1, 8, rot);
   use('stone', 0.02);
   for (let i = 0; i < 8; i++) { const a = rot + (i / 8) * Math.PI * 2; beam(P(U + Math.cos(a) * (R0 + 0.06), S0, Math.sin(a) * (R0 + 0.06)), P(U, S1 + 0.1, 0), 0.26); }
-  const ry = 71.2, rr = R0 * (1 - (ry - S0) / (S1 - S0));
-  prism(U, 0, rr + 0.45, ry, ry + 0.55, 8, rot);
+  const ry = 80.6, rr = R0 * (1 - (ry - S0) / (S1 - S0));
+  prism(U, 0, rr + 0.35, ry, ry + 0.45, 8, rot);
   for (let i = 0; i < 4; i++) {
     const a = (i / 4) * Math.PI * 2;
-    const y = 75.0, r = R0 * (1 - (y - S0) / (S1 - S0));
-    use('brick'); boxC(U + Math.cos(a) * r, Math.sin(a) * r, y, y + 1.5, 0.45 + Math.abs(Math.sin(a)) * 0.0, 0.45);
-    use('stone'); spire(U + Math.cos(a) * (r + 0.1), Math.sin(a) * (r + 0.1), 0.62, y + 1.5, y + 2.6, 4, Math.PI / 4);
+    const y = 76.4, r = R0 * (1 - (y - S0) / (S1 - S0));
+    use('brick'); boxC(U + Math.cos(a) * r, Math.sin(a) * r, y, y + 1.3, 0.4, 0.4);
+    use('stone'); spire(U + Math.cos(a) * (r + 0.1), Math.sin(a) * (r + 0.1), 0.56, y + 1.3, y + 2.3, 4, Math.PI / 4);
   }
   // vrh: kameni čvor i pozlaćeni križ
   use('stone'); prism(U, 0, 0.42, S1 - 0.6, S1 + 0.5, 8);

@@ -16,10 +16,11 @@ import { createEurope } from './europe.js';
 import { createCity } from './city.js';
 import { createBeam } from './beam.js';
 import { createMorph, createLayers, LAYER_DEFS } from './wire.js';
+import { createBlueprint } from './blueprint.js';
 import { createFlow } from './flow.js';
 import { GATES } from './gates.js';
 import { FRAMES, KEYS, frameState } from './keyframes.js';
-import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, Z_CITY, CITY_KX, CITY_KZ, BEND, SUN_MAP, DAY_EDGE } from './lib.js';
+import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, Z_CITY, CITY_KX, CITY_KZ, BEND, SUN_MAP, DAY_EDGE, CIVIC } from './lib.js';
 
 // kanali koji se interpoliraju krivuljom (udaljenost i meta idu preko visine i koordinata karte)
 const CH = [...KEYS.filter((k) => !['dist', 'tx', 'ty', 'tz', 'fit'].includes(k)), 'LA', 'mx', 'my', 'mz'];
@@ -43,7 +44,11 @@ const herm = (y0, m0, y1, m1, t) => {
 export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapter, onFrame }) {
   const root = document.documentElement;
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
+  let disposed = false;
+  let linesSeq = 0;
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // lite: dodir, uski zaslon ili slab procesor. hardwareConcurrency broji logičke niti: 4 niti danas ima
+  // tek slabiji prijenosnik (i3, Celeron, stariji 4c/4t), redovito sa slabom integriranom grafikom
   const lite = !finePointer || innerWidth < 760 || (navigator.hardwareConcurrency || 8) <= 4;
 
   /* ── renderer ── */
@@ -52,6 +57,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const maxDpr = lite ? 1.35 : 1.75;
   let dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+  let dprCeil = dpr; // najviši DPR koji regulator smije vratiti
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 6000);
@@ -69,10 +75,10 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   scene.add(rim);
 
   /* ── pozornice ── */
-  const globe = createGlobe({ geo, lite, landUrl: assets.land });
+  const globe = createGlobe({ geo, lite, landUrl: assets.land, lightsUrl: assets.lights });
   const network = createNetwork({ geo, lite });
   globe.spin.add(network.group);
-  const europe = createEurope({ geo, lite, landTex: globe.land, landEuUrl: assets.landEu });
+  const europe = createEurope({ geo, lite, landTex: globe.land, fieldTex: globe.field, lightsTex: globe.lights, landEuUrl: assets.landEu });
   const morph = createMorph(null, { max: lite ? 3200 : 6500 });
   // rubovi konkatedrale (metri) → svjetske jedinice na mjerilu grada
   const kCity = mapScale(Z_CITY);
@@ -82,17 +88,31 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     return out;
   };
   let warmPending = false;
+  // kote, os tornja i konstrukcijski pravci nacrta (lokalni metri grada)
+  const blueprint = createBlueprint();
+  const cityScale = new THREE.Vector3(kCity * CITY_KX, kCity * CITY_KZ, kCity * CITY_KZ);
   const city = createCity({
     lite,
     dataUrl: assets.city,
     modelUrl: assets.model,
-    onLines: (g) => { const w = toWorldLines(g); morph.setSource(w); w.dispose(); },
+    // crtež i morph trebaju tek u poglavlju nacrta: priprema (~35 ms, 4× više na sporom mobitelu) čeka mirni trenutak
+    onLines: (g) => {
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
+      const seq = ++linesSeq;
+      idle(() => {
+        if (disposed || seq !== linesSeq) return; // noviji model ima prednost
+        const w = toWorldLines(g); morph.setSource(w); w.dispose();
+        blueprint.setCathedral(g);
+        blueprint.setGrid(morph.gridInfo, cityScale);
+      }, { timeout: 2500 });
+    },
     // novi model konkatedrale se prevodi u pozadini prije nego što zamijeni stari
     prepare: (mesh) => compile(mesh, scene).catch(() => {}),
     onLoaded: () => { warmPending = true; },
   });
   // reflektor konkatedrale živi u korijenu scene (broj svjetala se nikad ne mijenja → nema ponovnog prevođenja)
   scene.add(city.flood);
+  city.group.add(blueprint.group);
   const beam = createBeam();
   // završni kadar: isti signal izlazi iz čvora "Vaša tvrtka" na globusu (zatvara priču konkatedrale)
   const beacon = createBeam();
@@ -139,6 +159,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   let anchors = [];
   let states = [];
   let covers = [];
+  // uspravni zaslon: tekst koji prolazi gornjom polovicom gura motiv u slobodni dio ispod sebe (vidi frame)
+  let lensBlocks = [];
   let mobile = false;
   let vw = 0, vh = 0;
   let curve = null;
@@ -163,11 +185,14 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       }
     });
     for (const ch of CH) m[ch] = tangents(v[ch]);
-    curve = { v, m, n };
+    // zadrška: na dolasku u kadar kanal miruje do udjela h prijelaza (npr. motiv ne prelazi ispod teksta koji odlazi)
+    const hold = anchors.map((a) => FRAMES[a.id]?.hold || null);
+    curve = { v, m, n, hold };
   }
 
   function measure() {
     const sy = window.scrollY;
+    labels.forEach((L) => { L.w = 0; });
     mobile = innerWidth < 760 || innerWidth / innerHeight < 0.82;
     anchors = [...document.querySelectorAll('[data-cam]')]
       .map((el) => {
@@ -189,6 +214,12 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       const r = el.getBoundingClientRect();
       return [r.top + sy, r.bottom + sy];
     });
+    lensBlocks = mobile
+      ? [...document.querySelectorAll('[data-lens] .cine-copy')].map((el) => {
+        const k = el.children;
+        return [k[0].getBoundingClientRect().top + sy, k[k.length - 1].getBoundingClientRect().bottom + sy];
+      })
+      : [];
     covers.sort((a, b) => a[0] - b[0]);
     const merged = [];
     covers.forEach((c) => {
@@ -215,6 +246,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     if (reduceMQ.matches) t = t < 0.5 ? 0 : 1;
     const j = n < 2 ? 0 : i + 1;
     for (const ch of CH) out[ch] = herm(v[ch][i], m[ch][i], v[ch][j], m[ch][j], t);
+    const hold = curve.hold[j];
+    if (hold && t > 0 && t < 1) for (const ch in hold) out[ch] = herm(v[ch][i], m[ch][i], v[ch][j], m[ch][j], clamp((t - hold[ch]) / (1 - hold[ch])));
     // u poniranju meta putuje razmjerno izgubljenoj visini: većina bočnog pomaka dok smo visoko,
     // pa se tlo ispod kamere ne "otima" pri dnu spuštanja
     const LA0 = v.LA[i], LA1 = v.LA[j];
@@ -271,7 +304,16 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   flow.setStates(gates);
 
   /* ── oznake ── */
-  const labels = labelsRoot ? [...labelsRoot.querySelectorAll('[data-l]')].map((el) => ({ el, key: el.dataset.l, o: -1, x: -1e4, y: -1e4 })) : [];
+  const labels = labelsRoot ? [...labelsRoot.querySelectorAll('[data-l]')].map((el) => ({ el, key: el.dataset.l, o: -1, x: -1e4, y: -1e4, hide: 0, w: 0, h: 0 })) : [];
+  // oznake gradova i mjesta ne smiju se preklapati: kad se karta udaljava, manje važne se povuku
+  // (Osijek prvi, zatim gradovi, pa mjesta redom važnosti)
+  const prio = (L) => (L.el.classList.contains('sl--home') ? 0 : L.key.startsWith('city-') ? 1 : L.key.startsWith('town-') ? 2 + +L.key.slice(5) * 0.01 : -1);
+  labels.forEach((L) => { L.p = prio(L); L.mid = !/sl--(ch|out|gate|dim|layer|you)\b/.test(L.el.className); });
+  const collidable = labels.filter((L) => L.p >= 0).sort((a, b) => a.p - b.p);
+  const boxes = [];
+  // sadržaj ima prednost pred oznakama: oznaka koja bi završila ispod njega (npr. forma u završnoj sceni) se povlači
+  const avoidEls = [...document.querySelectorAll('[data-label-avoid]')];
+  const avoid = [];
   const v3 = new THREE.Vector3();
   const n3 = new THREE.Vector3();
   const t3 = new THREE.Vector3();
@@ -302,6 +344,9 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       case 'trg':
         v3.copy(city.anchors[kind]).applyMatrix4(city.group.matrixWorld);
         return st.labCity * ctx.cityA * smooth(Z_CITY - 0.12, Z_CITY - 0.01, st.Z);
+      case 'dim':
+        blueprint.anchor('dim', v3);
+        return bpLabel;
       case 'ch':
         v3.copy(flow.channelWorld(i));
         return st.labFlow;
@@ -320,7 +365,10 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     }
   }
 
-  function placeLabels(ctx, visible) {
+  function placeLabels(ctx, visible, dt = 0.016) {
+    // čitanje prije pisanja transformacija (bez prisilnog izračuna stila)
+    avoid.length = 0;
+    if (visible) for (const el of avoidEls) { const r = el.getBoundingClientRect(); if (r.bottom > 0 && r.top < vh && r.width) avoid.push([r.left, r.top, r.right, r.bottom]); }
     for (const L of labels) {
       let o = visible ? labelWorld(L.key, ctx) : 0;
       if (o > 0.01) {
@@ -331,6 +379,11 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
           o *= 1 - smooth(0.8, 0.95, Math.abs(v3.x));
           const x = Math.round((v3.x * 0.5 + 0.5) * vw);
           const y = Math.round((-v3.y * 0.5 + 0.5) * vh);
+          // centrirana oznaka: nestaje prije nego što joj rub dotakne rub ekrana (npr. HOTEL OSIJEK na mobitelu)
+          if (L.mid) {
+            if (!L.w) { L.w = L.el.offsetWidth; L.h = L.el.offsetHeight; }
+            o *= smooth(0, 14, Math.min(x, vw - x) - L.w / 2);
+          }
           if (x !== L.x || y !== L.y) {
             L.el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
             L.x = x;
@@ -338,6 +391,29 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
           }
         }
       }
+      L.want = o;
+    }
+    // sudari: oznaka (sidro dolje-sredina) koja bi prekrila važniju se povlači, glatko
+    boxes.length = 0;
+    for (const L of collidable) {
+      let hit = false;
+      if (L.want > 0.05) {
+        if (!L.w) { L.w = L.el.offsetWidth; L.h = L.el.offsetHeight; }
+        const x0 = L.x - L.w / 2 - 3, x1 = L.x + L.w / 2 + 3, y0 = L.y - L.h - 9, y1 = L.y + 2;
+        for (const b of boxes) if (x0 < b[2] && x1 > b[0] && y0 < b[3] && y1 > b[1]) { hit = true; break; }
+        if (!hit) boxes.push([x0, y0, x1, y1]);
+      }
+      L.hide = reduceMQ.matches ? +hit : damp(L.hide, hit ? 1 : 0, 10, dt);
+    }
+    for (const L of labels) {
+      let blocked = false;
+      if (L.want > 0.05 && avoid.length) {
+        if (!L.w) { L.w = L.el.offsetWidth; L.h = L.el.offsetHeight; }
+        const x0 = L.x - L.w / 2, x1 = L.x + L.w / 2, y0 = L.y - L.h, y1 = L.y;
+        blocked = avoid.some((b) => x0 < b[2] && x1 > b[0] && y0 < b[3] && y1 > b[1]);
+      }
+      L.block = reduceMQ.matches ? +blocked : damp(L.block || 0, blocked ? 1 : 0, 10, dt);
+      let o = L.want * (1 - L.hide) * (1 - L.block);
       o = Math.round(clamp(o) * 100) / 100;
       if (o !== L.o) {
         L.el.style.opacity = String(o);
@@ -369,6 +445,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   let ready = false;
   let running = false;
   let slowFrames = 0;
+  let fastFrames = 0;
+  let raisedTo = 0;
   let frameEMA = 16;
   let labelsHidden = false;
   let override = null;
@@ -377,6 +455,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   const ctx = { globeCenter: new THREE.Vector3(), camPos: new THREE.Vector3(), globeA: 0, europeA: 0, cityA: 0 };
   const exact = {};
   const spireW = new THREE.Vector3();
+  let bpNotesA = 0, bpLabel = 0;
   const beaconAt = new THREE.Vector3();
 
   function frame(now, forcedDt) {
@@ -421,7 +500,15 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     if (Math.abs(camera.fov - st.fov) > 0.01) camera.fov = st.fov;
     camera.near = st.Z > 1.5 ? 0.5 : 0.05;
     camera.far = st.Z > 1.5 ? 2400 : 6000;
-    camera.setViewOffset(vw, vh, -st.sx * vw, st.sy * vh, vw, vh);
+    // uspravno: dok tekst prelazi gornjom polovicom (između dvaju kadrova), motiv se spušta u prostor ispod njega
+    let lensY = st.sy;
+    for (const [a, b] of lensBlocks) {
+      const t0 = (a - y) / vh, t1 = (b - y) / vh;
+      if (t1 < -0.05 || t0 > 1) continue;
+      const w = smooth(0.5, 0.3, (t0 + t1) / 2) * smooth(-0.05, 0.2, t1);
+      if (w > 0) lensY = lerp(lensY, clamp(0.5 - (Math.max(t1, 0) + 0.9) / 2, -0.3, 0.3), w); // 0,9: dno zauzima traka s pozivima
+    }
+    camera.setViewOffset(vw, vh, -st.sx * vw, lensY * vh, vw, vh);
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
 
@@ -448,6 +535,8 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
 
     /* Europa + Hrvatska + Slavonija (karta se odmata s kugle, sumrak putuje preko nje) */
     updateSun(st.dusk);
+    // gustoća naselja nazire se postupno dok se kamera spušta prema Europi (prije sumraka)
+    CIVIC.value = smooth(0.3, 0.95, Z);
     BEND.value = 1 - smooth(0.86, 0.97, Z);
     const europeA = smooth(0.78, 0.87, Z) * (1 - smooth(1.8, 1.97, Z));
     europe.group.scale.set(s, Math.min(s, 1), s);
@@ -457,11 +546,13 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     city.group.scale.set(s * CITY_KX, s * CITY_KZ, s * CITY_KZ);
     city.group.updateMatrixWorld();
     // skener kreće tek kad tekst o konkatedrali odlazi (druga polovica prijelaza prema nacrtu)
-    const scanEff = smooth(0.42, 1, st.scan);
+    const scanEff = smooth(0.38, 0.88, st.scan);
     // redoslijed buđenja grada: svjetla ulica → tamni volumeni zgrada → crtež bridova i prozori
     const cityA = smooth(1.72, 2.05, Z);
     const lamps = smooth(1.04, 1.28, Z);
-    city.update({ alpha: cityA, lamps, wake: sunState.night * 1.12, detail: smooth(1.95, 2.25, Z), rise: st.rise, dim: st.dim, lines: st.lines, cath: smooth(0.45, 1, st.cath), glow: st.glow, cathSolid: st.cathSolid, focus: st.focus, scan: scanEff, time, pr: dpr, reduce });
+    // sjaj ulica (karta svjetla) raste iz svjetla Osijeka na karti Slavonije dok se kamera spušta
+    const streets = smooth(1.3, 1.8, Z);
+    city.update({ alpha: cityA, lamps, streets, wake: sunState.night * 1.12, detail: smooth(1.95, 2.25, Z), rise: st.rise, dim: st.dim, lines: st.lines, cath: smooth(0.45, 1, st.cath), glow: st.glow, cathSolid: st.cathSolid, focus: st.focus, scan: scanEff, time, pr: dpr, reduce, camera });
     city.flood.position.copy(city.floodLocal).applyMatrix4(city.group.matrixWorld);
     const osm = lamps > 0.15;
     if (osm !== osmShown) { osmShown = osm; root.classList.toggle('show-osm', osm); }
@@ -475,6 +566,11 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     const bad = badFrac * st.flow;
     const scanY = ((city.spire.y + 2) * (1 - scanEff) - 1.5) * unit;
     morph.update({ morph: st.morph, opacity: st.wire * cityA, time, bad, scanY, scanOn: st.wire > 0.001 && st.morph < 0.999 ? 1 : 0 });
+    // kote se povlače kad skener završi; mjerne linije zgrade postaju konstrukcijski pravci, pa stupci stranice
+    bpNotesA = st.wire * cityA * (1 - smooth(0.25, 0.7, st.morph));
+    const notes = smooth(0.8, 1, st.scan);
+    bpLabel = bpNotesA * smooth(0.9, 1, notes);
+    blueprint.update({ notes, notesA: bpNotesA, rules: smooth(0.15, 1, st.morph), rulesA: st.wire * cityA * (1 - st.flow), toSite: smooth(1.05, 1.8, st.morph) });
     flow.update({ alpha: st.flow, time, dt, pr: dpr, reduce, focusGate });
     layers.update({ p: st.layers, alpha: st.layersA, assemble: st.assemble, active: st.assemble > 0.5 ? -1 : layerHover, dt, reduce });
 
@@ -500,7 +596,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     ctx.globeA = globeA;
     ctx.europeA = europeA;
     ctx.cityA = cityA;
-    placeLabels(ctx, !covered);
+    placeLabels(ctx, !covered, dt);
 
     renderer.render(scene, camera);
 
@@ -517,17 +613,27 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
       idle(() => prewarm().finally(() => { warming = false; }), { timeout: 1200 });
     }
 
-    /* upravitelj kvalitete: niži DPR ako je sporo */
-    if (!forcedDt) {
+    /* upravitelj kvalitete: niži DPR ako je sporo, a nakon ~10 s glatkih sličica pokušaj korak natrag.
+       Zagušenje dok se grad priprema (warming) ne broji se; razina koja je dvaput bila spora više se ne vraća. */
+    if (!forcedDt && !warming) {
       frameEMA = frameEMA * 0.95 + dt * 1000 * 0.05;
       if (frameEMA > 24 && dpr > 1) {
+        fastFrames = 0;
         if (++slowFrames > 90) {
+          if (dpr === raisedTo) dprCeil = dpr - 0.25;
           dpr = Math.max(1, dpr - 0.25);
           slowFrames = 0;
           frameEMA = 16;
           resize(true);
         }
-      } else slowFrames = 0;
+      } else if (frameEMA < 18 && dpr < dprCeil) {
+        slowFrames = 0;
+        if (++fastFrames > 600) {
+          dpr = raisedTo = Math.min(dprCeil, dpr + 0.25);
+          fastFrames = 0;
+          resize(true);
+        }
+      } else { slowFrames = 0; fastFrames = 0; }
     }
   }
 
@@ -587,6 +693,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     /** privremeno nadjačaj stanje (podešavanje kadrova u pregledniku) */
     debugOverride(o) { override = o; return this.debugStep(1); },
     dispose() {
+      disposed = true;
       cancelAnimationFrame(raf);
       running = false;
       ro.disconnect();

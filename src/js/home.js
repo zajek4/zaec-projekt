@@ -32,33 +32,53 @@ const gateLabels = [...document.querySelectorAll('[data-gate-label]')];
 const numEl = document.querySelector('[data-path-num]');
 const unitEl = document.querySelector('[data-path-unit]');
 const funnel = [...document.querySelectorAll('[data-path-funnel] li')];
+const liveEl = document.querySelector('[data-path-live]');
 let gates = GATES.map(() => false);
 let userTouched = false;
-let shownNum = 0;
+// brojke se ne mijenjaju skokom: jedan objekt stanja i jedan tween (brzo klikanje ga samo preusmjeri)
+const shown = { num: 0, rates: GATES.map(() => 0), counts: GATES.map(() => 0) };
+let countTween = null;
 
 const plural = (n) => (n % 10 === 1 && n % 100 !== 11 ? 'upit' : 'upita');
+const rateEls = gateBtns.map((b) => b.querySelector('[data-gate-rate]'));
+const countEls = funnel.map((li) => li.querySelector('b'));
+function paintCounts() {
+  rateEls.forEach((el, i) => { el.textContent = `prolazi ${Math.round(shown.rates[i])} %`; });
+  countEls.forEach((el, i) => { el.textContent = String(Math.round(shown.counts[i])); });
+  if (numEl) {
+    const n = Math.round(shown.num);
+    numEl.textContent = String(n);
+    unitEl.textContent = plural(n);
+  }
+}
 function renderPath(animate = true) {
-  gateBtns.forEach((b, i) => {
-    b.setAttribute('aria-pressed', String(gates[i]));
-    const rate = gates[i] ? GATES[i].good : GATES[i].bad;
-    b.querySelector('[data-gate-rate]').textContent = `prolazi ${Math.round(rate * 100)} %`;
-  });
+  gateBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(gates[i])));
   gateLabels.forEach((l, i) => l.classList.toggle('is-bad', !gates[i]));
+  const to = { num: Math.round(conversion(gates) * 1000), rates: [], counts: [] };
   let n = 1000;
   funnel.forEach((li, i) => {
     n *= gates[i] ? GATES[i].good : GATES[i].bad;
     li.querySelector('i').style.setProperty('--w', String(n / 1000));
-    li.querySelector('b').textContent = String(Math.round(n));
+    to.counts.push(n);
   });
-  const target = Math.round(conversion(gates) * 1000);
-  if (numEl) {
-    if (animate && motionOK()) {
-      const o = { v: shownNum };
-      gsap.to(o, { v: target, duration: 0.9, ease: 'power3.out', onUpdate: () => { numEl.textContent = String(Math.round(o.v)); } });
-    } else numEl.textContent = String(target);
-    unitEl.textContent = plural(target);
+  to.rates = GATES.map((g, i) => (gates[i] ? g.good : g.bad) * 100);
+  countTween?.kill();
+  if (animate && motionOK()) {
+    // stanje je samo jedan "lijevak": svi brojevi putuju zajedno, istim ritmom kao trake
+    const from = { num: shown.num, rates: [...shown.rates], counts: [...shown.counts] };
+    const p = { t: 0 };
+    countTween = gsap.to(p, { t: 1, duration: 0.9, ease: 'power3.out', onUpdate: () => {
+      shown.num = from.num + (to.num - from.num) * p.t;
+      shown.rates = from.rates.map((v, i) => v + (to.rates[i] - v) * p.t);
+      shown.counts = from.counts.map((v, i) => v + (to.counts[i] - v) * p.t);
+      paintCounts();
+    } });
+  } else {
+    Object.assign(shown, to);
+    paintCounts();
   }
-  shownNum = target;
+  // čitač ekrana dobiva samo konačni broj, ne svaki međukorak brojanja
+  if (liveEl && animate) liveEl.textContent = `${to.num} ${plural(to.num)} od 1.000 posjetitelja`;
   world?.setGates(gates);
 }
 gateBtns.forEach((b, i) => {
@@ -327,7 +347,7 @@ async function bootWorld() {
     world = createWorld3({
       canvas,
       labelsRoot: document.querySelector('[data-stage-labels]'),
-      assets: { land: T + 'img/world/land.png' + v, landEu: T + 'img/world/land-eu.png' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },
+      assets: { land: T + 'img/world/land.png' + v, landEu: T + 'img/world/land-eu.png' + v, lights: T + 'img/world/lights.webp' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },
       onReady: () => root.classList.add('stage-ready'),
     });
     world.setGates(gates);

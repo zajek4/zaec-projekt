@@ -39,16 +39,32 @@ $zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_ki
 			<ul>
 				<?php foreach ( zaec_nav() as $i => $item ) : ?>
 					<?php if ( ! empty( $item['children'] ) ) : ?>
-						<li class="has-sub" data-sub>
+						<?php $zaec_grouped = ! empty( $item['children'][0]['children'] ); ?>
+						<li class="has-sub<?php echo $zaec_grouped ? ' has-sub--groups' : ''; ?>" data-sub>
 							<button class="nav-trigger" type="button" aria-expanded="false" aria-controls="subnav-<?php echo (int) $i; ?>">
 								<?php echo esc_html( $item['label'] ); ?> <?php zaec_the_icon( 'alt-arrow-down', 14 ); ?>
 							</button>
-							<div class="subnav subnav--wide" id="subnav-<?php echo (int) $i; ?>">
+							<div class="subnav subnav--wide<?php echo $zaec_grouped ? ' subnav--groups' : ''; ?>" id="subnav-<?php echo (int) $i; ?>">
+								<?php if ( $zaec_grouped ) : // skupine (zadani izbornik ili WP izbornik s tri razine) ?>
+									<div class="subnav-cols">
+										<?php foreach ( $item['children'] as $g => $grp ) : ?>
+											<div class="subnav-col">
+												<p class="subnav-h" id="subnav-<?php echo (int) $i; ?>-<?php echo (int) $g; ?>"><span class="mono"><?php echo esc_html( zaec_pad( $g + 1 ) ); ?></span> <?php echo esc_html( $grp['label'] ); ?><?php if ( ! empty( $grp['note'] ) ) : ?><small><?php echo esc_html( $grp['note'] ); ?></small><?php endif; ?></p>
+												<ul aria-labelledby="subnav-<?php echo (int) $i; ?>-<?php echo (int) $g; ?>">
+													<?php foreach ( $grp['children'] as $c ) : ?>
+														<li><a href="<?php echo esc_url( $c['url'] ); ?>"<?php echo zaec_is_current_url( $c['url'] ) ? ' aria-current="page"' : ''; ?>><b><?php echo esc_html( $c['label'] ); ?></b><?php if ( ! empty( $c['note'] ) ) : ?><small><?php echo esc_html( $c['note'] ); ?></small><?php endif; ?></a></li>
+													<?php endforeach; ?>
+												</ul>
+											</div>
+										<?php endforeach; ?>
+									</div>
+								<?php else : ?>
 								<ul>
 									<?php foreach ( $item['children'] as $c ) : ?>
 										<li><a href="<?php echo esc_url( $c['url'] ); ?>"<?php echo zaec_is_current_url( $c['url'] ) ? ' aria-current="page"' : ''; ?>><b><?php echo esc_html( $c['label'] ); ?></b><?php if ( ! empty( $c['note'] ) ) : ?><small><?php echo esc_html( $c['note'] ); ?></small><?php endif; ?><?php zaec_the_icon( 'arrow-right', 18 ); ?></a></li>
 									<?php endforeach; ?>
 								</ul>
+								<?php endif; ?>
 								<a class="subnav-all" href="<?php echo esc_url( $item['url'] ); ?>">Sve usluge <?php zaec_the_icon( 'arrow-right', 16 ); ?></a>
 							</div>
 						</li>
@@ -60,8 +76,7 @@ $zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_ki
 		</nav>
 
 		<div class="header-cta">
-			<a class="tel-link" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><span class="dot" aria-hidden="true"></span><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
-			<?php echo zaec_button( 'Procjena projekta', zaec_url( 'cijene' ) . '#konfigurator', '', array( 'class' => 'btn--sm btn--header', 'track' => 'cta_header' ) ); // phpcs:ignore ?>
+			<?php echo zaec_button( 'Pošaljite upit', zaec_inquiry_url(), '', array( 'class' => 'btn--sm btn--header', 'track' => 'cta_header' ) ); // phpcs:ignore ?>
 		</div>
 
 		<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobilni-izbornik" data-menu-toggle>
@@ -70,7 +85,7 @@ $zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_ki
 	</div>
 </header>
 
-<div class="mobile-menu" id="mobilni-izbornik" data-mobile-menu>
+<div class="mobile-menu" id="mobilni-izbornik" role="dialog" aria-label="Izbornik" data-mobile-menu>
 	<nav aria-label="Mobilna navigacija">
 		<ul class="mm-main">
 			<?php $zaec_n = 0; ?>
@@ -79,15 +94,18 @@ $zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_ki
 				<li><a href="<?php echo esc_url( $item['url'] ); ?>"><small><?php echo esc_html( zaec_pad( $zaec_n ) ); ?></small><?php echo esc_html( $item['label'] ); ?></a></li>
 			<?php endforeach; ?>
 		</ul>
-		<ul class="mm-sub">
-			<?php foreach ( zaec_services() as $s ) : ?>
-				<li><a href="<?php echo esc_url( zaec_url( $s['key'] ) ); ?>"><?php echo esc_html( $s['title'] ); ?></a></li>
-			<?php endforeach; ?>
-		</ul>
+		<?php foreach ( zaec_nav_service_groups() as $g => $grp ) : ?>
+			<p class="mm-h mono" id="mm-usluge-<?php echo (int) $g; ?>"><?php echo esc_html( $grp['label'] ); ?></p>
+			<ul class="mm-sub" aria-labelledby="mm-usluge-<?php echo (int) $g; ?>">
+				<?php foreach ( $grp['children'] as $c ) : ?>
+					<li><a href="<?php echo esc_url( $c['url'] ); ?>"><?php echo esc_html( $c['label'] ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
+		<?php endforeach; ?>
 	</nav>
 	<div class="mm-foot">
-		<a class="btn btn--light" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
-		<p class="mono" style="opacity:.55"><?php echo esc_html( zaec_option( 'city' ) . ' · ' . zaec_option( 'hours' ) ); ?></p>
+		<?php echo zaec_button( 'Pošaljite upit', zaec_inquiry_url(), 'signal', array( 'track' => 'cta_menu' ) ); // phpcs:ignore ?>
+		<p class="mm-note mono">Pisana procjena, bez obveze · <?php echo esc_html( zaec_option( 'city' ) ); ?></p>
 	</div>
 </div>
 

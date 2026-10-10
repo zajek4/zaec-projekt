@@ -1,4 +1,4 @@
-node_modules/
+node_modules
 *.log
 tools/cathedral/out/
 zaec/assets/img/hero/tmp/

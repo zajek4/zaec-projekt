@@ -1,25 +1,24 @@
 // Procjena projekta: opseg (S/M/L/XL) + okvirni rok, bez javne cijene.
-import { gsap } from 'gsap';
 
 const TYPE = {
-  landing: { name: 'Landing stranica', pts: 1, weeks: [1, 2], block: 'Landing', c: '#2347ff' },
-  web: { name: 'Web stranica', pts: 2, weeks: [2, 4], block: 'Web', c: '#2347ff' },
-  shop: { name: 'Webshop', pts: 3.6, weeks: [5, 8], block: 'Webshop', c: '#2347ff' },
-  redesign: { name: 'Redizajn', pts: 2.2, weeks: [3, 5], block: 'Redizajn', c: '#2347ff' },
+  landing: { name: 'Landing stranica', pts: 1, weeks: [1, 2], block: 'Landing' },
+  web: { name: 'Web stranica', pts: 2, weeks: [2, 4], block: 'Web' },
+  shop: { name: 'Webshop', pts: 3.6, weeks: [5, 8], block: 'Webshop' },
+  redesign: { name: 'Redizajn', pts: 2.2, weeks: [3, 5], block: 'Redizajn' },
 };
 const FEAT = {
-  galerija: { pts: 0.3, w: 0, c: '#e2d3b0' },
-  ga4: { pts: 0.4, w: 0, c: '#ffd166' },
-  ai: { pts: 0.5, w: 0.5, c: '#a9bcff' },
-  seo: { pts: 0.8, w: 1, c: '#7fb069' },
-  gbp: { pts: 0.3, w: 0, c: '#9fc27c' },
-  booking: { pts: 1.2, w: 1, c: '#ffb23f' },
-  jezici: { pts: 0.9, w: 1, c: '#c8643b' },
-  blog: { pts: 0.4, w: 0.5, c: '#d9cfbd' },
-  kartice: { pts: 1.1, w: 1, c: '#1d7f47' },
-  integracije: { pts: 1.6, w: 1.5, c: '#6b675e' },
-  tekstovi: { pts: 0.6, w: 1, c: '#f3ede1' },
-  animacije: { pts: 0.9, w: 1, c: '#7d93ff' },
+  galerija: { pts: 0.3, w: 0 },
+  ga4: { pts: 0.4, w: 0 },
+  ai: { pts: 0.5, w: 0.5 },
+  seo: { pts: 0.8, w: 1 },
+  gbp: { pts: 0.3, w: 0 },
+  booking: { pts: 1.2, w: 1 },
+  jezici: { pts: 0.9, w: 1 },
+  blog: { pts: 0.4, w: 0.5 },
+  kartice: { pts: 1.1, w: 1 },
+  integracije: { pts: 1.6, w: 1.5 },
+  tekstovi: { pts: 0.6, w: 1 },
+  animacije: { pts: 0.9, w: 1 },
 };
 const TIERS = [
   [2.1, 'S', 'Kompaktno'],
@@ -53,7 +52,7 @@ function compute(s) {
   });
   if (s.content === 'Trebam pomoć') { pts += 0.5; w1 += 1; w0 += 1; }
   if (s.content === 'Djelomično') { pts += 0.2; }
-  w1 = Math.max(w1, w0 + 1);
+  w1 = Math.max(Math.ceil(w1), w0 + 1); // dio tjedna nije rok
   const tier = TIERS.find(([max]) => pts < max);
   return { pts, tier: tier[1], tierName: tier[2], weeks: `${w0}–${w1} ${tjedana(w1)}`, meter: Math.min(1, pts / 7.5) };
 }
@@ -75,7 +74,7 @@ function init(root) {
   const landingNote = $('[data-landing-note]');
   const sizeLegend = $('[data-size-legend]');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let lastBlocks = [];
+  const live = $('[data-cfg-live]');
 
   function read() {
     const fd = new FormData(form);
@@ -90,49 +89,73 @@ function init(root) {
     };
   }
 
-  function summaryLines(s, r) {
+  function summaryLines(s, r, compact = false) {
     const size = s.type === 'landing' ? '1 landing stranica' : s.type === 'shop' ? `${s.products} proizvoda` : `${s.pages} ${stranica(s.pages)}`;
     const feats = s.features.map((f) => form.querySelector(`[value="${f}"]`)?.dataset.label).filter(Boolean);
+    const short = s.features.map((f) => form.querySelector(`[value="${f}"]`)?.dataset.short).filter(Boolean);
     return [
       ['Projekt', `${TYPE[s.type].name} · ${size}`],
       ['Djelatnost', s.trade],
-      ['Funkcije', feats.length ? feats.join(', ') : 'osnovni paket'],
+      ['Funkcije', feats.length ? (compact ? short : feats).join(', ') : 'osnovni paket'],
       ['Rok', s.deadline],
       ['Sadržaj', s.content],
       ['Procjena', `opseg ${r.tier} (${r.tierName}), ${r.weeks}`],
     ];
   }
 
+  // Presjek zgrade: temelj (SEO + mjerenje), tijelo (vrsta projekta), katovi (funkcije) — svaki kat ima svoje
+  // stalno mjesto (redoslijed popisa), pa novi kat nikad ne "upada" između drugih. Elementi se ne grade iznova:
+  // postojeći katovi samo mijenjaju visinu, novi rastu iz nule, uklonjeni se skupljaju i tek onda nestaju.
+  const featOrder = [...form.querySelectorAll('input[name="features"]')].map((i) => i.value);
+  const bld = document.createElement('div');
+  bld.className = 'cfg-bld';
+  stack.appendChild(bld);
+  const floors = new Map();
+  const BASE_H = { landing: 22, web: 34, redesign: 34, shop: 44 };
+
+  function floorEl(k, label, kind) {
+    let el = floors.get(k);
+    if (el) {
+      clearTimeout(el._t);
+      el.classList.remove('is-leave');
+    } else {
+      el = document.createElement('div');
+      el.className = `cfg-fl cfg-fl--${kind}${reduce ? '' : ' is-enter'}`;
+      el.dataset.k = k;
+      el.innerHTML = '<b></b>';
+      floors.set(k, el);
+      if (!reduce) {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          el.classList.remove('is-enter');
+          el.classList.add('is-lit');
+          el._lit = setTimeout(() => el.classList.remove('is-lit'), 1400);
+        }));
+      }
+    }
+    el.querySelector('b').textContent = label;
+    return el;
+  }
+
   function renderStack(s) {
-    const blocks = [{ k: 'base', label: TYPE[s.type].block + (s.type === 'web' || s.type === 'redesign' ? ` · ${s.pages} str.` : ''), c: '#2347ff' }];
+    const want = [['_found', 'SEO + mjerenje', 'found', -2], ['_base', TYPE[s.type].block + (s.type === 'web' || s.type === 'redesign' ? ` · ${s.pages} str.` : ''), 'base', -1]];
     s.features.forEach((f) => {
       const el = form.querySelector(`[value="${f}"]`);
-      blocks.push({ k: f, label: el?.dataset.label.split(/[ /(]/)[0] || f, c: FEAT[f].c });
+      want.push([f, el?.dataset.short || el?.dataset.label || f, 'feat', featOrder.indexOf(f)]);
     });
-    blocks.push({ k: 'seo', label: 'SEO + mjerenje', c: '#141414' });
-    const keys = blocks.map((b) => b.k).join('|');
-    if (keys === lastBlocks.join('|')) {
-      const first = stack.querySelector('.cfg-block b');
-      if (first) first.textContent = blocks[0].label;
-      return;
-    }
-    const prevKeys = new Set(lastBlocks);
-    lastBlocks = blocks.map((b) => b.k);
-    stack.innerHTML = '';
-    const n = blocks.length;
-    const step = Math.min(24, 150 / n);
-    blocks.slice().reverse().forEach((b, idx) => {
-      const level = n - 1 - idx;
-      const el = document.createElement('div');
-      el.className = 'cfg-block';
-      el.style.setProperty('--c', b.c);
-      el.style.bottom = `${18 + level * step}px`;
-      el.style.zIndex = String(level + 1);
-      el.innerHTML = `<i class="t"></i><i class="f"></i><i class="r"></i><b>${b.label}</b>`;
-      if (['#e2d3b0', '#f3ede1', '#d9cfbd', '#ffb23f', '#9fc27c'].includes(b.c)) el.querySelector('b').style.color = '#141414';
-      stack.appendChild(el);
-      if (!reduce && !prevKeys.has(b.k)) gsap.from(el, { y: -70, opacity: 0, duration: 0.7, ease: 'bounce.out', delay: 0.04 });
+    const keep = new Set(want.map((w) => w[0]));
+    want.forEach(([k, label, kind, ord]) => { const el = floorEl(k, label, kind); el._ord = ord; });
+    floors.forEach((el, k) => {
+      if (keep.has(k) || el.classList.contains('is-leave')) return;
+      el.classList.add('is-leave');
+      el._t = setTimeout(() => { el.remove(); floors.delete(k); }, reduce ? 0 : 520);
     });
+    // visina kata: stog uvijek stane u kadar; promjena visine je ista tranzicija kao rast kata
+    const nFeat = s.features.length;
+    const fh = nFeat ? Math.max(9, Math.min(22, (148 - BASE_H[s.type]) / nFeat)) : 22;
+    stack.style.setProperty('--fh', `${fh.toFixed(1)}px`);
+    stack.style.setProperty('--bh', `${BASE_H[s.type]}px`);
+    stack.classList.toggle('is-dense', fh < 15);
+    [...floors.values()].sort((x, y) => x._ord - y._ord).forEach((el) => bld.appendChild(el));
   }
 
   function update() {
@@ -150,11 +173,13 @@ function init(root) {
     $('[data-meter]').style.width = `${Math.round(18 + r.meter * 82)}%`;
     $('[data-urgent]').hidden = s.deadline !== 'Hitno';
     const ul = $('[data-summary]');
-    ul.innerHTML = summaryLines(s, r)
+    ul.innerHTML = summaryLines(s, r, true)
       .slice(0, 5)
       .map(([k, v]) => `<li><b>${k}</b><span>${v}</span></li>`)
       .join('');
     renderStack(s);
+    const said = `Opseg ${r.tier}, ${r.tierName.toLowerCase()}, ${r.weeks}`;
+    if (live && live.textContent !== said) live.textContent = said;
     root._summary = summaryLines(s, r).map(([k, v]) => `${k}: ${v}`).join('\n');
     root._state = s;
   }
