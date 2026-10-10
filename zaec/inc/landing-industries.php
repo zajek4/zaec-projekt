@@ -400,7 +400,7 @@ function zaec_registry_industries() {
 			),
 			'related' => array( 'usluge/google-business-profil', 'djelatnosti/ugostiteljstvo-i-smjestaj', 'usluge/izrada-web-stranica' ),
 		),
-		// Nove stranice (strategija 03, točka 3): svaka ima stvaran projekt kao dokaz. Tvrdnje označene ⚑ vlasnik potvrđuje prije objave.
+		// Nove stranice (strategija 03, točka 3): svaka ima stvaran projekt kao dokaz.
 		'strucne-usluge'            => array(
 			'tab' => 'Struka', 'sector' => 'strucne-usluge', 'label' => 'Stručne usluge', 'icon' => 'clipboard-check', 'prop' => 8, 'sign' => 'URED',
 			'title' => 'Stručne i poslovne usluge', 'name' => 'stručne i poslovne usluge',
@@ -425,8 +425,8 @@ function zaec_registry_industries() {
 			),
 			'structure' => array( 'Hero: usluge i kome su namijenjene', 'Usluge (stranica za svaku)', 'Tim i ovlaštenja', 'Reference', 'Kako izgleda suradnja', 'FAQ', 'Upit prema opsegu' ),
 			'faq' => array(
-				// ⚑ obećanje procesa: vlasnik potvrđuje
-				array( 'Smijem li kao regulirana profesija predstavljati usluge na webu?', 'Pravila ovise o komori: odvjetnici, revizori i druge regulirane profesije imaju vlastita. Prije izrade ih zajedno pročitamo i web složimo tako da informira u okviru tih pravila.' ),
+				// vlasnik potvrdio (10. 10. 2026); bez pravnog savjeta: pravila komore donosi klijent
+				array( 'Smijem li kao regulirana profesija predstavljati usluge na webu?', 'Ovisi o pravilima vaše komore, a neke regulirane profesije (npr. odvjetnici) imaju stroža pravila o oglašavanju. Prije izrade nam recite koja vrijede za vas, pa web složimo tako da informira o uslugama u okviru tih pravila.' ),
 				array( 'Trebam li web i na engleskom?', 'Ako radite sa stranim klijentima ili partnerima, da, barem za ključne usluge. Svaki jezik dobiva svoju adresu, pa ga Google može prikazati klijentima na tom jeziku.' ),
 			),
 			'proof' => 'eurokontrola.hr',
@@ -451,14 +451,14 @@ function zaec_registry_industries() {
 			'deliver' => array(
 				array( 'Ulaz za svakog posjetitelja', 'Roditelji, korisnici, stručnjaci i partneri odmah vide svoj put kroz sadržaj.' ),
 				array( 'Novosti i projekti koje uređujete sami', 'WordPress bez programera, uz kratku edukaciju pri primopredaji. Stranice EU projekata s oznakama financiranja.' ),
-				// ⚑ formulacija prema Zakonu o pristupačnosti mrežnih stranica (NN 17/19): vlasnik potvrđuje
-				array( 'Pristupačnost', 'Kontrast, veličina slova, rad tipkovnicom i čitačima ekrana. Tijela javnog sektora po zakonu moraju imati pristupačan web i izjavu o pristupačnosti.' ),
+				// Zakon o pristupačnosti mrežnih stranica (NN 17/19); vlasnik potvrdio (10. 10. 2026). „Većinu“ jer zakon ima iznimke.
+				array( 'Pristupačnost', 'Kontrast, veličina slova, rad tipkovnicom i čitačima ekrana. Za većinu tijela javnog sektora to je i zakonska obveza, uz izjavu o pristupačnosti.' ),
 				array( 'Dokumenti s redom', 'Obrasci, pravilnici i natječaji po kategorijama i datumu, s pretragom.' ),
 			),
 			'structure' => array( 'Hero: tko ste i ulazi za posjetitelje', 'Programi i usluge', 'Novosti i projekti', 'Dokumenti', 'O ustanovi i tim', 'Kontakt i lokacija' ),
 			'faq' => array(
-				// ⚑ vlasnik potvrđuje
-				array( 'Možete li poslati ponudu za jednostavnu nabavu ili projekt?', 'Da. Ponuda sadrži opseg, rok i fiksnu cijenu, u obliku koji vam treba za nabavu ili projektnu dokumentaciju.' ),
+				// vlasnik potvrdio (10. 10. 2026); fiksna cijena kao u svakoj ponudi, bez obećanja proizvoljnog obrasca
+				array( 'Možete li poslati ponudu za jednostavnu nabavu ili projekt?', 'Da. Pisana ponuda sadrži opseg, rok i fiksnu cijenu. Ako nabava ili projekt traže određeni obrazac ili prilog, pošaljite ga uz upit.' ),
 				array( 'Hoćemo li sami objavljivati novosti?', 'Da. Pri primopredaji pokažemo kako objavljujete novosti, projekte, galerije i dokumente, bez programera.' ),
 			),
 			'faq_price' => array( 'Koliko košta web za ustanovu?', 'Ovisi o broju stranica i funkcija (npr. dokumenti s pretragom, novosti ili više jezika). Složite procjenu projekta — vaše područje je već odabrano — i dobit ćete pisanu ponudu s fiksnom cijenom.' ),

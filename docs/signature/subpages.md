@@ -190,3 +190,16 @@ Pregled 07 (design/07-pregled-izrade.md):
 - Provjera: nacrt 275/275 (11 listova × 25 veličina, uključujući 780 × 960, 900 × 1000, 960 × 1000, 1000 × 1000,
   1100 × 1000, 1100 × 1100, 1200 × 1200, 1280 × 1300, 1440 × 1200, 1920 × 1200); naglasak u kadru 0 na desktopu, na
   složenom rasporedu samo kutija drugog retka (3–16 %) i Održavanje; mobilni rub 120/120; Izrada 6/6.
+
+## 13. Potvrde vlasnika (10. 10. 2026)
+
+Vlasnik je potvrdio tri tvrdnje koje su bile označene ⚑ u `inc/landing-industries.php` („nisam siguran, ali ajmo
+reći da“). Oznake su uklonjene, a rečenice ublažene tako da vrijede i uz iznimke:
+
+- Stručne usluge, FAQ o komorama: „Ovisi o pravilima vaše komore…“; pravila nam donosi klijent, bez pravnog savjeta
+  i bez obećanja da ih mi čitamo.
+- Ustanove, pristupačnost: „Za većinu tijela javnog sektora to je i zakonska obveza, uz izjavu o pristupačnosti.“
+  (Zakon o pristupačnosti mrežnih stranica, NN 17/19, ima iznimke).
+- Ustanove, jednostavna nabava: „Pisana ponuda sadrži opseg, rok i fiksnu cijenu. Ako nabava ili projekt traže
+  određeni obrazac ili prilog, pošaljite ga uz upit.“ Fiksna cijena je kao u svakoj ponudi na webu; uvjeti nisu
+  mijenjani.
