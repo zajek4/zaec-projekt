@@ -1,34 +1,58 @@
 /* ═══════════ Komponente: procjena projekta, forma ═══════════ */
 
+  /* Procjena kao radni list: svaki korak ima pitanje, pomoćnu rečenicu i odgovor u zaglavlju (mono, desno),
+     pa se stanje odabira čita i bez gledanja kontrola. Odabrano = signalno plavo; ništa ne mijenja dimenzije
+     pri odabiru (samo boja, sjena i ::after), pa se mreža nikad ne pomiče (direktiva 18). */
   .cfg { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr); gap: clamp(24px, 3vw, 48px); align-items: start; }
-  .cfg-form { display: grid; gap: 34px; }
-  .cfg-step { border: 0; margin: 0; padding: 0; min-width: 0; }
-  .cfg-step legend { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; margin-bottom: 16px; padding: 0; font-variation-settings: 'wdth' 106; }
-  .cfg-n { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; padding: 4px 7px; border-radius: 4px; background: var(--ink); color: var(--paper); letter-spacing: 0.05em; }
-  .cfg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .cfg-form { display: grid; gap: 0; border-top: 1px solid var(--line-2); }
+  .cfg-step { border: 0; margin: 0; padding: 26px 0 30px; min-width: 0; border-bottom: 1px solid var(--line); }
+  .cfg-q { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 0; margin-bottom: 14px; float: left; }
+  .cfg-q + * { clear: both; }
+  .cfg-q-t { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; font-variation-settings: 'wdth' 106; }
+  .cfg-n { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; padding: 4px 7px; border-radius: 4px; background: var(--abyss-3); color: var(--abyss-fg); letter-spacing: 0.05em; }
+  .cfg-ans { justify-self: end; max-width: 26ch; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--signal-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cfg-ans.is-empty { color: var(--muted); }
+  .cfg-hint { clear: both; margin: -6px 0 14px; color: var(--muted); font-size: 0.9rem; line-height: 1.45; max-width: 60ch; }
+  .cfg-row { display: grid; grid-template-columns: 1fr; }
   .cfg input[type='radio'], .cfg input[type='checkbox'] { position: absolute; opacity: 0; width: 1px; height: 1px; }
   .cfg-types { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-  .cfg-type-box { display: grid; gap: 6px; padding: 18px 16px; min-height: 132px; align-content: start; border: 1.5px solid var(--line-2); border-radius: 12px; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: border-color 0.25s, background 0.25s, transform 0.4s var(--ease-out), box-shadow 0.4s; height: 100%; }
+  .cfg-type { display: block; }
+  .cfg-type-box { display: grid; gap: 6px; padding: 18px 16px; min-height: 132px; align-content: start; border: 1.5px solid var(--line-2); border-radius: 12px; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: border-color 0.25s, background 0.25s, box-shadow 0.3s; height: 100%; }
   .cfg-type-box b { font-size: 1rem; font-weight: 680; line-height: 1.2; }
   .cfg-type-box small { color: var(--muted); font-size: 0.82rem; line-height: 1.35; }
   .cfg-type-box .icon { color: var(--ink-3); margin-bottom: 6px; }
-  .cfg-type:hover .cfg-type-box { border-color: var(--ink); transform: translateY(-2px); }
+  .cfg-type:hover .cfg-type-box { border-color: var(--ink-3); }
   .cfg-type input:checked + .cfg-type-box { border-color: var(--signal); background: #fff; box-shadow: 0 0 0 3px rgba(35, 71, 255, 0.14), 0 18px 30px -20px rgba(35, 71, 255, 0.6); }
   .cfg-type input:checked + .cfg-type-box .icon { color: var(--signal); }
   .cfg-type input:focus-visible + .cfg-type-box, .cfg-chip input:focus-visible + span, .cfg-feat input:focus-visible + span { outline: 2px solid var(--signal); outline-offset: 3px; }
   .cfg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .cfg-chip span { display: inline-flex; align-items: center; min-height: 42px; padding: 0 16px; border-radius: 99px; border: 1.5px solid var(--line-2); font-size: 0.92rem; font-weight: 560; cursor: pointer; transition: all 0.25s var(--ease-out); background: rgba(255, 255, 255, 0.35); }
-  .cfg-chip:hover span { border-color: var(--ink); }
-  .cfg-chip input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  .cfg-feats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .cfg-feat span { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 10px 14px; border-radius: 10px; border: 1.5px solid var(--line-2); font-size: 0.9rem; font-weight: 540; line-height: 1.25; cursor: pointer; transition: all 0.25s var(--ease-out); background: rgba(255, 255, 255, 0.35); position: relative; }
-  .cfg-feat span .icon { flex: none; color: var(--ink-3); }
-  .cfg-feat:hover span { border-color: var(--ink); }
+  .cfg-chip span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 99px; border: 1.5px solid var(--line-2); font-size: 0.92rem; font-weight: 560; cursor: pointer; transition: background 0.25s var(--ease-out), color 0.25s, border-color 0.25s; background: rgba(255, 255, 255, 0.35); }
+  .cfg-chip:hover span { border-color: var(--ink-3); }
+  .cfg-chip input:checked + span { background: var(--abyss-3); color: var(--abyss-fg); border-color: var(--abyss-3); }
+  .cfg-other { display: grid; gap: 6px; margin-top: 14px; max-width: 420px; }
+  .cfg-other label { font-size: 0.86rem; font-weight: 600; }
+  .cfg-other .opt { color: var(--muted); font-weight: 400; }
+  .cfg-included { display: flex; gap: 8px; align-items: flex-start; font-size: 0.86rem; color: var(--ink-3); margin-bottom: 18px; line-height: 1.45; }
+  .cfg-included b { font-weight: 650; color: var(--ink-2); }
+  .cfg-included .icon { color: var(--ok); flex: none; margin-top: 2px; }
+  .cfg-group + .cfg-group { margin-top: 18px; }
+  .cfg-group-t { font-size: var(--fs-label); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .cfg-feats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .cfg-feat { display: block; min-width: 0; }
+  .cfg-feat > span { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 52px; height: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid var(--line-2); font-size: 0.9rem; font-weight: 540; line-height: 1.25; cursor: pointer; transition: border-color 0.25s, background 0.25s; background: rgba(255, 255, 255, 0.35); }
+  .cfg-feat > span .icon { color: var(--ink-3); }
+  .cfg-feat em { font-style: normal; }
+  .cfg-feat:hover > span { border-color: var(--ink-3); }
   .cfg-feat input:checked + span { border-color: var(--signal); background: var(--signal-soft); }
   .cfg-feat input:checked + span .icon { color: var(--signal); }
-  .cfg-feat input:checked + span::after { content: ''; position: absolute; right: 10px; top: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--signal); }
-  .cfg-included { display: flex; gap: 8px; align-items: flex-start; font-size: 0.86rem; color: var(--ink-3); margin-bottom: 14px; }
-  .cfg-included .icon { color: var(--ok); flex: none; margin-top: 2px; }
+  /* utjecaj na opseg: tri crtice (kao katovi), bez brojki */
+  .cfg-imp { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+  .cfg-imp b { width: 4px; border-radius: 1px; background: var(--line-2); }
+  .cfg-imp b:nth-child(1) { height: 5px; } .cfg-imp b:nth-child(2) { height: 8px; } .cfg-imp b:nth-child(3) { height: 11px; }
+  .cfg-imp[data-imp='1'] b:nth-child(1), .cfg-imp[data-imp='2'] b:nth-child(-n+2), .cfg-imp[data-imp='3'] b { background: var(--ink-3); }
+  .cfg-feat input:checked + span .cfg-imp[data-imp='1'] b:nth-child(1), .cfg-feat input:checked + span .cfg-imp[data-imp='2'] b:nth-child(-n+2), .cfg-feat input:checked + span .cfg-imp[data-imp='3'] b { background: var(--signal); }
+  .cfg-legend { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .cfg-legend .cfg-imp + .cfg-imp, .cfg-legend .cfg-imp:nth-of-type(2) { margin-left: 10px; }
   .cfg-range { display: flex; align-items: center; gap: 18px; }
   .cfg-range input { flex: 1; accent-color: var(--signal); height: 44px; }
   .cfg-range output { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 600; min-width: 112px; text-align: right; }
@@ -37,21 +61,39 @@
   .cfg-out { position: sticky; top: calc(var(--header-h) + 20px); }
   .cfg-out-inner { background: var(--abyss); box-shadow: inset 0 0 0 1px var(--abyss-line), 0 40px 80px -50px rgba(4, 5, 11, 0.9); color: var(--abyss-fg); border-radius: var(--r-l); padding: clamp(22px, 2.4vw, 32px); display: grid; gap: 18px; overflow: hidden; position: relative; }
   .cfg-out-k { color: var(--abyss-muted); }
-  .cfg-result { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid var(--abyss-line-2); padding-top: 18px; }
-  .cfg-label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--abyss-muted); margin-bottom: 6px; }
+  .cfg-result { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; border-top: 1px solid var(--abyss-line-2); padding-top: 18px; }
+  .cfg-label { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.1em; text-transform: uppercase; color: var(--abyss-muted); margin-bottom: 6px; }
   .cfg-tier { display: flex; align-items: baseline; gap: 10px; }
   .cfg-tier b { font-size: 2.6rem; line-height: 1; font-weight: 850; font-variation-settings: 'wdth' 120; color: #fff; }
   .cfg-tier span { color: #c9cfe4; font-weight: 600; }
   .cfg-weeks { font-size: 1.45rem; font-weight: 750; line-height: 1.15; color: #fff; font-variation-settings: 'wdth' 110; }
-  .cfg-meter { height: 6px; background: var(--abyss-line); border-radius: 99px; overflow: hidden; }
+  .cfg-tier-desc { grid-column: 1 / -1; color: #b9c0d6; font-size: 0.9rem; line-height: 1.45; min-height: 2.9em; }
+  .cfg-meter { position: relative; height: 6px; background: var(--abyss-line); border-radius: 99px; }
   .cfg-meter span { display: block; height: 100%; width: 40%; background: linear-gradient(90deg, var(--signal), #7d93ff); border-radius: inherit; transition: width 0.7s var(--ease-out); }
+  .cfg-meter i { position: absolute; top: -3px; bottom: -3px; width: 1px; background: var(--abyss-dim); }
+  .cfg-drivers ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .cfg-drivers li { padding: 5px 10px; border-radius: 99px; border: 1px solid var(--abyss-line-2); font-size: 0.82rem; color: var(--abyss-fg); }
   .cfg-sum { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: 0.88rem; color: #c9cfe4; }
   .cfg-sum li { display: grid; grid-template-columns: 96px 1fr; gap: 10px; }
-  .cfg-sum li b { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--abyss-dim); font-weight: 500; padding-top: 3px; }
+  .cfg-sum li b { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--abyss-muted); font-weight: 500; padding-top: 3px; }
+  .cfg-sum li.is-empty span { color: var(--abyss-muted); }
+  .cfg-fix { margin-left: 6px; padding: 0; border: 0; background: none; color: #9fb4ff; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .cfg-fix:hover { color: #fff; }
   .cfg-urgent { display: flex; gap: 8px; align-items: center; color: var(--amber); font-size: 0.86rem; }
   .cfg-send { width: 100%; --btn-fill: #fff; --btn-fill-fg: var(--ink); }
   .cfg-why { font-size: 0.82rem; color: var(--abyss-muted); line-height: 1.5; }
   .cfg-why b { color: #c9cfe4; }
+
+  /* traka s rezultatom (mobitel i tablet): zamjenjuje traku za poziv dok se procjena ispunjava */
+  .cfg-dock { display: none; }
+  @media (max-width: 1100px) {
+    .cfg-dock { position: fixed; left: 10px; right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); z-index: 96; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 8px 8px 16px; border-radius: 16px; background: rgba(4, 5, 11, 0.94); color: var(--abyss-fg); box-shadow: 0 0 0 1px var(--abyss-line-2), 0 20px 40px -12px rgba(0, 0, 0, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transform: translateY(150%); transition: transform 0.5s var(--ease-out); }
+    .cfg-dock.is-on { transform: none; }
+    .cfg-dock-r { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+    .cfg-dock-r b { font-size: 1.5rem; font-weight: 850; font-variation-settings: 'wdth' 120; color: #fff; }
+    .cfg-dock-r span { font-size: 0.86rem; color: #c9cfe4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cfg-dock-btn { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--signal); color: #fff; font: 650 0.9rem/1 var(--font-sans); cursor: pointer; }
+  }
 
   /* presjek zgrade: katovi rastu iz tla, nacrt-crte, prozori svijetle kad se kat doda */
   .cfg-stack { --fh: 22px; --bh: 34px; position: relative; height: 210px; margin-top: -6px; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 14px;
@@ -64,26 +106,33 @@
   .cfg-fl { position: relative; flex: none; height: var(--fh); overflow: hidden; border: 1px solid rgba(150, 168, 255, 0.34); border-bottom-width: 0; background: rgba(35, 71, 255, 0.07); opacity: 1;
     transition: height 0.5s var(--ease-out), opacity 0.4s var(--ease-out), background-color 0.9s var(--ease-out), border-color 0.9s var(--ease-out); }
   .cfg-fl::before { content: ''; position: absolute; inset: 22% 10px 22% 46%; background: repeating-linear-gradient(90deg, rgba(150, 168, 255, 0.28) 0 7px, transparent 7px 12px); transition: background 0.9s var(--ease-out); }
-  .cfg-fl b { position: absolute; left: 9px; top: 50%; translate: 0 -50%; max-width: 44%; font: 500 9.5px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--abyss-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cfg-fl b { position: absolute; left: 9px; top: 50%; translate: 0 -50%; max-width: 44%; font: 500 var(--fs-micro)/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--abyss-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cfg-fl--base { height: var(--bh); background: rgba(35, 71, 255, 0.22); border-color: rgba(127, 159, 255, 0.6); }
   .cfg-fl--base::before { inset: 26% 10px 26% 46%; background: repeating-linear-gradient(90deg, rgba(220, 228, 255, 0.5) 0 9px, transparent 9px 14px); }
   .cfg-fl--found { height: 20px; border-bottom-width: 1px; background: repeating-linear-gradient(-45deg, rgba(150, 168, 255, 0.16) 0 1px, transparent 1px 6px), var(--abyss-2); border-color: var(--abyss-line-2); }
   .cfg-fl--found::before { display: none; }
   .cfg-fl--found b { color: var(--abyss-muted); max-width: 90%; }
-  .cfg-stack.is-dense .cfg-fl--feat b { font-size: 8px; }
+  .cfg-stack.is-dense .cfg-fl--feat b { display: none; }
   .cfg-stack.is-dense .cfg-fl--feat::before { inset: 18% 10px 18% 46%; }
   .cfg-fl.is-enter, .cfg-fl.is-leave { height: 0; opacity: 0; border-top-width: 0; }
   .cfg-fl.is-leave { transition-duration: 0.45s, 0.25s; }
   .cfg-fl.is-lit { background-color: rgba(255, 178, 63, 0.14); border-color: rgba(255, 207, 138, 0.7); transition-duration: 0.5s, 0.4s, 0.15s, 0.15s; }
   .cfg-fl.is-lit::before { background: repeating-linear-gradient(90deg, rgba(255, 207, 138, 0.95) 0 7px, transparent 7px 12px); transition-duration: 0.15s; }
-  @media (max-width: 1100px) { .cfg { grid-template-columns: 1fr; } .cfg-out { position: relative; top: 0; } .cfg-feats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 720px) { .cfg-types { grid-template-columns: 1fr 1fr; } .cfg-row { grid-template-columns: 1fr; } .cfg-feats { grid-template-columns: 1fr; } .cfg-type-box { min-height: 116px; } }
+  @media (max-width: 1100px) { .cfg { grid-template-columns: 1fr; } .cfg-out { position: relative; top: 0; } }
+  @media (max-width: 720px) {
+    .cfg-types { grid-template-columns: 1fr 1fr; } .cfg-type-box { min-height: 116px; }
+    .cfg-row { grid-template-columns: 1fr; }
+    .cfg-feats { grid-template-columns: 1fr; }
+    .cfg-q { grid-template-columns: auto minmax(0, 1fr); }
+    .cfg-ans { grid-column: 2; justify-self: start; max-width: 100%; margin-top: -6px; }
+  }
 
 /* forma */
 
   .cform { display: grid; gap: 22px; position: relative; }
   .cform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 16px; }
   .field--full { grid-column: 1 / -1; }
+  .cform .field { align-content: start; }
   .cform-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; }
   .cform-privacy { font-size: 0.82rem; color: var(--muted); max-width: 40ch; line-height: 1.45; }
   .cform-status { font-weight: 600; }
@@ -95,9 +144,37 @@
   .cform-config span { display: block; font-size: 0.82rem; color: var(--ink-3); white-space: pre-line; line-height: 1.45; margin-top: 4px; }
   .cform-x { border: 0; background: none; padding: 4px; border-radius: 6px; color: var(--ink-3); }
   .cform-x:hover { background: rgba(0, 0, 0, 0.06); }
-  .cform--dark .field label { color: #d8d3c8; }
-  .cform--dark .input, .cform--dark .select, .cform--dark .textarea { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.2); color: #fff; }
-  .cform--dark .input:focus, .cform--dark .select:focus, .cform--dark .textarea:focus { background: rgba(255, 255, 255, 0.1); }
+  /* noćna varijanta (Kontakt): iste mjere kao papirna, boje s noći; primjer u polju 60 % (oko 5:1) */
+  .cform--dark .field label { color: #dfe4f3; }
+  .cform--dark .field label .opt { color: var(--abyss-muted); }
+  .cform--dark .input, .cform--dark .select, .cform--dark .textarea { background: rgba(255, 255, 255, 0.05); border-color: rgba(178, 192, 255, 0.3); color: #fff; }
+  .cform--dark .input::placeholder, .cform--dark .textarea::placeholder { color: rgba(214, 220, 240, 0.6); }
+  .cform--dark .input:hover, .cform--dark .select:hover, .cform--dark .textarea:hover { border-color: rgba(178, 192, 255, 0.55); }
+  .cform--dark .input:focus, .cform--dark .select:focus, .cform--dark .textarea:focus { background: rgba(255, 255, 255, 0.08); border-color: #8ea2ff; box-shadow: 0 0 0 4px rgba(90, 120, 255, 0.28); }
+  .cform--dark .field.has-error .input, .cform--dark .field.has-error .textarea, .cform--dark .field.has-error .select { border-color: #ff8f7a; }
+  .cform--dark .field-error, .cform--dark .cform-status.is-error { color: #ffab9b; }
+  .cform--dark .cform-status.is-ok { color: #9ef0b7; }
   .cform--dark .select option { color: #141414; }
-  .cform--dark .cform-privacy { color: #a9a49a; }
-  @media (max-width: 640px) { .cform-grid { grid-template-columns: 1fr; } .cform-submit { width: 100%; } }
+  .cform--dark .cform-privacy { color: #a3abc4; }
+  .cform--dark .cform-privacy a { color: #dfe4f3; }
+  .cform--dark .cform-config { background: rgba(90, 120, 255, 0.12); color: var(--abyss-fg); border-color: rgba(142, 162, 255, 0.35); }
+  .cform--dark .cform-config .icon { color: #9fb4ff; }
+  .cform--dark .cform-config span, .cform--dark .cform-x { color: #b9c0d8; }
+  .cform--dark .cform-x:hover { background: rgba(255, 255, 255, 0.08); }
+  /* potvrda na mjestu (data-inline-success): polja se sklanjaju, status ostaje za čitač ekrana */
+  .cform.is-sent > .cform-grid, .cform.is-sent > .cform-foot, .cform.is-sent > .cform-config { display: none; }
+  .cform.is-sent > .cform-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .cform-done { display: grid; gap: 6px; }
+  .cform-done[hidden] { display: none; }
+  .cform-done:focus { outline: none; }
+  .cform-done-t { margin: 0; font-size: clamp(1.4rem, 2.2vw, 1.8rem); font-weight: 700; letter-spacing: -0.01em; }
+  .cform-done p:last-child { margin: 0; color: var(--muted); }
+  .cform--dark .cform-done-t { color: #fff; }
+  .cform--dark .cform-done p:last-child { color: #c8cee2; }
+  /* na uskom ekranu natpis gumba smije u dva retka: bez toga 360 px dobije vodoravni skrol (design/08, B) */
+  @media (max-width: 640px) { .cform-grid { grid-template-columns: 1fr; } .cform-submit { width: 100%; white-space: normal; text-align: center; padding-block: 10px; } }
+
+/* telefon ili email: kako ćemo odgovoriti */
+  .field-hint { font-size: 0.82rem; color: var(--ok); line-height: 1.35; }
+  .field-hint:empty, .field.has-error .field-hint { display: none; }
+  .cform--dark .field-hint { color: #8fe0ac; }

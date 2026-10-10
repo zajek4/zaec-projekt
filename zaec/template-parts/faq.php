@@ -19,7 +19,11 @@ if ( ! $items ) {
 		<div class="stack" style="--stack:20px">
 			<p class="kicker"><?php echo esc_html( $args['kicker'] ?? 'Pitanja' ); ?></p>
 			<?php zaec_heading( $args['title'] ?? 'Česta <em>pitanja</em>' ); ?>
-			<p class="muted" data-reveal>Niste našli odgovor? Nazovite <a href="<?php echo esc_attr( zaec_phone_href() ); ?>"><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a> — <?php echo esc_html( zaec_option( 'hours' ) ); ?>.</p>
+			<?php if ( 'kontakt' === ( $args['page'] ?? '' ) ) : ?>
+				<p class="muted" data-reveal>Niste našli odgovor? Nazovite <a href="<?php echo esc_attr( zaec_phone_href() ); ?>"><?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>, <?php echo esc_html( zaec_option( 'hours' ) ); ?>.</p>
+			<?php else : ?>
+				<p class="muted" data-reveal>Niste našli odgovor? <a href="<?php echo esc_url( zaec_inquiry_url() ); ?>">Pošaljite pitanje</a>, odgovaramo u radno vrijeme.</p>
+			<?php endif; ?>
 		</div>
 		<div class="faq-list" data-reveal>
 			<?php foreach ( $items as $i => $f ) : ?>

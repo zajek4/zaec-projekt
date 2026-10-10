@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="582 303 480 360" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="hz01t" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid01t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid01t)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M703 20L703 980M120 497L1180 456M790 230L790 760M670 418L850 418"/>
+</g>
+<g class="nd nd-2">
+<rect class="cut" pathLength="1" x="525" y="30" width="175" height="950" fill="url(#hz01t)"/>
+<line class="ln-2" pathLength="1" x1="703" y1="170" x2="703" y2="1010"/>
+<path class="mask" d="M447 476 L703 455 L703 500 L447 521 Z"/>
+<line class="ln-2" pathLength="1" x1="447" y1="476" x2="703" y2="455"/>
+<line class="ln-2" pathLength="1" x1="447" y1="521" x2="703" y2="500"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="703" y="265" width="5" height="200"/>
+<path class="cut-w" pathLength="1" d="M706 485 V275 H835 Q857 275 857 297 V445 Q857 468 838 474"/>
+<line class="cut-w" pathLength="1" x1="706" y1="485" x2="792" y2="485"/>
+<path class="ln-h" d="M722 275L722 282M731 275L731 282M740 275L740 282M749 275L749 282M758 275L758 282M767 275L767 282M776 275L776 282M785 275L785 282M794 275L794 282M803 275L803 282M812 275L812 282M821 275L821 282M830 275L830 282"/>
+<line class="ln-3" x1="716" y1="291" x2="846" y2="291"/>
+<path class="cut" pathLength="1" d="M722 302 L842 302 L846 314 L726 314 Z" fill="url(#hz01t)"/>
+<path class="cut" pathLength="1" d="M834 316 L846 316 L850 410 L838 410 Z" fill="url(#hz01t)"/>
+<path class="cut" pathLength="1" d="M724 318 L738 318 L764 372 L750 372 Z" fill="url(#hz01t)"/>
+<circle class="ln-2" pathLength="1" cx="790" cy="418" r="32"/>
+<circle class="ln-2" pathLength="1" cx="790" cy="418" r="10"/>
+<path class="ln-h" d="M812 418L819 429M810 427L812 440M805 434L802 447M797 439L789 449M788 440L776 446M779 437L766 438M772 431L760 427M768 423L759 414M768 413L764 402M772 405L773 392M779 399L785 387M788 396L798 388M797 397L809 394M805 402L817 403M810 409L821 416"/>
+<path class="ln-2" pathLength="1" d="M828 414 V426 H854 V414"/>
+<path class="ln-beyond" d="M806 470L808 482M815 470L817 482M824 470L826 482M833 470L835 482"/>
+<polyline class="ln-2" pathLength="1" points="720,467 703,467 447,488 431,488"/>
+<polyline class="ln-2" pathLength="1" points="720,477 703,477 447,498 431,498"/>
+<polyline class="ln-3" points="841,426 841,438 724,438 724,489 703,489 447,510 443,510 443,980"/>
+</g>
+<g class="nd nd-4">
+<path class="ln-2" pathLength="1" d="M285 902 V821 Q285 801 306 801 Q327 801 327 821 V902"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<text class="t-dim" text-anchor="middle" transform="translate(416 882) rotate(0)">10</text>
+</g>
+<text class="t-dim" x="560" y="435">Ø 65</text>
+<text class="t-dim" x="600" y="534" transform="rotate(4.8 600 534)">PAD PREMA VAN</text>
+</g>
+<g class="nd nd-6">
+<path class="lamp-fill" pathLength="1" d="M796 488 L846 471 L848 477 L798 494 Z"/>
+<g class="call lamp">
+<circle class="halo" cx="822" cy="483" r="30"/>
+<circle class="dot" cx="822" cy="483" r="3.5"/>
+</g>
+</g>
+</svg>

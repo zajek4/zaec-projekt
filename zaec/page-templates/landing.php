@@ -59,7 +59,7 @@ endwhile;
 
 zaec_render_related( $l );
 if ( ! empty( $l['faq'] ) ) {
-	get_template_part( 'template-parts/faq', null, array( 'items' => $l['faq'], 'title' => 'Česta <em>pitanja</em>' ) );
+	get_template_part( 'template-parts/faq', null, array( 'items' => $l['faq'], 'title' => 'Česta <em>pitanja</em>', 'page' => $l['key'] ?? '' ) );
 }
 if ( ! in_array( $l['type'], array( 'contact', 'check', 'pricing' ), true ) ) {
 	get_template_part( 'template-parts/cta-band' );

@@ -58,8 +58,7 @@ function zaec_registry_services() {
 					array( 'Nitko ne mjeri', 'Ne znate koliko je poziva došlo s weba, pa ne znate što popraviti ni gdje ulagati.' ),
 				),
 			),
-			array( 'type' => 'process' ),
-			array( 'type' => 'guarantees' ),
+			array( 'type' => 'process' ), // „Šest razloga“ ostaje samo na Cijenama (design/04 #10)
 		),
 		'faq'         => array(
 			array( 'Moram li uzeti sve usluge?', 'Ne. Prvo pogledamo gdje je najveća rupa — kod nekih je to Google profil, kod drugih web koji ne objašnjava ponudu ili nedostatak mjerenja. Krenemo od onoga što najbrže donosi kontakt.' ),
@@ -84,6 +83,27 @@ function zaec_registry_services() {
 		'image_alt'    => 'Monitor i mobitel s istom web stranicom u noći; dio ekrana je plavi nacrt rasporeda, a tragovi upita stižu do gumba.',
 		'cta'          => array( 'Složite svoj projekt', 'cijene#konfigurator' ),
 		'blocks'       => array(
+			array(
+				'type'  => 'anatomy',
+				'tower' => true, // nastavak heroja: u noći, uz kulu (design/03, 4.5)
+				'title' => 'Kako izgleda stranica koja <em>zove</em>.',
+				'lead'  => 'Redoslijed koji odgovara na pitanja kupca prije nego ih postavi.',
+				'label' => 'nacrt — naslovnica.pdf',
+				'parts' => array(
+					array( 'Hero: što, gdje, kako do vas', 'Jedna rečenica o usluzi, područje rada i gumb za poziv — iznad pregiba, na mobitelu.', 'hero' ),
+					array( 'Usluge jezikom kupca', 'Kartice s uslugama koje želite prodavati, svaka vodi na vlastitu stranicu.', 'cards' ),
+					array( 'Dokazi', 'Stvarni radovi, recenzije i jamstva. Bez izmišljenih brojki i lažnih logotipa.', 'proof' ),
+					array( 'Radovi', 'Fotografije s kratkim opisom — rade i za ljude i za Google.', 'gallery' ),
+					array( 'Područje rada', 'Gdje dolazite i u kojem roku. Ključno za lokalnu pretragu.', 'map' ),
+					array( 'Česta pitanja', 'Odgovori na ono što vas pitaju na telefonu — i ono što AI asistenti citiraju.', 'faq' ),
+					array( 'Kratki upit + poziv', 'Dva do četiri polja, ne dvanaest. Broj prikovan za dno ekrana na mobitelu.', 'form' ),
+				),
+			),
+			array(
+				'type'  => 'decisions',
+				'title' => 'Što kupujete: <em>odluke</em>, ne stranice.',
+				'lead'  => 'Ne prodajemo broj stranica. Prodajemo odluke koje se donesu prije prvog retka koda, i papir na kojem piše što ste dobili.',
+			),
 			array(
 				'type'  => 'deliver',
 				'title' => 'Web koji radi <em>posao</em>, ne samo izgleda.',
@@ -110,21 +130,20 @@ function zaec_registry_services() {
 				'note'  => 'U oba slučaja: opseg i fiksna cijena u pisanoj ponudi prije početka, a domena i hosting registrirani na vas.',
 			),
 			array(
-				'type'  => 'anatomy',
-				'title' => 'Kako izgleda stranica koja <em>zove</em>.',
-				'lead'  => 'Redoslijed koji odgovara na pitanja kupca prije nego ih postavi.',
-				'label' => 'nacrt — naslovnica.pdf',
-				'parts' => array(
-					array( 'Hero: što, gdje, kako do vas', 'Jedna rečenica o usluzi, područje rada i gumb za poziv — iznad pregiba, na mobitelu.', 'hero' ),
-					array( 'Usluge jezikom kupca', 'Kartice s uslugama koje želite prodavati, svaka vodi na vlastitu stranicu.', 'cards' ),
-					array( 'Dokazi', 'Stvarni radovi, recenzije i jamstva. Bez izmišljenih brojki i lažnih logotipa.', 'proof' ),
-					array( 'Radovi', 'Fotografije s kratkim opisom — rade i za ljude i za Google.', 'gallery' ),
-					array( 'Područje rada', 'Gdje dolazite i u kojem roku. Ključno za lokalnu pretragu.', 'map' ),
-					array( 'Česta pitanja', 'Odgovori na ono što vas pitaju na telefonu — i ono što AI asistenti citiraju.', 'faq' ),
-					array( 'Kratki upit + poziv', 'Dva do četiri polja, ne dvanaest. Broj prikovan za dno ekrana na mobitelu.', 'form' ),
+				'type'  => 'handover',
+				'title' => 'Primopredaja koju možete <em>provjeriti</em>.',
+				'lead'  => 'Prije predaje stranicu prolazimo po popisu. Popis dobivate i vi, pa ga možete proći sami.',
+				'items' => array(
+					array( 'Stvarni mobiteli', 'Stranicu prolazimo na stvarnim mobitelima, ne samo na računalu.' ),
+					array( 'Brzina na mobitelu', 'Provjeravamo Core Web Vitals. Dobre vrijednosti prema Googleu:', 'LCP do 2,5 s · INP do 200 ms · CLS do 0,1' ),
+					array( 'Svaki obrazac i gumb za poziv', 'Šaljemo probne upite i dodirujemo svaki poziv i WhatsApp.' ),
+					array( 'Svaki događaj u GA4', 'Klikovi na poziv, WhatsApp i poslani upiti bilježe se od prvog dana.' ),
+					array( 'Search Console i Google profil', 'Stranica je prijavljena Googleu, a profil povezan s webom.' ),
+					array( 'Pristupi na vaše ime', 'Domena, hosting, WordPress i svi pristupi su vaši.' ),
+					array( 'Edukacija i 14 dana jamstva', 'Pokažemo kako sami mijenjate tekstove, slike i radove.' ),
+					array( 'Prvi izvještaj', 'Prve brojke: odakle dolaze posjetitelji i koliko ih se javilo.' ),
 				),
 			),
-			array( 'type' => 'process' ),
 			array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ),
 			array( 'type' => 'trades' ),
 		),
@@ -136,7 +155,7 @@ function zaec_registry_services() {
 			array( 'Pišete li i tekstove?', 'Pomažemo složiti strukturu i poruku, a pisanje cijelih tekstova može ući u opseg. Vi date znanje o poslu, mi ga pretvorimo u jasnu stranicu.' ),
 			array( 'Imam stari web — trebam li novi?', 'Ne nužno. Prvo napravimo besplatnu provjeru i iskreno kažemo isplati li se popravak ili nova izrada.' ),
 		),
-		'related'      => array( 'usluge/seo', 'usluge/ga4-i-pracenje-konverzija', 'usluge/ai-vidljivost' ),
+		'related'      => array( 'izrada-web-stranica-osijek', 'usluge/seo', 'usluge/ga4-i-pracenje-konverzija' ),
 	);
 
 	$r['usluge/webshop'] = array(
@@ -309,12 +328,12 @@ function zaec_registry_services() {
 				'type'       => 'stats',
 				'title'      => 'Što odlučuje tko je na <em>karti</em>.',
 				'items'      => array(
-					array( '≈ 32 %', 'Google Business profil', 'udio u lokalnom rangiranju' ),
-					array( '≈ 20 %', 'recenzije', 'broj, svježina i sadržaj' ),
-					array( '≈ 15 %', 'sadržaj weba', 'stranice za usluge i mjesta' ),
+					array( 'Relevantnost', 'koliko profil odgovara pretrazi', 'kategorije, usluge i opis koji točno kažu što radite' ),
+					array( 'Udaljenost', 'koliko ste blizu onome tko traži', 'na to ne utječete, ali područje rada mora biti točno upisano' ),
+					array( 'Istaknutost', 'koliko ste poznati i provjereni', 'recenzije, spomeni na drugim stranicama i sadržaj weba' ),
 				),
-				'note'       => 'Procjena težine signala za lokalne rezultate prema istraživanju Whitespark Local Search Ranking Factors 2026. Ostatak čine poveznice, ponašanje korisnika i drugi signali.',
-				'sources'    => array( array( 'Whitespark Local Search Ranking Factors 2026 (sažetak)', 'https://blckalpaca.at/en/knowledge-base/seo-geo/local-seo/local-ranking-factors-2026-the-complete-overview' ) ),
+				'note'       => 'Google za lokalne rezultate navodi tri glavna čimbenika: relevantnost, udaljenost i istaknutost. Na prvi i treći možete utjecati.',
+				'sources'    => array( array( 'Google: kako se određuje lokalni poredak', 'https://support.google.com/business/answer/7091?hl=hr' ) ),
 			),
 			array(
 				'type'  => 'deliver',
@@ -350,8 +369,8 @@ function zaec_registry_services() {
 		'h1'           => 'Google Business profil koji vas stavlja na <em>kartu</em>.',
 		'lead'         => 'Za većinu lokalnih usluga profil na Google karti donosi više poziva od same web stranice. Postavimo ga ispravno, povežemo s webom i održavamo ga živim.',
 		'answer'       => 'Google Business profil (bivši Google Moja tvrtka) je besplatni profil tvrtke na Google pretrazi i Kartama. ZAEC ga postavlja ili popravlja: primarna i sporedne kategorije, usluge, područje rada, fotografije, objave, poveznica na pravu stranicu weba i sustav za prikupljanje stvarnih recenzija.',
-		'image'        => 'world/usluga-lokalno.webp',
-		'image_alt'    => 'Oznaka vašeg obrta na karti Osijeka u nacrtu, s krugom područja rada i svjetlosnim tragovima upita iz okolice.',
+		'image'        => 'world/usluga-gbp.webp',
+		'image_alt'    => 'Kartica profila nad oznakom na karti u nacrtu: fotografija radnje, zvjezdice, gumbi za poziv, rutu i web, radno vrijeme i recenzije.',
 		'cta'          => array( 'Želim uređen profil', 'kontakt#upit' ),
 		'blocks'       => array(
 			array(
@@ -366,6 +385,7 @@ function zaec_registry_services() {
 			array(
 				'type'  => 'deliver',
 				'title' => 'Što radimo na <em>profilu</em>.',
+				'lead'  => 'Profil je prvi korak lokalnog SEO-a. Kad je uređen, sljedeći je web koji odgovara na iste pretrage po uslugama i mjestima: to radimo kroz <a href="' . esc_url( zaec_url( 'usluge/lokalni-seo' ) ) . '">lokalni SEO</a>.',
 				'items' => array(
 					array( 'shield-check', 'Postavljanje ili preuzimanje', 'Potvrda vlasništva, kategorije, područje rada, radno vrijeme, kontakt.' ),
 					array( 'list', 'Usluge i opis', 'Usluge onako kako ih ljudi traže i opis koji jasno kaže što radite i gdje.' ),
@@ -445,7 +465,7 @@ function zaec_registry_services() {
 		'seo_title'    => 'GA4, GTM i e-commerce praćenje konverzija | ZAEC',
 		'description'  => 'GA4 i Google Tag Manager: praćenje poziva, upita i prodaje, Consent Mode v2 i konverzije za Google Ads i Metu — uz izvještaje koje razumijete.',
 		'kicker'       => 'Usluga · U.08',
-		'h1'           => 'Znajte koji <em>euro</em> donosi posao.',
+		'h1'           => 'Znajte koji euro donosi <em>posao</em>.', // naglasak u drugom retku: prvi je na mobitelu u kadru (design/09, B)
 		'lead'         => 'Bez mjerenja svaka odluka je nagađanje. Postavljamo GA4 i Google Tag Manager tako da vidite pozive, upite i prodaju — po kanalu, kampanji i stranici — uz poštivanje privole posjetitelja.',
 		'answer'       => 'ZAEC postavlja Google Analytics 4 i Google Tag Manager: praćenje klikova na poziv i WhatsApp, poslanih formi, GA4 e-commerce događaja (view_item, add_to_cart, begin_checkout, purchase s vrijednošću), Consent Mode v2, konverzije za Google Ads i Meta te pregledan izvještaj u Looker Studiju.',
 		'image'        => 'world/usluga-ga4.webp',

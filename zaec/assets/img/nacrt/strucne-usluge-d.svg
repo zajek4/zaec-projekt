@@ -1,0 +1,147 @@
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt09d nd09d"><title id="nt09d">Tlocrt ureda stručne službe, mjerilo 1:50</title><desc id="nd09d">Tehnički crtež ureda: prijem uz ulaz, sala za sastanke iza staklene pregrade, šest radnih mjesta i arhiva s policama. Oznake 01–04 povezuju dijelove ureda s dijelovima weba stručne usluge. Stol u sali za sastanke označen je toplim svjetlom.</desc>
+<defs><pattern id="hz09d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid09d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid09d)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M667 186L667 646M406 458L1034 458M835 466L835 646"/>
+</g>
+<g class="nd nd-2">
+<rect class="cut" pathLength="1" x="426" y="206" width="70" height="14" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="608" y="206" width="112" height="14" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="776" y="206" width="45" height="14" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="877" y="206" width="45" height="14" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="978" y="206" width="36" height="14" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="426" y="612" width="70" height="14" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="552" y="612" width="90" height="14" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="798" y="612" width="216" height="14" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="426" y="220" width="14" height="392" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="1000" y="220" width="14" height="56" fill="url(#hz09d)"/>
+<rect class="cut" pathLength="1" x="1000" y="416" width="14" height="196" fill="url(#hz09d)"/>
+</g>
+<g class="nd nd-3">
+<line class="ln-2" pathLength="1" x1="664" y1="220" x2="664" y2="461"/>
+<line class="ln-2" pathLength="1" x1="670" y1="220" x2="670" y2="461"/>
+<line class="ln-2" pathLength="1" x1="440" y1="455" x2="608" y2="455"/>
+<line class="ln-2" pathLength="1" x1="440" y1="461" x2="608" y2="461"/>
+<line class="ln-2" pathLength="1" x1="658" y1="455" x2="670" y2="455"/>
+<line class="ln-2" pathLength="1" x1="658" y1="461" x2="670" y2="461"/>
+<path class="wall" d="M832 494h16.8v5.6h-16.8zM899 494h101v5.6h-101zM832 500h5.6v112h-5.6z"/>
+<rect class="ln-2" pathLength="1" x="496" y="206" width="112" height="14"/>
+<line class="ln-h" x1="496" y1="213" x2="608" y2="213"/>
+<rect class="ln-2" pathLength="1" x="720" y="206" width="56" height="14"/>
+<line class="ln-h" x1="720" y1="213" x2="776" y2="213"/>
+<rect class="ln-2" pathLength="1" x="821" y="206" width="56" height="14"/>
+<line class="ln-h" x1="821" y1="213" x2="877" y2="213"/>
+<rect class="ln-2" pathLength="1" x="922" y="206" width="56" height="14"/>
+<line class="ln-h" x1="922" y1="213" x2="978" y2="213"/>
+<rect class="ln-2" pathLength="1" x="642" y="612" width="157" height="14"/>
+<line class="ln-h" x1="642" y1="619" x2="798" y2="619"/>
+<rect class="ln-2" pathLength="1" x="1000" y="276" width="14" height="140"/>
+<line class="ln-h" x1="1007" y1="276" x2="1007" y2="416"/>
+<line class="ln-2" pathLength="1" x1="658" y1="458" x2="658" y2="408"/>
+<path class="ln-h" d="M608 458 A50.39999999999999 50.39999999999999 0 0 1 658.4 407.6"/>
+<line class="ln-2" pathLength="1" x1="552" y1="612" x2="552" y2="556"/>
+<path class="ln-h" d="M496 612 A56 56 0 0 1 552 556"/>
+<line class="ln-2" pathLength="1" x1="899" y1="497" x2="899" y2="447"/>
+<path class="ln-h" d="M848.8 497.2 A50.40000000000002 50.40000000000002 0 0 1 899.1999999999999 446.79999999999995"/>
+</g>
+<g class="nd nd-4">
+<rect class="ln-2" pathLength="1" x="500" y="283" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="500" y="372" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="540" y="283" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="540" y="372" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="579" y="283" width="25" height="20"/>
+<rect class="ln-2" pathLength="1" x="579" y="372" width="25" height="20"/>
+<line class="cut-w" pathLength="1" x1="444" y1="293" x2="444" y2="382"/>
+<rect class="cut-w" pathLength="1" x="530" y="494" width="90" height="34"/>
+<circle class="ln-2" pathLength="1" cx="574" cy="479" r="12.3"/>
+<rect class="ln-2" pathLength="1" x="446" y="522" width="25" height="25"/>
+<rect class="ln-2" pathLength="1" x="446" y="556" width="25" height="25"/>
+<rect class="ln-2" pathLength="1" x="709" y="220" width="78" height="39"/>
+<line class="ln-h" x1="731" y1="230" x2="765" y2="230"/>
+<circle class="ln-2" pathLength="1" cx="748" cy="279" r="13.4"/>
+<rect class="ln-2" pathLength="1" x="709" y="354" width="78" height="39"/>
+<line class="ln-h" x1="731" y1="364" x2="765" y2="364"/>
+<circle class="ln-2" pathLength="1" cx="748" cy="413" r="13.4"/>
+<rect class="ln-2" pathLength="1" x="810" y="220" width="78" height="39"/>
+<line class="ln-h" x1="832" y1="230" x2="866" y2="230"/>
+<circle class="ln-2" pathLength="1" cx="849" cy="279" r="13.4"/>
+<rect class="ln-2" pathLength="1" x="810" y="354" width="78" height="39"/>
+<line class="ln-h" x1="832" y1="364" x2="866" y2="364"/>
+<circle class="ln-2" pathLength="1" cx="849" cy="413" r="13.4"/>
+<rect class="ln-2" pathLength="1" x="910" y="220" width="78" height="39"/>
+<line class="ln-h" x1="933" y1="230" x2="966" y2="230"/>
+<circle class="ln-2" pathLength="1" cx="950" cy="279" r="13.4"/>
+<rect class="ln-2" pathLength="1" x="910" y="354" width="78" height="39"/>
+<line class="ln-h" x1="933" y1="364" x2="966" y2="364"/>
+<circle class="ln-2" pathLength="1" cx="950" cy="413" r="13.4"/>
+<rect class="ln-2" pathLength="1" x="863" y="522" width="24" height="76"/>
+<path class="ln-h" d="M863 539L886 539M863 556L886 556M863 573L886 573M863 590L886 590"/>
+<rect class="ln-2" pathLength="1" x="908" y="522" width="24" height="76"/>
+<path class="ln-h" d="M908 539L931 539M908 556L931 556M908 573L931 573M908 590L931 590"/>
+<rect class="ln-2" pathLength="1" x="952" y="522" width="24" height="76"/>
+<path class="ln-h" d="M952 539L976 539M952 556L976 556M952 573L976 573M952 590L976 590"/>
+</g>
+<g class="nd nd-5">
+<text class="t-dim" x="742" y="539" text-anchor="middle">HODNIK</text>
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="1014" y1="206" x2="1046" y2="206"/>
+<line class="ln-dim" pathLength="1" x1="1014" y1="494" x2="1046" y2="494"/>
+<line class="ln-dim" pathLength="1" x1="1040" y1="206" x2="1040" y2="494"/>
+<line class="ln-dim" pathLength="1" x1="1044" y1="202" x2="1036" y2="210"/>
+<line class="ln-dim" pathLength="1" x1="1044" y1="490" x2="1036" y2="499"/>
+<text class="t-dim" text-anchor="middle" transform="translate(1052 350) rotate(90)">5,15</text>
+</g>
+</g>
+<g class="nd nd-5 key">
+<rect class="ln-2" pathLength="1" x="872" y="58" width="136" height="70"/>
+<rect class="ln-2" pathLength="1" x="876" y="62" width="62" height="62" style="fill:rgba(227,233,255,.08)"/>
+<rect class="ln-h" x="946" y="88" width="26" height="36"/>
+<path class="ln-h" d="M946 92L972 92M946 98L972 98M946 104L972 104M946 110L972 110M946 116L972 116M946 122L972 122"/>
+<text class="t-small" x="872" y="154">KLJUČ · TLOCRT KATA</text>
+</g>
+<g class="nd nd-6">
+<g class="call c01">
+<circle class="dot" cx="574" cy="511" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="574,511 574,700 586,700"/>
+<text class="t-call" x="594" y="705"><tspan class="t-n">01</tspan>  PRIJEM</text>
+<text class="t-web" x="594" y="725">→ Upit prema opsegu</text>
+</g>
+<g class="call c02 c-wide c-a75">
+<circle class="dot" cx="474" cy="276" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="474,276 474,70 486,70"/>
+<text class="t-call" x="494" y="75"><tspan class="t-n">02</tspan>  SASTANAK</text>
+<text class="t-web" x="494" y="95">→ Kako izgleda suradnja</text>
+</g>
+<g class="call c03">
+<circle class="dot" cx="748" cy="391" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="748,391 748,650 900,650"/>
+<text class="t-call" x="908" y="655"><tspan class="t-n">03</tspan>  RADNA MJESTA</text>
+<text class="t-web" x="908" y="675">→ Tim i ovlaštenja</text>
+</g>
+<g class="call c04">
+<circle class="dot" cx="964" cy="562" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="964,562 1030,562"/>
+<text class="t-call" x="1038" y="567"><tspan class="t-n">04</tspan>  ARHIVA</text>
+<text class="t-web" x="1038" y="587">→ Reference</text>
+</g>
+<path class="lamp-fill" pathLength="1" d="M484.8 337.6 A67.2 30.800000000000004 0 1 0 619.2 337.6 A67.2 30.800000000000004 0 1 0 484.8 337.6 Z"/>
+<g class="call lamp">
+<circle class="halo" cx="552" cy="338" r="40"/>
+<circle class="dot" cx="552" cy="338" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="552,330 552,161 812,161"/>
+<text class="t-call" x="570" y="129">PONEDJELJAK · 08:50</text>
+<text class="t-web" x="570" y="150">„knjigovodstvo za obrt“</text>
+</g>
+</g>
+<g class="nd nd-6 tb">
+<rect class="tb-bg" x="732" y="836" width="440" height="112"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
+<text class="t-tb" x="744" y="857">ZAEC · NACRT DJELATNOSTI</text>
+<text class="t-tb" x="1054" y="857">LIST 09/10</text>
+<text class="t-tb-b" x="744" y="894">Stručne usluge</text>
+<text class="t-tb" x="744" y="914">TLOCRT UREDA · M 1:50</text>
+<text class="t-tb" x="744" y="943">WEB · USLUGE · TIM · UPIT</text>
+</g>
+</svg>

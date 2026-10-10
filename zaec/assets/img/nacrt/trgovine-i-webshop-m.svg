@@ -1,0 +1,57 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="450 282 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="hz07m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid07m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid07m)"/>
+<g class="nd nd-1">
+<line class="ln-con" x1="400" y1="740" x2="950" y2="740"/>
+</g>
+<g class="nd nd-2">
+<line class="ln-2" pathLength="1" x1="430" y1="740" x2="430" y2="380"/>
+<line class="ln-2" pathLength="1" x1="930" y1="740" x2="930" y2="380"/>
+<polyline class="ln-2" pathLength="1" points="420,380 672,380 677,374 683,386 688,380 940,380"/>
+<rect class="cut" pathLength="1" x="430" y="710" width="350" height="30" fill="url(#hz07m)"/>
+<rect class="cut" pathLength="1" x="890" y="710" width="40" height="30" fill="url(#hz07m)"/>
+<rect class="ln-2" pathLength="1" x="465" y="400" width="425" height="45"/>
+<rect class="cut" pathLength="1" x="400" y="740" width="560" height="12" fill="url(#hz07m)"/>
+<line class="cut-w" pathLength="1" x1="400" y1="740" x2="960" y2="740"/>
+</g>
+<g class="nd nd-3">
+<rect class="cut-w" pathLength="1" x="465" y="465" width="270" height="245"/>
+<rect class="ln-2" pathLength="1" x="473" y="473" width="254" height="229"/>
+<rect class="cut-w" pathLength="1" x="780" y="505" width="110" height="235"/>
+<rect class="ln-2" pathLength="1" x="788" y="513" width="94" height="217"/>
+<rect class="ln-2" pathLength="1" x="780" y="465" width="110" height="35"/>
+<line class="cut-w" pathLength="1" x1="870" y1="650" x2="870" y2="590"/>
+<rect class="ln-2" pathLength="1" x="900" y="560" width="25" height="40"/>
+<path class="ln-h" d="M904 590L921 590M904 583L921 583M904 576L921 576M904 569L921 569"/>
+</g>
+<g class="nd nd-4">
+<line class="ln-beyond" x1="485" y1="605" x2="715" y2="605"/>
+<path class="ln-beyond" d="M495 576h26v29h-26zM537 575h26v30h-26zM579 574h26v31h-26zM621 574h25v31h-25zM663 573h25v32h-25z"/>
+<line class="ln-beyond" x1="485" y1="555" x2="715" y2="555"/>
+<path class="ln-beyond" d="M495 526h26v30h-26zM537 525h26v30h-26zM579 524h26v31h-26zM621 524h25v31h-25zM663 523h25v32h-25z"/>
+<line class="ln-beyond" x1="485" y1="505" x2="715" y2="505"/>
+<path class="ln-beyond" d="M495 475h26v30h-26zM537 475h26v30h-26zM579 474h26v31h-26zM621 474h25v31h-25zM663 473h25v32h-25z"/>
+<rect class="ln-2" pathLength="1" x="505" y="665" width="190" height="37"/>
+<rect class="ln-2" pathLength="1" x="525" y="625" width="35" height="40"/>
+<path class="ln-2" pathLength="1" d="M650 665 V635 L656 622 V610 H664 V622 L670 635 V665"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="757" y1="710" x2="757" y2="505"/>
+<line class="ln-dim" pathLength="1" x1="753" y1="714" x2="761" y2="706"/>
+<line class="ln-dim" pathLength="1" x1="753" y1="509" x2="761" y2="501"/>
+<text class="t-dim" text-anchor="middle" transform="translate(757 608) rotate(-90)">2,35</text>
+</g>
+<text class="t-small" x="678" y="428" text-anchor="middle">NATPIS</text>
+</g>
+<g class="nd nd-6">
+<path class="lamp-fill" pathLength="1" d="M582 665 V610 H636 V665 Z M606.5 610 V632 M611.5 610 V632"/>
+<g class="call lamp">
+<circle class="halo" cx="609" cy="640" r="36"/>
+<circle class="dot" cx="609" cy="640" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="609,632 609,360 986,360"/>
+<text class="t-call" x="616" y="317">22:15 · S KAUČA</text>
+<text class="t-web" x="616" y="346">„naziv proizvoda + kupiti“</text>
+</g>
+</g>
+</svg>

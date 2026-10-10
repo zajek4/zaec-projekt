@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="469 330 480 360" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="dots10t" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.9" class="nib"/><circle cx="7" cy="6" r="0.7" class="nib"/></pattern><pattern id="grid10t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid10t)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M613 196L613 702M741 196L741 702M424 353L988 353"/>
+</g>
+<g class="nd nd-2">
+<path class="wall" d="M440 606h42v9.6h-42zM578 606h70v9.6h-70zM706 606h64v9.6h-64zM882 606h90v9.6h-90zM440 222h9.6v384h-9.6zM962 222h9.6v160h-9.6zM962 558h9.6v48h-9.6zM610 305h4.8v186h-4.8zM610 523h4.8v83h-4.8zM738 305h4.8v230h-4.8zM738 580h4.8v26h-4.8zM450 401h160v4.8h-160zM743 350h110v4.8h-110zM885 350h77v4.8h-77zM834 222h4.8v128h-4.8z"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="482" y="606" width="96" height="9.6"/>
+<line class="ln-h" x1="482" y1="611" x2="578" y2="611"/>
+<rect class="ln-2" pathLength="1" x="770" y="606" width="112" height="9.6"/>
+<line class="ln-h" x1="770" y1="611" x2="882" y2="611"/>
+<rect class="ln-2" pathLength="1" x="962" y="382" width="9.6" height="176"/>
+<line class="ln-h" x1="967" y1="382" x2="967" y2="558"/>
+<line class="ln-2" pathLength="1" x1="648" y1="606" x2="648" y2="577"/>
+<path class="ln-h" d="M677.2 606 A28.80000000000001 28.80000000000001 0 0 0 648.4 577.2"/>
+<line class="ln-2" pathLength="1" x1="706" y1="606" x2="706" y2="577"/>
+<path class="ln-h" d="M677.2 606 A28.80000000000001 28.80000000000001 0 0 1 706 577.2"/>
+<path class="ln-h" d="M610 273.2 A32 32 0 0 0 578 305.2"/>
+<line class="ln-2" pathLength="1" x1="610" y1="523" x2="578" y2="523"/>
+<path class="ln-h" d="M610 490.8 A32 32 0 0 0 578 522.8"/>
+<path class="ln-h" d="M738 266.8 A32 32 0 0 0 706 305.2"/>
+<line class="ln-2" pathLength="1" x1="743" y1="580" x2="788" y2="580"/>
+<path class="ln-h" d="M742.8 535.6 A44.80000000000001 44.80000000000001 0 0 1 787.6 580.4"/>
+<line class="ln-2" pathLength="1" x1="885" y1="355" x2="885" y2="387"/>
+<path class="ln-h" d="M853.2 354.8 A32 32 0 0 0 885.2 386.8"/>
+<rect class="ln-2" pathLength="1" x="632" y="616" width="90" height="48"/>
+<line class="ln-2" pathLength="1" x1="632" y1="673" x2="722" y2="673"/>
+<line class="ln-2" pathLength="1" x1="632" y1="683" x2="722" y2="683"/>
+<line class="ln-2" pathLength="1" x1="632" y1="664" x2="632" y2="683"/>
+<line class="ln-2" pathLength="1" x1="722" y1="664" x2="722" y2="683"/>
+<rect class="ln-2" pathLength="1" x="469" y="620" width="163" height="43"/>
+<path class="ln-h" d="M463 625L632 625M463 659L632 659"/>
+<path class="ln-2" pathLength="1" d="M616.4 641.8399999999999 H523.6 m8 -5 l-8 5 l8 5"/>
+</g>
+<g class="nd nd-4">
+<rect class="cut" pathLength="1" x="615" y="315" width="5.4" height="80" fill="url(#dots10t)"/>
+<rect class="ln-2" pathLength="1" x="618" y="427" width="16" height="29"/>
+<rect class="ln-2" pathLength="1" x="618" y="465" width="16" height="29"/>
+<rect class="ln-2" pathLength="1" x="904" y="401" width="58" height="173"/>
+<line class="ln-2" pathLength="1" x1="895" y1="411" x2="904" y2="411"/>
+<line class="ln-2" pathLength="1" x1="895" y1="420" x2="904" y2="420"/>
+<path class="ln-h" d="M767 401h13.4v12.8h-13.4zM767 427h13.4v12.8h-13.4zM767 452h13.4v12.8h-13.4zM767 478h13.4v12.8h-13.4zM767 504h13.4v12.8h-13.4zM767 529h13.4v12.8h-13.4zM767 555h13.4v12.8h-13.4zM767 580h13.4v12.8h-13.4zM794 401h13.4v12.8h-13.4zM794 427h13.4v12.8h-13.4zM794 452h13.4v12.8h-13.4zM794 478h13.4v12.8h-13.4zM794 504h13.4v12.8h-13.4zM794 529h13.4v12.8h-13.4zM794 555h13.4v12.8h-13.4zM794 580h13.4v12.8h-13.4zM821 401h13.4v12.8h-13.4zM821 427h13.4v12.8h-13.4zM821 452h13.4v12.8h-13.4zM821 478h13.4v12.8h-13.4zM821 504h13.4v12.8h-13.4zM821 529h13.4v12.8h-13.4zM821 555h13.4v12.8h-13.4zM821 580h13.4v12.8h-13.4zM848 401h13.4v12.8h-13.4zM848 427h13.4v12.8h-13.4zM848 452h13.4v12.8h-13.4zM848 478h13.4v12.8h-13.4zM848 504h13.4v12.8h-13.4zM848 529h13.4v12.8h-13.4zM848 555h13.4v12.8h-13.4zM848 580h13.4v12.8h-13.4zM876 401h13.4v12.8h-13.4zM876 427h13.4v12.8h-13.4zM876 452h13.4v12.8h-13.4zM876 478h13.4v12.8h-13.4zM876 504h13.4v12.8h-13.4zM876 529h13.4v12.8h-13.4zM876 555h13.4v12.8h-13.4zM876 580h13.4v12.8h-13.4z"/>
+<rect class="ln-2" pathLength="1" x="853" y="302" width="96" height="14.4"/>
+<path class="ln-h" d="M482 286h38v26h-38zM540 286h38v26h-38zM482 484h38v26h-38zM540 484h38v26h-38z"/>
+</g>
+<g class="nd nd-5">
+<text class="t-dim" x="530" y="363" text-anchor="middle">SOBA 1</text>
+<text class="t-dim" x="530" y="555" text-anchor="middle">SOBA 2</text>
+<text class="t-dim" x="821" y="388" text-anchor="middle">DVORANA</text>
+<text class="t-dim" x="933" y="493" text-anchor="middle">PODIJ</text>
+<text class="t-dim" x="493" y="647" text-anchor="middle">5 %</text>
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="972" y1="616" x2="1000" y2="616"/>
+<text class="t-dim" text-anchor="middle" transform="translate(1006 414) rotate(90)">12,60</text>
+</g>
+</g>
+<g class="nd nd-6">
+<path class="lamp-fill" pathLength="1" d="M687 497 L732 497 L732 523 L700 523 L687 510 Z"/>
+<g class="call lamp">
+<circle class="halo" cx="709" cy="510" r="30"/>
+<circle class="dot" cx="709" cy="510" r="3.5"/>
+</g>
+</g>
+</svg>

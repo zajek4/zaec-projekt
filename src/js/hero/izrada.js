@@ -1,7 +1,9 @@
 // Izrada web stranica — naslov je zgrada.
-// 1) Špica: nacrt se pojavi, skener sjedne na vrh ulaza (ulaz s gumbom je sagrađen — upit je temelj).
-// 2) Scroll (pinano): skener se diže; ispod crte je etaža sagrađena (toplo staklo, riječ kao natpis na staklu),
-//    iznad crte je nacrt (obris riječi). Kad dođe do vrha, naslov je pročitan i zgrada sagrađena — pin se pušta.
+// 1) Špica: nacrt se pojavi, skener se sam, jednom, digne od tla do crte iznad istaknute riječi: „donose UPITE.“
+//    i ulaz s gumbom su sagrađeni, pa je obećanje naslova čitljivo u prvom ekranu (design/03, 4.1).
+// 2) Scroll (pinano): skener nastavlja prema vrhu; ispod crte je etaža sagrađena (toplo staklo, riječ kao natpis
+//    na staklu), iznad crte je nacrt (obris riječi). Na vrhu je naslov pročitan i zgrada sagrađena — pin se pušta.
+// Crta skenera široka je kao kula (+8 % sa svake strane), da ne prelazi uvodni tekst (design/03, 4.3).
 import { ScrollTrigger, motionOK, portraitMQ, gsap, lerp, smooth, imagesReady, onLayout } from './core.js';
 
 export default function izrada(sec) {
@@ -18,10 +20,13 @@ export default function izrada(sec) {
   function measure() {
     comp = portraitMQ.matches || window.innerWidth <= 760 ? 'm' : 'd';
     M = meta[comp];
-    start = M.start - 0.2; // vrh ulaza
+    start = M.promise - 0.2; // crta iznad istaknute riječi
     end = M.end - 0.4; // vrh atike
     const s = stage.getBoundingClientRect(), r = scene.getBoundingClientRect();
     sceneTop = r.top - s.top; sceneH = r.height;
+    const tw = ((M.right - M.left) / 100) * r.width;
+    stage.style.setProperty('--scan-l', `${(r.left - s.left + (M.left / 100) * r.width - 0.08 * tw).toFixed(1)}px`);
+    stage.style.setProperty('--scan-w', `${(1.16 * tw).toFixed(1)}px`);
     apply(cut);
   }
   function apply(c) {
@@ -46,9 +51,9 @@ export default function izrada(sec) {
   imagesReady(scene).then(() => {
     sec.classList.add('is-in');
     const intro = { c: 100, x: 0 };
-    gsap.timeline({ delay: 0.25 })
-      .to(intro, { x: 1, duration: 1.1, ease: 'expo.out', onUpdate: () => stage.style.setProperty('--scan-x', intro.x.toFixed(3)) }, 0)
-      .to(intro, { c: start, duration: 1.3, ease: 'power3.inOut', onUpdate: () => { if (built === 0) apply(intro.c); } }, 0.15);
+    gsap.timeline({ delay: 0.2 })
+      .to(intro, { x: 1, duration: 0.6, ease: 'expo.out', onUpdate: () => stage.style.setProperty('--scan-x', intro.x.toFixed(3)) }, 0)
+      .to(intro, { c: start, duration: 0.9, ease: 'expo.out', onUpdate: () => { if (built === 0) apply(intro.c); } }, 0.1);
   });
 
   // 2) gradnja: etaža po etaža, do vrha

@@ -79,6 +79,34 @@ function zaec_hero_preload() {
 }
 add_action( 'wp_head', 'zaec_hero_preload', 2 );
 
+/**
+ * Nacrt djelatnosti (design/02): oba pogleda lista kao inline SVG (stilovi i fontovi stranice moraju djelovati
+ * na tekst u crtežu, zato ne <img>). Generira ih tools/art/nacrt/build.mjs. Nema lista → null.
+ */
+/** Sličica lista nacrta (kazalo na hubu): URL ili ''. */
+function zaec_nacrt_thumb( $l ) {
+	$slug = (string) ( $l['slug'] ?? '' );
+	if ( '' === $slug || 'industry' !== ( $l['type'] ?? '' ) ) {
+		return '';
+	}
+	$file = 'nacrt/' . sanitize_file_name( $slug ) . '-t.svg';
+	return is_readable( ZAEC_THEME_DIR . '/assets/img/' . $file ) ? zaec_img( $file ) : '';
+}
+
+function zaec_nacrt( $l ) {
+	// stranica djelatnosti: njezin list; hub djelatnosti: naslovni list kompleta (kazalo)
+	$type = (string) ( $l['type'] ?? '' );
+	$slug = 'hub-industries' === $type ? 'djelatnosti' : (string) ( $l['slug'] ?? '' );
+	if ( '' === $slug || ! in_array( $type, array( 'industry', 'hub-industries' ), true ) ) {
+		return null;
+	}
+	$dir = ZAEC_THEME_DIR . '/assets/img/nacrt/' . sanitize_file_name( $slug );
+	if ( ! is_readable( $dir . '-d.svg' ) || ! is_readable( $dir . '-m.svg' ) ) {
+		return null;
+	}
+	return array( (string) file_get_contents( $dir . '-d.svg' ), (string) file_get_contents( $dir . '-m.svg' ) );
+}
+
 /** Blokovi koje potpisni hero preuzima u svoju scenu (npr. anatomija na Izradi) ne ponavljaju se ispod. */
 function zaec_hero_prepare( $l ) {
 	$kind = zaec_hero_kind( $l );
@@ -89,12 +117,30 @@ function zaec_hero_prepare( $l ) {
 	return $l;
 }
 
-/** Blok "Kratki odgovor" (za AI pretraživače i brze čitače) — dijele ga sve vrste heroja. */
-function zaec_hero_answer( $l, $class = '' ) {
-	if ( empty( $l['answer'] ) ) {
+/**
+ * Blok „Ukratko“: sažetak stranice (koristan i tražilicama i AI-ju) kao tipografski blok, bez kartice, okvira i
+ * ikone (design/04, točka 9). Ispisuje ga zaec_render_blocks iza prvog bloka (druga sekcija stranice; bez blokova
+ * odmah iza heroja), najviše jednom po stranici.
+ */
+function zaec_answer_block( $l ) {
+	static $done = false;
+	if ( $done || empty( $l['answer'] ) ) {
 		return;
 	}
-	echo '<div class="wrap ' . esc_attr( $class ) . '"><div class="answer" data-reveal><p class="mono answer-k">';
-	zaec_the_icon( 'lightbulb', 16 );
-	echo ' Kratki odgovor</p><p>' . esc_html( $l['answer'] ) . '</p></div></div>';
+	$done = true;
+	echo '<section class="block block--ukratko"><div class="wrap"><div class="ukratko" data-reveal><p class="kicker">Ukratko</p><p class="ukratko-t">' . esc_html( $l['answer'] ) . '</p></div></div></section>';
+}
+
+/**
+ * Pozivi u heroju podstranice: glavni (iz registra) + drugi korak "Pošaljite upit". Telefon nije u primarnim
+ * pozicijama (odluka vlasnika 8. 10. 2026: cilj je ispunjen upit); broj je na stranici Kontakt.
+ * Ako glavni poziv već vodi na upit, drugog nema.
+ */
+function zaec_hero_ctas( $cta, $href ) {
+	echo '<div class="phero-cta">';
+	echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore
+	if ( false === strpos( (string) $cta[1], 'kontakt' ) ) {
+		echo '<a class="btn btn--ghost" href="' . esc_url( zaec_inquiry_url() ) . '" data-track="cta_inquiry">' . zaec_icon( 'letter', 18 ) . ' Pošaljite upit</a>'; // phpcs:ignore
+	}
+	echo '</div>';
 }
