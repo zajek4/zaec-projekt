@@ -38,6 +38,7 @@ $posts_page = (int) get_option( 'page_for_posts' );
 					<?php foreach ( zaec_industries() as $i ) : ?>
 						<li><a href="<?php echo esc_url( zaec_url( $i['key'] ) ); ?>"><?php echo esc_html( $i['title'] ); ?></a></li>
 					<?php endforeach; ?>
+					<li class="foot-all"><a href="<?php echo esc_url( zaec_url( 'djelatnosti' ) ); ?>">Sve djelatnosti</a></li>
 				</ul>
 			</nav>
 			<nav class="foot-col" aria-label="Studio">

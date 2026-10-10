@@ -347,6 +347,8 @@ function zaec_registry_services() {
 					array( 'map-point', 'Google Business profil', 'Kategorije, usluge, područje rada, radno vrijeme, fotografije stvarnih radova.' ),
 					array( 'star', 'Sustav za recenzije', 'QR kartica i gotova poruka za WhatsApp: recenzija u 30 sekundi. Bez kupljenih ocjena.' ),
 					array( 'streets-map-point', 'Stranice s vrijednošću', 'Za usluge i mjesta koja stvarno pokrivate — ne stotine praznih „grad” stranica.' ),
+				// strategy/03 §2: obje stranice jednom rečenicom kažu kako se odnose i vode jedna na drugu
+				'lead'  => 'Prva poluga je Google Business profil. Ako vam za početak treba samo on, postavljamo ga i kao zasebnu uslugu: <a href="' . esc_url( zaec_url( 'usluge/google-business-profil' ) ) . '">Google Business profil</a>.',
 					array( 'clipboard-check', 'Dosljedni podaci', 'Isti naziv, adresa i telefon na webu, profilu i imenicima.' ),
 					array( 'chart', 'Mjesečni izvještaj', 'Pozivi, upiti, prikazi na karti, nove recenzije — jednostavno i bez žargona.' ),
 				),

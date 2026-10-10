@@ -564,7 +564,9 @@ function zaec_block_about( $b, $l, $alt ) {
 	if ( 'intro' === $part ) {
 		return;
 	}
-	echo '<section class="block' . esc_attr( 'facts' === $part ? $alt : ' block--paper2' ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Podaci</p><h2 class="h3">Tko stoji iza ZAEC-a</h2></div><div class="prose" data-reveal><table><tbody>';
+	echo '<section class="block' . esc_attr( 'facts' === $part ? $alt : ' block--paper2' ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Podaci</p>';
+	zaec_heading( 'Tko <em>stoji</em> iza ZAEC-a.' ); // pravi naslov bloka, ne fusnota uz tablicu (design/04 §2, O nama)
+	echo '</div><div class="prose" data-reveal><table><tbody>';
 	$rows = array( 'Naziv' => $o['legal_name'], 'Nositelj' => $o['owner_name'], 'Sjedište' => $o['address'] . ', ' . $o['postal_code'] . ' ' . $o['city'], 'Matični broj' => $o['mb'], 'OIB' => $o['oib'], 'Djelatnost (NKD)' => $o['nkd'] ? $o['nkd'] . ' — računalno programiranje' : '', 'Radno vrijeme' => $o['hours'], 'Iskustvo' => $o['experience'] ? $o['experience'] . ' godina rada na webu' : '' );
 	foreach ( $rows as $k => $v ) {
 		if ( $v ) {

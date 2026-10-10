@@ -148,7 +148,7 @@ function zaec_hero_ctas( $cta, $href ) {
 	echo '<div class="phero-cta">';
 	echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore
 	if ( false === strpos( (string) $cta[1], 'kontakt' ) ) {
-		echo '<a class="btn btn--ghost" href="' . esc_url( zaec_inquiry_url() ) . '" data-track="cta_inquiry">' . zaec_icon( 'letter', 18 ) . ' Pošaljite upit</a>'; // phpcs:ignore
+		echo '<a class="btn btn--ghost" href="' . esc_url( zaec_inquiry_url() ) . '" data-track="cta_inquiry">Pošaljite upit</a>'; // phpcs:ignore
 	}
 	echo '</div>';
 }

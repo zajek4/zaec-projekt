@@ -411,7 +411,7 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh--dark .btn--ghost { --btn-fg: var(--on-night); --btn-fill: var(--paper); --btn-fill-fg: var(--ink); }
 .eh--dark .btn--ghost::before { box-shadow: inset 0 0 0 1.5px rgba(238, 240, 247, 0.5); }
 .eh--dark .phero-trust { color: #b9c4ea; }
-.eh--dark .phero-trust .icon { color: var(--amber); }
+.eh--dark .phero-trust .icon { color: var(--abyss-muted); }
 
 /* hubovi: kontaktni arak — kadrovi stranica ispod */
 .eh-sheet { position: relative; margin-top: clamp(22px, 3vw, 40px); }

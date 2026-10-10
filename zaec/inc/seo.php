@@ -232,7 +232,7 @@ function zaec_schema_graph() {
 			'about'      => array( '@id' => zaec_org_id() ),
 		);
 		if ( $l && ! empty( $l['answer'] ) ) {
-			$page['speakable'] = array( '@type' => 'SpeakableSpecification', 'cssSelector' => array( '.answer p' ) );
+			$page['speakable'] = array( '@type' => 'SpeakableSpecification', 'cssSelector' => array( '.ukratko-t' ) );
 		}
 		$graph[] = $page;
 		$crumbs = zaec_breadcrumbs();

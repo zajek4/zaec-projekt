@@ -545,8 +545,8 @@ function zaec_registry_special() {
 		'seo_title'    => 'Izrada web stranica Osijek — za obrte i tvrtke | ZAEC',
 		'description'  => 'Izrada web stranica u Osijeku: web, SEO, Google Business profil i GA4 iz jednog mjesta. Sastanak uživo u Osijeku i Slavoniji, na daljinu za cijelu Hrvatsku.',
 		'kicker'       => 'Osijek · Slavonija',
-		'h1'           => 'Izrada web stranica u <em>Osijeku</em> — za tvrtke koje žele više poziva.',
-		'lead'         => 'ZAEC je web studio iz Osijeka. Radimo web stranice, SEO i Google profile za obrte i tvrtke u Osijeku, Osječko-baranjskoj županiji i Slavoniji — uživo, za istim stolom. Za ostatak Hrvatske radimo na daljinu.',
+		'h1'           => 'Izrada web stranica u <em>Osijeku</em>.', // design/04 §2: naslov završava gradom, cilj ide u uvod
+		'lead'         => 'Za tvrtke koje žele više poziva, ne samo novi izgled. ZAEC je web studio iz Osijeka: radimo web stranice, SEO i Google profile za obrte i tvrtke u Osijeku, Osječko-baranjskoj županiji i Slavoniji — uživo, za istim stolom. Za ostatak Hrvatske radimo na daljinu.',
 		'answer'       => 'ZAEC je web studio sa sjedištem u Osijeku (Čvrsnička ulica 29 A). Izrađuje web stranice, webshopove i landing stranice te radi SEO, Google Business profil i GA4 mjerenje za tvrtke u Osijeku, Osječko-baranjskoj županiji i cijeloj Hrvatskoj.',
 		'image'        => 'world/usluga-kontakt.webp',
 		'image_alt'    => 'Osijek noću iz zraka: grad u plavom nacrtu, osvijetljena konkatedrala i svjetlosni signal s njezina tornja.',
