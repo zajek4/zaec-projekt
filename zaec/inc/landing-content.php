@@ -175,6 +175,7 @@ function zaec_registry_services() {
 		'lead'         => 'Katalog, plaćanje, dostava i mjerenje prodaje kao jedna cjelina. Prvo definiramo funkcije i pravila, zatim fiksnu cijenu — jer webshop nije „samo još jedna stranica”.',
 		'answer'       => 'ZAEC radi webshopove na WooCommerceu: katalog i varijacije, kartično plaćanje preko pružatelja za hrvatsko tržište, dostavu, pravne stranice i GA4 e-commerce praćenje (pregled proizvoda, košarica, kupnja). Opseg se definira prije cijene, a cijena je fiksna u pisanoj ponudi.',
 		'image'        => 'world/usluga-webshop.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Mobitel s webshopom i kartica za plaćanje; paketi izlaze iz ekrana i odlaze svjetlosnim lukovima prema kupcima.',
 		'cta'          => array( 'Definirajmo opseg', 'cijene#konfigurator' ),
 		'blocks'       => array(
@@ -227,6 +228,7 @@ function zaec_registry_services() {
 		'lead'         => 'Jedna ponuda, jedna poruka, jedan gumb. Za oglase, kampanje i nove usluge — stranica koja posjetitelja vodi ravno do upita i javlja oglasnom sustavu svaki rezultat.',
 		'answer'       => 'Landing stranica je jedna stranica s jednim ciljem (upit, poziv, prijava ili kupnja), bez izbornika i sadržaja koji odvlači pažnju. ZAEC je slaže uz tekst usklađen s oglasom, brzu mobilnu izvedbu i praćenje konverzija za Google Ads i Meta.',
 		'image'        => 'world/usluga-landing.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Jedan jantarni gumb sa strelicom u noći prema kojem se slijevaju deseci svjetlosnih tragova — jedna ponuda, jedan cilj.',
 		'cta'          => array( 'Procijenite landing', 'cijene#konfigurator' ),
 		'blocks'       => array(
@@ -284,6 +286,7 @@ function zaec_registry_services() {
 		'lead'         => 'Pozicije su sredstvo, a ne cilj. Radimo na onome što Google stvarno nagrađuje — tehnički ispravnoj, brzoj stranici koja jasno odgovara na ono što ljudi traže — i mjerimo koliko upita iz toga nastaje.',
 		'answer'       => 'SEO optimizacija kod ZAEC-a uključuje tehnički audit (indeksiranje, brzina, struktura), strukturu stranica po uslugama i lokacijama, sadržaj koji odgovara na stvarne pretrage, schema markup i interno povezivanje. Napredak se prati kroz Search Console i GA4 — prikazi, klikovi i upiti.',
 		'image'        => 'world/usluga-seo.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Povećalo iznad grada u nacrtu izdvaja jednu osvijetljenu zgradu — vaš obrt — prema kojoj stižu upiti.',
 		'cta'          => array( 'Besplatna SEO provjera', 'provjera-vidljivosti' ),
 		'blocks'       => array(
@@ -326,6 +329,7 @@ function zaec_registry_services() {
 		'lead'         => 'Kad netko upiše „električar Osijek”, Google prvo pokaže kartu s tri tvrtke. O tome tko je tamo najviše odlučuju profil, recenzije i web. Radimo na sva tri — redom kojim donose najviše.',
 		'answer'       => 'Lokalni SEO je optimizacija za pretrage s lokalnom namjerom („usluga + grad”, „u blizini”). Uključuje Google Business profil, sustav za recenzije, stranice za usluge i mjesta, dosljedne podatke (naziv, adresa, telefon) i mjerenje poziva s karte i weba.',
 		'image'        => 'world/usluga-lokalno.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Osijek u plavom nacrtu: oznaka na karti s krugom područja rada, prema kojoj iz okolice stižu upiti; desno osvijetljena konkatedrala.',
 		'cta'          => array( 'Besplatna provjera vidljivosti', 'provjera-vidljivosti' ),
 		'blocks'       => array(
@@ -343,12 +347,12 @@ function zaec_registry_services() {
 			array(
 				'type'  => 'deliver',
 				'title' => 'Pet poluga <em>lokalne</em> vidljivosti.',
+				// strategy/03 §2: obje stranice jednom rečenicom kažu kako se odnose i vode jedna na drugu
+				'lead'  => 'Prva poluga je Google Business profil. Ako vam za početak treba samo on, postavljamo ga i kao zasebnu uslugu: <a href="' . esc_url( zaec_url( 'usluge/google-business-profil' ) ) . '">Google Business profil</a>.',
 				'items' => array(
 					array( 'map-point', 'Google Business profil', 'Kategorije, usluge, područje rada, radno vrijeme, fotografije stvarnih radova.' ),
 					array( 'star', 'Sustav za recenzije', 'QR kartica i gotova poruka za WhatsApp: recenzija u 30 sekundi. Bez kupljenih ocjena.' ),
 					array( 'streets-map-point', 'Stranice s vrijednošću', 'Za usluge i mjesta koja stvarno pokrivate — ne stotine praznih „grad” stranica.' ),
-				// strategy/03 §2: obje stranice jednom rečenicom kažu kako se odnose i vode jedna na drugu
-				'lead'  => 'Prva poluga je Google Business profil. Ako vam za početak treba samo on, postavljamo ga i kao zasebnu uslugu: <a href="' . esc_url( zaec_url( 'usluge/google-business-profil' ) ) . '">Google Business profil</a>.',
 					array( 'clipboard-check', 'Dosljedni podaci', 'Isti naziv, adresa i telefon na webu, profilu i imenicima.' ),
 					array( 'chart', 'Mjesečni izvještaj', 'Pozivi, upiti, prikazi na karti, nove recenzije — jednostavno i bez žargona.' ),
 				),
@@ -377,6 +381,7 @@ function zaec_registry_services() {
 		'lead'         => 'Za većinu lokalnih usluga profil na Google karti donosi više poziva od same web stranice. Postavimo ga ispravno, povežemo s webom i održavamo ga živim.',
 		'answer'       => 'Google Business profil (bivši Google Moja tvrtka) je besplatni profil tvrtke na Google pretrazi i Kartama. ZAEC ga postavlja ili popravlja: primarna i sporedne kategorije, usluge, područje rada, fotografije, objave, poveznica na pravu stranicu weba i sustav za prikupljanje stvarnih recenzija.',
 		'image'        => 'world/usluga-gbp.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Kartica profila nad oznakom na karti u nacrtu: fotografija radnje, zvjezdice, gumbi za poziv, rutu i web, radno vrijeme i recenzije.',
 		'cta'          => array( 'Želim uređen profil', 'kontakt#upit' ),
 		'blocks'       => array(
@@ -426,6 +431,7 @@ function zaec_registry_services() {
 		'lead'         => 'Sve više ljudi pita AI asistente „tko je dobar vodoinstalater u Osijeku”. Google AI odgovori prikazuju se i u Hrvatskoj. Provjeravamo što AI zna o vama, ispravljamo pogrešne podatke i jačamo signale koje AI stvarno koristi.',
 		'answer'       => 'AI vidljivost (GEO — Generative Engine Optimization) znači da vas AI asistenti poput ChatGPT-a, Geminija, Perplexityja i Google AI odgovora mogu pronaći, točno opisati i preporučiti. Temelji su isti kao kod SEO-a — jasan sadržaj, schema, dosljedni podaci i recenzije — uz redovitu provjeru što AI stvarno odgovara.',
 		'image'        => 'world/usluga-ai.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Odgovor AI asistenta u kojem je istaknut vaš obrt; svjetlo do njega teče iz tri izvora u nacrtu: web stranice, karte i recenzija.',
 		'cta'          => array( 'Provjerite kako vas AI vidi', 'provjera-vidljivosti' ),
 		'blocks'       => array(
@@ -476,6 +482,7 @@ function zaec_registry_services() {
 		'lead'         => 'Bez mjerenja svaka odluka je nagađanje. Postavljamo GA4 i Google Tag Manager tako da vidite pozive, upite i prodaju — po kanalu, kampanji i stranici — uz poštivanje privole posjetitelja.',
 		'answer'       => 'ZAEC postavlja Google Analytics 4 i Google Tag Manager: praćenje klikova na poziv i WhatsApp, poslanih formi, GA4 e-commerce događaja (view_item, add_to_cart, begin_checkout, purchase s vrijednošću), Consent Mode v2, konverzije za Google Ads i Meta te pregledan izvještaj u Looker Studiju.',
 		'image'        => 'world/usluga-ga4.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Tokovi posjeta ulaze u nacrt izvještaja i postaju stupci; najviši, jantarni stupac označava kanal koji donosi upite.',
 		'cta'          => array( 'Provjera postojećeg mjerenja', 'kontakt#upit' ),
 		'blocks'       => array(
@@ -538,6 +545,7 @@ function zaec_registry_services() {
 		'lead'         => 'Spora stranica gubi posjetitelje prije nego vide ijednu riječ — posebno na mobitelu i slabom signalu. Mjerimo stvarne Core Web Vitals i popravljamo ono što ih ruši.',
 		'answer'       => 'Ubrzanje web stranice kod ZAEC-a počinje mjerenjem Core Web Vitals (LCP, INP, CLS) iz stvarnih podataka korisnika, a zatim optimiziramo slike (moderni formati, prave dimenzije), fontove, skripte, dodatke i cache. Cilj su dobre vrijednosti na mobitelu, ne samo visok broj u alatu.',
 		'image'        => 'world/usluga-brzina.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Web stranica u pokretu: svjetlosni tragovi brzine prolaze kroz ekran koji se učitava od nacrta do gotovog prikaza.',
 		'cta'          => array( 'Besplatno mjerenje brzine', 'provjera-vidljivosti' ),
 		'blocks'       => array(
@@ -583,6 +591,7 @@ function zaec_registry_services() {
 		'lead'         => 'Web koji nitko ne održava s vremenom postaje spor, nesiguran ili prestaje slati upite — a to nitko ne primijeti. Održavanje je izbor, ne uvjet izrade, s opsegom crno na bijelo.',
 		'answer'       => 'Održavanje web stranice kod ZAEC-a uključuje ažuriranja WordPressa i dodataka uz provjeru rada, sigurnosne kopije izvan servera, nadzor dostupnosti, provjeru forme i brzine te, ovisno o razini, izmjene sadržaja i mjesečni pregled upita. Bez ugovorne obveze.',
 		'image'        => 'world/usluga-odrzavanje.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Slojevi web stranice složeni jedan iznad drugog; svjetlosni prsten ih provjerava, a iza su sigurnosne kopije u nacrtu.',
 		'image_card'   => true,
 		'dark'         => true,

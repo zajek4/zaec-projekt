@@ -33,7 +33,8 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 		if ( 0 !== strpos( $zaec_k, $l['key'] . '/' ) ) {
 			continue;
 		}
-		// djelatnosti: kazalo listova nacrta (sitni list bez oznaka), ostalo: kadar stranice
+		// listovi (djelatnosti, usluge s 'nacrt'): sitni list bez oznaka; ostalo: kadar stranice
+		$zaec_r['key']   = $zaec_k;
 		$zaec_r['thumb'] = zaec_nacrt_thumb( $zaec_r );
 		if ( $zaec_r['thumb'] || ! empty( $zaec_r['image'] ) ) {
 			$sheet[ $zaec_k ] = $zaec_r;

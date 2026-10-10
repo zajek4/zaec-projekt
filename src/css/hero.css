@@ -348,6 +348,36 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 @media (min-width: 761px) and (max-width: 1100px) and (max-aspect-ratio: 1/1) {
   .nacrt svg.m text { font-size: 15px; }
 }
+/* listovi usluga: predmet usluge (rezultat pretrage, karta, odgovor AI-ja…) nacrtan kao kostur, a ono što je stvarno
+   (naš rezultat, naš profil) toplim svjetlom i pravim tekstom u Archivu. Veličina stvarnog teksta je dio crteža
+   (--fs u jedinicama lista), pa se ne mijenja s pogledom kao oznake (docs/hero-art-direction.md, listovi usluga) */
+.nacrt .sk, .nacrt .sk-b { stroke: var(--l); stroke-opacity: 0.2; stroke-width: 8; stroke-linecap: round; fill: none; }
+.nacrt .sk-b { stroke-width: 13; stroke-opacity: 0.28; }
+.nacrt .lit { fill: color-mix(in srgb, var(--lampc) 6%, transparent); stroke: var(--lampc); stroke-opacity: 0.45; stroke-width: 1.2; }
+.nacrt .lit-ln { stroke: var(--lampc); stroke-opacity: 0.7; stroke-width: 1.4; fill: none; }
+.nacrt .lit-star { fill: var(--lampc); fill-opacity: 0.85; stroke: none; }
+.nacrt svg text:is(.t-real, .t-ui) { font-family: var(--font-sans); font-size: var(--fs); letter-spacing: 0; stroke-width: 4px; }
+.nacrt .t-real { fill: var(--lampc); }
+.nacrt .t-h { font-weight: 600; letter-spacing: -0.01em; }
+.nacrt .t-b, .nacrt .t-lamp { font-weight: 700; }
+.nacrt .t-dim2 { fill-opacity: 0.72; }
+.nacrt .t-p { fill-opacity: 0.9; }
+.nacrt .map-w { fill: var(--l); fill-opacity: 0.07; stroke: var(--l); stroke-opacity: 0.45; stroke-width: 1; }
+.nacrt .map-0 { stroke: var(--l); stroke-opacity: 0.55; stroke-width: 1.8; fill: none; stroke-linejoin: round; }
+.nacrt .map-1 { stroke: var(--l); stroke-opacity: 0.4; stroke-width: 1.3; fill: none; stroke-linejoin: round; }
+.nacrt .map-2 { stroke: var(--l); stroke-opacity: 0.16; stroke-width: 0.8; fill: none; stroke-linejoin: round; }
+/* izlog noću (djelatnosti s ljudima i prostorom): toplo staklo, siluete unutrašnjosti, svjetlo na pločniku */
+.nacrt .win { fill: var(--sheet); stroke: var(--l); stroke-opacity: 0.55; stroke-width: 1.1; }
+.nacrt .glow { stroke: none; }
+.nacrt .spill { fill: var(--lampc); fill-opacity: 0.14; stroke: none; }
+.nacrt .sil { fill: #1b1a26; stroke: none; }
+.nacrt .sil-ln { stroke: #1b1a26; stroke-width: 3; fill: none; }
+.nacrt .mirror { fill: #fff1d6; fill-opacity: 0.85; stroke: #1b1a26; stroke-width: 5; }
+.nacrt .ln-glass { stroke: var(--l); stroke-opacity: 0.5; stroke-width: 1.2; }
+.nacrt .plate { fill: #1b1a26; stroke: none; }
+.nacrt svg text.t-plate { font-family: var(--font-mono); font-size: var(--fs); font-weight: 700; letter-spacing: 0.04em; fill: var(--lampc); stroke: none; }
+.nacrt .t-sign { letter-spacing: 0.1em; }
+.nacrt .legend .t-small { letter-spacing: 0.14em; }
 .eh-slate {
   position: absolute; z-index: 1; left: clamp(18px, 2vw, 28px); bottom: clamp(16px, 1.8vw, 24px); right: 22%;
   display: flex; align-items: baseline; gap: 14px; margin: 0;

@@ -19,13 +19,13 @@ export const TB = [732, 836, 440, 112]; // sastavnica
 export const CH = { call: 10.9, web: 9.9 };
 
 // pune crte se iscrtavaju (pathLength=1 → stroke-dashoffset 1 → 0); isprekidane i šrafure samo prozirnošću
-const SOLID = new Set(['cut', 'cut-w', 'tile', 'ln-2', 'ln-dim', 'ln-lead', 'lamp-fill', 'lamp-ln', 'ln-frame']);
+const SOLID = new Set(['cut', 'cut-w', 'tile', 'ln-2', 'ln-dim', 'ln-lead', 'lamp-fill', 'lamp-ln', 'ln-frame', 'sk', 'sk-b', 'lit-ln']);
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 // koordinate na cijelu jedinicu (≈ 0,8 px na 1440), male vrijednosti (polumjeri točaka, zarezi) na desetinku
 export const f = (n) => (Math.abs(n) < 20 ? Math.round(n * 10) / 10 : Math.round(n)).toString();
 // klase koje u CSS-u već imaju fill: none — atribut se ne ponavlja na svakom elementu
-const NOFILL = new Set(['ln-h', 'ln-2', 'ln-3', 'ln-beyond', 'cut-w', 'ln-con', 'ln-frame', 'lamp-ln', 'ln-dim', 'ln-lead', 'ln-sec']);
+const NOFILL = new Set(['ln-h', 'ln-2', 'ln-3', 'ln-beyond', 'cut-w', 'ln-con', 'ln-frame', 'lamp-ln', 'ln-dim', 'ln-lead', 'ln-sec', 'sk', 'sk-b', 'lit-ln']);
 const fa = (cls, attrs) => (NOFILL.has(cls.split(' ')[0]) ? attrs.replace(' fill="none"', '') : attrs);
 const pts = (list) => list.map(([x, y]) => `${f(x)} ${f(y)}`).join(' L');
 
@@ -70,6 +70,24 @@ export function builder(meta, view, tvb = meta.tvb) {
     },
     text(x, y, s, cls, attrs = '') {
       o.push(`<text class="${cls}" x="${f(x)}" y="${f(y)}"${attrs}>${esc(s)}</text>`);
+    },
+    /** Stvarni tekst predmeta (sučelje, natpis): Archivo, vlastita veličina u jedinicama crteža (ne mijenja se po pogledu). */
+    say(x, y, s, size, cls = 't-ui', attrs = '') {
+      o.push(`<text class="${cls}" x="${f(x)}" y="${f(y)}" style="--fs:${size}px"${attrs}>${esc(s)}</text>`);
+    },
+    /** Kostur retka teksta (nacrt sučelja): zaobljena crta od x1 do x2. */
+    sk(x1, x2, y, cls = 'sk') {
+      b.line(x1, y, x2, y, cls);
+    },
+    /** Zvjezdica s pet krakova (ocjena). */
+    star(cx, cy, r, cls = 'ln-2') {
+      const p = [];
+      for (let i = 0; i < 10; i++) {
+        const a = -Math.PI / 2 + (i * Math.PI) / 5;
+        const rr = i % 2 ? r * 0.45 : r;
+        p.push([cx + rr * Math.cos(a), cy + rr * Math.sin(a)]);
+      }
+      b.d(`M${p.map(([x, y]) => `${Math.round(x * 10) / 10} ${Math.round(y * 10) / 10}`).join('L')}Z`, cls);
     },
     // skupina koraka iscrtavanja (nd-1 osi … nd-6 oznake)
     g(cls, fn) {
@@ -182,7 +200,7 @@ export function builder(meta, view, tvb = meta.tvb) {
       // tbFs: veći tekst sastavnice gdje je kadar manji (hub); inline stil nadjačava tabletnih 17 u
       const st = meta.tbFs ? ` style="font-size:${meta.tbFs}px;letter-spacing:.02em"` : ''; // uži razmak: retci ostaju u okviru 440 u
       // list izvan kompleta (O nama) ima svoje retke sastavnice: [zaglavlje, broj lista, naziv, pogled, donji red]
-      const [head, no, name, sub, foot] = meta.tb || ['ZAEC · NACRT DJELATNOSTI', `LIST ${meta.list}/${String(TOTAL).padStart(2, '0')}`, meta.name, meta.view, `WEB · ${meta.web}`];
+      const [head, no, name, sub, foot] = meta.tb || [meta.head || 'ZAEC · NACRT DJELATNOSTI', `LIST ${meta.list}/${String(TOTAL).padStart(2, '0')}`, meta.name, meta.view, `WEB · ${meta.web}`];
       b.text(bx + 12, by + 21, head, 't-tb', st);
       b.text(bx + 322, by + 21, no, 't-tb', st);
       b.text(bx + 12, by + 58, name, 't-tb-b');
@@ -234,6 +252,11 @@ const THUMB_CSS = `svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
 .lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
 .ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
 .water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.sk,.sk-b{stroke:var(--l);stroke-opacity:.2;stroke-width:8;stroke-linecap:round;fill:none}.sk-b{stroke-width:13;stroke-opacity:.28}
+.lit{fill:rgba(255,207,138,.06);stroke:var(--lamp);stroke-opacity:.45;stroke-width:2.4}.lit-ln{stroke:var(--lamp);stroke-opacity:.7;stroke-width:2.8;fill:none}.lit-star{fill:var(--lamp);fill-opacity:.85;stroke:none}
+.map-w{fill:rgba(227,233,255,.07);stroke:var(--l);stroke-opacity:.45;stroke-width:2}.map-0,.map-1,.map-2{stroke:var(--l);fill:none;stroke-linejoin:round}.map-0{stroke-opacity:.55;stroke-width:3.6}.map-1{stroke-opacity:.4;stroke-width:2.6}.map-2{stroke-opacity:.16;stroke-width:1.6}
+.win{fill:var(--sheet);stroke:var(--l);stroke-opacity:.55;stroke-width:2.2}.glow{stroke:none}.spill{fill:var(--lamp);fill-opacity:.14;stroke:none}.ln-glass{stroke:var(--l);stroke-opacity:.5;stroke-width:2.4}
+.sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}`;
 
 // uzastopni pravokutnici i crte iste klase bez vlastitih atributa (zidovi, šrafure, sjedala) postaju jedan <path>

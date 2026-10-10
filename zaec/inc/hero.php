@@ -83,10 +83,13 @@ add_action( 'wp_head', 'zaec_hero_preload', 2 );
  * Nacrt djelatnosti (design/02): oba pogleda lista kao inline SVG (stilovi i fontovi stranice moraju djelovati
  * na tekst u crtežu, zato ne <img>). Generira ih tools/art/nacrt/build.mjs. Nema lista → null.
  */
-/** Sličica lista nacrta (kazalo na hubu): URL ili ''. */
+/** Sličica lista (arak na hubu): djelatnost ili stranica s 'nacrt' (usluge); URL ili ''. Slug kao u zaec_nacrt(). */
 function zaec_nacrt_thumb( $l ) {
-	$slug = (string) ( $l['slug'] ?? '' );
-	if ( '' === $slug || 'industry' !== ( $l['type'] ?? '' ) ) {
+	if ( 'industry' !== ( $l['type'] ?? '' ) && empty( $l['nacrt'] ) ) {
+		return '';
+	}
+	$slug = (string) ( $l['slug'] ?? basename( (string) ( $l['key'] ?? '' ) ) );
+	if ( '' === $slug ) {
 		return '';
 	}
 	$file = 'nacrt/' . sanitize_file_name( $slug ) . '-t.svg';

@@ -1,0 +1,48 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="520 362 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="gridU4m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU4m)"/>
+<g class="nd nd-1">
+<line class="ln-con" x1="530" y1="-20" x2="530" y2="1020"/>
+<line class="ln-beyond" x1="530" y1="806" x2="1210" y2="806"/>
+</g>
+<g class="nd nd-2">
+<circle class="ln-2" pathLength="1" cx="578" cy="854" r="16"/>
+<line class="sk" pathLength="1" x1="610" y1="846" x2="728" y2="846"/>
+<line class="sk" pathLength="1" x1="610" y1="870" x2="905" y2="870"/>
+<line class="sk-b" pathLength="1" x1="560" y1="926" x2="1044" y2="926"/>
+</g>
+<g class="nd nd-3">
+<rect class="lit" x="530" y="186" width="650" height="594" rx="6"/>
+<text class="t-real t-b" x="582" y="246" style="--fs:22px" text-anchor="middle">V</text>
+<text class="t-real" x="622" y="231" style="--fs:25px">Vaš obrt</text>
+<text class="t-real t-dim2" x="622" y="263" style="--fs:22px">vasobrt.hr › hitne-intervencije</text>
+<text class="t-real t-h" x="560" y="348" style="--fs:50px">Hitne intervencije</text>
+<text class="t-real t-h" x="560" y="408" style="--fs:50px">vodoinstalatera</text>
+<text class="t-real t-h" x="560" y="468" style="--fs:50px">u Osijeku · 0–24</text>
+<text class="t-real t-p" x="560" y="528" style="--fs:26px">Curi bojler ili je pukla cijev? Dolazimo isti</text>
+<text class="t-real t-p" x="560" y="564" style="--fs:26px">dan, a cijenu izlaska znate unaprijed.</text>
+<path class="lit-star" d="M573 600L576.2 607.6L584.4 608.3L578.1 613.7L580.1 621.7L573 617.4L565.9 621.7L567.9 613.7L561.6 608.3L569.8 607.6Z"/>
+<path class="lit-star" d="M604 600L607.2 607.6L615.4 608.3L609.1 613.7L611.1 621.7L604 617.4L596.9 621.7L598.9 613.7L592.6 608.3L600.8 607.6Z"/>
+<path class="lit-star" d="M635 600L638.2 607.6L646.4 608.3L640.1 613.7L642.1 621.7L635 617.4L627.9 621.7L629.9 613.7L623.6 608.3L631.8 607.6Z"/>
+<path class="lit-star" d="M666 600L669.2 607.6L677.4 608.3L671.1 613.7L673.1 621.7L666 617.4L658.9 621.7L660.9 613.7L654.6 608.3L662.8 607.6Z"/>
+<path class="lit-star" d="M697 600L700.2 607.6L708.4 608.3L702.1 613.7L704.1 621.7L697 617.4L689.9 621.7L691.9 613.7L685.6 608.3L693.8 607.6Z"/>
+<line class="sk" pathLength="1" x1="736" y1="612" x2="890" y2="612"/>
+<rect class="lit-ln" pathLength="1" x="560" y="654" width="184" height="58" rx="29"/>
+<text class="t-real t-dim2" x="652" y="692" style="--fs:23px" text-anchor="middle">Web stranica</text>
+<rect class="lit-ln" pathLength="1" x="760" y="654" width="124" height="58" rx="29"/>
+<text class="t-real t-dim2" x="822" y="692" style="--fs:23px" text-anchor="middle">Upute</text>
+</g>
+<g class="nd nd-4">
+<rect class="lamp-fill" pathLength="1" x="900" y="654" width="150" height="58" rx="29"/>
+<text class="t-real t-lamp" x="975" y="692" style="--fs:23px" text-anchor="middle">Nazovi</text>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<circle class="halo" cx="975" cy="683" r="50"/>
+<circle class="dot" cx="975" cy="683" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="975,691 975,776 632,776"/>
+<text class="t-call" x="632" y="733">08:12 · POZIV</text>
+<text class="t-web" x="632" y="762">„hitni vodoinstalater“</text>
+</g>
+</g>
+</svg>
