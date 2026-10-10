@@ -308,7 +308,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   // oznake gradova i mjesta ne smiju se preklapati: kad se karta udaljava, manje važne se povuku
   // (Osijek prvi, zatim gradovi, pa mjesta redom važnosti)
   const prio = (L) => (L.el.classList.contains('sl--home') ? 0 : L.key.startsWith('city-') ? 1 : L.key.startsWith('town-') ? 2 + +L.key.slice(5) * 0.01 : -1);
-  labels.forEach((L) => { L.p = prio(L); });
+  labels.forEach((L) => { L.p = prio(L); L.mid = !/sl--(ch|out|gate|dim|layer|you)\b/.test(L.el.className); });
   const collidable = labels.filter((L) => L.p >= 0).sort((a, b) => a.p - b.p);
   const boxes = [];
   // sadržaj ima prednost pred oznakama: oznaka koja bi završila ispod njega (npr. forma u završnoj sceni) se povlači
@@ -379,6 +379,11 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
           o *= 1 - smooth(0.8, 0.95, Math.abs(v3.x));
           const x = Math.round((v3.x * 0.5 + 0.5) * vw);
           const y = Math.round((-v3.y * 0.5 + 0.5) * vh);
+          // centrirana oznaka: nestaje prije nego što joj rub dotakne rub ekrana (npr. HOTEL OSIJEK na mobitelu)
+          if (L.mid) {
+            if (!L.w) { L.w = L.el.offsetWidth; L.h = L.el.offsetHeight; }
+            o *= smooth(0, 14, Math.min(x, vw - x) - L.w / 2);
+          }
           if (x !== L.x || y !== L.y) {
             L.el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
             L.x = x;

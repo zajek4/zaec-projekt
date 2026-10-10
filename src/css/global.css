@@ -447,7 +447,8 @@ p { text-wrap: pretty; }
 .cb-form:active .cb-go::before { transform: skewX(var(--btn-skew)) scale(0.96); }
 .cb-form:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 @media (max-width: 760px) { .call-bar { display: block; } }
-@media (max-width: 340px) { .cb-copy small { display: none; } .call-bar .cb-form { justify-content: flex-end; } }
+/* uže od ~375 px natpis bi pao u tri retka: ostaje samo „bez obveze” */
+@media (max-width: 374px) { .cb-long { display: none; } }
 
 /* ───────── sekcije ───────── */
 .section { position: relative; padding-block: clamp(80px, 12vw, 180px); }

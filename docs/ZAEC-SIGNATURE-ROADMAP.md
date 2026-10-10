@@ -10,6 +10,8 @@ Ništa se ne spaja u `main` bez odobrenja. Produkcijski WordPress se ne dira.
    - normalno: `npm ci && npm run build`
    - ako `registry.npmjs.org` nije dostupan (mrežna pravila cloud okruženja): `bash tools/offline-kit/setup.sh && bun tools/offline-kit/build.mjs`
      (izvori three r186 / gsap 3.15.0 / lenis 1.3.26 s GitHuba, fontovi iz postojećeg builda; izlaz je isti raspored kao Vite).
+     Kit nakon Buna snižava izlaz na ES2020 globalnim TypeScriptom (`ZAEC_TS`) i provjerava ga acornom (`ZAEC_ACORN`),
+     kao `target: 'es2020'` u Viteu. Prije spajanja u `main` ipak pokrenuti `npm ci && npm run build` gdje je registar dostupan.
 3. Lokalni WordPress za vizualni QA (bez MySQL-a): WordPress 6.8.3 i `sqlite-database-integration` kloniraju se s GitHuba,
    tema se poveže simboličkom vezom, `php -S 127.0.0.1:8080 router.php`. Screenshotovi: Playwright + Chromium (swiftshader WebGL).
 4. Pročitati "Otvoreno" i "Sljedeći korak" na dnu.
@@ -135,6 +137,64 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   10 px. Naslovi stupaca i pravni red u footeru prešli na `--abyss-muted` (kontrast 6,8 : 1). Natpis usporedbe dobio
   tamnu podlogu (na mobitelu je prelazio preko svijetle polovice i nije se mogao pročitati).
 
+- **Primarni poziv (odluka, vrijedi za sve niti):** primarni gumb u sadržaju ostaje signal plava. Iznimka su
+  stalno vidljive pozicije na noći — gumb u zaglavlju i donja traka upita na mobitelu — gdje je gumb **papir**
+  (`--paper`, tinta) na `#04050b`. Tako je korisnik izričito tražio za mobilnu traku ("tamna #04050b, svijetli ili
+  diskretno topli CTA", bez zelenog "Nazovite" i intenzivno plavog gumba); papir drži jedan primarni poziv po
+  kadru i ne natječe se s plavim gumbom poglavlja. "Nazovite" nije ni u jednoj sticky ili primarnoj poziciji;
+  telefon je na stranici Kontakt i u stupcu kontakta u footeru. `zaec_inquiry_url()` vodi na formu na istoj
+  stranici (naslovnica `#kontakt`, Kontakt `#upit`) ili na formu na Kontaktu.
+- **Izbornik usluga:** tri skupine kao na naslovnici (Izgradnja → Vidljivost → Rast), isti URL-ovi; na mobitelu
+  naslovi skupina iznad popisa poveznica.
+- **Noćni prozori:** svaka zgrada ima razinu aktivnosti (dio gotovo taman, dio živ), stanovi se pale po jedinicama,
+  dio prozora tek prigušen ili hladan (zaslon); izlozi različito otvoreni. Bez treperenja (promjene svakih ~140 s
+  samo za mali dio jedinica).
+- **Konkatedrala, svjetlo:** vitraji s olovnim okvirima i manje zasićeni; krovovi u hladnoj noći, zidovi
+  topli, reflektori u podnožju u lepezama, pročelje prema trgu svjetlije; u otvorima zvonika iznad sata tek
+  naslutljivo toplo svjetlo iz dubine (od 2026-10-09 bez žaluzina, otvori su tamni).
+- **Konkatedrala, toranj prema fotografijama (2026-10-09):** 15 fotografija s Wikimedia Commons (popis iz
+  korisnikovog paketa, preuzete na njegov izričit zahtjev; `/mnt/project-files/zaec-signature/reference/foto/`,
+  izvori u `IZVORI-I-LICENCE.csv`). Visine su izmjerene na dvije fotografije s ispravljenim vertikalama, umjereno
+  prema vrhu šiljka na 90 m: sat ~40 m (bio 43,7), istaknuta galerija s mrežištem na konzolama iznad sata (~44,5 m)
+  i ispod dvostrukih prozora (~30 m), zvonik 46–60,5 m s kamenim nadsvjetlom pri dnu otvora (bio 49–61), vimperzi
+  do ~67 m, novi osmerokutni tambur 63,4–72,2 m sa slijepim lancetama, vijencem, galerijom i fijalama, šiljak
+  73,4–90 m (prije je počinjao na 64 m bez tambura). Na bočnim pročeljima tornja: velik prozor s mrežištem pod
+  vimpergom u prizemlju i dva niža lanceta uz veliki prozor prvog kata. GLB 76 → 89 kB, 6315 → 7519 trokuta.
+  Sjaj zvonika u shaderu prati nove visine otvora. Fotografije služe samo kao referenca, ne objavljuju se.
+- **Konkatedrala, osmerokut i portal (2026-10-09, fotografije korisnika s drona i s trga):** zvonik iznad galerije
+  sa satom više nije kocka nego osmerokut (apotema 4,35 m, 45–63,4 m). Na svakoj od osam stranica visok otvor
+  (46–59,4 m) bez stakla, mrežišta i crta, samo taman; u shaderu su uklonjene žaluzine koje su crtale vodoravne crte.
+  Nad otvorima vimperzi s kukicama, na uglovima fijale, a kutni stupovi kvadratnog dijela nastavljaju se kao
+  samostojni tornjići s malim vimperzima ispred kosih stranica (gusti vijenac fijala sa snimke dronom). Tambur ima
+  četverolist i okulus na izmjeničnim stranicama. Glavni portal je kameni: ~7 m širok, pet arhivolti na stupićima,
+  timpanon s reljefom, vrata 2,8 m s nadvratnikom na 6 m, vimperg s kukicama i okulusom do ~18,6 m, uz njega
+  kontrafori s kamenim uvlačenjem na ~5 m i ~16 m te gargojli na dnu vimperga (bez izmišljenih fijala uz portal).
+  Portali bočnih brodova i transepta dobili su arhivolte, timpanon i vimperg. "Šira": lađa, brodovi i transept već
+  su unutar ~0,5 m OSM tlocrta; proširen je donji kat tornja (15,1 m s kontraforima) i toranj pomaknut 2 m zapadnije
+  na OSM liniju pročelja. Visine sa snimke dronom (sat, galerije, zvonik, tambur, šiljak) potvrđene preklapanjem.
+  Model 7519 → 10487 trokuta, GLB 89 → 120 kB. Usporedba referenca / prije / poslije:
+  `qa/zavrsni-prolaz/11-konkatedrala-osmerokut-portal.jpg`. Omjeri portala procijenjeni su s fotografije snimljene
+  odozdo (perspektiva), pa su približni.
+- **Osijek iz zraka i centar (2026-10-09):** OSM podaci stigli preko Overture Maps izdanja 2026-09-23.1 (OSM snimak
+  2026-09-06; zadržane samo značajke s izvorom OpenStreetMap i njihovim OSM id-jevima, atribucija ostaje
+  "© OpenStreetMap suradnici"). **Centar:** unutar 600 m od konkatedrale novi izvoz ima 475 zgrada, stari 476 —
+  praznine oko trga su stvarna dvorišta i otvoreni prostori, pa ništa nije dodano izvan podataka (26 zgrada iz
+  relacija, 29 dvorišta). **Istok i zapad:** ulice se zapisuju za cijelo izgrađeno područje (Višnjevac do kraja
+  Donjega grada, 12 × 6,2 km), zgrade i dalje do 2,65 km. Dio ulice je osvijetljen samo gdje u okolici stvarno stoje
+  OSM zgrade (gustoća iz svih zgrada izvoza, u alatu; glavne ceste traže gušću izgrađenost), pa polja i ceste između
+  naselja ostaju tamne: 468 od 491 km ulica. Uz detaljnu kartu svjetla (±2,6 km) nova je široka karta cijelog grada.
+  Tlo je u tri dijela (detaljna, pojas pretapanja, široka) da svaki piksel čita jednu kartu; prva verzija koja je
+  čitala obje bila je ~20 % sporija iz zraka. Drava se reže na vidljivi dio (gasi se do 3,4 km). Podaci 256 → 309 kB
+  (gzip 188 → 222 kB).
+- **Snop s tornja:** najviše ~60 % prijašnje jačine, uži, iznad ~100 m prelazi u nit; križ ostaje vidljiv. Ostaje kao
+  motiv (fizički grad → digitalna točka), ali više ne nadjačava toranj.
+- **Lite način:** ostaje na `hardwareConcurrency <= 4`. Broj su logičke niti: 4 niti danas imaju slabiji prijenosnici
+  (i3, Celeron, stariji 4c/4t) sa slabom integriranom grafikom; snažniji 4-jezgreni imaju 8 niti. Regulator DPR-a
+  se sada i oporavlja (nakon ~10 s glatkih sličica), ne broji zagušenje dok se grad priprema, a razinu koja je
+  dvaput bila spora više ne vraća.
+- **QA N4 (daj-gric.jpg):** slika ostaje u temi namjerno: projekt je u wp-adminu prebačen u skicu, ne obrisan,
+  i njegov zapis i dalje pokazuje na nju. Javno se nigdje ne koristi.
+
 ## Faze
 
 | Faza | Stanje |
@@ -149,7 +209,7 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 8 Izrada web stranica | predano niti za podstranice |
 | 9 Djelatnosti, cijene, o nama, kontakt | djelomično: bug procjene ✓; ostalo predano niti za podstranice |
 | 10 SEO i sadržaj | otvoreno |
-| 11 Performanse, pristupačnost, QA | otvoreno |
+| 11 Performanse, pristupačnost, QA | ✓ nalazi QA za 3D/naslovnicu (V1, V2, S1–S8, S14, N1, N2, N5); mjerenje na stvarnim uređajima otvoreno |
 | 12 Završna art direkcija i PR | otvoreno |
 
 ## Testiranje (stvarno izvršeno)
@@ -184,6 +244,35 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   CPU renderer pretjeruje cijenu fragment shadera; na GPU-u mjeriti u fazi 11. Postojeći regulator spušta DPR
   kad sličica traje > 24 ms.
 
+- Završni prolaz (prozori, konkatedrala, CTA, QA): snimke prije/poslije 1440×900 (3600, 4050, 4500, 5400) i 390×844
+  (3714, 4150, 4558, 5458), krupni kadrovi konkatedrale i zvonika (DPR 2), nacrt 6300, mreža 7200, web 8100, mobitel
+  6302/7146; 360×640 i 320×640 za traku upita. `qa/zavrsni-prolaz/` u projektnim datotekama.
+- Build snižen na ES2020: 0 `static {}` i 0 logičkih dodjela u izlazu, acorn parsira sve datoteke kao ES2020;
+  naslovnica (3D kroz poglavlja) i konfigurator na /cijene/ rade u Chromiumu bez JS grešaka. U starom Safariju nije
+  provjereno (nema ga u okruženju).
+- Kontrast (vlastita skripta, približno: najbliža neprozirna pozadina): footer i sažetak procjene više se ne javljaju;
+  preostali nalazi su lažno pozitivni (gumbi crtaju ispunu pseudo-elementom) ili postojeći `.mk-in` (N3).
+- Tipkovnica: mobilni izbornik, 40 Tab koraka → 34 u izborniku, 3 na gumbu izbornika, 3 u pregledniku, 0 na stranici
+  iza; Escape vraća fokus, `inert` uklonjen. Vrh naslovnice: 25 Tab koraka, 0 nevidljivih.
+- Oznake: "Vaša tvrtka" na 390 i 1024 skrivena kad bi bila ispod forme, na 1440 vidljiva; oznake kanala na 1024 od
+  26 px od ruba (prije −10 px). Naslovi na 1920: poglavlja u 2–3 retka (prije do 4).
+- Performanse (SwiftShader, CPU; relativno, ne GPU): vrijeme sličice nakon završnog prolaza jednako prijašnjem unutar
+  šuma (desktop 78–83 / 78 / 172–181 ms na 3600 / 4050 / 5400; mobitel 4× CPU 25–29 / 33–38 / 70–80 ms). Karta svjetla
+  (~150 ms na glavnoj niti na desktopu) sada se crta u Workeru; maska Drave skratila učitavanje grada ~470 → ~380 ms
+  (profil, 4× CPU). Ukupno dugih zadaća u prvih 12 s na mobitelu 4× CPU: 2,4–2,5 s → 2,2–2,7 s (šum veći od razlike);
+  najdulja 640–670 → 580–650 ms. Ostatak je prevođenje shadera i slanje tekstura pri prvom crtanju.
+  Napomena: okruženje ima 4 niti, pa desktop ovdje radi u lite načinu.
+- Osijek iz zraka (OSM): A/B izmjenično stara/nova verzija u istom okruženju (SwiftShader, lite, medijan 12 sličica):
+  desktop 4050 74–76 → 78–81 ms, 5400 173–178 → 174–197 ms (šum); mobitel 390×844 3714 / 4150 / 5458:
+  23–26 / 33–37 / 78 → 25 / 32–33 / 79–82 ms. Lampe 4344 → 7186 točaka; izmjereno da ne mijenjaju vrijeme sličice.
+  Snimke 1440×900 na 4050 i 4500 pregledane (bez šava između karata, bez ravnog ruba tla);
+  `qa/zavrsni-prolaz/10-osijek-iz-zraka-osm.jpg`. Bez JS grešaka u konzoli.
+- Konkatedrala, osmerokut i portal: dnevni renderi modela (Three.js r186, swiftshader) u kadru snimke dronom, s trga
+  pod približno istim kutom kao fotografija i ortogonalno na portal; noćne snimke stranice 1440×900 na 5400 i
+  390×844 na 5458 (DPR 2), sve pregledane. A/B vrijeme sličice (SwiftShader, lite, 2 kruga): desktop 5400
+  174–181 → 173–184 ms, mobitel 5458 74–81 → 81 ms (unutar šuma okruženja). Kadrovi 4050 i 4500 bez promjena,
+  bez JS grešaka.
+
 ## Samokritika (0–10)
 
 | Faza | Dizajn | Kreativnost | Upotrebljivost | Tehnika | Napomena |
@@ -192,11 +281,27 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 | 6 Nacrt | 8 | 8 | 8 | 7,5 | Kota i pravci daju nacrtu smisao; na desktopu toranj na trenutak prolazi ispod teksta |
 | 7 Poglavlje 08 | 8 | 8 | 8,5 | 8 | Motiv filma nastavljen na papiru; odgovara tko/što/za koga/kako početi |
 | 2 Skala i gumbi | 8 | 7 | 8,5 | 8 | Jedan sustav umjesto procjene od slučaja do slučaja; filmski naslovi namjerno izvan skale |
+| Završni prolaz: prozori | 8 | 7,5 | — | 8 | Grad više ne izgleda "sav upaljen" |
+| Završni prolaz: Osijek iz zraka | 8 | 7,5 | — | 8,5 | Cijeli grad iz stvarnih podataka; istok i zapad svijetle samo gdje ima zgrada |
+| Završni prolaz: konkatedrala | 8,5 | 7,5 | — | 8,5 | Toranj prema fotografijama: sat, galerije, zvonik, tambur i šiljak u stvarnom redoslijedu i omjerima |
+| Konkatedrala: osmerokut i portal | 8,5 | 8 | — | 8,5 | Zvonik se čita kao osmerokut s vijencem fijala; portal kao kameni ulaz između kontrafora. Reljef i kukice su naznake, ne skulptura |
+| Mobilni CTA | 8,5 | 7 | 9 | 8,5 | Jedan poziv, ne prekriva formu ni footer |
 
 ## Otvoreno
 
-- `registry.npmjs.org` je blokiran mrežnim pravilima okruženja; build je Bunom (vidi gore). Pri prvoj prilici
-  pokrenuti `npm ci && npm run build` i usporediti.
+- Build je od 2026-10-09 ponovno Vite (`npm run build`): pomoćna nit je napravila `npm ci --ignore-scripts` iz
+  `package-lock.json` (arhiva i sha256 u `/mnt/project-files/zaec-signature/build-cache/`); izlaz parsira kao
+  ES2020 (acorn). Offline kit (Bun) ostaje kao rezerva.
+- Osijek iz zraka: zgrade izvan 2,65 km se ne grade (iz zraka su ispod piksela, a na kadru Osijeka su u magli);
+  ako bude trebalo, nisko izdizanje rubnih naselja moguće je iz istih podataka. Microsoft ML zgrade s ruba grada
+  (`osm/ml-zgrade-microsoft.json`) namjerno nisu korištene: nisu OSM i nisu provjerene.
+- Konkatedrala: jedna fotografija s popisa (`Osijek, Županijska, chrám III.jpg`) nije preuzeta (Wikimedia 429);
+  autori i licence fotografija nisu automatski dohvaćeni (`commons.wikimedia.org` nedostupan), provjeriti prije
+  bilo kakve objave. Daljnja vjernost: kontrafori kao dijagonalni stupovi sa stepenastim kamenim kapama; portal
+  bočnog broda na fotografiji djeluje viši od modela (perspektiva nesigurna); glavni portal svjetliji kamen od
+  ostalih kamenih detalja.
+- Prije spajanja u `main` podići `ZAEC_VERSION` (sada 2.3.0 i na `main` i na grani): model konkatedrale, podaci grada
+  i karta svjetla dobivaju `?v=` iz te verzije, pa bi preglednici inače zadržali stare datoteke.
 - Sekcija iznad footera na nekim podstranicama (CTA traka) još koristi sivu `--ink`; ujednačiti s `--abyss` (faza 12).
 - Nacrt, desktop: riješeno zadrškom kanala (`hold`); lađa na ~6000 px još malo dira naslov nacrta.
 - Osijek: krovovi izbliza i dalje dosta tamni; Drava na kadru Osijeka tamna (obalne svjetiljke se iz tog kuta
@@ -207,8 +312,7 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
 
 ## Sljedeći korak
 
-Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; QA nalazi za vlastite datoteke;
-3D dorada (krovovi izbliza, cijena shadera grada); faza 12.
+Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; faza 12.
 
 ## Commitovi
 
@@ -224,3 +328,12 @@ Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; QA nal
 - `7ffe5f0` Naslovnica: most iz priče u posao
 - `c4b28ae` (faza 7) Poglavlje 08 — ZAEC prema smjernicama za sadržaj; oznake bez preklapanja; zadrška tornja
 - `28d86c2` Tipografska skala i sustav gumba prema smjernicama dizajna
+- `ea6ef9d` Jedan primarni poziv na upit; izbornik usluga u tri skupine
+- `d26a0c7` Grad i konkatedrala: prirodnija noćna svjetla, tiši snop s tornja
+- `3265d61` Nalazi QA: ES2020 build, kontrast, modalni izbornik, oznake, karta svjetla izvan glavne niti
+- `b2aca60` 3D: lakše pokretanje (maska Drave, brži blur, odgođena priprema nacrta)
+- `4152c6f` Nalazi QA (nisko): slojevi, oznake uz rub, traka upita na uskim zaslonima
+- `7b37929` Grad: zgrade iz OSM multipoligona s dvorištima, spajanje više OSM izvoza (čeka podatke)
+- `1b8ff1a` Konkatedrala: toranj prema fotografijama (sat, galerije, zvonik, tambur, šiljak); build ponovno Vite
+- `90d277d` Osijek iz zraka: cijeli grad iz OSM-a, osvijetljene ulice prema stvarnoj izgrađenosti
+- `925f080` Konkatedrala: osmerokutni zvonik, otvori bez mrežišta, portal između kontrafora

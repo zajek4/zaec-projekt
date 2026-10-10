@@ -7,7 +7,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 import { glowPoints, seeded } from './lib.js';
 import { buildCathedral } from './cathedral.js';
-import { buildLightMap, cityUniforms, buildingMaterial, groundMaterial, surfaceMaterial, waterMaterial } from './city-look.js';
+import { buildLightMap, cityUniforms, buildingMaterial, groundMaterials, surfaceMaterial, waterMaterial, LM_R, LM_SPLIT, LM_WIDE } from './city-look.js';
 
 const RISE_R = 3200; // m — val izrastanja grada od konkatedrale prema rubu
 
@@ -28,9 +28,16 @@ function parse(buf) {
     }
     return out;
   };
+  // zgrada s dvorištem: unutarnji prstenovi (CW) slijede odmah iza nje, vrsta | 8
+  const buildings = [];
+  for (const b of read(H[1], 2)) {
+    if (b.h[1] & 8) buildings[buildings.length - 1]?.holes.push(b.r);
+    else { b.holes = []; buildings.push(b); }
+  }
   return {
-    buildings: read(H[1], 2),
-    roads: read(H[3], 1),
+    buildings,
+    // rang ceste | 16 = neosvijetljen dio (polja, ceste između naselja; odlučuje build-city.mjs prema izgrađenosti)
+    roads: read(H[3], 1).map((rd) => { rd.lit = !(rd.h[0] & 16); rd.h[0] &= 15; return rd; }),
     water: read(H[5], 1),
     areas: read(H[7], 1),
     marks: read(H[9], 1),
@@ -138,6 +145,22 @@ class GeoBuf {
   }
 }
 
+// pravokutnici [zapad, jug, istok, sjever] (m, x istok / y sjever) → vodoravna geometrija (z = −sjever), lice prema gore
+function rectsGeometry(list) {
+  const pos = [], idx = [];
+  for (const [w, so, e, n] of list) {
+    const b = pos.length / 3;
+    pos.push(w, 0, -so, e, 0, -so, e, 0, -n, w, 0, -n);
+    idx.push(b, b + 1, b + 2, b, b + 2, b + 3);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setIndex(idx);
+  return g;
+}
+// okvir: vanjski pravokutnik bez unutarnjeg (četiri trake)
+const ring = ([W, S, E, N], [w, so, e, n]) => [[W, S, E, so], [W, n, E, N], [W, so, w, n], [e, so, E, n]];
+
 export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded, prepare }) {
   const rand = seeded(1945);
   const group = new THREE.Group();
@@ -155,10 +178,19 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
   const anchors = { cath: new THREE.Vector3(30, 99, -4), hotel: new THREE.Vector3(329, 66, -154), trg: new THREE.Vector3(105, 4, -78), drava: new THREE.Vector3(80, 4, -470) };
 
   /* ── tlo: tamno, mreža od 50 m koja se gubi prema rubu; ulice svijetle iz karte svjetla ── */
-  const groundMat = track(groundMaterial(C));
-  const ground = new THREE.Mesh(track(new THREE.CircleGeometry(5200, 64).rotateX(-Math.PI / 2)), groundMat);
+  // tri dijela (unutrašnjost detaljne karte svjetla, pojas pretapanja, ostatak grada iz široke karte) do ruba
+  // tamne podloge (5 km) odnosno široke karte (cijeli grad)
+  const groundMats = groundMaterials(C).map(track);
+  const groundU = groundMats[0].uniforms;
+  const ground = new THREE.Group();
+  const W0 = [-LM_SPLIT, -LM_SPLIT, LM_SPLIT, LM_SPLIT], W1 = [-LM_R, -LM_R, LM_R, LM_R];
+  const W2 = [Math.min(LM_WIDE[0], -5000), Math.min(LM_WIDE[1], -5000), Math.max(LM_WIDE[2], 5000), Math.max(LM_WIDE[3], 5000)];
+  [[W0], [W1, W0], [W2, W1]].forEach(([o, hole], i) => {
+    const m = new THREE.Mesh(track(rectsGeometry(hole ? ring(o, hole) : [o])), groundMats[i]);
+    m.renderOrder = -1;
+    ground.add(m);
+  });
   ground.position.y = -0.4;
-  ground.renderOrder = -1;
   group.add(ground);
 
   /* ── objekti koji se pune nakon učitavanja ── */
@@ -250,13 +282,11 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           if (hc > 0.87) sg = vec3(0.95, 0.42, 0.24);
           else if (hc < 0.07) sg = vec3(0.32, 0.4, 0.7);
           gl_FragColor.rgb = mix(gl_FragColor.rgb, sg * (0.22 + 0.8 * uWin) * (1.0 - 0.7 * max(ld.x, ld.y)), glass);
-          // zvonik iznad sata: iza žaluzina tek naslutljivo toplo svjetlo, jače pri dnu otvora. Otvori su u modelu
-          // tamna "vrata" (vrsta 2 kao cigla i škriljevac): od cigle ih dijeli tama, od škriljevca topliji ton
-          float bel = step(1.5, vKind) * step(vKind, 2.5) * step(vColor.r, 0.03) * step(vColor.b * 1.05, vColor.r) * step(48.5, vH) * step(vH, 61.4);
-          float sl = vH / 0.46;
-          float sw = fwidth(sl);
-          float gap = mix(1.0 - smoothstep(0.15, 0.15 + sw, abs(fract(sl) - 0.8)), 0.3, smoothstep(0.3, 0.8, sw));
-          gl_FragColor.rgb += vec3(1.0, 0.6, 0.3) * bel * gap * (0.35 + 0.65 * (1.0 - smoothstep(49.2, 59.5, vH))) * (0.03 + 0.15 * uFocus);
+          // zvonik iznad sata: otvoreni lukovi bez stakla i žaluzina; iz dubine tek naslutljivo toplo svjetlo,
+          // jednoliko, jače pri dnu otvora. Otvori su u modelu tamna "vrata" (vrsta 2 kao cigla i škriljevac): od
+          // cigle ih dijeli tama, od škriljevca topliji ton
+          float bel = step(1.5, vKind) * step(vKind, 2.5) * step(vColor.r, 0.03) * step(vColor.b * 1.05, vColor.r) * step(45.8, vH) * step(vH, 60.9);
+          gl_FragColor.rgb += vec3(1.0, 0.6, 0.3) * bel * (0.3 + 0.7 * (1.0 - smoothstep(46.0, 59.5, vH))) * (0.012 + 0.05 * uFocus);
           // vrh tornja hvata svjetlo kad zgrada postane glavni motiv
           gl_FragColor.rgb += vec3(1.0, 0.8, 0.58) * smoothstep(58.0, 90.0, vH) * uFocus * 0.14 * (1.0 - glass);
           // skener: iznad crte ostaje samo nacrt (linije), zgrada se čisto reže; na crti tanka svjetla traka
@@ -265,7 +295,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           gl_FragColor.rgb += vec3(0.45, 0.62, 1.0) * band * 1.2;
           gl_FragColor.a *= uAlpha;`);
     };
-    m.customProgramCacheKey = () => 'zaec-cath-v4';
+    m.customProgramCacheKey = () => 'zaec-cath-v6';
     return m;
   }
   // sjaj vitraja: aditivni prsten oko prozora (iz modela), bez naknadne obrade slike
@@ -474,13 +504,15 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
         G.tri(a, ib, ia, k, t);
       }
     };
-    const cap = (ring, y, k, t) => {
-      // ravna ploha (gleda prema gore); rezervno lepeza iz težišta ako triangulacija ne uspije
+    const cap = (ring, y, k, t, holes = []) => {
+      // ravna ploha (gleda prema gore), s dvorištima kao rupama; rezervno lepeza iz težišta ako triangulacija ne uspije
       const contour = toV2(ring);
       let tris = [];
-      try { tris = THREE.ShapeUtils.triangulateShape(contour, []); } catch (e) { tris = []; }
-      if (tris.length) for (const [i0, i1, i2] of tris) G.triUp([ring[i0 * 2], y, -ring[i0 * 2 + 1]], [ring[i1 * 2], y, -ring[i1 * 2 + 1]], [ring[i2 * 2], y, -ring[i2 * 2 + 1]], k, t);
-      else { const [qx, qy] = centroid(ring); for (let i = 0, m = ring.length / 2; i < m; i++) { const j = (i + 1) % m; G.triUp([qx, y, -qy], [ring[j * 2], y, -ring[j * 2 + 1]], [ring[i * 2], y, -ring[i * 2 + 1]], k, t); } }
+      try { tris = THREE.ShapeUtils.triangulateShape(contour, holes.map(toV2)); } catch (e) { tris = []; }
+      if (tris.length) {
+        const all = holes.length ? Float32Array.from([...ring, ...holes.flatMap((q) => [...q])]) : ring;
+        for (const [i0, i1, i2] of tris) G.triUp([all[i0 * 2], y, -all[i0 * 2 + 1]], [all[i1 * 2], y, -all[i1 * 2 + 1]], [all[i2 * 2], y, -all[i2 * 2 + 1]], k, t);
+      } else { const [qx, qy] = centroid(ring); for (let i = 0, m = ring.length / 2; i < m; i++) { const j = (i + 1) % m; G.triUp([qx, y, -qy], [ring[j * 2], y, -ring[j * 2 + 1]], [ring[i * 2], y, -ring[i * 2 + 1]], k, t); } }
     };
     // kvadar (dimnjak, strojarnica) poravnat s osi u
     const prism = (px, py, hu, hv, ux, uy, y0, y1, k, t) => {
@@ -509,8 +541,10 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       if (dist > R_BUILD) continue;
       const h = b.h[0] / 2;
       const kind = b.h[1];
-      const area = Math.abs(ringArea(r));
+      const holes = b.holes; // dvorišta (CW: masa zgrade je i ovdje lijevo od smjera, pa zidovi i kosine gledaju u dvorište)
       let perim = 0, best = 0, ux = 1, uy = 0;
+      for (const q of holes) for (let i = 0, m = q.length / 2; i < m; i++) { const j = (i + 1) % m; perim += Math.hypot(q[j * 2] - q[i * 2], q[j * 2 + 1] - q[i * 2 + 1]); }
+      const area = Math.abs(ringArea(r)) - holes.reduce((s, q) => s + Math.abs(ringArea(q)), 0);
       for (let i = 0; i < n; i++) {
         const j = (i + 1) % n;
         const ex = r[j * 2] - r[i * 2], ey = r[j * 2 + 1] - r[i * 2 + 1];
@@ -540,11 +574,11 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       if (prof && dist < 2600 && nearWater(cx, cy, 70)) riverside.push(r);
       const historic = h <= 15 && (kind === 0 || kind === 1 || kind === 3);
       const wk = vary(kind === 5 || kind === 4 ? pick(INDUS) : kind === 2 || h > 15 ? pick(MODERN) : pick(PLASTER), 0.08);
-      const pitched = area < 420 && h <= 13 && n <= 10 && rect;
+      const pitched = area < 420 && h <= 13 && n <= 10 && rect && !holes.length;
       const hipped = !pitched && h <= 22 && (kind === 0 || kind === 1 || kind === 3 || (area < 420 && h <= 13)) && area < 6000;
       const parapet = !pitched && !hipped && kind !== 4 && area > 120 ? 0.9 : 0;
       // zidovi (lokalno: x = istok, z = −sjever); kod ravnih krovova zid se nastavlja u atiku
-      walls(r, n, 0, h + parapet, wk, prof ? { prof, seed, top: h } : null);
+      for (const q of [r, ...holes]) walls(q, q.length / 2, 0, h + parapet, wk, prof ? { prof, seed, top: h } : null);
       if (pitched) {
         const tile = rand() < 0.88;
         const rk = vary(tile ? pick(TILE) : pick(SLATE), 0.1), rt = tile ? 1 : 2;
@@ -579,50 +613,53 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
         if (sl && area > 300 && h >= 9 && dist < 1600 && rand() < 0.5) {
           // mansarda: strmi donji dio (~68°), pa blagi gornji i ravan vrh
           const d1 = Math.min(1.1, width * 0.2), r1 = 2.8;
-          const in1 = insetRing(r, d1);
-          slope(r, in1, h, h + r1, rk, rt);
+          const in1 = [r, ...holes].map((q) => insetRing(q, d1));
+          [r, ...holes].forEach((q, i) => slope(q, in1[i], h, h + r1, rk, rt));
           const d2 = Math.min(Math.max(1.5, Math.sqrt(area) * 0.12), 5, width * 0.4 - d1);
           if (d2 > 0.6) {
-            const in2 = insetRing(in1, d2);
-            slope(in1, in2, h + r1, h + r1 + d2 * 0.4, rk, rt);
-            cap(in2, h + r1 + d2 * 0.4, rk.map((c) => c * 0.94), rt);
-          } else cap(in1, h + r1, rk, rt);
+            const in2 = in1.map((q) => insetRing(q, d2));
+            in1.forEach((q, i) => slope(q, in2[i], h + r1, h + r1 + d2 * 0.4, rk, rt));
+            cap(in2[0], h + r1 + d2 * 0.4, rk.map((c) => c * 0.94), rt, in2.slice(1));
+          } else cap(in1[0], h + r1, rk, rt, in1.slice(1));
         } else {
           // četverostrešno: kosine do pomaknutog tlocrta (nagib 30–42°), ravni vrh (tipično za gradske blokove)
           const dIn = Math.min(Math.max(2.2, Math.sqrt(area) * 0.2), 7, width * 0.46);
           const rh = dIn * Math.tan((30 + rand() * 12) * DEG);
-          const inn = insetRing(r, dIn);
-          slope(r, inn, h, h + rh, rk, rt);
-          cap(inn, h + rh, rk.map((c) => c * 0.92), rt);
+          const inn = [r, ...holes].map((q) => insetRing(q, dIn));
+          [r, ...holes].forEach((q, i) => slope(q, inn[i], h, h + rh, rk, rt));
+          cap(inn[0], h + rh, rk.map((c) => c * 0.92), rt, inn.slice(1));
         }
       } else {
         // ravni krov; atika: gornji rub i unutarnja strana zida, ploha krova malo niže
         const rk = vary(pick(FLAT), 0.1);
         const top = h + parapet;
         if (parapet) {
-          const inn = insetRing(r, 0.45);
           const pk = wk.map((c) => c * 0.85);
-          for (let i = 0; i < n; i++) {
-            const j = (i + 1) % n;
-            const a = [r[i * 2], top, -r[i * 2 + 1]], bq = [r[j * 2], top, -r[j * 2 + 1]];
-            const ia = [inn[i * 2], top, -inn[i * 2 + 1]], ib = [inn[j * 2], top, -inn[j * 2 + 1]];
-            G.tri(a, ib, bq, pk, 4);
-            G.tri(a, ia, ib, pk, 4);
-            const ia0 = [inn[i * 2], h, -inn[i * 2 + 1]], ib0 = [inn[j * 2], h, -inn[j * 2 + 1]];
-            G.tri(ib0, ia0, ia, wk, 4);
-            G.tri(ib0, ia, ib, wk, 4);
-          }
-          cap(inn, h, rk, 3);
-        } else cap(r, h, rk, 3);
+          const inn = [r, ...holes].map((q) => insetRing(q, 0.45));
+          [r, ...holes].forEach((q, k) => {
+            const p = inn[k];
+            for (let i = 0, m = q.length / 2; i < m; i++) {
+              const j = (i + 1) % m;
+              const a = [q[i * 2], top, -q[i * 2 + 1]], bq = [q[j * 2], top, -q[j * 2 + 1]];
+              const ia = [p[i * 2], top, -p[i * 2 + 1]], ib = [p[j * 2], top, -p[j * 2 + 1]];
+              G.tri(a, ib, bq, pk, 4);
+              G.tri(a, ia, ib, pk, 4);
+              const ia0 = [p[i * 2], h, -p[i * 2 + 1]], ib0 = [p[j * 2], h, -p[j * 2 + 1]];
+              G.tri(ib0, ia0, ia, wk, 4);
+              G.tri(ib0, ia, ib, wk, 4);
+            }
+          });
+          cap(inn[0], h, rk, 3, inn.slice(1));
+        } else cap(r, h, rk, 3, holes);
         // strojarnica / izlaz na krov na većim ravnim krovovima
-        if (parapet && area > 700 && rand() < 0.7) {
+        if (parapet && area > 700 && !holes.length && rand() < 0.7) {
           const sx = 2 + rand() * 3, sy = 2 + rand() * 3, sh = 2.2 + rand() * 1.4;
           const ox = cx + (rand() - 0.5) * Math.sqrt(area) * 0.25, oy = cy + (rand() - 0.5) * Math.sqrt(area) * 0.25;
           prism(ox, oy, sx, sy, ux, uy, h, h + sh, FLAT[1].map((c) => c * 1.6), 4);
         }
       }
       // obrisi krovova (crtež) u blizini središta
-      if (dist < R_EDGE) for (let i = 0; i < n; i++) { const j = (i + 1) % n; lineSegs.push(r[i * 2], h, -r[i * 2 + 1], r[j * 2], h, -r[j * 2 + 1]); }
+      if (dist < R_EDGE) for (const q of [r, ...holes]) for (let i = 0, m = q.length / 2; i < m; i++) { const j = (i + 1) % m; lineSegs.push(q[i * 2], h, -q[i * 2 + 1], q[j * 2], h, -q[j * 2 + 1]); }
     }
 
     // Drava (vanjski prsten + otoci kao rupe): vodostaj ispod razine grada, obala kao kosina (nasip/kamena obala)
@@ -738,19 +775,24 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       const r = rd.r, m = (r.length / 4) | 0;
       rd.w = rd.h[0] >= 2 && Math.hypot(r[m * 2], r[m * 2 + 1]) < 3000 && (nearWater(r[0], r[1]) || nearWater(r[m * 2], r[m * 2 + 1]) || nearWater(r[r.length - 2], r[r.length - 1]));
     }
+    // osvijetljeni dijelovi ulica (build-city.mjs) i sve ulice uz samu Dravu
+    const lit = d.roads.filter((rd) => rd.lit || rd.w);
+
     // ulična svjetla duž stvarnih ulica (razmak prema rangu ceste); glavne ulice LED toplo bijelo, sporedne natrij
     const SP = lite ? [30, 34, 42, 60, 26, 0] : [20, 22, 27, 40, 17, 34];
     const TINT = [0.9, 0.8, 0.15, 0.1, 0.65, 0.5];
     const KC = [1, 0.9, 0.7, 0.45, 0.95, 0.4];
     const lamp = [], lampSize = [], lampK = [], lampT = [];
-    for (const rd of d.roads) {
+    for (const rd of lit) {
       const c = rd.h[0];
       const sp = SP[c];
       if (!sp) continue;
       const r = rd.r;
       if (c >= 4 && !rd.w && Math.hypot(r[0], r[1]) > (lite ? 450 : 800)) continue;
       if (rd.w && Math.hypot(r[0], r[1]) > (lite ? 1400 : 2600)) continue;
-      let acc = rand() * sp;
+      // izvan starog središta (2,6 km) rjeđe točke: iz zraka se gustoća ne razlikuje, a svjetlo ulice nosi karta
+      const spr = Math.hypot(r[0], r[1]) > 2600 ? sp * 1.6 : sp;
+      let acc = rand() * spr;
       for (let i = 0; i < r.length / 2 - 1; i++) {
         const ax = r[i * 2], ay = r[i * 2 + 1], bx = r[i * 2 + 2], by = r[i * 2 + 3];
         const L = Math.hypot(bx - ax, by - ay);
@@ -760,7 +802,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
           lampSize.push(c <= 1 ? 1.25 : c <= 2 ? 0.95 : 0.75);
           lampK.push(KC[c] * zone(x, y) * (rd.w ? 2.4 : 1));
           lampT.push(Math.min(1, Math.max(0, TINT[c] + (rand() - 0.5) * 0.25)));
-          acc += sp;
+          acc += spr;
         }
         acc -= L;
       }
@@ -786,12 +828,10 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     // karta svjetla: ulice, lokve svjetiljki, trgovi i izlozi → tlo, pročelja i odsjaji u Dravi
     const squares = d.areas.filter((a) => a.h[0] === 0 || a.h[0] === 3).map((a) => a.r);
     // crta se izvan glavne niti; do tada tlo i pročelja koriste praznu kartu (grad je iza papira ili daleko)
-    buildLightMap({ roads: d.roads.map((rd) => ({ c: rd.h[0], r: rd.r, w: rd.w })), lamps: lamp, lampK, squares, shops, riverside, zone, lite })
-      .then((lm) => {
-        if (disposed) { lm.dispose(); return; }
-        const old = C.uLM.value;
-        C.uLM.value = track(lm);
-        old.dispose();
+    buildLightMap({ roads: lit.map((rd) => ({ c: rd.h[0], r: rd.r, w: rd.w })), lamps: lamp, lampK, squares, shops, riverside, zone, lite })
+      .then(([lm, lw]) => {
+        if (disposed) { lm.dispose(); lw.dispose(); return; }
+        for (const [u, t] of [[C.uLM, lm], [C.uLMW, lw]]) { const old = u.value; u.value = track(t); old.dispose(); }
       })
       .catch((err) => console.warn('[ZAEC] karta svjetla nije nacrtana', err));
 
@@ -856,8 +896,8 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       if (buildingsMesh) buildingsMesh.visible = solid > 0.01;
       // crtež bridova je zadnji sloj detalja: tek kad je kamera blizu (inače hladna mreža preuzima toplu noć)
       edgeU.uLines.value = solid * (0.25 + 0.55 * s.lines) * (1 - s.dim * 0.75) * (s.detail ?? 1);
-      groundMat.uniforms.uOpacity.value = solid * (1 - s.dim * 0.75);
-      groundMat.uniforms.uGlow.value = streets * (1 - s.dim * 0.75);
+      groundU.uOpacity.value = solid * (1 - s.dim * 0.75);
+      groundU.uGlow.value = streets * (1 - s.dim * 0.75);
       ground.visible = solid > 0.002 || streets > 0.002;
       riverMat.uniforms.uOpacity.value = Math.max(solid, s.lamps * 0.6) * (1 - s.dim * 0.6);
       areaMat.uniforms.uOpacity.value = solid * (1 - s.dim * 0.6);

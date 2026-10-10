@@ -590,3 +590,8 @@
   .scroll-cue span::after { animation: none; }
   .js.motion-ok .hc-media { clip-path: none; }
 }
+
+/* donja traka upita (≤760 px) prekriva ~70 px dna: zadnji redak poglavlja ostaje iznad nje */
+@media (max-width: 760px) {
+  .cine:not(.cine-hero, .cine-final, .cine--duo), .cine-beat { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+}
