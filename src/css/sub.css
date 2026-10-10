@@ -53,8 +53,9 @@
 .block--ink .block-head .h2 em { color: #9fb4ff; }
 @media (max-width: 860px) { .block-head { grid-template-columns: 1fr; } }
 
-.feat-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line-2); border: 1px solid var(--line-2); border-radius: var(--r-m); overflow: hidden; }
-.feat-grid li { background: var(--paper); padding: clamp(20px, 2.2vw, 30px); display: grid; gap: 10px; align-content: start; transition: background 0.3s; }
+/* crte između polja crta sjena svakog polja (ne pozadina mreže): dok se polje još otkriva, nema sive ploče */
+.feat-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line-2); border-radius: var(--r-m); overflow: hidden; }
+.feat-grid li { background: var(--paper); box-shadow: 0 0 0 1px var(--line-2); padding: clamp(20px, 2.2vw, 30px); display: grid; gap: 10px; align-content: start; transition: background 0.3s; }
 .feat-grid li:hover { background: var(--card); }
 .feat-grid .icon { color: var(--signal); }
 .feat-grid h3 { font-size: 1.12rem; }
@@ -63,6 +64,26 @@
 .feat-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 1000px) { .feat-grid, .feat-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .feat-grid, .feat-grid--3, .feat-grid--2 { grid-template-columns: 1fr; } }
+
+/* blok „Usluge“ (/usluge/): kazalo U.01–U.10 u dva stupca. Stilovi su nestali u v2.1.0 s novom naslovnicom,
+   a blok je ostao; .svc-go dijeli ime s kartom usluga na naslovnici, pa je sve pod .svc-grid */
+.svc-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.svc-grid > li { display: grid; }
+.svc-grid .svc { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: 'top h go' 'top p go'; gap: 6px clamp(16px, 2vw, 28px); align-items: center; padding: clamp(18px, 2vw, 26px); color: var(--ink); }
+.svc-grid .svc-top { grid-area: top; align-self: start; display: grid; justify-items: start; gap: 12px; }
+.svc-grid .svc-top .icon { color: var(--ink-3); transition: color 0.3s, transform 0.5s var(--ease-out); }
+.svc-grid .svc h3 { grid-area: h; align-self: end; font-size: 1.15rem; }
+.svc-grid .svc p { grid-area: p; align-self: start; color: var(--ink-3); font-size: 0.95rem; line-height: 1.5; }
+.svc-grid .svc-go { grid-area: go; display: inline-flex; align-items: center; gap: 8px; font-weight: 650; font-size: 0.92rem; color: var(--signal-2); white-space: nowrap; }
+.svc-grid .svc-go .icon { transition: transform 0.4s var(--ease-out); }
+.svc-grid .svc:hover .svc-top .icon { color: var(--signal); transform: rotate(-8deg) scale(1.08); }
+.svc-grid .svc:hover .svc-go .icon { transform: translateX(4px); }
+@media (max-width: 1100px) { .svc-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+  .svc-grid .svc { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'top' 'h' 'p' 'go'; gap: 8px; }
+  .svc-grid .svc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .svc-grid .svc-go { margin-top: 6px; }
+}
 
 /* usporedba */
 .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -336,7 +357,7 @@
 .toc ol { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 0.92rem; }
 .toc a { text-decoration: none; }
 .toc a:hover { text-decoration: underline; }
-@media (max-width: 1000px) { .article-body { grid-template-columns: 1fr; } .article-aside { position: relative; top: 0; } }
+@media (max-width: 1000px) { .article-body { grid-template-columns: minmax(0, 1fr); } .article-aside { position: relative; top: 0; } }
 
 /* 404 */
 .nf { min-height: 100svh; display: grid; place-items: center; text-align: center; padding: calc(var(--header-h) + 40px) var(--gutter) 80px; }

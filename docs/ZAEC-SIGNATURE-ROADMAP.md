@@ -272,6 +272,14 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   390×844 na 5458 (DPR 2), sve pregledane. A/B vrijeme sličice (SwiftShader, lite, 2 kruga): desktop 5400
   174–181 → 173–184 ms, mobitel 5458 74–81 → 81 ms (unutar šuma okruženja). Kadrovi 4050 i 4500 bez promjena,
   bez JS grešaka.
+- QA cijele stranice nakon spajanja PR-a #11 (2026-10-10, `main` 96fad9a, lokalni WP, Chromium): 41 adresa ×
+  360/390/768/1440 = 164 učitavanja s punim skrolom; bez JS grešaka, 4xx resursa i pokvarenih slika, 404 samo na
+  namjerno nepostojećoj adresi. Preljev nađen samo na vodiču GA4 na 360 px (tablica širila stupac članka). Snimke
+  15 podstranica pregledane na 390 (cijela stranica) i 1440 (skrol kotačićem, 7–9 kadrova); naslovnica u 16
+  kadrova na 1440×900 i 390×844. Nalazi: na /usluge/ blok „Usluge“ bez stilova (nestali u v2.1.0), siva ploča u
+  `.feat-grid` dok se red otkriva. Sva tri ispravljena u `128ad55` i ponovno provjerena na 4 širine.
+  Napomena za alat: snimka cijele stranice preko 8192 px u ovom okruženju ponavlja vrh, a na desktopu ne pokreće
+  otkrivanje sadržaja; za desktop vrijede samo snimke uz skrol.
 
 ## Samokritika (0–10)
 
@@ -300,20 +308,18 @@ Snimke prije (1440×900, 25 scroll pozicija) pregledane su u pregledniku. Najsla
   bilo kakve objave. Daljnja vjernost: kontrafori kao dijagonalni stupovi sa stepenastim kamenim kapama; portal
   bočnog broda na fotografiji djeluje viši od modela (perspektiva nesigurna); glavni portal svjetliji kamen od
   ostalih kamenih detalja.
-- PR #6 spojen u `main` 2026-10-10 bez podizanja verzije; `ZAEC_VERSION` 2.3.0 → 2.4.0 je u zasebnom PR-u
-  (model konkatedrale, podaci grada i karta svjetla dobivaju `?v=` iz te verzije, pa bi preglednici inače zadržali
-  stare datoteke uz novi JS).
 - Sekcija iznad footera na nekim podstranicama (CTA traka) još koristi sivu `--ink`; ujednačiti s `--abyss` (faza 12).
 - Nacrt, desktop: riješeno zadrškom kanala (`hold`); lađa na ~6000 px još malo dira naslov nacrta.
 - Osijek: krovovi izbliza i dalje dosta tamni; Drava na kadru Osijeka tamna (obalne svjetiljke se iz tog kuta
   fizički ne zrcale). Preklapanje oznaka Slavonije na mobitelu riješeno izbjegavanjem sudara.
-- Footer: stupac "Djelatnosti" još navodi stare obrtničke nazive; uskladiti sa sektorima nakon spajanja grane
-  podstranica (PR #7).
+- Footer: stupac "Djelatnosti" navodi stranice djelatnosti (10), a hub /djelatnosti/ je složen po 8 sektora;
+  odlučiti treba li footer pratiti sektore.
+- Lokalni WP prikazuje WordPressov „Hello world!” u Vodičima; provjeriti da ga na produkciji nema.
 - Kategorije djelatnosti u procjeni ("Voda", "Struja"…) — nova nomenklatura (faza 9/10).
 
 ## Sljedeći korak
 
-Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; faza 12.
+Grane podstranica su spojene (PR #7, #8, #11); faza 12 (završna režija), footer prema sektorima.
 
 ## Commitovi
 
@@ -338,3 +344,4 @@ Integracija grane podstranica (PR #7) nakon QA-a, footer prema sektorima; faza 1
 - `1b8ff1a` Konkatedrala: toranj prema fotografijama (sat, galerije, zvonik, tambur, šiljak); build ponovno Vite
 - `90d277d` Osijek iz zraka: cijeli grad iz OSM-a, osvijetljene ulice prema stvarnoj izgrađenosti
 - `925f080` Konkatedrala: osmerokutni zvonik, otvori bez mrežišta, portal između kontrafora
+- `128ad55` QA nakon PR-a #11: popis usluga, preljev vodiča, mreža značajki
