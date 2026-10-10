@@ -98,7 +98,7 @@ $err   = static fn( $f ) => esc_attr( $fid . '-' . $f . '-err' );
 	<div class="cform-foot">
 		<button class="btn btn--signal cform-submit" type="submit" data-magnetic>
 			<span class="btn-spin" aria-hidden="true"></span>
-			<?php echo $audit ? 'Pošalji za besplatnu provjeru' : 'Pošaljite upit'; ?> <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?>
+			<?php echo $audit ? 'Pošaljite za besplatnu provjeru' : 'Pošaljite upit'; ?> <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?>
 		</button>
 		<p class="cform-privacy">Podatke koristimo samo za odgovor. Bez newslettera i ustupanja trećima. <a href="<?php echo esc_url( zaec_url( 'privatnost' ) ); ?>">Privatnost</a></p>
 	</div>

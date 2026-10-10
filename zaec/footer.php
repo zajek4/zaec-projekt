@@ -76,7 +76,7 @@ $posts_page = (int) get_option( 'page_for_posts' );
 
 <nav class="call-bar" data-call-bar aria-label="Upit">
 	<a class="cb-form" href="<?php echo esc_url( zaec_inquiry_url() ); ?>" data-track="cta_callbar">
-		<span class="cb-copy"><i class="cb-lamp" aria-hidden="true"></i><small><span class="cb-long">Pisana procjena, </span>bez obveze</small></span>
+		<span class="cb-copy"><i class="cb-lamp" aria-hidden="true"></i><small><span class="cb-long">Pisana ponuda, </span>bez obveze</small></span>
 		<span class="cb-go">Pošaljite upit <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?></span>
 	</a>
 </nav>

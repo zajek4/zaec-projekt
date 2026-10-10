@@ -250,7 +250,7 @@ function zaec_home_process() {
 	return array(
 		array( 'K.01', 'Besplatan razgovor', 'Saznamo kako radite, tko su vam kupci i gdje gubite upite. Ako vam ne trebamo — reći ćemo.', '20 minuta · bez obveze' ),
 		array( 'K.02', 'Nacrt i fiksna ponuda', 'Struktura stranica, sadržaj, funkcije i mjerenje — na papiru, uz fiksnu cijenu i rok.', 'opseg potvrđen pisano' ),
-		array( 'K.03', 'Izrada i testiranje', 'Dizajn, tekstovi i razvoj prema nacrtu. Testiramo na stvarnim mobitelima, brzinu i svaki obrazac.', 'pregled u tijeku rada' ),
+		array( 'K.03', 'Izrada i testiranje', 'Dizajn, tekstovi i razvoj prema nacrtu. Na stvarnim mobitelima testiramo brzinu i svaki obrazac.', 'pregled u tijeku rada' ),
 		array( 'K.04', 'Objava, mjerenje, rast', 'Objava, Search Console, GA4 i Google profil. Pristupi, edukacija i 14 dana jamstva.', 'brojke od prvog dana' ),
 	);
 }

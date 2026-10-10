@@ -4,8 +4,8 @@
  * Režija pojedinih heroja je u template-parts/hero/*.php i src/js/hero/*.js. Vidi docs/hero-art-direction.md.
  *
  * Razine:
- *  - potpis (izrada, onama, kontakt): vlastiti kadar i pokret, zasebna mobilna kompozicija;
- *  - editorial: usluge, djelatnosti, hubovi, lokalno, provjera, cijene, radovi;
+ *  - potpis (izrada, kontakt): vlastiti kadar i pokret, zasebna mobilna kompozicija;
+ *  - editorial: usluge, djelatnosti, hubovi, lokalno, provjera, cijene, radovi, O nama (list nacrta);
  *  - quiet: vodiči, članci, pravne i pomoćne stranice.
  *
  * @package ZAEC
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const ZAEC_SIGNATURE_HEROES = array( 'izrada', 'onama', 'kontakt' );
+const ZAEC_SIGNATURE_HEROES = array( 'izrada', 'kontakt' );
 
 /** Vrsta heroja za landing: izričito ('hero' u registru) ili prema tipu stranice. */
 function zaec_hero_kind( $l ) {
@@ -68,7 +68,7 @@ function zaec_hero_preload() {
 	if ( ! $l ) {
 		return;
 	}
-	$first = array( 'izrada' => 'izrada-plan', 'onama' => 'onama-bg', 'kontakt' => 'kontakt-bg' );
+	$first = array( 'izrada' => 'izrada-plan', 'kontakt' => 'kontakt-bg' );
 	$kind  = zaec_hero_kind( $l );
 	if ( empty( $first[ $kind ] ) ) {
 		return;
@@ -94,17 +94,25 @@ function zaec_nacrt_thumb( $l ) {
 }
 
 function zaec_nacrt( $l ) {
-	// stranica djelatnosti: njezin list; hub djelatnosti: naslovni list kompleta (kazalo)
+	// stranica djelatnosti: njezin list; hub djelatnosti: naslovni list kompleta (kazalo); stranica s 'nacrt' u
+	// registru (O nama): list istog imena kao slug
 	$type = (string) ( $l['type'] ?? '' );
-	$slug = 'hub-industries' === $type ? 'djelatnosti' : (string) ( $l['slug'] ?? '' );
-	if ( '' === $slug || ! in_array( $type, array( 'industry', 'hub-industries' ), true ) ) {
+	$slug = 'hub-industries' === $type ? 'djelatnosti' : (string) ( $l['slug'] ?? ( empty( $l['nacrt'] ) ? '' : basename( (string) ( $l['key'] ?? '' ) ) ) );
+	if ( '' === $slug || ( ! in_array( $type, array( 'industry', 'hub-industries' ), true ) && empty( $l['nacrt'] ) ) ) {
 		return null;
 	}
 	$dir = ZAEC_THEME_DIR . '/assets/img/nacrt/' . sanitize_file_name( $slug );
 	if ( ! is_readable( $dir . '-d.svg' ) || ! is_readable( $dir . '-m.svg' ) ) {
 		return null;
 	}
-	return array( (string) file_get_contents( $dir . '-d.svg' ), (string) file_get_contents( $dir . '-m.svg' ) );
+	// podaci studija u listu (sastavnica i svjetlo lista O nama) dolaze iz postavki, kao i na ostatku weba
+	$o   = zaec_get_options();
+	$fit = array(
+		'{owner}'  => esc_html( (string) $o['owner_name'] ),
+		'{adresa}' => esc_html( mb_strtoupper( $o['address'] . ' · ' . $o['postal_code'] . ' ' . $o['city'] ) ),
+		'{sati}'   => esc_html( mb_strtoupper( (string) $o['hours'] ) ),
+	);
+	return array( strtr( (string) file_get_contents( $dir . '-d.svg' ), $fit ), strtr( (string) file_get_contents( $dir . '-m.svg' ), $fit ) );
 }
 
 /** Blokovi koje potpisni hero preuzima u svoju scenu (npr. anatomija na Izradi) ne ponavljaju se ispod. */

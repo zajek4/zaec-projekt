@@ -197,7 +197,7 @@ function zaec_registry_industries() {
 				array( 'Sezonske stranice i objave', 'Servis prije ljeta, grijanje prije zime — na webu i u Google profilu.' ),
 				array( 'Marke i ovlaštenja', 'Ako ste ovlašteni serviser proizvođača, ističemo to. Ljudi traže po marki.' ),
 			),
-			'structure' => array( 'Hero: usluga + područje + „Naruči servis”', 'Usluge: montaža, servis, čišćenje', 'Radovi i recenzije', 'Područje rada (mjesta + radijus)', 'FAQ: koliko često servis, što uključuje', 'Upit za termin + poziv' ),
+			'structure' => array( 'Prvi ekran: usluga + područje + „Naruči servis”', 'Usluge: montaža, servis, čišćenje', 'Radovi i recenzije', 'Područje rada (mjesta + radijus)', 'FAQ: koliko često servis, što uključuje', 'Upit za termin + poziv' ),
 			'faq' => array(
 				array( 'Isplati li se web ako imam dovoljno posla ljeti?', 'Web pomaže i izvan sezone: servisi, čišćenje i grijanje mogu popuniti mirnije mjesece.' ),
 				array( 'Što napisati na stranici za montažu klime?', 'Što ulazi u standardnu montažu (duljina cijevi, nosači, prodor kroz zid), što se naplaćuje dodatno i koliko traje. To su pitanja koja inače dobivate telefonom.' ),
@@ -225,9 +225,9 @@ function zaec_registry_industries() {
 				array( 'Stranica za svaku intervenciju', 'Hitne intervencije, bojleri, odvodi, kupaonice, plin — svaka sa svojim pitanjima.' ),
 				array( 'Recenzije nakon svakog posla', 'QR kartica ili WhatsApp poruka dok je klijent zadovoljan.' ),
 			),
-			'structure' => array( 'Hero: hitni poziv + područje', 'Intervencije (kartice)', 'Prije / poslije', 'Područje rada', 'FAQ: izlazak, obračun, rokovi', 'Upit s fotografijom + poziv' ),
+			'structure' => array( 'Prvi ekran: hitni poziv + područje', 'Intervencije (kartice)', 'Prije / poslije', 'Područje rada', 'FAQ: izlazak, obračun, rokovi', 'Upit s fotografijom + poziv' ),
 			'faq' => array(
-				array( 'Trebam li objaviti cijene?', 'Ne morate točne cijene, ali način obračuna (izlazak, sat rada) smanjuje nepotrebne pozive i gradi povjerenje.' ),
+				array( 'Trebam li objaviti cijene?', 'Ne morate objaviti točne cijene, ali način obračuna (izlazak, sat rada) smanjuje nepotrebne pozive i gradi povjerenje.' ),
 				array( 'Kako da me nađu kad netko ima hitan kvar?', 'Broj telefona na prvom ekranu mobitela, Google profil s točnim radnim vremenom i područjem dolaska te stranica za hitne intervencije. Kod hitnog kvara ljudi zovu, ne čitaju.' ),
 			),
 			'related' => array( 'djelatnosti/klima-i-grijanje', 'usluge/google-business-profil', 'usluge/lokalni-seo' ),
@@ -253,7 +253,7 @@ function zaec_registry_industries() {
 				array( 'Radovi s opisom', 'Što je bio problem i kako je riješen — kratko i provjerljivo.' ),
 				array( 'Upit prema opsegu', 'Za veće radove: vrsta objekta, kvadratura, rok. Ozbiljniji upiti.' ),
 			),
-			'structure' => array( 'Hero: usluge + područje', 'Usluge: kvar / instalacija / solar', 'Ovlaštenja i reference', 'Radovi', 'FAQ', 'Upit prema opsegu' ),
+			'structure' => array( 'Prvi ekran: usluge + područje', 'Usluge: kvar / instalacija / solar', 'Ovlaštenja i reference', 'Radovi', 'FAQ', 'Upit prema opsegu' ),
 			'faq' => array(
 				array( 'Trebam li posebnu stranicu za solare i punjače?', 'Da, ako ih radite. Ljudi ih traže odvojeno od kvarova i instalacija, a zasebna stranica odgovara na njihova pitanja: što uključuje ugradnja, koja dokumentacija treba i koliko traje.' ),
 				array( 'Gdje istaknuti ovlaštenja i atest?', 'Na stranici usluge i uz kontakt. Za veće radove i atest kupac želi znati da imate ovlaštenje prije nego što pošalje upit.' ),
@@ -281,7 +281,7 @@ function zaec_registry_industries() {
 				array( 'Upit za procjenu', 'Mjesto, vrsta krova, površina i fotografije — dolazite pripremljeni.' ),
 				array( 'Hitne sanacije', 'Jasno istaknuta mogućnost hitnog izlaska nakon nevremena, ako je nudite.' ),
 			),
-			'structure' => array( 'Hero: vrste radova + područje', 'Prije / poslije', 'Materijali i vrste krova', 'Proces i jamstvo', 'FAQ', 'Zahtjev za procjenu' ),
+			'structure' => array( 'Prvi ekran: vrste radova + područje', 'Prije / poslije', 'Materijali i vrste krova', 'Proces i jamstvo', 'FAQ', 'Zahtjev za procjenu' ),
 			'faq' => array(
 				array( 'Kakve fotografije trebam za web?', 'Najbolje rade fotografije prije i poslije s istog kuta, detalji opšava i limarije te krov nakon završetka. Mobitel je dovoljan ako su fotografije oštre i snimljene po danu.' ),
 				array( 'Kako dobiti upite za hitne sanacije?', 'Zasebna stranica za sanacije nakon nevremena, broj telefona na vrhu i ažuran Google profil. Nakon oluje ljudi traže brzo i zovu one do kojih odmah dođu.' ),
@@ -309,7 +309,7 @@ function zaec_registry_industries() {
 				array( 'Stranice po vrsti radova', 'Stanovi, kupaonice, fasade, keramika, suhi radovi.' ),
 				array( 'Upit s fotografijama', 'Fotografije prostora i okvirne mjere već u prvom upitu.' ),
 			),
-			'structure' => array( 'Hero: što preuzimate', 'Usluge', 'Projekti (studije)', 'Proces', 'FAQ', 'Upit prema opsegu' ),
+			'structure' => array( 'Prvi ekran: što preuzimate', 'Usluge', 'Projekti (studije)', 'Proces', 'FAQ', 'Upit prema opsegu' ),
 			'faq' => array(
 				array( 'Kako prikazati radove bez profesionalnog fotografa?', 'Kao kratke studije: stanje prije, što je napravljeno, koliko je trajalo i završne fotografije. Iskren opis procesa često uvjeri više od savršene fotografije.' ),
 				array( 'Može li forma tražiti podatke o opsegu radova?', 'Da. Forma može pitati vrstu radova, kvadraturu, lokaciju i željeni rok te primiti fotografije, pa ozbiljnije upite odmah razlikujete od usputnih.' ),
@@ -329,15 +329,15 @@ function zaec_registry_industries() {
 			'problems' => array(
 				array( 'Meni kao PDF', 'Na mobitelu je PDF spor i nečitljiv. Ljudi zatvore stranicu.' ),
 				array( 'Sve preko platformi', 'Provizija na svaku rezervaciju — čak i za goste koji se vraćaju.' ),
-				array( 'Zastarjeli podaci', 'Krivo radno vrijeme na Googleu znači gost pred zatvorenim vratima i loša recenzija.' ),
+				array( 'Zastarjeli podaci', 'Krivo radno vrijeme na Googleu znači gosta pred zatvorenim vratima i lošu recenziju.' ),
 			),
 			'deliver' => array(
 				array( 'Meni i ponuda na webu', 'Brzo čitljivo na mobitelu i lako za ažurirati.' ),
-				array( 'Direktan upit ili rezervacija', 'Datumi i broj gostiju u prvom koraku; povezivanje s booking sustavom po potrebi.' ),
+				array( 'Direktan upit ili rezervacija', 'Datumi i broj gostiju u prvom koraku; povezivanje sa sustavom za rezervacije po potrebi.' ),
 				array( 'Fotografije i lokacija', 'Prostor, jela ili smještaj, karta, parking i kako doći.' ),
 				array( 'Više jezika', 'Engleski i njemački za ključne stranice — bez strojnog prijevoda koji odbija goste.' ),
 			),
-			'structure' => array( 'Hero: fotografija + upit/rezervacija', 'Smještaj ili meni', 'Galerija', 'Lokacija', 'Recenzije', 'Upit / rezervacija' ),
+			'structure' => array( 'Prvi ekran: fotografija + upit/rezervacija', 'Smještaj ili meni', 'Galerija', 'Lokacija', 'Recenzije', 'Upit / rezervacija' ),
 			'faq' => array(
 				array( 'Trebam li vlastiti web ako sam na Bookingu?', 'Platforme donose goste, ali uzimaju proviziju. Vlastiti web je mjesto za povratne goste i direktne upite.' ),
 				array( 'Treba li web na više jezika?', 'Ako dolaze gosti iz inozemstva, da — barem engleski. Svaki jezik dobiva svoju adresu, pa ga Google može prikazati gostima koji pretražuju na tom jeziku.' ),
@@ -365,7 +365,7 @@ function zaec_registry_industries() {
 				array( 'Lokalni podaci', 'Radno vrijeme, adresa i Google profil za kupce koji dolaze u trgovinu.' ),
 				array( 'GA4 e-commerce', 'Prihod po proizvodu i kanalu, odustajanja u košarici.' ),
 			),
-			'structure' => array( 'Hero: kategorije + ponuda', 'Istaknuti proizvodi', 'Dostava i plaćanje', 'O trgovini i lokacija', 'FAQ', 'Kontakt' ),
+			'structure' => array( 'Prvi ekran: kategorije + ponuda', 'Istaknuti proizvodi', 'Dostava i plaćanje', 'O trgovini i lokacija', 'FAQ', 'Kontakt' ),
 			'faq' => array(
 				array( 'Radite li fiskalizaciju i ERP integracije?', 'To ide kao poseban opseg — prvo definiramo što točno treba povezati, zatim procjena i cijena.' ),
 				array( 'Mogu li početi s katalogom pa kasnije dodati webshop?', 'Da. Katalog s upitom je brži početak, a proizvodi i struktura ostaju kad se kasnije uključe košarica i plaćanje.' ),
@@ -393,7 +393,7 @@ function zaec_registry_industries() {
 				array( 'Galerija i tim', 'Stvarni radovi i ljudi koji ih rade — ljudi biraju osobu, ne samo salon.' ),
 				array( 'Recenzije koje rastu', 'Podsjetnik za recenziju nakon termina i odgovori na recenzije.' ),
 			),
-			'structure' => array( 'Hero: usluge + rezervacija', 'Cjenik', 'Galerija radova', 'Tim', 'Recenzije', 'Rezervacija / upit' ),
+			'structure' => array( 'Prvi ekran: usluge + rezervacija', 'Cjenik', 'Galerija radova', 'Tim', 'Recenzije', 'Rezervacija / upit' ),
 			'faq' => array(
 				array( 'Može li web raditi sa sustavom za rezervacije koji već koristim?', 'Najčešće da: ugrađuje se poveznica ili widget postojećeg sustava. Ako sustava nemate, predložimo jednostavan za svakodnevno korištenje.' ),
 				array( 'Trebaju li cijene biti na webu?', 'Preporučujemo barem raspon cijena po usluzi. Klijent koji salon bira na mobitelu usporedi cjenik prije nego što rezervira.' ),
@@ -423,7 +423,7 @@ function zaec_registry_industries() {
 				array( 'Reference i primjeri rada', 'Projekti i klijenti koje smijete pokazati, s kratkim opisom problema i rješenja.' ),
 				array( 'Upit prema opsegu', 'Vrsta usluge, veličina tvrtke ili projekta i rok. Na prvi razgovor dolazite pripremljeni.' ),
 			),
-			'structure' => array( 'Hero: usluge i kome su namijenjene', 'Usluge (stranica za svaku)', 'Tim i ovlaštenja', 'Reference', 'Kako izgleda suradnja', 'FAQ', 'Upit prema opsegu' ),
+			'structure' => array( 'Prvi ekran: usluge i kome su namijenjene', 'Usluge (stranica za svaku)', 'Tim i ovlaštenja', 'Reference', 'Kako izgleda suradnja', 'FAQ', 'Upit prema opsegu' ),
 			'faq' => array(
 				// vlasnik potvrdio (10. 10. 2026); bez pravnog savjeta: pravila komore donosi klijent
 				array( 'Smijem li kao regulirana profesija predstavljati usluge na webu?', 'Ovisi o pravilima vaše komore, a neke regulirane profesije (npr. odvjetnici) imaju stroža pravila o oglašavanju. Prije izrade nam recite koja vrijede za vas, pa web složimo tako da informira o uslugama u okviru tih pravila.' ),
@@ -455,7 +455,7 @@ function zaec_registry_industries() {
 				array( 'Pristupačnost', 'Kontrast, veličina slova, rad tipkovnicom i čitačima ekrana. Za većinu tijela javnog sektora to je i zakonska obveza, uz izjavu o pristupačnosti.' ),
 				array( 'Dokumenti s redom', 'Obrasci, pravilnici i natječaji po kategorijama i datumu, s pretragom.' ),
 			),
-			'structure' => array( 'Hero: tko ste i ulazi za posjetitelje', 'Programi i usluge', 'Novosti i projekti', 'Dokumenti', 'O ustanovi i tim', 'Kontakt i lokacija' ),
+			'structure' => array( 'Prvi ekran: tko ste i ulazi za posjetitelje', 'Programi i usluge', 'Novosti i projekti', 'Dokumenti', 'O ustanovi i tim', 'Kontakt i lokacija' ),
 			'faq' => array(
 				// vlasnik potvrdio (10. 10. 2026); fiksna cijena kao u svakoj ponudi, bez obećanja proizvoljnog obrasca
 				array( 'Možete li poslati ponudu za jednostavnu nabavu ili projekt?', 'Da. Pisana ponuda sadrži opseg, rok i fiksnu cijenu. Ako nabava ili projekt traže određeni obrazac ili prilog, pošaljite ga uz upit.' ),
@@ -556,7 +556,7 @@ function zaec_registry_special() {
 				'type'  => 'problems',
 				'title' => 'Zašto lokalni <em>partner</em>.',
 				'items' => array(
-					array( 'Agencija iz drugog grada', 'Teško ih je dobiti, ne poznaju lokalno tržište, a svaka izmjena traje tjednima.' ),
+					array( 'Agencija iz drugog grada', 'Teško ju je dobiti, ne poznaje lokalno tržište, a svaka izmjena traje tjednima.' ),
 					array( 'Prijatelj koji „zna napraviti web”', 'Web postoji, ali nitko ne zna tko ima pristupe i kako se mijenja.' ),
 					array( 'Konkurencija je vidljivija', 'Lokalni kupci zovu onoga tko je na karti — ne nužno najboljeg majstora.' ),
 				),
@@ -568,7 +568,7 @@ function zaec_registry_special() {
 					array( 'hand-shake', 'Sastanak uživo', 'Kod vas, u radionici ili na kavi — pogledamo posao na licu mjesta.' ),
 					array( 'map-point', 'Poznavanje tržišta', 'Znamo kako ljudi u Slavoniji traže usluge i koja mjesta trebate pokriti.' ),
 					array( 'user-check', 'Jedna osoba od početka do kraja', 'Bez prebacivanja između prodaje, dizajna i razvoja.' ),
-					array( 'layers', 'Web, SEO i mjerenje zajedno', 'Sve što treba da vas lokalni kupci nađu — na jednom mjestu.' ),
+					array( 'layers', 'Web, SEO i mjerenje zajedno', 'Sve što je potrebno da vas lokalni kupci nađu — na jednom mjestu.' ),
 				),
 			),
 			array( 'type' => 'projects', 'title' => 'Radovi iz <em>Slavonije</em>.' ),
@@ -615,11 +615,13 @@ function zaec_registry_special() {
 		'description' => 'Besplatna SEO i AI provjera: kako vas vide Google karta, pretraga, ChatGPT i Google AI te kako stojite naspram tri konkurenta. Izvješće i tri koraka.',
 		'kicker'      => 'Besplatno · bez obveze',
 		'h1'          => 'Kako vas vide <em>Google</em> i AI? Provjerimo besplatno.',
+		// ispod gumba: što provjera jest (iz uvoda), umjesto oznaka o ponudi i izradi
+		'trust'       => array( array( 'magnifer', 'Ručna provjera' ), array( 'users-group-rounded', 'Usporedba s tri konkurenta' ), array( 'checklist', 'Tri koraka koja najviše donose' ) ),
 		'lead'        => 'Pošaljite naziv tvrtke i grad. Ručno provjeravamo Google profil, recenzije, web, brzinu i što o vama kažu ChatGPT i Google AI — uz usporedbu s tri konkurenta i tri koraka koja najviše donose.',
 		'answer'      => 'Besplatna provjera vidljivosti uključuje ručnu analizu Google Business profila, recenzija, web stranice (sadržaj, brzina, mobitel, mjerenje) i odgovora AI asistenata o vašoj tvrtki, usporedbu s tri lokalna konkurenta i kratko izvješće s tri prioritetna koraka.',
 		'image'       => 'world/usluga-provjera.webp',
 		'image_alt'   => 'Vaš obrt osvijetljen sprijeda, iza njega tri konkurenta u nacrtu; uz svaku zgradu kota visine, crta mjerila spaja vrhove.',
-		'cta'         => array( 'Pošalji za provjeru', '#upit' ),
+		'cta'         => array( 'Pošaljite za provjeru', '#upit' ),
 		'blocks'      => array(
 			array(
 				'type'  => 'deliver',
@@ -660,7 +662,8 @@ function zaec_registry_special() {
 
 	$r['o-nama'] = array(
 		'type'        => 'about',
-		'hero'        => 'onama',
+		'hero'        => 'editorial',
+		'nacrt'       => true, // list 00: pročelje zvonika konkatedrale, 90 m, sastavnica s odgovornom osobom (tools/art/nacrt/o-nama.mjs)
 		'title'       => 'O nama',
 		'seo_title'   => 'O nama — ZAEC web studio iz Osijeka',
 		'description' => 'ZAEC je web studio iz Osijeka koji vodi Filip Zajec: 10+ godina na webu, jedna odgovorna osoba, fiksna cijena u pisanoj ponudi i web koji donosi upite.',

@@ -23,8 +23,8 @@ $nacrt = zaec_nacrt( $l );
 $est   = 'pricing' === ( $l['type'] ?? '' ) && in_array( 'configurator', array_column( (array) ( $l['blocks'] ?? array() ), 'type' ), true );
 $img   = $nacrt || $est ? '' : ( $l['image'] ?? '' );
 $kick  = (string) ( $l['kicker'] ?? $l['title'] );
-// oznaka kadra: "U.04" iz kickera ("Usluga · U.04"), inače naziv stranice
-$code = preg_match( '~([A-ZČĆŽŠĐ]\.\d{2})~u', $kick, $zaec_m ) ? $zaec_m[1] : $kick;
+// oznaka kadra: "U.04" iz kickera ("Usluga · U.04"); bez šifre je nema (kicker je odmah iznad, ne ponavlja se)
+$code = preg_match( '~([A-ZČĆŽŠĐ]\.\d{2})~u', $kick, $zaec_m ) ? $zaec_m[1] : '';
 
 // kontaktni arak za hubove: kadrovi podstranica iz registra
 $sheet = array();
@@ -61,7 +61,7 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 					<?php $zaec_srcset = zaec_img_srcset( $img ); ?>
 					<img class="eh-img" src="<?php echo esc_url( zaec_img( $img ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-aspect-ratio: 4/5) 100vw, (max-width: 760px) 100vw, (max-width: 1100px) and (max-aspect-ratio: 1/1) 100vw, 58vw"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
 					<?php if ( ! empty( $l['image_alt'] ) ) : ?>
-						<figcaption class="eh-slate mono" aria-hidden="true"><b><?php echo esc_html( $code ); ?></b><span><?php echo esc_html( $l['image_alt'] ); ?></span></figcaption>
+						<figcaption class="eh-slate mono" aria-hidden="true"><?php if ( $code ) : ?><b><?php echo esc_html( $code ); ?></b><?php endif; ?><span><?php echo esc_html( $l['image_alt'] ); ?></span></figcaption>
 					<?php endif; ?>
 				</figure>
 			<?php endif; ?>
@@ -71,9 +71,10 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 				<?php zaec_hero_ctas( $cta, $href ); ?>
 				<?php if ( ! $sheet ) : ?>
 					<ul class="phero-trust mono" role="list">
-						<li><?php zaec_the_icon( 'document', 16 ); ?> Fiksna cijena u ponudi</li>
-						<li><?php zaec_the_icon( 'key', 16 ); ?> Sve na vaše ime</li>
-						<li><?php zaec_the_icon( 'chat-round-dots', 16 ); ?> Prvi razgovor besplatno</li>
+						<?php // stranica može imati svoje (npr. besplatna provjera nema ponudu ni izradu): [ ikona, tekst ] ?>
+						<?php foreach ( (array) ( $l['trust'] ?? array( array( 'document', 'Fiksna cijena u ponudi' ), array( 'key', 'Sve na vaše ime' ), array( 'chat-round-dots', 'Prvi razgovor besplatno' ) ) ) as $zaec_t ) : ?>
+							<li><?php zaec_the_icon( $zaec_t[0], 16 ); ?> <?php echo esc_html( $zaec_t[1] ); ?></li>
+						<?php endforeach; ?>
 					</ul>
 				<?php endif; ?>
 				<?php if ( 'industry' === ( $l['type'] ?? '' ) && false === strpos( $cta[1], 'provjera-vidljivosti' ) ) : ?>

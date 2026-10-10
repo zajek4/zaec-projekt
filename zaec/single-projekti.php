@@ -28,7 +28,7 @@ while ( have_posts() ) :
 				<h1 class="h1 case-title" data-split><?php the_title(); ?></h1>
 				<?php if ( $p['excerpt'] ) : ?><p class="lead" data-reveal><?php echo esc_html( $p['excerpt'] ); ?></p><?php endif; ?>
 				<?php if ( $p['website_url'] ) : ?>
-					<div data-reveal><?php echo zaec_button( 'Pogledajte live', $p['website_url'], 'signal', array( 'icon' => 'arrow-right-up' ) ); // phpcs:ignore ?></div>
+					<div data-reveal><?php echo zaec_button( 'Otvorite web stranicu', $p['website_url'], 'signal', array( 'icon' => 'arrow-right-up' ) ); // phpcs:ignore ?></div>
 				<?php endif; ?>
 			</div>
 			<figure class="case-shot" data-reveal>

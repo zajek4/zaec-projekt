@@ -505,7 +505,7 @@ function zaec_block_configurator( $b, $l, $alt ) {
 function zaec_block_contact( $b, $l, $alt ) {
 	$o = zaec_get_options();
 	if ( ! empty( $b['after'] ) ) {
-		zaec_block_contact_after( $o );
+		zaec_block_contact_after();
 		return;
 	}
 	echo '<section class="block' . esc_attr( $alt ) . '" id="upit"><div class="wrap">';
@@ -532,28 +532,19 @@ function zaec_block_contact( $b, $l, $alt ) {
 
 /**
  * Nastavak potpisnog heroja Kontakt (forma je već u heroju): ista noć, a koraci nakon upita pale se kao
- * etaže — redom, dok prolaze sredinom ekrana. Ispod su drugi putevi do nas.
+ * etaže — redom, dok prolaze sredinom ekrana. Izravni kontakti su samo u heroju, ispod forme (ne ponavljaju se ovdje).
  */
-function zaec_block_contact_after( $o ) {
+function zaec_block_contact_after() {
 	$steps = array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i fiksna cijena. Odlučujete bez pritiska.' ) );
 	echo '<section class="block kt-after" data-header-theme="night" aria-labelledby="kt-after-h"><div class="wrap kt-after-grid"><div class="kt-after-head"><p class="kicker">Nakon upita</p><h2 class="h2" id="kt-after-h">Što se događa <em>dalje</em>.</h2></div><ol class="kt-steps" role="list">';
 	foreach ( $steps as $i => $st ) {
 		echo '<li class="kt-step"><span class="kt-step-n mono">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $st[0] ) . '</b><p>' . esc_html( $st[1] ) . '</p></div></li>';
 	}
-	echo '</ol><div class="kt-ways"><p class="kicker">Radije izravno</p><ul class="kt-ways-list" role="list">';
-	echo '<li><a href="' . esc_attr( zaec_phone_href() ) . '" data-track="click_to_call">' . zaec_icon( 'phone', 20 ) . '<span><b>' . esc_html( $o['phone_display'] ) . '</b><small>' . esc_html( $o['hours'] ) . '</small></span></a></li>'; // phpcs:ignore
-	if ( zaec_whatsapp_href() ) {
-		echo '<li><a href="' . esc_url( zaec_whatsapp_href() ) . '" target="_blank" rel="noopener" data-track="click_whatsapp">' . zaec_icon( 'chat-round-dots', 20 ) . '<span><b>WhatsApp</b><small>Pošaljite poruku ili fotografiju</small></span></a></li>'; // phpcs:ignore
-	}
-	if ( $o['email'] && '1' === (string) $o['show_public_email'] ) {
-		echo '<li><a href="mailto:' . esc_attr( $o['email'] ) . '">' . zaec_icon( 'letter', 20 ) . '<span><b>' . esc_html( $o['email'] ) . '</b><small>Email</small></span></a></li>'; // phpcs:ignore
-	}
-	echo '<li><a href="' . esc_url( zaec_maps_href() ) . '" target="_blank" rel="noopener">' . zaec_icon( 'map-point', 20 ) . '<span><b>' . esc_html( $o['address'] ) . '</b><small>' . esc_html( $o['postal_code'] . ' ' . $o['city'] ) . ' · otvori kartu</small></span></a></li>'; // phpcs:ignore
-	echo '</ul></div></div></section>';
+	echo '</ol></div></section>';
 }
 
 function zaec_block_audit( $b, $l, $alt ) {
-	echo '<section class="block' . esc_attr( $alt ) . '" id="upit"><div class="wrap contact-grid"><div class="contact-card"><h2 class="h3" style="margin-bottom:6px">Zatražite besplatnu provjeru</h2><p class="muted" style="margin-bottom:22px">Naziv tvrtke i kontakt su dovoljni. Izvješće šaljemo na kontakt koji ostavite.</p>';
+	echo '<section class="block' . esc_attr( $alt ) . '" id="upit"><div class="wrap contact-grid"><div class="contact-card"><h2 class="h3" style="margin-bottom:6px">Zatražite besplatnu provjeru</h2><p class="muted" style="margin-bottom:22px">Naziv tvrtke, ime i kontakt su dovoljni. Izvješće šaljemo na kontakt koji ostavite.</p>';
 	get_template_part( 'template-parts/contact-form', null, array( 'id' => 'provjera-forma', 'kind' => 'provjera' ) );
 	echo '</div><div class="contact-aside"><p class="kicker">Što dobivate</p>';
 	foreach ( array( array( 'document', 'Kratko izvješće', 'Pregled profila, weba, recenzija i AI odgovora — bez žargona.' ), array( 'users-group-rounded', 'Usporedba s 3 konkurenta', 'Gdje ste ispred, a gdje zaostajete.' ), array( 'checklist', '3 prioritetna koraka', 'Što napraviti prvo — sami ili s nama.' ), array( 'shield-check', 'Bez obveze i bez poziva', 'Javljamo se samo izvješćem. Dalje odlučujete vi.' ) ) as $it ) {
@@ -568,7 +559,7 @@ function zaec_block_about( $b, $l, $alt ) {
 	if ( 'facts' !== $part ) {
 		echo '<section class="block' . esc_attr( $alt ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Zašto ZAEC</p>';
 		zaec_heading( 'Prvo nacrt. Onda <em>sve</em> ostalo.' );
-		echo '</div><div class="prose" data-reveal><p>Previše tvrtki platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>ZAEC radi drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom.</p></div></div></section>';
+		echo '</div><div class="prose" data-reveal><p>Previše tvrtki platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>ZAEC radi drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače videopozivom i jasnim pisanim dogovorom.</p></div></div></section>';
 	}
 	if ( 'intro' === $part ) {
 		return;
@@ -610,7 +601,12 @@ function zaec_render_related( $l ) {
 			continue;
 		}
 		$r = $reg[ $key ];
-		echo '<li><a href="' . esc_url( zaec_url( $key ) ) . '"><span class="mono">' . esc_html( $r['kicker'] ?? '' ) . '</span><b>' . esc_html( $r['title'] ) . '</b><span class="go">' . zaec_icon( 'arrow-right', 18 ) . '</span></a></li>'; // phpcs:ignore
+		// kicker koji samo ponavlja naziv (hub „Djelatnosti“) ne nosi ništa: tada vrsta stranice
+		$k = (string) ( $r['kicker'] ?? '' );
+		if ( 0 === strcasecmp( $k, (string) $r['title'] ) ) {
+			$k = 'hub-industries' === ( $r['type'] ?? '' ) ? 'Pregled' : '';
+		}
+		echo '<li><a href="' . esc_url( zaec_url( $key ) ) . '"><span class="mono">' . esc_html( $k ) . '</span><b>' . esc_html( $r['title'] ) . '</b><span class="go">' . zaec_icon( 'arrow-right', 18 ) . '</span></a></li>'; // phpcs:ignore
 	}
 	echo '</ul></div></section>';
 }

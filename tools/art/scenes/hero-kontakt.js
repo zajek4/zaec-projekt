@@ -288,6 +288,11 @@ function make(mode, comp) {
         const beam = createBeam();
         scene.add(beam.group);
         beam.update({ b: 1, at: c.spire.clone().applyMatrix4(c.group.matrixWorld), unit: 1, camera, time: 3.2, pr: st.pr, alpha: 0.9 });
+        // mirna slika: paketi svjetla (na naslovnici putuju uvis) zaustavljeni izgledaju kao niz zrnaca, kvar.
+        // Bez ponavljanja i s fazom na vrhu paketa jezgra svijetli jednoliko, jačinom paketa.
+        const u = beam.group.children[0].material.uniforms;
+        u.uRep.value = 0;
+        u.uTime.value = 0.5 / 0.7;
       }
       // susjedi u nizu (već svijetle) i kuća
       // desno od kuće je forma: niz je tamo niži i mirniji
