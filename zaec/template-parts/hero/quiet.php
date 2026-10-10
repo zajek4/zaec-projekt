@@ -28,4 +28,3 @@ $cta   = $l['cta'] ?? null;
 		<p class="qh-rule mono" aria-hidden="true"><span>ZAEC · <?php echo esc_html( $kick ); ?></span><i></i><span>Osijek · 45°33′ N 18°41′ E</span></p>
 	</div>
 </section>
-<?php zaec_hero_answer( $l ); ?>

@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 const ZAEC_LANDING_TEMPLATE = 'page-templates/landing.php';
-const ZAEC_LANDING_VERSION  = '2.0.0';
+const ZAEC_LANDING_VERSION  = '2.1.0';
 
 function zaec_landing_key( $post_id = 0 ) {
 	$post_id = $post_id ? (int) $post_id : (int) get_queried_object_id();

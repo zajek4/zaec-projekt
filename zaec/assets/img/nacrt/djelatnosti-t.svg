@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="440 120 760 570" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="grid00t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid00t)"/>
+<g class="nd nd-1">
+<line class="cut-w" pathLength="1" x1="504" y1="190" x2="1192" y2="190"/>
+<line class="ln-frame" pathLength="1" x1="568" y1="156" x2="568" y2="762"/>
+<line class="ln-frame" pathLength="1" x1="966" y1="156" x2="966" y2="762"/>
+</g>
+<g class="nd nd-2">
+<text class="t-call" x="504" y="138" font-weight="700" style="font-size:20px">KAZALO LISTOVA</text>
+<text class="t-small" x="554" y="178" style="font-size:18px" text-anchor="end">LIST</text>
+<text class="t-small" x="582" y="178" style="font-size:18px">DJELATNOST</text>
+<text class="t-small" x="980" y="178" style="font-size:18px">POGLED · MJERILO</text>
+</g>
+<g class="nd nd-3">
+<text class="t-call" x="524" y="224" font-weight="700" style="font-size:22px">01</text>
+<text class="t-call" x="582" y="224" style="font-size:22px">Klima i grijanje</text>
+<text class="t-dim" x="980" y="224" style="font-size:18px">PRESJEK · 1:10</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="242" x2="1192" y2="242"/>
+<text class="t-call" x="524" y="276" font-weight="700" style="font-size:22px">02</text>
+<text class="t-call" x="582" y="276" style="font-size:22px">Vodoinstalateri</text>
+<text class="t-dim" x="980" y="276" style="font-size:18px">POGLED · 1:20</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="294" x2="1192" y2="294"/>
+<text class="t-call" x="524" y="328" font-weight="700" style="font-size:22px">03</text>
+<text class="t-call" x="582" y="328" style="font-size:22px">Električari</text>
+<text class="t-dim" x="980" y="328" style="font-size:18px">SHEMA</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="346" x2="1192" y2="346"/>
+<text class="t-call" x="524" y="380" font-weight="700" style="font-size:22px">04</text>
+<text class="t-call" x="582" y="380" style="font-size:22px">Krovopokrivači</text>
+<text class="t-dim" x="980" y="380" style="font-size:18px">PRESJEK · 1:20</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="398" x2="1192" y2="398"/>
+<text class="t-call" x="524" y="432" font-weight="700" style="font-size:22px">05</text>
+<text class="t-call" x="582" y="432" style="font-size:22px">Građevina i adaptacije</text>
+<text class="t-dim" x="980" y="432" style="font-size:18px">TLOCRT · 1:50</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="450" x2="1192" y2="450"/>
+</g>
+<g class="nd nd-4">
+<text class="t-call" x="524" y="484" font-weight="700" style="font-size:22px">06</text>
+<text class="t-call" x="582" y="484" style="font-size:22px">Ugostiteljstvo i smještaj</text>
+<text class="t-dim" x="980" y="484" style="font-size:18px">SITUACIJA · 1:100</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="502" x2="1192" y2="502"/>
+<text class="t-call" x="524" y="536" font-weight="700" style="font-size:22px">07</text>
+<text class="t-call" x="582" y="536" style="font-size:22px">Trgovine i webshop</text>
+<text class="t-dim" x="980" y="536" style="font-size:18px">POGLED · 1:50</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="554" x2="1192" y2="554"/>
+<text class="t-call" x="524" y="588" font-weight="700" style="font-size:22px">08</text>
+<text class="t-call" x="582" y="588" style="font-size:22px">Saloni ljepote</text>
+<text class="t-dim" x="980" y="588" style="font-size:18px">TLOCRT · 1:50</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="606" x2="1192" y2="606"/>
+<text class="t-call" x="524" y="640" font-weight="700" style="font-size:22px">09</text>
+<text class="t-call" x="582" y="640" style="font-size:22px">Stručne usluge</text>
+<text class="t-dim" x="980" y="640" style="font-size:18px">TLOCRT · 1:50</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="658" x2="1192" y2="658"/>
+<text class="t-call" x="524" y="692" font-weight="700" style="font-size:22px">10</text>
+<text class="t-call" x="582" y="692" style="font-size:22px">Ustanove i udruge</text>
+<text class="t-dim" x="980" y="692" style="font-size:18px">TLOCRT · 1:100</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="710" x2="1192" y2="710"/>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<text class="t-call" x="524" y="744" font-weight="700" style="font-size:22px">11</text>
+<text class="t-call" x="582" y="744" style="font-size:22px">Vaša djelatnost</text>
+<text class="t-dim" x="980" y="744" style="font-size:18px">NA UPIT</text>
+</g>
+</g>
+</svg>

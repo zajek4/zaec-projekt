@@ -17,8 +17,12 @@ function zaec_render_blocks( $landing ) {
 			$i++;
 			$alt = 0 === $i % 2 ? ' block--paper2' : '';
 			call_user_func( $fn, $b, $landing, $alt );
+			if ( 1 === $i ) {
+				zaec_answer_block( $landing ); // „Ukratko“ iza druge sekcije stranice (hero je prva)
+			}
 		}
 	}
+	zaec_answer_block( $landing ); // stranica bez blokova: odmah iza heroja
 }
 
 function zaec_block_head( $title, $lead = '', $kicker = '' ) {
@@ -34,7 +38,7 @@ function zaec_block_head( $title, $lead = '', $kicker = '' ) {
 	}
 	echo '</div>';
 	if ( $lead ) {
-		echo '<p class="lead" data-reveal>' . esc_html( $lead ) . '</p>';
+		echo '<p class="lead" data-reveal>' . zaec_kses_text( $lead ) . '</p>'; // phpcs:ignore -- kses
 	}
 	echo '</div>';
 }
@@ -112,6 +116,10 @@ function zaec_block_anatomy( $b, $l, $alt ) {
 	if ( ! is_array( $b['parts'][0] ) ) {
 		$parts[ count( $parts ) - 1 ][2] = 'form';
 	}
+	if ( ! empty( $b['tower'] ) && zaec_hero_meta( 'izrada-m' ) ) {
+		zaec_block_anatomy_tower( $b, $parts );
+		return;
+	}
 	zaec_block_open( $alt );
 	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Nacrt' );
 	echo '<div class="anat" data-reveal><div class="anat-sheet" aria-hidden="true"><div class="anat-bar"><span></span><span></span><span></span><b>' . esc_html( $b['label'] ?? 'nacrt.pdf' ) . '</b></div><div class="anat-page">';
@@ -152,6 +160,57 @@ function zaec_block_anatomy( $b, $l, $alt ) {
 	zaec_block_close();
 }
 
+/**
+ * Izrada: „Kako izgleda stranica koja zove“ kao nastavak heroja (design/03, 4.5): u noći, lijevo kula iz heroja
+ * (sagrađeni kadar ispod nacrta, isti natpisi), desno sedam dijelova stranice. Dio stranice odozgo pali svoju
+ * etažu odozgo (zadnji, upit i poziv, pali ulaz). Bez JS-a i uz smanjeno kretanje kula je cijela sagrađena.
+ */
+function zaec_block_anatomy_tower( $b, $parts ) {
+	$m = zaec_hero_meta( 'izrada-m' );
+	// pojasevi etaža bez praznina (granica je sredina ploče između dviju etaža): krov ide s gornjom etažom, tlo s ulazom
+	$tops    = array_column( $m['floors'], 'top' );
+	$bottoms = array_column( $m['floors'], 'bottom' );
+	$tops[]  = $m['lobby']['top'];
+	$cuts    = array( 0 );
+	for ( $i = 1; $i < count( $tops ); $i++ ) {
+		$cuts[] = round( ( $bottoms[ $i - 1 ] + $tops[ $i ] ) / 2, 3 );
+	}
+	$cuts[] = 100;
+	$stops  = array();
+	for ( $i = 0; $i < count( $cuts ) - 1; $i++ ) {
+		$stops[] = "rgb(0 0 0/var(--f{$i},1)) {$cuts[ $i ]}%";
+		$stops[] = "rgb(0 0 0/var(--f{$i},1)) {$cuts[ $i + 1 ]}%";
+	}
+	$mask  = 'linear-gradient(180deg,' . implode( ',', $stops ) . ')';
+	$words = '';
+	foreach ( $m['floors'] as $i => $f ) {
+		$words .= sprintf(
+			'<text class="it-w at-w%1$s" data-f="%2$d" x="%3$s" y="%4$s" font-size="%5$s" textLength="%6$s" lengthAdjust="spacingAndGlyphs">%7$s</text>',
+			'serif' === $f['kind'] ? ' it-w--serif' : '',
+			(int) $i,
+			esc_attr( $m['textX'] ),
+			esc_attr( $f['base'] ),
+			esc_attr( $f['fs'] ),
+			esc_attr( $m['textW'] ),
+			esc_html( $f['word'] )
+		);
+	}
+	$img = static fn( $n ) => sprintf( 'src="%1$s" srcset="%1$s 720w, %2$s 1080w" sizes="(max-width: 900px) 46vw, 600px"', esc_url( zaec_img( "hero/{$n}-m-720.webp" ) ), esc_url( zaec_img( "hero/{$n}-m.webp" ) ) );
+	echo '<section class="block block--ink anat-night" data-header-theme="night" data-anat-tower><div class="wrap">';
+	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Nacrt' );
+	echo '<div class="anat anat--tower"><figure class="at-tower" aria-hidden="true"><div class="at-scene">';
+	echo '<img class="at-plan" ' . $img( 'izrada-plan' ) . ' alt="" width="720" height="1280" loading="lazy" decoding="async">'; // phpcs:ignore -- esc_url u $img
+	echo '<div class="at-real" style="' . esc_attr( '-webkit-mask-image:' . $mask . ';mask-image:' . $mask ) . '"><img ' . $img( 'izrada-real' ) . ' alt="" width="720" height="1280" loading="lazy" decoding="async"></div>'; // phpcs:ignore
+	printf( '<svg viewBox="0 0 %1$d %2$d" preserveAspectRatio="none" focusable="false">%3$s</svg>', (int) $m['w'], (int) $m['h'], $words ); // phpcs:ignore -- izgrađeno iz esc_* gore
+	echo '</div></figure><ol class="anat-notes" role="list">';
+	$last = count( $cuts ) - 2; // ulaz
+	foreach ( $parts as $i => $p ) {
+		$f = $i === count( $parts ) - 1 ? $last : min( $i, $last - 1 );
+		echo '<li data-f="' . (int) $f . '"><span class="anat-n">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $p[0] ) . '</b>' . ( $p[1] ? '<p>' . esc_html( $p[1] ) . '</p>' : '' ) . '</div></li>';
+	}
+	echo '</ol></div></div></section>';
+}
+
 function zaec_block_process( $b, $l, $alt ) {
 	echo '<section class="block block--ink" data-header-theme="night"><div class="wrap">';
 	zaec_block_head( $b['title'] ?? 'Četiri koraka, <em>bez</em> iznenađenja.', $b['lead'] ?? 'Cijenu i opseg znate prije prvog retka koda. Sve izvan dogovora prvo dobiva procjenu — tek onda rad.', 'Proces' );
@@ -160,6 +219,44 @@ function zaec_block_process( $b, $l, $alt ) {
 		printf( '<li data-reveal><span class="code-tag">%s</span><h3>%s</h3><p>%s</p><span class="mono meta">%s</span></li>', esc_html( $s[0] ), esc_html( $s[1] ), esc_html( $s[2] ), esc_html( $s[3] ) );
 	}
 	echo '</ol></div></section>';
+}
+
+/**
+ * „Što kupujete“: šest koraka procesa s onim što klijent dobiva na kraju svakog (zaec_home_steps, treći stupac).
+ * Zamjenjuje blok process na Izradi (strategy/05, sekcija 2).
+ */
+function zaec_block_decisions( $b, $l, $alt ) {
+	zaec_block_open( $alt );
+	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Odluke' );
+	echo '<ol class="decisions" role="list" data-stagger="0.06">';
+	foreach ( zaec_home_steps() as $i => $st ) {
+		printf(
+			'<li data-reveal><span class="mono dec-n">%1$s</span><div class="dec-step"><h3>%2$s</h3><p>%3$s</p></div><p class="dec-get"><span class="mono">Dobivate</span>%4$s</p></li>',
+			esc_html( zaec_pad( $i + 1 ) ),
+			esc_html( $st[0] ),
+			esc_html( $st[1] ),
+			esc_html( $st[2] )
+		);
+	}
+	echo '</ol>';
+	zaec_block_close();
+}
+
+/** „Primopredaja“: popis provjera prije predaje (koraci Testiramo i Lansiramo), s pragovima Core Web Vitals. */
+function zaec_block_handover( $b, $l, $alt ) {
+	zaec_block_open( $alt );
+	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Primopredaja' );
+	echo '<ul class="handover" role="list" data-stagger="0.05">';
+	foreach ( $b['items'] as $it ) {
+		printf(
+			'<li data-reveal><span class="ho-box" aria-hidden="true"></span><div><b>%1$s</b><p>%2$s</p>%3$s</div></li>',
+			esc_html( $it[0] ),
+			esc_html( $it[1] ),
+			! empty( $it[2] ) ? '<p class="mono ho-v">' . esc_html( $it[2] ) . '</p>' : ''
+		);
+	}
+	echo '</ul>';
+	zaec_block_close();
 }
 
 function zaec_block_guarantees( $b, $l, $alt ) {
@@ -174,13 +271,14 @@ function zaec_block_guarantees( $b, $l, $alt ) {
 }
 
 function zaec_block_projects( $b, $l, $alt ) {
-	$projects = zaec_get_projects( 3 );
+	// host: samo taj objavljeni projekt (dokaz uz djelatnost); bez njega nema bloka
+	$projects = ! empty( $b['host'] ) ? array_filter( array( zaec_project_by_host( $b['host'] ) ) ) : zaec_get_projects( 3 );
 	if ( ! $projects ) {
 		return;
 	}
 	zaec_block_open( $alt );
 	zaec_block_head( $b['title'] ?? 'Radovi koje možete <em>otvoriti</em>.', $b['lead'] ?? 'Stvarni projekti — bez izmišljenih klijenata i brojki.', 'Radovi' );
-	echo '<div class="pgrid">';
+	echo '<div class="pgrid' . ( 1 === count( $projects ) ? ' pgrid--one' : '' ) . '">';
 	foreach ( $projects as $p ) {
 		get_template_part( 'template-parts/project-card', null, array( 'p' => $p ) );
 	}
@@ -203,7 +301,8 @@ function zaec_block_report( $b, $l, $alt ) {
 function zaec_block_stats( $b, $l, $alt ) {
 	zaec_block_open( $alt, '', 'block--stats' );
 	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Podaci' );
-	echo '<ul class="stats" role="list" data-stagger="0.08">';
+	$words = ! array_filter( (array) $b['items'], static fn( $s ) => preg_match( '/\d/', $s[0] ) );
+	echo '<ul class="stats' . ( $words ? ' stats--words' : '' ) . '" role="list" data-stagger="0.08">';
 	foreach ( $b['items'] as $s ) {
 		printf( '<li data-reveal><b>%s</b><span>%s</span><p>%s</p></li>', esc_html( $s[0] ), esc_html( $s[1] ), esc_html( $s[2] ) );
 	}
@@ -346,16 +445,54 @@ function zaec_block_services( $b, $l, $alt ) {
 	zaec_block_close();
 }
 
+/**
+ * Djelatnosti po sektorima (strategija 01): hub (full) prikazuje svih 8 sektora sa stranicama, dokazom i CTA-om;
+ * drugdje kompaktna mreža sektora koja vodi na stranicu ili na sektor na hubu. Bez sintetičkih slika.
+ */
 function zaec_block_trades( $b, $l, $alt ) {
+	$full = ! empty( $b['full'] );
 	zaec_block_open( $alt );
 	if ( ! empty( $b['title'] ) || ! isset( $b['title'] ) ) {
-		zaec_block_head( $b['title'] ?? 'Svaki zanat traži <em>drukčiji</em> web.', $b['lead'] ?? 'Pogledajte što mora imati stranica za vašu djelatnost.', 'Djelatnosti' );
+		zaec_block_head( $b['title'] ?? 'Web prema tome kako <em>vaši</em> kupci biraju.', $b['lead'] ?? 'Osam područja, od obrta do industrije. Svako ima svoja pitanja i svoj put do upita.', 'Djelatnosti' );
 	}
-	echo '<ul class="trade-cards" role="list" data-stagger="0.05">';
-	foreach ( zaec_industries() as $t ) {
-		echo '<li data-reveal><a class="trade-card" href="' . esc_url( zaec_url( $t['key'] ) ) . '"><figure><img src="' . esc_url( zaec_img( $t['image'] ) ) . '"' . ( zaec_img_srcset( $t['image'] ) ? ' srcset="' . esc_attr( zaec_img_srcset( $t['image'] ) ) . '" sizes="(max-width: 560px) 92vw, (max-width: 1100px) 46vw, 340px"' : '' ) . ' alt="" width="1400" height="1050" loading="lazy" decoding="async"></figure><h3>' . zaec_icon( $t['icon'], 18 ) . ' ' . esc_html( $t['title'] ) . '</h3><p>' . esc_html( implode( ' · ', $t['onweb'] ) ) . '</p><span class="go">Pogledajte ' . zaec_icon( 'arrow-right', 16 ) . '</span></a></li>'; // phpcs:ignore
+	$n = 0;
+	if ( $full ) {
+		echo '<ol class="sectors" role="list" data-stagger="0.05">';
+		foreach ( zaec_sectors() as $key => $sec ) {
+			$pages = zaec_sector_pages( $key );
+			$proof = ! empty( $sec['proof'] ) ? zaec_project_by_host( $sec['proof'] ) : null;
+			echo '<li class="sector" id="sektor-' . esc_attr( $key ) . '" data-reveal>';
+			echo '<div class="sector-id"><span class="code-tag">S.' . esc_html( zaec_pad( ++$n ) ) . '</span>' . zaec_icon( $sec['icon'], 22 ) . '</div>'; // phpcs:ignore
+			echo '<div class="sector-name"><h3>' . esc_html( $sec['name'] ) . '</h3><p class="sector-ex">' . esc_html( $sec['examples'] ) . '</p></div>';
+			echo '<div class="sector-body"><p>' . esc_html( $sec['about'] ) . '</p>';
+			if ( $pages ) {
+				echo '<ul class="sector-pages" role="list">';
+				foreach ( $pages as $t ) {
+					echo '<li><a href="' . esc_url( zaec_url( $t['key'] ) ) . '"><b>' . esc_html( $t['label'] ) . '</b><span>' . esc_html( implode( ' · ', array_slice( $t['onweb'], 0, 2 ) ) ) . '</span>' . zaec_icon( 'arrow-right', 16 ) . '</a></li>'; // phpcs:ignore
+				}
+				echo '</ul>';
+			}
+			if ( $proof ) {
+				echo '<p class="sector-proof"><span class="mono">Iz prakse</span> <a href="' . esc_url( $proof['permalink'] ) . '">' . esc_html( $proof['title'] ) . '</a></p>';
+			}
+			echo '<a class="sector-cta" href="' . esc_url( zaec_url( 'cijene?djelatnost=' . $key . '#konfigurator' ) ) . '">Procjena za ovo područje ' . zaec_icon( 'arrow-right', 16 ) . '</a>'; // phpcs:ignore
+			echo '</div></li>';
+		}
+		echo '<li class="sector sector--other" id="sektor-ostalo" data-reveal><div class="sector-id"><span class="code-tag">S.' . esc_html( zaec_pad( ++$n ) ) . '</span>' . zaec_icon( ZAEC_SECTOR_OTHER['icon'], 22 ) . '</div>'; // phpcs:ignore
+		echo '<div class="sector-name"><h3>Nešto drugo</h3><p class="sector-ex">autoservisi, zdravstvo, prijevoz, IT i sve ostalo</p></div>';
+		echo '<div class="sector-body"><p>Isti pristup radi za svaki posao koji kupci traže i uspoređuju na webu. Strukturu za vaš složimo u razgovoru.</p>';
+		echo '<a class="sector-cta" href="' . esc_url( zaec_url( 'cijene?djelatnost=ostalo#konfigurator' ) ) . '">Procjena za vaš posao ' . zaec_icon( 'arrow-right', 16 ) . '</a></div></li>'; // phpcs:ignore
+		echo '</ol>';
+	} else {
+		echo '<ul class="sector-grid" role="list" data-stagger="0.04">';
+		foreach ( zaec_sectors() as $key => $sec ) {
+			$pages = zaec_sector_pages( $key );
+			$href  = 1 === count( $pages ) ? zaec_url( $pages[0]['key'] ) : zaec_url( 'djelatnosti#sektor-' . $key );
+			echo '<li data-reveal><a class="sector-tile" href="' . esc_url( $href ) . '"><span class="sector-tile-top"><span class="code-tag">S.' . esc_html( zaec_pad( ++$n ) ) . '</span>' . zaec_icon( $sec['icon'], 20 ) . '</span><b>' . esc_html( $sec['short'] ) . '</b><span class="sector-tile-sub">' . esc_html( $sec['examples'] ) . '</span></a></li>'; // phpcs:ignore
+		}
+		echo '</ul>';
+		echo '<p class="sector-more" data-reveal><a class="link-arrow" href="' . esc_url( zaec_url( 'djelatnosti' ) ) . '">Sva područja i stranice djelatnosti ' . zaec_icon( 'arrow-right', 16 ) . '</a></p>'; // phpcs:ignore
 	}
-	echo '</ul>';
 	zaec_block_close();
 }
 
@@ -378,7 +515,6 @@ function zaec_block_contact( $b, $l, $alt ) {
 	echo '<div class="contact-grid"><div class="contact-card"><h2 class="h3" style="margin-bottom:6px">Upit</h2><p class="muted" style="margin-bottom:22px">Dva obavezna polja. Ostalo po želji.</p>';
 	get_template_part( 'template-parts/contact-form', null, array( 'id' => 'upit-forma-' . sanitize_key( $l['key'] ?? 'x' ) ) );
 	echo '</div><div class="contact-aside">';
-	echo '<a class="item" href="' . esc_attr( zaec_phone_href() ) . '" data-track="click_to_call"><span class="ic">' . zaec_icon( 'phone', 20 ) . '</span><div><b>' . esc_html( $o['phone_display'] ) . '</b><span>' . esc_html( $o['hours'] ) . '</span></div></a>'; // phpcs:ignore
 	if ( zaec_whatsapp_href() ) {
 		echo '<a class="item" href="' . esc_url( zaec_whatsapp_href() ) . '" target="_blank" rel="noopener" data-track="click_whatsapp"><span class="ic">' . zaec_icon( 'chat-round-dots', 20 ) . '</span><div><b>WhatsApp</b><span>Pošaljite poruku ili fotografiju</span></div></a>'; // phpcs:ignore
 	}
@@ -386,6 +522,7 @@ function zaec_block_contact( $b, $l, $alt ) {
 		echo '<a class="item" href="mailto:' . esc_attr( $o['email'] ) . '"><span class="ic">' . zaec_icon( 'letter', 20 ) . '</span><div><b>' . esc_html( $o['email'] ) . '</b><span>Email</span></div></a>'; // phpcs:ignore
 	}
 	echo '<a class="item" href="' . esc_url( zaec_maps_href() ) . '" target="_blank" rel="noopener"><span class="ic">' . zaec_icon( 'map-point', 20 ) . '</span><div><b>' . esc_html( $o['address'] ) . '</b><span>' . esc_html( $o['postal_code'] . ' ' . $o['city'] ) . ' · otvori kartu</span></div></a>'; // phpcs:ignore
+	echo '<a class="item" href="' . esc_url( zaec_url( 'kontakt' ) ) . '"><span class="ic">' . zaec_icon( 'phone', 20 ) . '</span><div><b>Telefon i radno vrijeme</b><span>Na stranici Kontakt</span></div></a>'; // phpcs:ignore
 	echo '<div><p class="kicker" style="margin:18px 0 12px">Što se događa nakon upita</p><ol class="anat-notes" role="list">';
 	foreach ( array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i fiksna cijena. Odlučujete bez pritiska.' ) ) as $i => $s ) {
 		echo '<li><span class="anat-n">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $s[0] ) . '</b><p>' . esc_html( $s[1] ) . '</p></div></li>';
@@ -426,11 +563,17 @@ function zaec_block_audit( $b, $l, $alt ) {
 }
 
 function zaec_block_about( $b, $l, $alt ) {
-	$o = zaec_get_options();
-	echo '<section class="block"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Zašto ZAEC</p>';
-	zaec_heading( 'Obrtnici zaslužuju web koji <em>radi</em>.' );
-	echo '</div><div class="prose" data-reveal><p>Previše majstora platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>ZAEC radi drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom.</p></div></div></section>';
-	echo '<section class="block block--paper2"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Podaci</p><h2 class="h3">Tko stoji iza ZAEC-a</h2></div><div class="prose" data-reveal><table><tbody>';
+	$o    = zaec_get_options();
+	$part = $b['part'] ?? 'all';
+	if ( 'facts' !== $part ) {
+		echo '<section class="block' . esc_attr( $alt ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Zašto ZAEC</p>';
+		zaec_heading( 'Prvo nacrt. Onda <em>sve</em> ostalo.' );
+		echo '</div><div class="prose" data-reveal><p>Previše tvrtki platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>ZAEC radi drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom.</p></div></div></section>';
+	}
+	if ( 'intro' === $part ) {
+		return;
+	}
+	echo '<section class="block' . esc_attr( 'facts' === $part ? $alt : ' block--paper2' ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Podaci</p><h2 class="h3">Tko stoji iza ZAEC-a</h2></div><div class="prose" data-reveal><table><tbody>';
 	$rows = array( 'Naziv' => $o['legal_name'], 'Nositelj' => $o['owner_name'], 'Sjedište' => $o['address'] . ', ' . $o['postal_code'] . ' ' . $o['city'], 'Matični broj' => $o['mb'], 'OIB' => $o['oib'], 'Djelatnost (NKD)' => $o['nkd'] ? $o['nkd'] . ' — računalno programiranje' : '', 'Radno vrijeme' => $o['hours'], 'Iskustvo' => $o['experience'] ? $o['experience'] . ' godina rada na webu' : '' );
 	foreach ( $rows as $k => $v ) {
 		if ( $v ) {
@@ -438,6 +581,21 @@ function zaec_block_about( $b, $l, $alt ) {
 		}
 	}
 	echo '</tbody></table></div></div></section>';
+}
+
+/**
+ * Načela rada (O nama): šest stavki kao članci ugovora — svaka je obećanje koje web već daje negdje drugdje
+ * (strategija 05 §3), ovdje skupljeno na jedno mjesto.
+ */
+function zaec_block_principles( $b, $l, $alt ) {
+	zaec_block_open( $alt, 'kako-radimo', 'block--principles' );
+	zaec_block_head( $b['title'] ?? 'Kako <em>radimo</em>.', $b['lead'] ?? '', 'Načela' );
+	echo '<ol class="principles" role="list" data-stagger="0.06">';
+	foreach ( (array) $b['items'] as $i => $it ) {
+		echo '<li data-reveal><span class="principle-n mono" aria-hidden="true">N.' . esc_html( zaec_pad( $i + 1 ) ) . '</span><h3 class="h4">' . esc_html( $it[0] ) . '</h3><p>' . esc_html( $it[1] ) . '</p></li>';
+	}
+	echo '</ol>';
+	zaec_block_close();
 }
 
 /** Povezane stranice (interno povezivanje). */

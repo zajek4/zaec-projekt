@@ -1,0 +1,59 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="420 262 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="grid02m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid02m)"/>
+<g class="nd nd-1">
+<path class="ln-tile" d="M380 796L1180 796M380 712L1180 712M380 628L1180 628M380 544L1180 544M380 460L1180 460M380 376L1180 376M380 292L1180 292M548 152L548 880M716 152L716 880M884 152L884 880M1052 152L1052 880"/>
+<path class="ln-con" d="M910 522L910 910M663 232L663 910"/>
+</g>
+<g class="nd nd-2">
+<path class="ln-3" d="M1068 152L1068 880M1099 152L1099 880"/>
+</g>
+<g class="nd nd-3">
+<rect class="cut-w" pathLength="1" x="600" y="292" width="126" height="224" rx="30"/>
+<rect class="ln-3" x="610" y="302" width="106" height="194" rx="24"/>
+<rect class="ln-2" pathLength="1" x="620" y="310" width="14" height="8"/>
+<rect class="ln-2" pathLength="1" x="692" y="310" width="14" height="8"/>
+<rect class="ln-2" pathLength="1" x="648" y="498" width="30" height="12"/>
+<circle class="ln-2" pathLength="1" cx="663" cy="458" r="9"/>
+<path class="cut-w" pathLength="1" d="M820 642 H1000 V652 Q982 702 910 704 Q838 702 820 652 Z"/>
+<path class="ln-2" pathLength="1" d="M900 642 V616 H932 V624 H912 V642"/>
+<circle class="ln-2" pathLength="1" cx="880" cy="726" r="6"/>
+<line class="ln-2" pathLength="1" x1="880" y1="720" x2="880" y2="678"/>
+<circle class="ln-2" pathLength="1" cx="940" cy="726" r="6"/>
+<line class="ln-2" pathLength="1" x1="940" y1="720" x2="940" y2="678"/>
+</g>
+<g class="nd nd-4">
+<polyline class="ln-2" pathLength="1" points="1135,726 940,726"/>
+<polyline class="ln-2" pathLength="1" points="940,726 640,726 640,516"/>
+<path class="ln-2" pathLength="1" d="M628 572 L652 584 V572 L628 584 Z"/>
+<polyline class="ln-2" pathLength="1" points="652,578 670,578 670,612"/>
+<path class="ln-2" pathLength="1" d="M662 612 H678 L673 624 H667 Z"/>
+<polyline class="ln-2" pathLength="1" points="686,516 686,748 880,748 880,732"/>
+<rect class="ln-2" pathLength="1" x="1078" y="612" width="92" height="88"/>
+<path class="ln-2" pathLength="1" d="M1126 646 L1144 664 V646 L1126 664 Z"/>
+<path class="ln-2" pathLength="1" d="M910 704 V700 Q910 722 926 722 Q942 722 942 708 V700"/>
+<polyline class="ln-2" pathLength="1" points="942,708 960,708 960,744"/>
+<line class="ln-3" x1="960" y1="744" x2="1068" y2="749"/>
+<path class="ln-dim" pathLength="1" d="M1046 741 l10 5 -10 5"/>
+</g>
+<g class="nd nd-5">
+<text class="t-dim" x="1040" y="192" text-anchor="end">Ø 110</text>
+</g>
+<g class="nd nd-6">
+<g class="call c02">
+<circle class="dot" cx="726" cy="380" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="726,380 780,330 800,330"/>
+<text class="t-call" x="808" y="335"><tspan class="t-n">02</tspan>  BOJLER</text>
+<text class="t-web" x="808" y="364">→ Intervencije</text>
+</g>
+<rect class="lamp-fill" pathLength="1" x="679" y="522" width="14" height="12"/>
+<path class="lamp-fill" pathLength="1" d="M686 540 Q691 548 686 552 Q681 548 686 540 Z"/>
+<g class="call lamp">
+<circle class="halo" cx="686" cy="534" r="30"/>
+<circle class="dot" cx="686" cy="534" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="686,526 686,484 954,484"/>
+<text class="t-call" x="750" y="441">02:40 · HITNO</text>
+<text class="t-web" x="750" y="470">„curi bojler“</text>
+</g>
+</g>
+</svg>

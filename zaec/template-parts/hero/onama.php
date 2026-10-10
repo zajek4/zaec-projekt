@@ -89,13 +89,9 @@ $vars = $md && $mm ? sprintf( '--wx:%s;--wy:%s;--wxm:%s;--wym:%s', round( $md['w
 			<div class="on-aside">
 				<p class="kicker"><?php echo esc_html( $l['kicker'] ?? $l['title'] ); ?> · Osijek</p>
 				<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
-				<div class="phero-cta">
-					<?php echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore ?>
-					<a class="btn btn--ghost" href="<?php echo esc_attr( zaec_phone_href() ); ?>" data-track="click_to_call"><?php zaec_the_icon( 'phone', 18 ); ?> <?php echo esc_html( zaec_option( 'phone_display' ) ); ?></a>
-				</div>
+				<?php zaec_hero_ctas( $cta, $href ); ?>
 			</div>
 			<p class="on-caption mono" aria-hidden="true">Konkatedrala sv. Petra i Pavla, Osijek</p>
 		</div>
 	</div>
 </section>
-<?php zaec_hero_answer( $l, 'sh-answer on-answer' ); ?>

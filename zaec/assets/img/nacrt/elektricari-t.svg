@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="720 506 480 360" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="grid03t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid03t)"/>
+<g class="nd nd-1">
+<line class="ln-con" x1="420" y1="591" x2="1180" y2="591"/>
+</g>
+<g class="nd nd-2">
+<path class="ln-2" pathLength="1" d="M553 170 H567 M560 206 L547 173"/>
+</g>
+<g class="nd nd-3">
+<path class="ln-2" pathLength="1" d="M633 292 H647 M640 328 L627 295 M629 346 A11 4.5 0 1 0 651 346 A11 4.5 0 1 0 629 346"/>
+<path class="ln-2" pathLength="1" d="M615 407 L625 417 M615 417 L625 407 M620 446 L607 415"/>
+<path class="ln-2" pathLength="1" d="M611.5 582.5 L628.5 599.5 M611.5 599.5 L628.5 582.5"/>
+<path class="ln-2" pathLength="1" d="M685 407 L695 417 M685 417 L695 407 M690 446 L677 415"/>
+<path class="ln-2" pathLength="1" d="M677 600 A13 13 0 0 1 703 600 M674 600 H706"/>
+<path class="ln-2" pathLength="1" d="M755 407 L765 417 M755 417 L765 407 M760 446 L747 415"/>
+<line class="ln-2" pathLength="1" x1="760" y1="446" x2="760" y2="578"/>
+<path class="ln-2" pathLength="1" d="M747 600 A13 13 0 0 1 773 600 M744 600 H776"/>
+<line class="ln-2" pathLength="1" x1="760" y1="578" x2="760" y2="587"/>
+<path class="ln-2" pathLength="1" d="M825 407 L835 417 M825 417 L835 407 M830 446 L817 415"/>
+<line class="ln-2" pathLength="1" x1="830" y1="446" x2="830" y2="578"/>
+<path class="ln-2" pathLength="1" d="M817 600 A13 13 0 0 1 843 600 M814 600 H846"/>
+<line class="ln-2" pathLength="1" x1="830" y1="578" x2="830" y2="587"/>
+<path class="ln-2" pathLength="1" d="M895 407 L905 417 M895 417 L905 407 M900 446 L887 415"/>
+<line class="ln-2" pathLength="1" x1="900" y1="446" x2="900" y2="578"/>
+<circle class="ln-2" pathLength="1" cx="900" cy="591" r="13"/>
+</g>
+<g class="nd nd-4">
+<path class="ln-2" pathLength="1" d="M1064 106 H1074 M1064 111 H1074 M1084 129 q3 -5 6 0 t6 0"/>
+<path class="ln-2" pathLength="1" d="M1075 197 L1085 207 M1075 207 L1085 197 M1080 236 L1067 205"/>
+</g>
+<g class="nd nd-5">
+<text class="t-dim" x="574" y="34">NN MREŽA</text>
+<text class="t-dim" x="560" y="95" text-anchor="middle">kWh</text>
+<text class="t-dim" x="596" y="95">BROJILO</text>
+<text class="t-dim" x="600" y="192">GLAVNA SKLOPKA</text>
+<text class="t-dim" x="594" y="340" text-anchor="end">FID 30 mA</text>
+<text class="t-dim" x="986" y="316" text-anchor="end">FID 30 mA</text>
+<text class="t-dim" x="1062" y="230" text-anchor="end">B16 · 3P</text>
+<text class="t-dim" x="1010" y="444">C16 · 3P</text>
+<text class="t-dim" x="628" y="444">B10</text>
+<text class="t-dim" transform="translate(639 566) rotate(-90)">RASVJETA</text>
+<text class="t-dim" x="698" y="444">B16</text>
+<text class="t-dim" transform="translate(709 566) rotate(-90)">UTIČNICE</text>
+<text class="t-dim" x="768" y="444">B16</text>
+<text class="t-dim" transform="translate(779 566) rotate(-90)">KUHINJA</text>
+<text class="t-dim" x="838" y="444">B16</text>
+<text class="t-dim" transform="translate(849 566) rotate(-90)">KUPAONICA</text>
+<text class="t-dim" x="908" y="444">B16</text>
+<text class="t-dim" transform="translate(919 566) rotate(-90)">KLIMA</text>
+<text class="t-dim" x="900" y="596" text-anchor="middle">M</text>
+<text class="t-small" x="470" y="492">RAZDJELNIK R1</text>
+</g>
+<g class="nd nd-6">
+<path class="lamp-ln" pathLength="1" d="M1000 260 V292 M993 292 H1007 M1000 328 L987 295 M989 346 A11 4.5 0 1 0 1011 346 A11 4.5 0 1 0 989 346 M1000 328 V412 M995 407 L1005 417 M995 417 L1005 407 M1000 446 L987 415 M1000 446 V660"/>
+<rect class="lamp-fill" pathLength="1" x="976" y="660" width="48" height="52" rx="4"/>
+<circle class="ln-2" pathLength="1" cx="1000" cy="686" r="9"/>
+<g class="call lamp">
+<circle class="halo" cx="1000" cy="686" r="44"/>
+<circle class="dot" cx="1000" cy="686" r="3.5"/>
+</g>
+</g>
+</svg>

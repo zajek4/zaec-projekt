@@ -182,7 +182,11 @@ function make(mode, comp) {
       scene.fog.density = 0.005;
       st.addFloor({ cell: 2, gridI: 0.5, refl: real ? 0.5 : 0.32, fall: 0.02, fog: 0.004, center: [0, -ZF] });
       light(scene, 'hemi', '#24305f', 0.3, [0, 30, 0], null, { ground: '#07080c' });
-      const bp = createBlueprint(null, { width: desk ? 1.25 : 1.4, opacity: 0.9, ghost: 0 });
+      // nacrt po crtačkom standardu (design/03, 4.2): svijetle crte bez sjaja, bloom samo na sagrađenom kadru
+      if (!real) st.bloom.strength = 0;
+      const bp = real
+        ? createBlueprint(null, { width: desk ? 1.25 : 1.4, opacity: 0.9, ghost: 0 })
+        : createBlueprint(null, { color: new THREE.Color('#e3e9ff'), width: desk ? 1.2 : 1.35, opacity: 0.5, ghost: 0 });
       const fill = new THREE.MeshBasicMaterial({ color: '#2347ff', transparent: true, opacity: 0.022, depthWrite: true });
       const asPlan = (m) => { m.updateWorldMatrix(true, false); bp.edges(m, 28); m.material = fill; m.renderOrder = 1; m.castShadow = false; };
       for (const m of cityBlocks()) { scene.add(m); asPlan(m); }

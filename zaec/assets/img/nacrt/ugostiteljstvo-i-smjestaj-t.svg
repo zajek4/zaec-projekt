@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="685 77 480 360" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="grid06t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid06t)"/>
+<g class="nd nd-1">
+<polyline class="ln-sec" points="676,702 1156,702 1156,126 420,126 420,702 436,702"/>
+<line class="ln-con" x1="1036" y1="158" x2="1036" y2="494"/>
+</g>
+<g class="nd nd-2">
+<path class="wall" d="M670 174h64v9.6h-64zM785 174h35v9.6h-35zM535 420h285v9.6h-285zM810 184h9.6v29h-9.6zM810 276h9.6v109h-9.6zM810 414h9.6v6.4h-9.6zM708 184h4.8v189h-4.8zM689 372h83v4.8h-83zM801 372h9.6v4.8h-9.6zM713 305h17.6v3.2h-17.6zM753 305h16v3.2h-16zM766 308h3.2v64h-3.2z"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="618" y="174" width="51" height="9.6"/>
+<line class="ln-h" x1="618" y1="179" x2="670" y2="179"/>
+<rect class="ln-2" pathLength="1" x="734" y="174" width="51" height="9.6"/>
+<line class="ln-h" x1="734" y1="179" x2="785" y2="179"/>
+<rect class="ln-2" pathLength="1" x="810" y="212" width="9.6" height="64"/>
+<path class="ln-h" d="M503.2 430 A32 32 0 0 1 535.2 398"/>
+<path class="ln-h" d="M600.8 383.6 A28.799999999999983 28.799999999999983 0 0 1 629.6 412.4"/>
+<line class="ln-2" pathLength="1" x1="689" y1="372" x2="689" y2="344"/>
+<path class="ln-h" d="M660 372.4 A28.799999999999983 28.799999999999983 0 0 1 688.8 343.6"/>
+<line class="ln-2" pathLength="1" x1="801" y1="372" x2="801" y2="344"/>
+<path class="ln-h" d="M772 372.4 A28.799999999999983 28.799999999999983 0 0 1 800.8 343.6"/>
+<line class="ln-2" pathLength="1" x1="810" y1="414" x2="839" y2="414"/>
+<path class="ln-h" d="M810.4 385.2 A28.80000000000001 28.80000000000001 0 0 1 839.2 414"/>
+<rect class="ln-2" pathLength="1" x="631" y="184" width="51" height="64"/>
+<line class="ln-h" x1="631" y1="198" x2="682" y2="198"/>
+<path class="ln-h" d="M600.8 343.6 L629.6 372.4 M600.8 372.4 L629.6 343.6"/>
+<ellipse class="ln-2" cx="642.4" cy="358" rx="5.44" ry="8"/>
+<rect class="ln-2" pathLength="1" x="743" y="184" width="51" height="64"/>
+<line class="ln-h" x1="743" y1="198" x2="794" y2="198"/>
+<rect class="ln-2" pathLength="1" x="713" y="344" width="29" height="29"/>
+<path class="ln-h" d="M712.8 343.6 L741.6 372.4 M712.8 372.4 L741.6 343.6"/>
+<ellipse class="ln-2" cx="754.4" cy="358" rx="5.44" ry="8"/>
+</g>
+<g class="nd nd-4">
+<rect class="ln-2" pathLength="1" x="820" y="190" width="128" height="272"/>
+<path class="ln-tile" d="M820 206L948 206M820 222L948 222M820 238L948 238M820 254L948 254M820 270L948 270M820 286L948 286M820 302L948 302M820 318L948 318M820 334L948 334M820 350L948 350M820 366L948 366M820 382L948 382M820 398L948 398M820 414L948 414M820 430L948 430M820 446L948 446"/>
+<rect class="ln-2" pathLength="1" x="826" y="317" width="7.7" height="7.7"/>
+<rect class="ln-2" pathLength="1" x="928" y="317" width="7.7" height="7.7"/>
+<rect class="ln-2" pathLength="1" x="826" y="445" width="7.7" height="7.7"/>
+<rect class="ln-2" pathLength="1" x="928" y="445" width="7.7" height="7.7"/>
+<rect class="ln-beyond" x="830" y="321" width="102" height="128"/>
+<path class="ln-beyond" d="M849 321L849 449M868 321L868 449M887 321L887 449M906 321L906 449M926 321L926 449"/>
+<rect class="ln-2" pathLength="1" x="948" y="174" width="192" height="304"/>
+<rect class="ln-2" pathLength="1" x="964" y="206" width="144" height="224"/>
+<rect class="water" x="969" y="211" width="134" height="214"/>
+<path class="ln-h" d="M996 257.2 q8 -6.4 16 0 t16 0"/>
+<path class="ln-h" d="M1047.2 295.6 q8 -6.4 16 0 t16 0"/>
+<path class="ln-h" d="M1008.8 346.8 q8 -6.4 16 0 t16 0"/>
+<path class="ln-h" d="M1060 385.2 q8 -6.4 16 0 t16 0"/>
+<line class="ln-2" pathLength="1" x1="969" y1="404" x2="1009" y2="404"/>
+<line class="ln-2" pathLength="1" x1="969" y1="414" x2="1009" y2="414"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="468" y1="153" x2="820" y2="153"/>
+<line class="ln-dim" pathLength="1" x1="816" y1="149" x2="824" y2="157"/>
+<text class="t-dim" text-anchor="middle" transform="translate(644 143) rotate(0)">11,00</text>
+</g>
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="964" y1="454" x2="1108" y2="454"/>
+<line class="ln-dim" pathLength="1" x1="960" y1="450" x2="968" y2="458"/>
+<line class="ln-dim" pathLength="1" x1="1104" y1="450" x2="1112" y2="458"/>
+<text class="t-dim" text-anchor="middle" transform="translate(1036 472) rotate(0)">4,50</text>
+</g>
+<text class="t-dim" x="532" y="318" text-anchor="middle">RECEPCIJA</text>
+<text class="t-dim" x="654" y="280" text-anchor="middle">SOBA 1</text>
+<text class="t-dim" x="762" y="280" text-anchor="middle">SOBA 2</text>
+<text class="t-dim" x="1036" y="321" text-anchor="middle">BAZEN</text>
+<text class="t-small" x="1175" y="753" text-anchor="end">ULICA</text>
+</g>
+<g class="nd nd-6">
+<path class="lamp-fill" pathLength="1" d="M900 225.2 h22.4 v64 h-22.4 Z M900 241.2 h22.4 M927.2 225.2 h22.4 v64 h-22.4 Z M927.2 241.2 h22.4"/>
+<g class="call lamp">
+<circle class="halo" cx="925" cy="257" r="30"/>
+<circle class="dot" cx="925" cy="257" r="3.5"/>
+</g>
+</g>
+</svg>

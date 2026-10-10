@@ -1,11 +1,13 @@
 {
  "w": 2400,
  "h": 1350,
- "left": 40.533,
- "right": 59.467,
+ "bx": 0.3,
+ "cx": 30,
+ "left": 20.533,
+ "right": 39.467,
  "win": {
-  "left": 42.269,
-  "right": 57.731
+  "left": 22.269,
+  "right": 37.731
  },
  "floors": [
   {
@@ -13,35 +15,40 @@
    "top": 31.193,
    "bottom": 40.449,
    "wtop": 33.718,
-   "wbottom": 37.785
+   "wbottom": 37.785,
+   "mid": 35.751
   },
   {
    "field": "kontakt",
    "top": 40.449,
    "bottom": 49.706,
    "wtop": 42.974,
-   "wbottom": 47.041
+   "wbottom": 47.041,
+   "mid": 45.008
   },
   {
    "field": "djelatnost",
    "top": 49.706,
    "bottom": 58.962,
    "wtop": 52.23,
-   "wbottom": 56.298
+   "wbottom": 56.298,
+   "mid": 54.264
   },
   {
    "field": "usluga",
    "top": 58.962,
    "bottom": 68.219,
    "wtop": 61.487,
-   "wbottom": 65.554
+   "wbottom": 65.554,
+   "mid": 63.52
   },
   {
    "field": "poruka",
    "top": 68.219,
    "bottom": 79.158,
    "wtop": 70.603,
-   "wbottom": 76.914
+   "wbottom": 76.914,
+   "mid": 73.759
   }
  ],
  "ground": {
@@ -49,14 +56,14 @@
   "bottom": 91.5
  },
  "shop": {
-  "left": 41.401,
-  "right": 46.292,
+  "left": 21.401,
+  "right": 26.292,
   "top": 81.402,
   "bottom": 89.537
  },
  "door": {
-  "left": 47.712,
-  "right": 58.599,
+  "left": 27.712,
+  "right": 38.599,
   "top": 82.384,
   "bottom": 91.079
  },
@@ -64,9 +71,9 @@
  "sign": {
   "top": 11.5,
   "bottom": 26.986,
-  "left": 37.062,
-  "right": 62.938,
-  "x": 908.4,
+  "left": 17.062,
+  "right": 42.938,
+  "x": 428.4,
   "w": 583.2,
   "lines": [
    {
@@ -80,7 +87,7 @@
   ]
  },
  "crop": {
-  "x": 39.533,
+  "x": 19.533,
   "y": 27.949,
   "w": 20.934,
   "h": 64.551

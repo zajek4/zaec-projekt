@@ -33,7 +33,7 @@ function zaec_meta_description() {
 		}
 	}
 	if ( is_post_type_archive( 'projekti' ) ) {
-		return 'Radovi ZAEC web studija: web stranice za ustanove, B2B tvrtke i ugostiteljstvo. Stvarni projekti koje možete otvoriti i provjeriti.';
+		return 'Radovi ZAEC web studija: web stranice za ustanove i B2B tvrtke. Stvarni projekti koje možete otvoriti i provjeriti, s problemom, rješenjem i ishodom.';
 	}
 	if ( is_home() ) {
 		return 'Vodiči za obrtnike i male tvrtke: web koji donosi upite, Google Business profil, AI vidljivost, GA4 praćenje i priprema za izradu weba.';
@@ -52,6 +52,14 @@ function zaec_og_image() {
 	}
 	// landing stranice: JPG 1200×630 izrezan iz kadra stranice (tools/art/og.mjs), inače zadana slika
 	$l = zaec_get_landing();
+	// djelatnosti i njihov hub: list nacrta s naslovom (og/nacrt-<slug>.jpg, docs/signature/subpages.md)
+	$type = (string) ( $l['type'] ?? '' );
+	if ( in_array( $type, array( 'industry', 'hub-industries' ), true ) ) {
+		$og = 'og/nacrt-' . sanitize_file_name( 'hub-industries' === $type ? 'djelatnosti' : (string) ( $l['slug'] ?? '' ) ) . '.jpg';
+		if ( file_exists( ZAEC_THEME_DIR . '/assets/img/' . $og ) ) {
+			return zaec_img( $og );
+		}
+	}
 	if ( $l && ! empty( $l['image'] ) ) {
 		$og = 'og/' . pathinfo( (string) $l['image'], PATHINFO_FILENAME ) . '.jpg';
 		if ( file_exists( ZAEC_THEME_DIR . '/assets/img/' . $og ) ) {
@@ -59,6 +67,26 @@ function zaec_og_image() {
 		}
 	}
 	return zaec_img( 'og/default.png' );
+}
+
+/** Opis slike za dijeljenje (og:image:alt): list nacrta, opis kadra iz registra ili istaknute slike. */
+function zaec_og_image_alt( $img ) {
+	if ( is_singular() && has_post_thumbnail() ) {
+		return (string) get_post_meta( (int) get_post_thumbnail_id(), '_wp_attachment_image_alt', true );
+	}
+	$l = zaec_get_landing();
+	if ( ! $l || false !== strpos( $img, '/og/default' ) ) {
+		return '';
+	}
+	if ( false !== strpos( $img, '/og/nacrt-' ) ) {
+		$n = zaec_nacrt( $l );
+		if ( ! $n || ! preg_match( '~<title[^>]*>([^<]+)</title>~', $n[0], $m ) ) {
+			return '';
+		}
+		$t = html_entity_decode( $m[1], ENT_QUOTES, 'UTF-8' );
+		return false === strpos( $t, 'Nacrt djelatnosti' ) ? 'Nacrt djelatnosti: ' . $t : $t; // kazalo već nosi naziv kompleta
+	}
+	return (string) ( $l['image_alt'] ?? '' );
 }
 
 function zaec_canonical() {
@@ -113,6 +141,7 @@ function zaec_head_meta() {
 		$og['og:image:width']  = '1200';
 		$og['og:image:height'] = '630';
 	}
+	$og['og:image:alt'] = zaec_og_image_alt( $img );
 	foreach ( $og as $p => $c ) {
 		if ( $c ) {
 			printf( '<meta property="%s" content="%s">' . "\n", esc_attr( $p ), esc_attr( $c ) );
@@ -351,9 +380,12 @@ function zaec_llms_output() {
 	foreach ( zaec_services() as $s ) {
 		$out .= '- [' . $s['title'] . '](' . zaec_url( $s['key'] ) . '): ' . wp_strip_all_tags( $s['answer'] ?? $s['description'] ) . "\n";
 	}
-	$out .= "\n## Djelatnosti\n\n";
-	foreach ( zaec_industries() as $i ) {
-		$out .= '- [' . $i['title'] . '](' . zaec_url( $i['key'] ) . '): ' . $i['description'] . "\n";
+	$out .= "\n## Djelatnosti\n\n[Sva područja](" . zaec_url( 'djelatnosti' ) . ")\n";
+	foreach ( zaec_sectors() as $key => $sec ) {
+		$out .= "\n### " . $sec['name'] . "\n\n" . $sec['about'] . "\n";
+		foreach ( zaec_sector_pages( $key ) as $i ) {
+			$out .= '- [' . $i['title'] . '](' . zaec_url( $i['key'] ) . '): ' . $i['description'] . "\n";
+		}
 	}
 	$out .= "\n## Ostalo\n\n- [Cijene i procjena projekta](" . zaec_url( 'cijene' ) . ")\n- [Besplatna provjera vidljivosti](" . zaec_url( 'provjera-vidljivosti' ) . ")\n- [Radovi](" . get_post_type_archive_link( 'projekti' ) . ")\n- [O nama](" . zaec_url( 'o-nama' ) . ")\n- [Kontakt](" . zaec_url( 'kontakt' ) . ")\n";
 	$guides = get_posts( array( 'post_type' => 'post', 'posts_per_page' => 20, 'category_name' => 'vodici' ) );

@@ -1,7 +1,8 @@
 <?php
 /**
  * Upiti: admin-post (bez JS-a) + admin-ajax (JSON). Isključivo wp_mail() → radi sa SMTP dodacima.
- * Zaštita: nonce (+ osvježavanje za page cache), honeypot, minimalno vrijeme ispunjavanja, rate limit.
+ * Zaštita: nonce (+ osvježavanje za page cache), honeypot, minimalno vrijeme ispunjavanja, rate limit, ograničenje
+ * poveznica u imenu i poruci.
  *
  * @package ZAEC
  */
@@ -81,6 +82,14 @@ function zaec_process_inquiry( $is_ajax = false ) {
 	}
 	if ( 'provjera' === $kind && mb_strlen( $company ) < 2 ) {
 		$fail( 'Upišite naziv tvrtke za provjeru.' );
+	}
+	// Spam s poveznicama: ime s adresom ili poruka s više od tri poveznice / BBCode / HTML poveznicom. Poruka o
+	// grešci je vidljiva (stvaran klijent je može ispraviti), za razliku od honeypota.
+	if ( preg_match( '~https?://|www\.~i', $name ) ) {
+		$fail( 'Ime ne može sadržavati poveznicu.' );
+	}
+	if ( preg_match_all( '~https?://|www\.~i', $message ) > 3 || preg_match( '~\[url[=\]]|<a\s~i', (string) wp_unslash( $_POST['poruka'] ?? '' ) ) ) { // phpcs:ignore
+		$fail( 'Poruka smije imati najviše tri poveznice. Ostalo pošaljite u odgovoru na naš email.' );
 	}
 
 	$o         = zaec_get_options();

@@ -1,0 +1,129 @@
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt05d nd05d"><title id="nt05d">Tlocrt stana s označenim rušenjem i novim zidovima, mjerilo 1:50</title><desc id="nd05d">Tehnički crtež adaptacije stana: postojeći zidovi puni, zidovi za rušenje isprekidani, novi zid šrafiran. Zid između boravka i kuhinje se ruši, a kupaonica se novim zidom širi u hodnik. Oznake 01–04 povezuju dijelove nacrta s dijelovima weba izvođača radova. Nova kupaonica označena je toplim svjetlom.</desc>
+<defs><pattern id="grid05d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><pattern id="hz405d" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" class="ln-h"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid05d)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M388 184L1028 184M388 404L1028 404M388 616L1028 616M428 144L428 656M654 144L654 656M827 144L827 656M988 144L988 656"/>
+</g>
+<g class="nd nd-2">
+<path class="wall" d="M420 176h64v16h-64zM574 176h128v16h-128zM778 176h109v16h-109zM932 176h64v16h-64zM420 608h58v16h-58zM631 608h109v16h-109zM798 608h198v16h-198zM420 192h16v259h-16zM420 541h16v67h-16zM980 192h16v330h-16zM980 586h16v22h-16zM436 400h144v7.7h-144zM631 400h122v7.7h-122zM804 400h19.2v7.7h-19.2zM650 192h7.7v208h-7.7zM823 192h7.7v234h-7.7zM823 477h7.7v131h-7.7z"/>
+</g>
+<g class="nd nd-3">
+<path class="ln-3" d="M702 408h7.7v200h-7.7zM831 317h149v7.7h-149z"/>
+</g>
+<g class="nd nd-4">
+<rect class="cut" pathLength="1" x="831" y="367" width="56" height="9" fill="url(#hz405d)"/>
+<rect class="cut" pathLength="1" x="938" y="367" width="42" height="9" fill="url(#hz405d)"/>
+<rect class="ln-2" pathLength="1" x="484" y="176" width="90" height="16"/>
+<line class="ln-h" x1="484" y1="184" x2="574" y2="184"/>
+<rect class="ln-2" pathLength="1" x="702" y="176" width="77" height="16"/>
+<line class="ln-h" x1="702" y1="184" x2="778" y2="184"/>
+<rect class="ln-2" pathLength="1" x="887" y="176" width="45" height="16"/>
+<line class="ln-h" x1="887" y1="184" x2="932" y2="184"/>
+<rect class="ln-2" pathLength="1" x="478" y="608" width="154" height="16"/>
+<line class="ln-h" x1="478" y1="616" x2="631" y2="616"/>
+<rect class="ln-2" pathLength="1" x="740" y="608" width="58" height="16"/>
+<line class="ln-h" x1="740" y1="616" x2="798" y2="616"/>
+<rect class="ln-2" pathLength="1" x="420" y="451" width="16" height="90"/>
+<line class="ln-h" x1="428" y1="451" x2="428" y2="541"/>
+<line class="ln-2" pathLength="1" x1="631" y1="400" x2="631" y2="349"/>
+<path class="ln-h" d="M580 400 A51.19999999999999 51.19999999999999 0 0 1 631.2 348.8"/>
+<line class="ln-2" pathLength="1" x1="804" y1="400" x2="804" y2="349"/>
+<path class="ln-h" d="M752.8 400 A51.19999999999999 51.19999999999999 0 0 1 804 348.8"/>
+<line class="ln-2" pathLength="1" x1="823" y1="477" x2="772" y2="477"/>
+<path class="ln-h" d="M823.2 425.6 A51.19999999999999 51.19999999999999 0 0 0 772 476.8"/>
+<line class="ln-2" pathLength="1" x1="938" y1="368" x2="938" y2="317"/>
+<path class="ln-h" d="M887.2 368 A51.19999999999999 51.19999999999999 0 0 1 938.4 316.8"/>
+<line class="ln-2" pathLength="1" x1="980" y1="586" x2="916" y2="586"/>
+<path class="ln-h" d="M980 521.6 A64 64 0 0 0 916 585.6"/>
+<rect class="ln-2" pathLength="1" x="922" y="192" width="58" height="58"/>
+<path class="ln-h" d="M922.4 192 L980 249.6 M922.4 249.6 L980 192"/>
+<rect class="ln-2" pathLength="1" x="836" y="192" width="29" height="10.9"/>
+<ellipse class="ln-2" cx="850.4" cy="222.07999999999998" rx="11.52" ry="17.28"/>
+<rect class="ln-2" pathLength="1" x="951" y="278" width="29" height="38"/>
+<ellipse class="ln-2" cx="964" cy="297.6" rx="8.96" ry="12.8"/>
+<rect class="ln-2" pathLength="1" x="831" y="326" width="37" height="37"/>
+<circle class="ln-2" pathLength="1" cx="849" cy="345" r="12.8"/>
+<rect class="ln-2" pathLength="1" x="709" y="570" width="114" height="38"/>
+<rect class="ln-2" pathLength="1" x="724" y="577" width="32" height="23"/>
+<circle class="ln-2" pathLength="1" cx="778" cy="580" r="5.8"/>
+<circle class="ln-2" pathLength="1" cx="801" cy="580" r="5.8"/>
+<circle class="ln-2" pathLength="1" cx="778" cy="598" r="5.8"/>
+<circle class="ln-2" pathLength="1" cx="801" cy="598" r="5.8"/>
+<path class="ln-2" pathLength="1" d="M1031.2 553.6 H1001.12 m8 -5 l-8 5 l8 5"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="420" y1="630" x2="420" y2="666"/>
+<line class="ln-dim" pathLength="1" x1="996" y1="630" x2="996" y2="666"/>
+<line class="ln-dim" pathLength="1" x1="420" y1="659" x2="996" y2="659"/>
+<line class="ln-dim" pathLength="1" x1="416" y1="655" x2="424" y2="663"/>
+<line class="ln-dim" pathLength="1" x1="992" y1="655" x2="1000" y2="663"/>
+<text class="t-dim" text-anchor="middle" transform="translate(708 649) rotate(0)">9,00</text>
+</g>
+<text class="t-dim" x="543" y="288" text-anchor="middle">SOBA 1</text>
+<text class="t-dim" x="543" y="308" text-anchor="middle">10,9 m²</text>
+<text class="t-dim" x="737" y="288" text-anchor="middle">SOBA 2</text>
+<text class="t-dim" x="737" y="308" text-anchor="middle">8,4 m²</text>
+<text class="t-dim" x="903" y="269" text-anchor="middle">KUPAONICA</text>
+<text class="t-dim" x="903" y="289" text-anchor="middle">6,4 m²</text>
+<text class="t-dim" x="903" y="464" text-anchor="middle">HODNIK</text>
+<text class="t-dim" x="903" y="484" text-anchor="middle">8,5 m²</text>
+<text class="t-dim" x="586" y="496" text-anchor="middle">BORAVAK + KUHINJA</text>
+<text class="t-dim" x="586" y="516" text-anchor="middle">18,9 m²</text>
+<text class="t-small" x="1002" y="536">ULAZ</text>
+</g>
+<g class="nd nd-5 key c-wide c-a80">
+<rect class="wall" x="444" y="50" width="40" height="9"/>
+<text class="t-small" x="498" y="60">POSTOJEĆE</text>
+<rect class="ln-3" x="444" y="76" width="40" height="9"/>
+<text class="t-small" x="498" y="86">RUŠENJE</text>
+<rect class="cut" pathLength="1" x="444" y="102" width="40" height="9" fill="url(#hz405d)"/>
+<text class="t-small" x="498" y="112">NOVO</text>
+<text class="t-small" x="444" y="150">LEGENDA</text>
+</g>
+<g class="nd nd-6">
+<g class="call c01">
+<circle class="dot" cx="705" cy="547" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="705,547 705,720 689,720"/>
+<text class="t-call" text-anchor="end" x="681" y="725"><tspan class="t-n">01</tspan>  RUŠENJE</text>
+<text class="t-web" text-anchor="end" x="681" y="745">→ Proces</text>
+</g>
+<g class="call c02">
+<circle class="dot" cx="958" cy="371" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="958,371 1004,405"/>
+<text class="t-call" x="1012" y="410"><tspan class="t-n">02</tspan>  NOVI ZIDOVI</text>
+<text class="t-web" x="1012" y="430">→ Usluge</text>
+</g>
+<g class="call c03">
+<circle class="dot" cx="966" cy="310" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="966,310 1004,312"/>
+<text class="t-call" x="1012" y="317"><tspan class="t-n">03</tspan>  KUPAONICA</text>
+<text class="t-web" x="1012" y="337">→ Projekti</text>
+</g>
+<g class="call c04">
+<circle class="dot" cx="903" cy="490" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="903,490 903,720 915,720"/>
+<text class="t-call" x="923" y="725"><tspan class="t-n">04</tspan>  KOTE (m²)</text>
+<text class="t-web" x="923" y="745">→ Upit prema opsegu</text>
+</g>
+<rect class="lamp-fill" pathLength="1" x="831" y="192" width="149" height="176" style="fill:rgba(255,207,138,.09)"/>
+<g class="call lamp">
+<circle class="halo" cx="951" cy="221" r="30"/>
+<circle class="dot" cx="951" cy="221" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="951,213 951,141 650,141"/>
+<text class="t-call" x="650" y="109">SUBOTA · OBILAZAK STANA</text>
+<text class="t-web" x="650" y="130">„adaptacija kupaonice cijena“</text>
+</g>
+</g>
+<g class="nd nd-6 tb">
+<rect class="tb-bg" x="732" y="836" width="440" height="112"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
+<text class="t-tb" x="744" y="857">ZAEC · NACRT DJELATNOSTI</text>
+<text class="t-tb" x="1054" y="857">LIST 05/10</text>
+<text class="t-tb-b" x="744" y="894">Građevina i adaptacije</text>
+<text class="t-tb" x="744" y="914">TLOCRT · RUŠENJE / NOVO · M 1:50</text>
+<text class="t-tb" x="744" y="943">WEB · PROJEKTI · PROCES · UPIT</text>
+</g>
+</svg>

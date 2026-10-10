@@ -72,8 +72,14 @@ function zaec_url( $path ) {
 		list( $path, $hash ) = explode( '#', $path, 2 );
 		$hash = '#' . $hash;
 	}
-	$url = function_exists( 'zaec_landing_url' ) ? zaec_landing_url( $path ) : '';
-	return ( $url ? $url : home_url( '/' . $path . '/' ) ) . $hash;
+	$query = '';
+	if ( false !== strpos( $path, '?' ) ) {
+		list( $path, $query ) = explode( '?', $path, 2 );
+		$query = '?' . $query;
+	}
+	$path = trim( $path, '/' );
+	$url  = function_exists( 'zaec_landing_url' ) ? zaec_landing_url( $path ) : '';
+	return ( $url ? $url : home_url( '/' . $path . '/' ) ) . $query . $hash;
 }
 
 /** Dopušta samo <em>, <strong>, <br> u naslovima. */

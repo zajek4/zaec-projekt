@@ -1,12 +1,148 @@
 <?php
 /**
- * Djelatnosti (landing stranice + tabovi i 3D rekviziti na naslovnici) i posebne stranice.
+ * Djelatnosti i posebne stranice.
+ *
+ * Dvije razine (docs/signature/subpages.md, strategija: 01-djelatnosti-nomenklatura):
+ *  - sektor: 8 skupina + "Nešto drugo" — koristi se gdje kupac bira čime se bavi (procjena, forma, hub);
+ *  - stranica djelatnosti: postojećih 8 landing stranica (URL-ovi ostaju), svaka pripada jednom sektoru.
  *
  * @package ZAEC
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+/**
+ * Sektori (redoslijed = prikaz): B2B i stručne usluge prvi, obrti odmah iza.
+ * short = chip u procjeni i kicker, name = puni naziv (forma, sažetak upita, hub), about = rečenica za hub.
+ */
+function zaec_sectors() {
+	return array(
+		'strucne-usluge' => array(
+			'short'    => 'Stručne usluge',
+			'name'     => 'Stručne i poslovne usluge',
+			'icon'     => 'clipboard-check',
+			'examples' => 'računovodstvo, pravo, arhitektura i inženjering, laboratoriji i certifikacija, savjetovanje',
+			'about'    => 'Klijent vas bira po stručnosti koju ne može sam provjeriti, pa web mora jasno razdvojiti usluge, pokazati tko radi posao i skratiti put do upita.',
+			'proof'    => 'eurokontrola.hr',
+		),
+		'proizvodnja'    => array(
+			'short'    => 'Proizvodnja i industrija',
+			'name'     => 'Proizvodnja i industrija',
+			'icon'     => 'box-minimalistic',
+			'examples' => 'proizvođači, prerada hrane, metal i drvo, distribucija i veleprodaja',
+			'about'    => 'Kupac je često nabava ili partner iz inozemstva: traži program proizvodnje, certifikate, kapacitete i kontakt prave osobe, po mogućnosti na engleskom.',
+		),
+		'gradnja'        => array(
+			'short'    => 'Gradnja i obnova',
+			'name'     => 'Gradnja, obnova i završni radovi',
+			'icon'     => 'buildings',
+			'examples' => 'građevinske tvrtke, adaptacije, krovovi i limarija, fasade, keramika',
+			'about'    => 'Krov, fasada ili adaptacija prodaju se povjerenjem: stvarni projekti, jasan proces i upit s fotografijama i mjerama.',
+		),
+		'instalacije'    => array(
+			'short'    => 'Instalacije',
+			'name'     => 'Instalacije, grijanje i energetika',
+			'icon'     => 'bolt',
+			'examples' => 'klima i dizalice topline, vodo- i plinoinstalacije, elektroinstalacije, solari, punionice',
+			'about'    => 'Kod kvara se zove onoga koga se prvog nađe, a kod solara i dizalica topline onoga tko najjasnije objasni što ulazi u posao.',
+		),
+		'trgovina'       => array(
+			'short'    => 'Trgovina',
+			'name'     => 'Trgovina i webshopovi',
+			'icon'     => 'shop',
+			'examples' => 'lokalne i specijalizirane trgovine, izložbeni saloni, webshopovi',
+			'about'    => 'Proizvod mora biti lako pronaći, razumjeti i kupiti, u trgovini ili online, uz mjerenje onoga što stvarno prodaje.',
+		),
+		'ugostiteljstvo' => array(
+			'short'    => 'Ugostiteljstvo',
+			'name'     => 'Ugostiteljstvo i turizam',
+			'icon'     => 'bed',
+			'examples' => 'restorani, kafići, catering, hoteli, apartmani i kuće za odmor',
+			'about'    => 'Meni ili smještaj, lokacija i najkraći put do rezervacije, bez provizije platforme za svakog gosta.',
+		),
+		'ljepota'        => array(
+			'short'    => 'Ljepota i njega',
+			'name'     => 'Ljepota, njega i wellness',
+			'icon'     => 'star',
+			'examples' => 'frizeri, kozmetički saloni, manikura i pedikura, masaže',
+			'about'    => 'Fotografije, cjenik, recenzije i slobodan termin. Ako nešto od toga nedostaje, klijent ode na sljedeći profil.',
+		),
+		'ustanove'       => array(
+			'short'    => 'Ustanove i udruge',
+			'name'     => 'Ustanove, udruge i obrazovanje',
+			'icon'     => 'users-group-rounded',
+			'examples' => 'javne ustanove, centri, škole i vrtići, udruge, kultura i sport',
+			'about'    => 'Puno različitih posjetitelja i puno sadržaja: roditelji, korisnici, partneri i javnost moraju naći svoje bez lutanja.',
+			'proof'    => 'cza-os.hr',
+		),
+	);
+}
+
+/** "Nešto drugo" — izvan popisa sektora; strukturu složimo u razgovoru. */
+const ZAEC_SECTOR_OTHER = array( 'key' => 'ostalo', 'short' => 'Nešto drugo', 'name' => 'Nešto drugo', 'icon' => 'add-circle' );
+
+/** Stari tabovi → sektor (već podijeljene poveznice ?djelatnost=Klima i sl.). */
+function zaec_sector_legacy_map() {
+	return array( 'Klima' => 'instalacije', 'Voda' => 'instalacije', 'Struja' => 'instalacije', 'Krov' => 'gradnja', 'Građevina' => 'gradnja', 'Smještaj' => 'ugostiteljstvo', 'Shop' => 'trgovina', 'Salon' => 'ljepota', 'Ostalo' => 'ostalo' );
+}
+
+/**
+ * Vrijednost ?djelatnost= → array( sektor, stranica|null ). Prihvaća, tim redom: ključ sektora, slug stranice
+ * djelatnosti (sektor + detalj), stari tab. Nepoznato → null.
+ */
+function zaec_sector_resolve( $value ) {
+	$value = trim( (string) $value );
+	if ( '' === $value ) {
+		return null;
+	}
+	if ( isset( zaec_sectors()[ $value ] ) || 'ostalo' === $value ) {
+		return array( $value, null );
+	}
+	foreach ( zaec_industries() as $ind ) {
+		if ( $ind['slug'] === $value ) {
+			return array( $ind['sector'], $ind );
+		}
+	}
+	$legacy = zaec_sector_legacy_map();
+	return isset( $legacy[ $value ] ) ? array( $legacy[ $value ], null ) : null;
+}
+
+/** Stranice djelatnosti jednog sektora (redoslijed iz registra). */
+function zaec_sector_pages( $sector ) {
+	return array_values( array_filter( zaec_industries(), static fn( $i ) => ( $i['sector'] ?? '' ) === $sector ) );
+}
+
+/**
+ * Mapa za procjenu (JS): slug stranice i stari tab → sektor (+ naziv stranice). Vrijednosti su iz registra,
+ * pa JS ne mora znati popis djelatnosti.
+ */
+function zaec_sector_js_map() {
+	$map = array();
+	foreach ( zaec_industries() as $ind ) {
+		$map[ $ind['slug'] ] = array( $ind['sector'], $ind['label'] );
+	}
+	foreach ( zaec_sector_legacy_map() as $tab => $sector ) {
+		$map[ $tab ] = array( $sector, '' );
+	}
+	return $map;
+}
+
+/** Objavljeni projekt po domeni (dokaz uz sektor na hubu) ili null. Samo stvarni, javni projekti. */
+function zaec_project_by_host( $host ) {
+	static $cache = array();
+	if ( ! array_key_exists( $host, $cache ) ) {
+		$cache[ $host ] = null;
+		foreach ( zaec_get_projects( 12 ) as $p ) {
+			$h = preg_replace( '/^www\./', '', strtolower( (string) wp_parse_url( (string) ( $p['website_url'] ?? '' ), PHP_URL_HOST ) ) );
+			if ( $h === $host ) {
+				$cache[ $host ] = $p;
+				break;
+			}
+		}
+	}
+	return $cache[ $host ];
 }
 
 /** Zajednički FAQ za djelatnosti. */
@@ -23,28 +159,29 @@ function zaec_registry_industries() {
 	$r['djelatnosti'] = array(
 		'type'        => 'hub-industries',
 		'title'       => 'Djelatnosti',
-		'seo_title'   => 'Web stranice za obrtnike — po djelatnostima | ZAEC',
-		'description' => 'Web i Google profil za klima servise, vodoinstalatere, električare, krovopokrivače, građevinu, smještaj, trgovine i salone — po pitanjima vaših kupaca.',
+		'seo_title'   => 'Web stranice po djelatnostima: od obrta do industrije | ZAEC',
+		'description' => 'Web i Google profil prema tome kako vaši kupci biraju: instalacije, gradnja, trgovina, ugostiteljstvo, saloni, stručne usluge, proizvodnja i ustanove.',
 		'kicker'      => 'Djelatnosti',
-		'h1'          => 'Web koji razumije <em>vaš</em> zanat.',
-		'lead'        => 'Kod kvara se zove odmah, salon se bira po fotografijama, krov po povjerenju. Svaka djelatnost ima svoja pitanja — i svoj put do poziva. Odaberite svoju.',
-		'answer'      => 'ZAEC slaže web stranice i Google profile prilagođene djelatnosti: hitni poziv za vodoinstalatere, upit za termin za klima servise, galerije radova za krovopokrivače, rezervacije za smještaj i salone, webshop za trgovine.',
+		'h1'          => 'Svaka djelatnost ima svoja <em>pitanja</em>.',
+		'lead'        => 'Kod kvara se zove odmah, salon se bira po fotografijama, a dobavljač po tome koliko ozbiljno izgleda prije prvog sastanka. Web složimo prema pitanjima vaših kupaca. Odaberite svoje područje.',
+		'answer'      => 'ZAEC slaže web stranice i Google profile prema djelatnosti: hitni poziv i područje rada za instalatere, galerije i proces za izvođače radova, rezervacije za ugostiteljstvo i salone, webshop za trgovine, a za stručne usluge, proizvodnju i ustanove jasnu strukturu usluga, reference i upit prema opsegu.',
 		'image'       => 'world/usluga-web.webp',
 		'image_alt'   => 'Web stranica kao svijetleći ekran u noći: pola gotov dizajn, pola plavi nacrt; tragovi upita vode do gumba za kontakt.',
 		'cta'         => array( 'Besplatna provjera vidljivosti', 'provjera-vidljivosti' ),
 		'blocks'      => array( array( 'type' => 'trades', 'title' => '', 'full' => true ) ),
 		'faq'         => array(
-			array( 'Moje djelatnosti nema na popisu.', 'Nema problema. Isti pristup radi za svaku uslugu koju ljudi traže lokalno: računovođe, autoservise, fizioterapeute, škole i druge. Javite se i složimo strukturu za vaš posao.' ),
+			array( 'Moje djelatnosti nema na popisu.', 'Odaberite „Nešto drugo” ili najbliži sektor. Isti pristup radi za svaki posao koji kupci traže i uspoređuju na webu. U razgovoru složimo strukturu za vaš.' ),
 		),
+		'related'     => array( 'izrada-web-stranica-osijek', 'provjera-vidljivosti', 'cijene' ),
 	);
 
 	$industries = array(
 		'klima-i-grijanje'          => array(
-			'tab' => 'Klima', 'icon' => 'snowflake', 'prop' => 0, 'sign' => 'KLIMA SERVIS',
-			'title' => 'Klima uređaji i grijanje', 'name' => 'klima servise',
+			'tab' => 'Klima', 'sector' => 'instalacije', 'label' => 'Klima i grijanje', 'icon' => 'snowflake', 'prop' => 0, 'sign' => 'KLIMA SERVIS',
+			'title' => 'Klima i grijanje', 'name' => 'klima servise',
 			'seo_title' => 'Web stranica i Google profil za klima servise | ZAEC',
 			'description' => 'Web za klima servise: montaža, servis i čišćenje klima, dizalice topline, upit za termin u dva koraka i lokalni SEO prije sezone. Fiksna cijena u ponudi.',
-			'h1' => 'Web za klima servise: budite <em>prvi</em> izbor prije sezone.',
+			'h1' => 'Web za klima servise: budite <em>prvi</em>&nbsp;izbor prije sezone.',
 			'lead' => 'Prvi vrući tjedan i prvi hladni dan donesu najviše poziva. Tko je tada vidljiv na karti i ima jasnu ponudu — puni raspored. Ostali gledaju kako konkurencija radi.',
 			'short' => 'Servis, montaža i čišćenje. Kupac mora odmah vidjeti što radite, gdje dolazite i kako do termina — prije nego nazove konkurenciju.',
 			'onweb' => array( 'Montaža · servis · čišćenje', 'Područje rada', 'Poziv / WhatsApp', 'Upit za termin' ),
@@ -68,11 +205,11 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/elektricari', 'djelatnosti/vodoinstalateri', 'usluge/lokalni-seo' ),
 		),
 		'vodoinstalateri'           => array(
-			'tab' => 'Voda', 'icon' => 'waterdrop', 'prop' => 1, 'sign' => 'VODOINSTALATER',
+			'tab' => 'Voda', 'sector' => 'instalacije', 'label' => 'Vodoinstalateri', 'icon' => 'waterdrop', 'prop' => 1, 'sign' => 'VODOINSTALATER',
 			'title' => 'Vodoinstalateri i plinoinstalateri', 'name' => 'vodoinstalatere',
 			'seo_title' => 'Web stranica za vodoinstalatere — hitni pozivi | ZAEC',
 			'description' => 'Web za vodoinstalatere i plinoinstalatere: hitni poziv na prvom ekranu, stranice za intervencije, područje rada, upit s fotografijom i recenzije.',
-			'h1' => 'Web za vodoinstalatere: kad curi, zovu <em>onoga</em> koga prvog nađu.',
+			'h1' => 'Web za vodoinstalatere: kad curi, zovu onoga koga <em>prvog</em> nađu.',
 			'lead' => 'Kod kvara nitko ne čita roman. Čovjek otvori Google, pogleda kartu i recenzije — i nazove. Složimo profil i web tako da ste vi taj prvi poziv u svom području.',
 			'short' => 'Kod curenja nitko ne čita roman. Hitni kontakt, područje rada i vrsta intervencije moraju biti jasni u nekoliko sekundi — na mobitelu, s mokrim rukama.',
 			'onweb' => array( 'Hitni poziv', 'Intervencije', 'Upit s fotografijom', 'Područje rada' ),
@@ -96,11 +233,11 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/klima-i-grijanje', 'usluge/google-business-profil', 'usluge/lokalni-seo' ),
 		),
 		'elektricari'               => array(
-			'tab' => 'Struja', 'icon' => 'bolt', 'prop' => 2, 'sign' => 'ELEKTRO',
+			'tab' => 'Struja', 'sector' => 'instalacije', 'label' => 'Električari', 'icon' => 'bolt', 'prop' => 2, 'sign' => 'ELEKTRO',
 			'title' => 'Električari', 'name' => 'električare',
 			'seo_title' => 'Web stranica i Google profil za električare | ZAEC',
 			'description' => 'Web za električare: kvarovi, instalacije, atesti, solari i punionice kao zasebne usluge, ovlaštenja, područje rada i brz upit. Fiksna cijena u ponudi.',
-			'h1' => 'Web za električare: od sitnog kvara do <em>solara</em>.',
+			'h1' => 'Web za električare: od <em>sitnog</em> kvara do solara.',
 			'lead' => 'Netko traži električara za kvar, netko za nove instalacije, a netko za atest ili punjač za auto. To su različiti kupci — kad ih web razdvoji, dobivate bolje upite.',
 			'short' => 'Od sitnog kvara do instalacija, atesta i solara — jasno odvojene usluge, reference i područje rada, da vas zovu za poslove koje želite.',
 			'onweb' => array( 'Kvarovi · instalacije · solari', 'Ovlaštenja', 'Područje rada', 'Brzi upit' ),
@@ -124,7 +261,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/klima-i-grijanje', 'djelatnosti/gradevina-i-adaptacije', 'usluge/google-business-profil' ),
 		),
 		'krovopokrivaci'            => array(
-			'tab' => 'Krov', 'icon' => 'home', 'prop' => 3, 'sign' => 'KROVOVI',
+			'tab' => 'Krov', 'sector' => 'gradnja', 'label' => 'Krovopokrivači', 'icon' => 'home', 'prop' => 3, 'sign' => 'KROVOVI',
 			'title' => 'Krovopokrivači i limari', 'name' => 'krovopokrivače i limare',
 			'seo_title' => 'Web stranica za krovopokrivače i limare | ZAEC',
 			'description' => 'Web za krovopokrivače i limare: galerija prije/poslije, vrste krovova i materijala, hitne sanacije nakon nevremena i upit za procjenu s fotografijama.',
@@ -152,7 +289,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/gradevina-i-adaptacije', 'usluge/izrada-web-stranica', 'usluge/lokalni-seo' ),
 		),
 		'gradevina-i-adaptacije'    => array(
-			'tab' => 'Građevina', 'icon' => 'buildings', 'prop' => 4, 'sign' => 'GRADNJA',
+			'tab' => 'Građevina', 'sector' => 'gradnja', 'label' => 'Izvođači radova', 'icon' => 'buildings', 'prop' => 4, 'sign' => 'GRADNJA',
 			'title' => 'Građevina i adaptacije', 'name' => 'građevinske obrte i adaptacije',
 			'seo_title' => 'Web stranica za građevinske obrte i adaptacije | ZAEC',
 			'description' => 'Web za građevinske obrte: adaptacije stanova i kupaonica, fasade, keramika i završni radovi. Projekti kao studije, jasan proces i upit prema opsegu.',
@@ -180,7 +317,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/krovopokrivaci', 'djelatnosti/elektricari', 'usluge/izrada-web-stranica' ),
 		),
 		'ugostiteljstvo-i-smjestaj' => array(
-			'tab' => 'Smještaj', 'icon' => 'bed', 'prop' => 5, 'sign' => 'APARTMANI',
+			'tab' => 'Smještaj', 'sector' => 'ugostiteljstvo', 'label' => 'Restorani i smještaj', 'icon' => 'bed', 'prop' => 5, 'sign' => 'APARTMANI',
 			'title' => 'Ugostiteljstvo i smještaj', 'name' => 'restorane i smještaj',
 			'seo_title' => 'Web za restorane i apartmane — direktne rezervacije | ZAEC',
 			'description' => 'Web stranica za restorane, apartmane i kuće za odmor: meni, galerija, lokacija, više jezika i direktan upit ili rezervacija bez provizije platformi.',
@@ -208,7 +345,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/saloni-ljepote', 'usluge/google-business-profil', 'usluge/izrada-web-stranica' ),
 		),
 		'trgovine-i-webshop'        => array(
-			'tab' => 'Shop', 'icon' => 'shop', 'prop' => 6, 'sign' => 'TRGOVINA',
+			'tab' => 'Shop', 'sector' => 'trgovina', 'label' => 'Trgovine', 'icon' => 'shop', 'prop' => 6, 'sign' => 'TRGOVINA',
 			'title' => 'Trgovine i webshopovi', 'name' => 'trgovine',
 			'seo_title' => 'Web i webshop za trgovine — WooCommerce i GA4 | ZAEC',
 			'description' => 'Web i webshop za lokalne trgovine: katalog ili košarica, kartično plaćanje, dostava, lokalni podaci i GA4 e-commerce praćenje prodaje po kanalu.',
@@ -236,7 +373,7 @@ function zaec_registry_industries() {
 			'related' => array( 'usluge/webshop', 'usluge/ga4-i-pracenje-konverzija', 'djelatnosti/ugostiteljstvo-i-smjestaj' ),
 		),
 		'saloni-ljepote'            => array(
-			'tab' => 'Salon', 'icon' => 'star', 'prop' => 7, 'sign' => 'SALON',
+			'tab' => 'Salon', 'sector' => 'ljepota', 'label' => 'Saloni ljepote', 'icon' => 'star', 'prop' => 7, 'sign' => 'SALON',
 			'title' => 'Saloni ljepote i frizeri', 'name' => 'salone ljepote i frizere',
 			'seo_title' => 'Web stranica za salone ljepote i frizere | ZAEC',
 			'description' => 'Web stranica za salone ljepote, frizere i kozmetičare: usluge s cijenama, online rezervacija termina, galerija radova i recenzije koje pune raspored.',
@@ -263,6 +400,71 @@ function zaec_registry_industries() {
 			),
 			'related' => array( 'usluge/google-business-profil', 'djelatnosti/ugostiteljstvo-i-smjestaj', 'usluge/izrada-web-stranica' ),
 		),
+		// Nove stranice (strategija 03, točka 3): svaka ima stvaran projekt kao dokaz.
+		'strucne-usluge'            => array(
+			'tab' => 'Struka', 'sector' => 'strucne-usluge', 'label' => 'Stručne usluge', 'icon' => 'clipboard-check', 'prop' => 8, 'sign' => 'URED',
+			'title' => 'Stručne i poslovne usluge', 'name' => 'stručne i poslovne usluge',
+			'service_type' => 'Web stranica za stručne i poslovne usluge',
+			'seo_title' => 'Web stranica za stručne i poslovne usluge | ZAEC',
+			'description' => 'Web za računovodstvo, inženjering, laboratorije i savjetovanje: usluge jezikom klijenta, stručnost koja se vidi, reference i upit prema opsegu posla.',
+			'h1' => 'Web za stručne usluge: stručno, a <em>razumljivo</em>.',
+			'lead' => 'Klijent vas bira po stručnosti koju sam ne može procijeniti. Zato traži znakove: jasno opisane usluge, ljude iza posla, ovlaštenja i reference. Web koji ih pokaže prije prvog sastanka dovodi ozbiljnije upite.',
+			'short' => 'Klijent bira po stručnosti koju ne može sam provjeriti: jasne usluge, ljudi iza posla, ovlaštenja i reference, uz kratak put do upita.',
+			'onweb' => array( 'Usluge jezikom klijenta', 'Tim i ovlaštenja', 'Reference', 'Upit prema opsegu' ),
+			'searches' => array( 'knjigovodstvo za obrt', 'računovodstveni servis + grad', 'energetski certifikat cijena', 'laboratorijska analiza hrane', 'statičar + grad' ),
+			'problems' => array(
+				array( 'Usluge opisane jezikom struke', 'Klijent traži „knjigovodstvo za obrt”, a web nudi „računovodstvene usluge sukladno propisima”. Ne prepozna se i ode.' ),
+				array( 'Ne vidi se tko radi posao', 'Kod stručnih usluga ljudi kupuju povjerenje u osobu. Web bez imena, iskustva i ovlaštenja ne gradi ga.' ),
+				array( 'Svi upiti izgledaju isto', 'Bez nekoliko pitanja o opsegu na prvi razgovor dolaze i oni kojima ne možete pomoći.' ),
+			),
+			'deliver' => array(
+				array( 'Usluga po potrebi klijenta', 'Svaka usluga sa svojom stranicom: kome je namijenjena, što uključuje i kako izgleda suradnja.' ),
+				array( 'Ljudi, ovlaštenja i članstva', 'Tko radi posao, s kojim iskustvom i ovlaštenjima, vidljivo uz usluge i kontakt.' ),
+				array( 'Reference i primjeri rada', 'Projekti i klijenti koje smijete pokazati, s kratkim opisom problema i rješenja.' ),
+				array( 'Upit prema opsegu', 'Vrsta usluge, veličina tvrtke ili projekta i rok. Na prvi razgovor dolazite pripremljeni.' ),
+			),
+			'structure' => array( 'Hero: usluge i kome su namijenjene', 'Usluge (stranica za svaku)', 'Tim i ovlaštenja', 'Reference', 'Kako izgleda suradnja', 'FAQ', 'Upit prema opsegu' ),
+			'faq' => array(
+				// vlasnik potvrdio (10. 10. 2026); bez pravnog savjeta: pravila komore donosi klijent
+				array( 'Smijem li kao regulirana profesija predstavljati usluge na webu?', 'Ovisi o pravilima vaše komore, a neke regulirane profesije (npr. odvjetnici) imaju stroža pravila o oglašavanju. Prije izrade nam recite koja vrijede za vas, pa web složimo tako da informira o uslugama u okviru tih pravila.' ),
+				array( 'Trebam li web i na engleskom?', 'Ako radite sa stranim klijentima ili partnerima, da, barem za ključne usluge. Svaki jezik dobiva svoju adresu, pa ga Google može prikazati klijentima na tom jeziku.' ),
+			),
+			'proof' => 'eurokontrola.hr',
+			'related' => array( 'usluge/izrada-web-stranica', 'djelatnosti/ustanove-i-udruge', 'usluge/seo' ),
+		),
+		'ustanove-i-udruge'         => array(
+			'tab' => 'Ustanove', 'sector' => 'ustanove', 'label' => 'Ustanove i udruge', 'icon' => 'users-group-rounded', 'prop' => 9, 'sign' => 'USTANOVA',
+			'title' => 'Ustanove, udruge i obrazovanje', 'name' => 'ustanove i udruge',
+			'service_type' => 'Web stranica za ustanove i udruge',
+			'seo_title' => 'Web stranica za ustanove, udruge i škole | ZAEC',
+			'description' => 'Web za ustanove, udruge i obrazovanje: sadržaj složen po posjetiteljima, novosti i projekti koje sami uređujete, pristupačnost i jasni dokumenti.',
+			'h1' => 'Web za ustanove i udruge: da <em>svatko</em>&nbsp;nađe svoje.',
+			'lead' => 'Roditelji, korisnici, partneri, donatori i mediji dolaze s različitim pitanjima. Web složen po posjetiteljima, a ne po unutarnjoj organizaciji, odgovara svakome od njih i ne zatrpava ostale.',
+			'short' => 'Puno posjetitelja i puno sadržaja: svatko mora naći svoje bez lutanja, a novosti i projekte uređujete sami.',
+			'onweb' => array( 'Sadržaj po posjetiteljima', 'Novosti i projekti', 'Pristupačnost', 'Dokumenti' ),
+			'searches' => array( 'naziv ustanove', 'udruga + grad', 'upis u vrtić + grad', 'program + naziv ustanove', 'radno vrijeme + naziv ustanove' ),
+			'problems' => array(
+				array( 'Web složen po organizacijskoj shemi', 'Posjetitelj ne zna u kojem je odjelu ono što traži. Traži odgovor, ne organigram.' ),
+				array( 'Novosti koje nitko ne ažurira', 'Ako je za svaku objavu potreban vanjski programer, web zastari za nekoliko mjeseci.' ),
+				array( 'Dokumenti zakopani u PDF-ovima', 'Pravilnici, obrasci i natječaji bez reda i pretrage, i nečitljivi na mobitelu.' ),
+			),
+			'deliver' => array(
+				array( 'Ulaz za svakog posjetitelja', 'Roditelji, korisnici, stručnjaci i partneri odmah vide svoj put kroz sadržaj.' ),
+				array( 'Novosti i projekti koje uređujete sami', 'WordPress bez programera, uz kratku edukaciju pri primopredaji. Stranice EU projekata s oznakama financiranja.' ),
+				// Zakon o pristupačnosti mrežnih stranica (NN 17/19); vlasnik potvrdio (10. 10. 2026). „Većinu“ jer zakon ima iznimke.
+				array( 'Pristupačnost', 'Kontrast, veličina slova, rad tipkovnicom i čitačima ekrana. Za većinu tijela javnog sektora to je i zakonska obveza, uz izjavu o pristupačnosti.' ),
+				array( 'Dokumenti s redom', 'Obrasci, pravilnici i natječaji po kategorijama i datumu, s pretragom.' ),
+			),
+			'structure' => array( 'Hero: tko ste i ulazi za posjetitelje', 'Programi i usluge', 'Novosti i projekti', 'Dokumenti', 'O ustanovi i tim', 'Kontakt i lokacija' ),
+			'faq' => array(
+				// vlasnik potvrdio (10. 10. 2026); fiksna cijena kao u svakoj ponudi, bez obećanja proizvoljnog obrasca
+				array( 'Možete li poslati ponudu za jednostavnu nabavu ili projekt?', 'Da. Pisana ponuda sadrži opseg, rok i fiksnu cijenu. Ako nabava ili projekt traže određeni obrazac ili prilog, pošaljite ga uz upit.' ),
+				array( 'Hoćemo li sami objavljivati novosti?', 'Da. Pri primopredaji pokažemo kako objavljujete novosti, projekte, galerije i dokumente, bez programera.' ),
+			),
+			'faq_price' => array( 'Koliko košta web za ustanovu?', 'Ovisi o broju stranica i funkcija (npr. dokumenti s pretragom, novosti ili više jezika). Složite procjenu projekta — vaše područje je već odabrano — i dobit ćete pisanu ponudu s fiksnom cijenom.' ),
+			'proof' => 'cza-os.hr',
+			'related' => array( 'usluge/izrada-web-stranica', 'usluge/odrzavanje-weba', 'djelatnosti/strucne-usluge' ),
+		),
 	);
 
 	// Po djelatnosti: opis kadra (alt) i podnaslovi s nazivom zanata (umjesto istih H2 na svih osam stranica).
@@ -274,42 +476,56 @@ function zaec_registry_industries() {
 		'gradevina-i-adaptacije'    => array( 'Zgrada u gradnji noću: gotovi donji katovi, betonski skelet s iskrama zavarivanja, gornji katovi kao nacrt i toranjski kran.', 'Gdje izvođači radova <em>gube</em> upite.', 'Što web izvođača radova <em>mora</em> imati.' ),
 		'ugostiteljstvo-i-smjestaj' => array( 'Kuća za odmor s osvijetljenim bazenom i terasom pod lampicama; krilo sa sobama je tlocrt do kojeg stižu tragovi rezervacija.', 'Gdje restorani i smještaj <em>gube</em> goste.', 'Što web restorana i smještaja <em>mora</em> imati.' ),
 		'trgovine-i-webshop'        => array( 'Osvijetljeni izlog trgovine s plavom tendom; paketi odlijeću svjetlosnim lukovima prema kupcima, dio dućana je nacrt webshopa.', 'Gdje trgovine <em>gube</em> kupce.', 'Što web trgovine <em>mora</em> imati.' ),
-		'saloni-ljepote'            => array( 'Salon noću: stolica i okruglo ogledalo s prstenastim svjetlom; sljedeća radna mjesta su nacrt, a tragovi rezervacija stižu do ogledala.', 'Gdje saloni <em>gube</em> termine.', 'Što web salona <em>mora</em> imati.' ),
+		'saloni-ljepote'            => array( 'Salon noću: stolica i okruglo ogledalo s prstenastim svjetlom; sljedeća radna mjesta su nacrt, a tragovi rezervacija stižu do ogledala.', 'Gdje saloni <em>gube</em> termine.', 'Što web salona <em>mora</em> imati.' ),		'strucne-usluge'            => array( 'Tlocrt ureda: prijem, sala za sastanke, radna mjesta i arhiva.', 'Gdje stručne usluge <em>gube</em> klijente.', 'Što web stručne usluge <em>mora</em> imati.' ),
+		'ustanove-i-udruge'         => array( 'Tlocrt prizemlja ustanove: ulaz s rampom, info pult s oglasnom pločom, dvorana i arhiva.', 'Gdje ustanove <em>gube</em> posjetitelje.', 'Što web ustanove <em>mora</em> imati.' ),
 	);
 
 	// cilj stranice po djelatnosti (podnaslov strukture)
-	$goal = array( 'saloni-ljepote' => 'rezervacije', 'ugostiteljstvo-i-smjestaj' => 'rezervacije', 'trgovine-i-webshop' => 'kupnje', 'gradevina-i-adaptacije' => 'upita' );
+	$goal = array( 'saloni-ljepote' => 'rezervacije', 'ugostiteljstvo-i-smjestaj' => 'rezervacije', 'trgovine-i-webshop' => 'kupnje', 'gradevina-i-adaptacije' => 'upita', 'strucne-usluge' => 'upita', 'ustanove-i-udruge' => 'upita' );
 
 	foreach ( $industries as $slug => $d ) {
-		$c = $copy[ $slug ] ?? array( $d['title'] . ': noćni kadar djelatnosti, pola stvarno, pola tehnički nacrt.', 'Gdje se <em>gube</em> pozivi.', 'Što vaš web <em>mora</em> imati.' );
+		$c      = $copy[ $slug ] ?? array( $d['title'] . ': noćni kadar djelatnosti, pola stvarno, pola tehnički nacrt.', 'Gdje se <em>gube</em> pozivi.', 'Što vaš web <em>mora</em> imati.' );
+		$sector = zaec_sectors()[ $d['sector'] ];
+		$blocks = array(
+			array( 'type' => 'searches', 'items' => $d['searches'] ),
+			array( 'type' => 'problems', 'title' => $c[1], 'items' => $d['problems'] ),
+			array( 'type' => 'deliver', 'title' => $c[2], 'items' => array_map( static fn( $x ) => array( '', $x[0], $x[1] ), $d['deliver'] ), 'cols' => 2, 'numbered' => true ),
+		);
+		if ( ! empty( $d['proof'] ) ) {
+			// dokaz: samo stvaran, objavljen projekt (blok se ne prikaže ako ga nema)
+			$blocks[] = array( 'type' => 'projects', 'host' => $d['proof'], 'title' => 'Iz <em>prakse</em>.', 'lead' => 'Stvaran projekt iz ovog područja, s problemom, rješenjem i adresom koju možete otvoriti.' );
+		}
+		$blocks[] = array( 'type' => 'anatomy', 'title' => 'Struktura koja vodi do <em>' . ( $goal[ $slug ] ?? 'poziva' ) . '</em>.', 'lead' => 'Predložak redoslijeda za naslovnicu — prilagođavamo ga vašim uslugama, ali logika ostaje.', 'label' => 'nacrt — ' . $slug . '.pdf', 'parts' => array_map( null, $d['structure'] ) );
+		$faq_common = zaec_industry_common_faq();
+		if ( ! empty( $d['faq_price'] ) ) {
+			$faq_common[0] = $d['faq_price'];
+		}
+		$img = 'world/djelatnost-' . $slug . '.webp';
 		$r[ 'djelatnosti/' . $slug ] = array(
 			'type'         => 'industry',
 			'parent'       => 'djelatnosti',
 			'slug'         => $slug,
 			'title'        => $d['title'],
 			'name'         => $d['name'],
-			'service_type' => 'Web stranica i lokalni SEO za ' . $d['name'],
+			'service_type' => $d['service_type'] ?? 'Web stranica i lokalni SEO za ' . $d['name'],
 			'seo_title'    => $d['seo_title'],
 			'description'  => $d['description'],
-			'kicker'       => 'Djelatnost · ' . $d['tab'],
+			'kicker'       => $sector['short'] === $d['label'] ? $d['label'] : $sector['short'] . ' · ' . $d['label'],
 			'h1'           => $d['h1'],
 			'lead'         => $d['lead'],
 			'short'        => $d['short'],
 			'tab'          => $d['tab'],
+			'sector'       => $d['sector'],
+			'label'        => $d['label'],
 			'icon'         => $d['icon'],
 			'prop'         => $d['prop'],
 			'sign'         => $d['sign'],
 			'onweb'        => $d['onweb'],
-			'image'        => 'world/djelatnost-' . $slug . '.webp',
+			'image'        => is_readable( ZAEC_THEME_DIR . '/assets/img/' . $img ) ? $img : '',
 			'image_alt'    => $c[0],
-			'cta'          => array( 'Složite svoj projekt', 'cijene?djelatnost=' . rawurlencode( $d['tab'] ) . '#konfigurator' ),
-			'blocks'       => array(
-				array( 'type' => 'searches', 'items' => $d['searches'] ),
-				array( 'type' => 'problems', 'title' => $c[1], 'items' => $d['problems'] ),
-				array( 'type' => 'deliver', 'title' => $c[2], 'items' => array_map( static fn( $x ) => array( '', $x[0], $x[1] ), $d['deliver'] ), 'cols' => 2, 'numbered' => true ),
-				array( 'type' => 'anatomy', 'title' => 'Struktura koja vodi do <em>' . ( $goal[ $slug ] ?? 'poziva' ) . '</em>.', 'lead' => 'Predložak redoslijeda za naslovnicu — prilagođavamo ga vašim uslugama, ali logika ostaje.', 'label' => 'nacrt — ' . $slug . '.pdf', 'parts' => array_map( null, $d['structure'] ) ),
-			),
-			'faq'          => array_merge( $d['faq'], zaec_industry_common_faq() ),
+			'cta'          => array( 'Složite svoj projekt', 'cijene?djelatnost=' . rawurlencode( $slug ) . '#konfigurator' ),
+			'blocks'       => $blocks,
+			'faq'          => array_merge( $d['faq'], $faq_common ),
 			'related'      => $d['related'],
 		);
 	}
@@ -401,8 +617,8 @@ function zaec_registry_special() {
 		'h1'          => 'Kako vas vide <em>Google</em> i AI? Provjerimo besplatno.',
 		'lead'        => 'Pošaljite naziv tvrtke i grad. Ručno provjeravamo Google profil, recenzije, web, brzinu i što o vama kažu ChatGPT i Google AI — uz usporedbu s tri konkurenta i tri koraka koja najviše donose.',
 		'answer'      => 'Besplatna provjera vidljivosti uključuje ručnu analizu Google Business profila, recenzija, web stranice (sadržaj, brzina, mobitel, mjerenje) i odgovora AI asistenata o vašoj tvrtki, usporedbu s tri lokalna konkurenta i kratko izvješće s tri prioritetna koraka.',
-		'image'       => 'world/usluga-seo.webp',
-		'image_alt'   => 'Povećalo iznad grada u nacrtu izdvaja jednu osvijetljenu zgradu — vaš obrt — prema kojoj stižu upiti.',
+		'image'       => 'world/usluga-provjera.webp',
+		'image_alt'   => 'Vaš obrt osvijetljen sprijeda, iza njega tri konkurenta u nacrtu; uz svaku zgradu kota visine, crta mjerila spaja vrhove.',
 		'cta'         => array( 'Pošalji za provjeru', '#upit' ),
 		'blocks'      => array(
 			array(
@@ -455,7 +671,25 @@ function zaec_registry_special() {
 		'image'       => 'world/usluga-onama.webp',
 		'image_alt'   => 'Konkatedrala sv. Petra i Pavla u Osijeku noću, s osvijetljenim vitrajima i svjetlosnim signalom s tornja.',
 		'cta'         => array( 'Upoznajmo se', 'kontakt#upit' ),
-		'blocks'      => array( array( 'type' => 'about' ), array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ), array( 'type' => 'guarantees' ) ),
+		'blocks'      => array(
+			array( 'type' => 'about', 'part' => 'intro' ),
+			array(
+				'type'  => 'principles',
+				'title' => 'Kako <em>radimo</em>.',
+				'lead'  => 'Šest pravila koja vrijede za svaki projekt, od jedne stranice do složenog weba.',
+				'items' => array(
+					array( 'Jedna osoba odgovara za cijeli projekt.', 'Razgovor, nacrt, dizajn, kod i mjerenje su u istim rukama. Nema prenošenja poruka između prodaje i razvoja.' ),
+					array( 'Nacrt prije dizajna.', 'Prvo crtamo što posjetitelj mora vidjeti i kojim redom. Boja i animacija dolaze na čvrst temelj.' ),
+					array( 'Dogovor na papiru.', 'Opseg, rok i fiksna cijena prije početka. Sve izvan dogovora prvo dobiva procjenu.' ),
+					array( 'Tehnika koju možete provjeriti.', 'Brzina, mobitel, pristupačnost i mjerenje provjeravaju se prije objave, a popis provjera dobivate i vi.' ),
+					array( 'Sve je vaše.', 'Domena, hosting, pristupi i sadržaj registrirani su na vas. Možete otići kad god želite.' ),
+					array( 'Iskreno, i kad to znači manji posao.', 'Ako vam novi web ne treba, reći ćemo vam prije nego išta potpišete.' ),
+				),
+			),
+			array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ),
+			array( 'type' => 'about', 'part' => 'facts' ), // „Šest razloga“ ostaje samo na Cijenama (design/04 #10)
+		),
+		'related'     => array( 'usluge/izrada-web-stranica', 'djelatnosti', 'cijene' ),
 	);
 
 	$r['hvala'] = array(
