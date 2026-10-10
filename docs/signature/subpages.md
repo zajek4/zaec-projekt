@@ -226,9 +226,15 @@ bugovit, izrada-web-stranica je bugovita. Provjeri i sadržaj.“
   „Djelatnosti / Djelatnosti“, oznaka kadra bez ponovljenog kickera. Cijene i uvjeti nisu mijenjani.
 - **Za vlasnika (nije u kodu):** obrisati WordPressove „Hello world!“ i „Sample Page“; jezik stranice postaviti na
   Hrvatski (datumi „4. October“, `lang="en-US"`, „Page not found“); vodiči su u bazi, pa se ispravci u
-  `inc/seed/guides` ne bi vidjeli; OIB i e-mail na webu (Zakon o elektroničkoj trgovini); Održavanje: „fiksna
-  cijena“ i „sati izmjena“.
-- Provjere: nacrt 180/180 (O nama + 11 listova × 15 veličina), mobilni rub 124/124, Izrada 6/6, pregled 34
-  stranice × 360/390/768/1440 bez grešaka u konzoli, 4xx, bočnog skrola i slomljenih slika. Naglasak u kadru:
-  na složenom rasporedu 960 × 1000 samo kutija drugog retka (16 %, kao na ostalim stranicama).
+  `inc/seed/guides` ne bi vidjeli (u WP adminu: „više … više“, „checklista“, „u footeru“, 5 ili 10 minuta); OIB i
+  e-mail na webu (Zakon o elektroničkoj trgovini); Održavanje: „fiksna cijena u ponudi“ uz „cijena ovisi o broju
+  sati“; Webshop obećaje mjesečni izvještaj; „Edukacija i 14 dana jamstva“ ne kaže što jamstvo pokriva; proces ima
+  6 koraka na Izradi i 4 na Uslugama.
+- **Za potvrdu (tvrdnje na webu, nisu mijenjane):** „više od deset godina“, brojke iz Insitesa, dopuštenje klijenata
+  (Eurokontrola, CZA) za prikaz radova, „Pitanja i odgovori“ na Google profilu (Google ih je ukinuo).
+- Provjere: nacrt 179/180 (O nama + 11 listova × 15 veličina), mobilni rub 124/124, Izrada 6/6, pregled 34
+  stranice × 360/390/768/1440 bez grešaka u konzoli, 4xx, bočnog skrola i slomljenih slika. Jedini „NE“ je
+  naglasak O nama na složenom rasporedu 960 × 1000: u kadru je samo kutija retka (16 %), kao na ostalim uređivačkim
+  stranicama. Održavanje ondje ima 86 % jer kratki naslov u jednom retku stoji na rubu kadra; čitljivo je (zlatno
+  na tamnom) i isto je na mainu, pa nije mijenjano.
 
