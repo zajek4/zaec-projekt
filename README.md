@@ -1,4 +1,4 @@
-# ZAEC — WordPress tema v2.3.0 (branch `v2-3d`)
+# ZAEC — WordPress tema v2.4.0 (branch `v2-3d`)
 
 Nadogradnja postojeće teme `zaec` (v1.13): jedan 3D kadar od orbite do Osijeka (Three.js) kojim dirigira scroll (GSAP + Lenis), filmski noćni kadrovi podstranica renderirani iz koda, potpuno novi sadržaj, 10 usluga (web, webshop, landing, SEO, lokalni SEO, Google profil, AI vidljivost/GEO, GA4 i e-commerce praćenje, brzina, održavanje), 8 djelatnosti, procjena projekta bez javnog cjenika, besplatna provjera vidljivosti, radovi s dokazima, 6 vodiča.
 
