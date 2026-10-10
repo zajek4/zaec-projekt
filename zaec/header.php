@@ -105,7 +105,7 @@ $zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_ki
 	</nav>
 	<div class="mm-foot">
 		<?php echo zaec_button( 'Pošaljite upit', zaec_inquiry_url(), 'signal', array( 'track' => 'cta_menu' ) ); // phpcs:ignore ?>
-		<p class="mm-note mono">Pisana procjena, bez obveze · <?php echo esc_html( zaec_option( 'city' ) ); ?></p>
+		<p class="mm-note mono">Pisana ponuda, bez obveze · <?php echo esc_html( zaec_option( 'city' ) ); ?></p>
 	</div>
 </div>
 

@@ -22,11 +22,16 @@ function zaec_landing_registry() {
 	return apply_filters( 'zaec_landing_registry', $r );
 }
 
-/** Zajednički FAQ o cijeni (bez javnog cjenika). */
+/** Zajednički FAQ o cijeni (bez javnog cjenika). $what: izrada, landing ili usluga (SEO, profil, brzina — bez stranica i procjene projekta). */
 function zaec_faq_price( $what = 'izrada' ) {
+	$scope = array(
+		'izrada'  => 'broju stranica, funkcijama i tome što već imate',
+		'landing' => 'sadržaju, funkcijama i tome što već imate',
+		'usluga'  => 'tome što treba napraviti i što već imate',
+	);
 	return array(
 		'Koliko košta?',
-		'Ovisi o opsegu: broju stranica, funkcijama i tome što već imate. Zato ne objavljujemo „od” cijene koje ništa ne znače. Nakon kratkog razgovora dobivate pisanu ponudu s fiksnom cijenom i rokom — bez obveze. Okvirni opseg i rok vidite odmah u procjeni projekta.',
+		'Ovisi o opsegu: ' . ( $scope[ $what ] ?? $scope['izrada'] ) . '. Zato ne objavljujemo „od” cijene koje ništa ne znače. Nakon kratkog razgovora dobivate pisanu ponudu s fiksnom cijenom i rokom — bez obveze.' . ( 'usluga' === $what ? '' : ' Okvirni opseg i rok vidite odmah u procjeni projekta.' ),
 	);
 }
 
@@ -41,7 +46,7 @@ function zaec_registry_services() {
 		'seo_title'   => 'Usluge — web stranice, SEO, AI vidljivost i analitika | ZAEC',
 		'description' => 'Web stranice i webshopovi, SEO, lokalni SEO, Google Business profil, AI vidljivost, GA4 praćenje i održavanje — jedan sustav koji donosi upite i mjeri ih.',
 		'kicker'      => 'Usluge',
-		'h1'          => 'Sve što treba da vas <em>nađu</em>, odaberu i nazovu.',
+		'h1'          => 'Sve potrebno da vas <em>nađu</em>, odaberu i nazovu.',
 		'lead'        => 'Kupac prolazi tri koraka: pretraga, usporedba, kontakt. Gradimo cijeli put — od Google karte i AI odgovora do stranice koja pretvara posjet u poziv, i mjerenja koje pokazuje što radi.',
 		'answer'      => 'ZAEC radi izradu web stranica, webshopova i landing stranica, SEO i lokalni SEO, Google Business profil, AI vidljivost (ChatGPT, Gemini, Google AI) te postavljanje GA4 i e-commerce praćenja. Sve usluge mogu se uzeti zasebno ili kao jedan sustav.',
 		'image'       => 'world/usluga-web.webp',
@@ -90,9 +95,9 @@ function zaec_registry_services() {
 				'lead'  => 'Redoslijed koji odgovara na pitanja kupca prije nego ih postavi.',
 				'label' => 'nacrt — naslovnica.pdf',
 				'parts' => array(
-					array( 'Hero: što, gdje, kako do vas', 'Jedna rečenica o usluzi, područje rada i gumb za poziv — iznad pregiba, na mobitelu.', 'hero' ),
+					array( 'Prvi ekran: što, gdje, kako do vas', 'Jedna rečenica o usluzi, područje rada i gumb za poziv — iznad pregiba, na mobitelu.', 'hero' ),
 					array( 'Usluge jezikom kupca', 'Kartice s uslugama koje želite prodavati, svaka vodi na vlastitu stranicu.', 'cards' ),
-					array( 'Dokazi', 'Stvarni radovi, recenzije i jamstva. Bez izmišljenih brojki i lažnih logotipa.', 'proof' ),
+					array( 'Dokazi', 'Recenzije, jamstva i podaci o tvrtki. Bez izmišljenih brojki i lažnih logotipa.', 'proof' ),
 					array( 'Radovi', 'Fotografije s kratkim opisom — rade i za ljude i za Google.', 'gallery' ),
 					array( 'Područje rada', 'Gdje dolazite i u kojem roku. Ključno za lokalnu pretragu.', 'map' ),
 					array( 'Česta pitanja', 'Odgovori na ono što vas pitaju na telefonu — i ono što AI asistenti citiraju.', 'faq' ),
@@ -102,7 +107,7 @@ function zaec_registry_services() {
 			array(
 				'type'  => 'decisions',
 				'title' => 'Što kupujete: <em>odluke</em>, ne stranice.',
-				'lead'  => 'Ne prodajemo broj stranica. Prodajemo odluke koje se donesu prije prvog retka koda, i papir na kojem piše što ste dobili.',
+				'lead'  => 'Ne prodajemo broj stranica. Prodajemo odluke koje se donose prije prvog retka koda, i papir na kojem piše što ste dobili.',
 			),
 			array(
 				'type'  => 'deliver',
@@ -125,7 +130,7 @@ function zaec_registry_services() {
 				'lead'  => 'Oba vode do istog cilja. Razlika je koliko strukture i dizajna treba nacrtati od nule — i koliko vremena to traži.',
 				'cols'  => array(
 					array( 'best' => 'Najbrži put do ozbiljnog weba', 'title' => 'Predložak', 'text' => 'Provjeren raspored koji vodi do upita, prilagođen vašem brandu, sadržaju i djelatnosti.', 'items' => array( 'Za obrt ili malu tvrtku koja treba web brzo', 'Struktura koja je već dokazala da radi', 'Vaše boje, logo, fotografije i tekstovi', 'Kraći rok i kontroliran opseg' ) ),
-					array( 'best' => 'Najviše kontrole', 'title' => 'Po nacrtu', 'tag' => 'Custom', 'feat' => true, 'text' => 'Struktura, UX i vizualni sustav crtaju se za vaš posao — kad predložak više nije dovoljan.', 'items' => array( 'Istraživanje ponude, kupaca i konkurencije', 'UX nacrt i dizajn sustav prije razvoja', 'Složenija logika i više tipova stranica', 'Animacije, 3D i interaktivni elementi' ) ),
+					array( 'best' => 'Najviše kontrole', 'title' => 'Po nacrtu', 'tag' => 'Po mjeri', 'feat' => true, 'text' => 'Struktura, UX i vizualni sustav crtaju se za vaš posao — kad predložak više nije dovoljan.', 'items' => array( 'Istraživanje ponude, kupaca i konkurencije', 'UX nacrt i dizajn sustav prije razvoja', 'Složenija logika i više tipova stranica', 'Animacije, 3D i interaktivni elementi' ) ),
 				),
 				'note'  => 'U oba slučaja: opseg i fiksna cijena u pisanoj ponudi prije početka, a domena i hosting registrirani na vas.',
 			),
@@ -179,7 +184,7 @@ function zaec_registry_services() {
 				'lead'  => 'Upravo ovdje nastaju skriveni troškovi i projekti koji traju mjesecima. Zato ih rješavamo na početku, na papiru.',
 				'items' => array(
 					array( 'box-minimalistic', 'Katalog i varijacije', 'Kategorije, filteri, veličine, boje, zalihe — i odakle dolaze podaci o proizvodima.' ),
-					array( 'card', 'Plaćanje', 'Kartice (npr. Corvus Pay), pouzeće ili uplata — i što se događa kad plaćanje ne prođe.' ),
+					array( 'card', 'Plaćanje', 'Kartice (npr. CorvusPay), pouzeće ili uplata — i što se događa kad plaćanje ne prođe.' ),
 					array( 'delivery', 'Dostava', 'Dostavne službe, cijene po težini ili zoni, besplatna dostava, osobno preuzimanje.' ),
 					array( 'bill-list', 'Računi i integracije', 'Fiskalizacija, knjigovodstvo ili ERP kao zaseban, jasno definiran dio opsega.' ),
 					array( 'refresh-circle', 'Povrati i reklamacije', 'Pravila, obrasci i obavijesti kupcima u skladu s propisima o zaštiti potrošača.' ),
@@ -202,7 +207,7 @@ function zaec_registry_services() {
 		),
 		'faq'          => array(
 			array( 'Koliko košta izrada webshopa?', 'Webshop je najzahtjevniji format jer uključuje plaćanje, dostavu, pravila i integracije. Zato prvo zajedno definiramo opseg, a zatim dobivate pisanu ponudu s fiksnom cijenom. Okvirnu razinu i rok vidite odmah u procjeni projekta.' ),
-			array( 'Radite li kartično plaćanje za Hrvatsku?', 'Da, povezujemo kartična plaćanja preko pružatelja za hrvatsko tržište (npr. Corvus Pay) — nakon što imate ugovor s pružateljem i definirana pravila prodaje.' ),
+			array( 'Radite li kartično plaćanje za Hrvatsku?', 'Da, povezujemo kartična plaćanja preko pružatelja za hrvatsko tržište (npr. CorvusPay) — nakon što imate ugovor s pružateljem i definirana pravila prodaje.' ),
 			array( 'Hoću li vidjeti koliko zarađujem i s kojeg kanala?', 'Da. GA4 e-commerce praćenje bilježi prihod po proizvodu i po izvoru prometa (Google, oglasi, društvene mreže, e-mail), uz Consent Mode v2 i poštivanje privole.' ),
 			array( 'Mogu li sam dodavati proizvode?', 'Da. WooCommerce je jednostavan za svakodnevni rad, a pri primopredaji pokazujemo dodavanje proizvoda, promjenu cijene i obradu narudžbe.' ),
 			array( 'Što s velikim brojem proizvoda?', 'Za stotine ili tisuće proizvoda planiramo uvoz iz tablice ili povezivanje sa sustavom koji već koristite, kao zaseban dio opsega.' ),
@@ -253,7 +258,7 @@ function zaec_registry_services() {
 				'type'     => 'scope',
 				'title'    => 'Što dobivate <em>uz</em> landing.',
 				'yes_title'=> 'U opsegu',
-				'yes'      => array( 'Struktura i tekst usklađeni s oglasom', 'Responsive izvedba, prvo mobitel', 'Forma za upit i poziv jednim dodirom', 'Praćenje konverzija za Google Ads i Meta', 'Tehnički SEO i brzina' ),
+				'yes'      => array( 'Struktura i tekst usklađeni s oglasom', 'Prilagođeno svim ekranima, prvo mobitelu', 'Forma za upit i poziv jednim dodirom', 'Praćenje konverzija za Google Ads i Meta', 'Tehnički SEO i brzina' ),
 				'no_title' => 'Po dogovoru',
 				'no'       => array( 'Vođenje oglasnih kampanja', 'A/B testiranje više verzija', 'Integracija s CRM-om', 'Više jezika' ),
 			),
@@ -261,8 +266,8 @@ function zaec_registry_services() {
 		'faq'          => array(
 			array( 'Koja je razlika između landing stranice i web stranice?', 'Web stranica predstavlja cijeli posao kroz više stranica. Landing ima jedan cilj — jedan upit, prijavu ili kupnju — i namjerno uklanja sve što odvlači pažnju.' ),
 			array( 'Postavljate li praćenje konverzija za oglase?', 'Da. Postavljamo mjerenje poziva i poslanih upita te ga povezujemo s Google Ads i Meta, kako biste znali koliko upita donosi svaki euro.' ),
-			array( 'Može li landing raditi bez oglasa?', 'Može, ali najviše vrijedi uz promet koji već dolazi: oglase, QR kod, e-mail ili društvene mreže. Za organsku pretragu obično je bolja web stranica s više sadržaja.' ),
-			zaec_faq_price(),
+			array( 'Može li landing raditi bez oglasa?', 'Može, ali najviše vrijedi uz promet koji već dolazi: oglase, QR kod, email ili društvene mreže. Za organsku pretragu obično je bolja web stranica s više sadržaja.' ),
+			zaec_faq_price( 'landing' ),
 		),
 		'related'      => array( 'usluge/ga4-i-pracenje-konverzija', 'usluge/izrada-web-stranica', 'usluge/seo' ),
 	);
@@ -284,7 +289,7 @@ function zaec_registry_services() {
 		'blocks'       => array(
 			array(
 				'type'  => 'deliver',
-				'title' => 'Tri razine SEO-a — <em>sve</em> tri.',
+				'title' => 'Šest dijelova SEO-a — <em>svih</em> šest.',
 				'lead'  => 'Tehnika bez sadržaja ne rangira. Sadržaj bez tehnike se ne vidi. A ni jedno ni drugo ne vrijedi bez mjerenja.',
 				'items' => array(
 					array( 'settings', 'Tehnički SEO', 'Indeksiranje, sitemap, canonical, preusmjeravanja, greške, brzina i Core Web Vitals.' ),
@@ -304,7 +309,7 @@ function zaec_registry_services() {
 			array( 'Za koliko se vide rezultati?', 'Tehnički popravci često se primijete u nekoliko tjedana, a stabilan rast traje mjesecima. Ovisi o konkurenciji u vašoj djelatnosti i mjestu.' ),
 			array( 'Radite li SEO za stranice koje niste vi izradili?', 'Da. Krenemo od tehničkog pregleda i kažemo što se isplati popraviti, a što ne.' ),
 			array( 'Kupujete li linkove?', 'Ne. Kupljeni linkovi krše Googleove smjernice i mogu naštetiti. Radimo na stvarnim spominjanjima i sadržaju koji zaslužuje poveznicu.' ),
-			zaec_faq_price(),
+			zaec_faq_price( 'usluga' ),
 		),
 		'related'      => array( 'usluge/lokalni-seo', 'usluge/ai-vidljivost', 'usluge/brzina-web-stranice' ),
 	);
@@ -347,13 +352,13 @@ function zaec_registry_services() {
 				),
 				'cols'  => 3,
 			),
-			array( 'type' => 'checklist', 'title' => 'Provjerite svoj profil za <em>5 minuta</em>.', 'lead' => 'Deset stavki koje većina obrtnika preskoči. Svaki „ne” je posao koji ste možda izgubili.', 'cta' => array( 'Cijeli vodič', 'guide:google-business-profil-vodic' ) ),
+			array( 'type' => 'checklist', 'title' => 'Provjerite svoj profil za <em>10 minuta</em>.', 'lead' => 'Deset stavki koje većina obrtnika preskoči. Svaki „ne” je posao koji ste možda izgubili.', 'cta' => array( 'Cijeli vodič', 'guide:google-business-profil-vodic' ) ),
 		),
 		'faq'          => array(
 			array( 'Za koliko se vide rezultati?', 'Uređen profil i nove recenzije obično prve pomake pokažu unutar nekoliko tjedana. Stranice i sadržaj trebaju više vremena, najčešće nekoliko mjeseci.' ),
 			array( 'Trebam li stranicu za svaki grad?', 'Samo za mjesta u kojima stvarno radite i o kojima imate što korisno reći. Prazne kopije s promijenjenim imenom grada mogu više naštetiti nego pomoći.' ),
 			array( 'Smijete li kupiti ili napisati recenzije?', 'Ne. Lažne recenzije krše pravila platforme i propise o zaštiti potrošača. Pomažemo da stvarni klijenti lakše ostave recenziju.' ),
-			zaec_faq_price(),
+			zaec_faq_price( 'usluga' ),
 		),
 		'related'      => array( 'usluge/google-business-profil', 'usluge/ai-vidljivost', 'izrada-web-stranica-osijek' ),
 	);
@@ -402,7 +407,7 @@ function zaec_registry_services() {
 			array( 'Je li Google Business profil besplatan?', 'Da, profil je besplatan. Plaćate naše vrijeme za postavljanje, fotografije, sustav za recenzije i održavanje.' ),
 			array( 'Mogu li imati profil ako radim na terenu?', 'Da. Uslužne tvrtke koje dolaze kod klijenta mogu sakriti adresu i postaviti područje rada.' ),
 			array( 'Profil je otvorio netko drugi. Što sad?', 'Postoji postupak za preuzimanje vlasništva preko Googlea. Provedemo vas kroz njega.' ),
-			zaec_faq_price(),
+			zaec_faq_price( 'usluga' ),
 		),
 		'related'      => array( 'usluge/lokalni-seo', 'usluge/ai-vidljivost', 'provjera-vidljivosti' ),
 	);
@@ -420,7 +425,7 @@ function zaec_registry_services() {
 		'answer'       => 'AI vidljivost (GEO — Generative Engine Optimization) znači da vas AI asistenti poput ChatGPT-a, Geminija, Perplexityja i Google AI odgovora mogu pronaći, točno opisati i preporučiti. Temelji su isti kao kod SEO-a — jasan sadržaj, schema, dosljedni podaci i recenzije — uz redovitu provjeru što AI stvarno odgovara.',
 		'image'        => 'world/usluga-ai.webp',
 		'image_alt'    => 'Odgovor AI asistenta u kojem je istaknut vaš obrt; svjetlo do njega teče iz tri izvora u nacrtu: web stranice, karte i recenzija.',
-		'cta'          => array( 'Provjeri kako me AI vidi', 'provjera-vidljivosti' ),
+		'cta'          => array( 'Provjerite kako vas AI vidi', 'provjera-vidljivosti' ),
 		'blocks'       => array(
 			array(
 				'type'    => 'stats',
@@ -529,7 +534,7 @@ function zaec_registry_services() {
 		'kicker'       => 'Usluga · U.09',
 		'h1'           => 'Svaka sekunda <em>čekanja</em> košta upite.',
 		'lead'         => 'Spora stranica gubi posjetitelje prije nego vide ijednu riječ — posebno na mobitelu i slabom signalu. Mjerimo stvarne Core Web Vitals i popravljamo ono što ih ruši.',
-		'answer'       => 'Ubrzanje web stranice kod ZAEC-a počinje mjerenjem Core Web Vitals (LCP, INP, CLS) iz stvarnih podataka korisnika, a zatim optimizira slike (moderni formati, prave dimenzije), fontove, skripte, dodatke i cache. Cilj su dobre vrijednosti na mobitelu, ne samo visok broj u alatu.',
+		'answer'       => 'Ubrzanje web stranice kod ZAEC-a počinje mjerenjem Core Web Vitals (LCP, INP, CLS) iz stvarnih podataka korisnika, a zatim optimiziramo slike (moderni formati, prave dimenzije), fontove, skripte, dodatke i cache. Cilj su dobre vrijednosti na mobitelu, ne samo visok broj u alatu.',
 		'image'        => 'world/usluga-brzina.webp',
 		'image_alt'    => 'Web stranica u pokretu: svjetlosni tragovi brzine prolaze kroz ekran koji se učitava od nacrta do gotovog prikaza.',
 		'cta'          => array( 'Besplatno mjerenje brzine', 'provjera-vidljivosti' ),
@@ -539,8 +544,8 @@ function zaec_registry_services() {
 				'title' => 'Gdje se gubi <em>brzina</em>.',
 				'items' => array(
 					array( 'gallery', 'Slike', 'Ogromne fotografije s mobitela. Rješenje: WebP/AVIF, prave dimenzije, lazy load.' ),
-					array( 'text-field', 'Fontovi', 'Fontovi s vanjskih servisa blokiraju prikaz. Rješenje: lokalno, s pretpregledom.' ),
-					array( 'code', 'Skripte i dodaci', 'Desetci dodataka koji se učitavaju posvuda. Rješenje: čišćenje i uvjetno učitavanje.' ),
+					array( 'text-field', 'Fontovi', 'Fontovi s vanjskih servisa blokiraju prikaz. Rješenje: lokalno učitani, s predučitavanjem (preload).' ),
+					array( 'code', 'Skripte i dodaci', 'Deseci dodataka koji se učitavaju posvuda. Rješenje: čišćenje i uvjetno učitavanje.' ),
 					array( 'server', 'Hosting i cache', 'Spor server bez cachea. Rješenje: ispravan cache, CDN po potrebi, bolji hosting.' ),
 				),
 			),
@@ -557,9 +562,9 @@ function zaec_registry_services() {
 			),
 		),
 		'faq'          => array(
-			array( 'Je li važan rezultat u PageSpeed Insights?', 'Rezultat je koristan putokaz, ali važniji su stvarni podaci korisnika (Core Web Vitals) — posebno na mobitelu. Ciljamo stvarno brzu stranicu, ne samo broj.' ),
+			array( 'Je li važan rezultat u alatu PageSpeed Insights?', 'Rezultat je koristan putokaz, ali važniji su stvarni podaci korisnika (Core Web Vitals) — posebno na mobitelu. Ciljamo stvarno brzu stranicu, ne samo broj.' ),
 			array( 'Hoće li se nešto pokvariti?', 'Radimo na kopiji ili uz sigurnosnu kopiju i testiramo ključne funkcije (forme, shop, izbornike) nakon svake promjene.' ),
-			zaec_faq_price(),
+			zaec_faq_price( 'usluga' ),
 		),
 		'related'      => array( 'usluge/seo', 'usluge/odrzavanje-weba', 'usluge/izrada-web-stranica' ),
 	);
@@ -573,7 +578,7 @@ function zaec_registry_services() {
 		'description'  => 'Održavanje weba s jasnim opsegom: ažuriranja, sigurnosne kopije, nadzor, provjera forme i brzine, izmjene i mjesečni pregled. Bez neograničenih obećanja.',
 		'kicker'       => 'Usluga · U.10',
 		'h1'           => 'Mir <em>nakon</em> objave.',
-		'lead'         => 'Web koji nitko ne održava s vremenom postaje spor, nesiguran ili prestane slati upite — a to nitko ne primijeti. Održavanje je izbor, ne uvjet izrade, s opsegom crno na bijelo.',
+		'lead'         => 'Web koji nitko ne održava s vremenom postaje spor, nesiguran ili prestaje slati upite — a to nitko ne primijeti. Održavanje je izbor, ne uvjet izrade, s opsegom crno na bijelo.',
 		'answer'       => 'Održavanje web stranice kod ZAEC-a uključuje ažuriranja WordPressa i dodataka uz provjeru rada, sigurnosne kopije izvan servera, nadzor dostupnosti, provjeru forme i brzine te, ovisno o razini, izmjene sadržaja i mjesečni pregled upita. Bez ugovorne obveze.',
 		'image'        => 'world/usluga-odrzavanje.webp',
 		'image_alt'    => 'Slojevi web stranice složeni jedan iznad drugog; svjetlosni prsten ih provjerava, a iza su sigurnosne kopije u nacrtu.',
@@ -606,7 +611,7 @@ function zaec_registry_services() {
 				'yes_title' => 'Održavanje',
 				'yes'       => array( 'Zamjena teksta, slike ili radnog vremena', 'Dodavanje novog rada ili novosti', 'Ažuriranja i sigurnost', 'Ispravak greške na isporučenom radu' ),
 				'no_title'  => 'Nova procjena',
-				'no'        => array( 'Nova stranica ili sekcija', 'Nova funkcija (booking, shop, jezik)', 'Redizajn postojećih dijelova', 'Integracija s drugim sustavom' ),
+				'no'        => array( 'Nova stranica ili sekcija', 'Nova funkcija (rezervacije, shop, jezik)', 'Redizajn postojećih dijelova', 'Integracija s drugim sustavom' ),
 			),
 		),
 		'faq'          => array(

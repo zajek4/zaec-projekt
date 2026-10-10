@@ -203,3 +203,32 @@ reći da“). Oznake su uklonjene, a rečenice ublažene tako da vrijede i uz iz
 - Ustanove, jednostavna nabava: „Pisana ponuda sadrži opseg, rok i fiksnu cijenu. Ako nabava ili projekt traže
   određeni obrazac ili prilog, pošaljite ga uz upit.“ Fiksna cijena je kao u svakoj ponudi na webu; uvjeti nisu
   mijenjani.
+
+## 14. Greške na podstranicama i novi hero O nama (10. 10. 2026)
+
+Vlasnik: „Na drugim podstranicama osim na naslovnici ima bugova… O nama treba bit drugačiji hero, kontakt je
+bugovit, izrada-web-stranica je bugovita. Provjeri i sadržaj.“
+
+- **Samo build.** `main` je imao stari `zaec/assets/build/app.css` i `app.js` (prije izvora podstranica): Kontakt
+  bez ploče forme (polja preko naslova), uvod Izrade preko kule, većina stilova podstranica nedostaje. Svježi build
+  (`npm run build`) to rješava; commitan je u ovoj grani.
+- **Kontakt.** Razmak između „Nakon upita“ i naslova (kvačica na Š dirala je oznaku); izravni kontakti samo ispod
+  forme (u sekciji 2 bili su ponovljeni, uz podnožje i treći put); stupac više ne skoči nakon slanja (visina se
+  pamti prije poruke stanja); snop s konkatedrale u pozadini bez zaustavljenih „paketa“ svjetla, koji su na mirnoj
+  slici izgledali kao niz zrnaca (kvar). Pozadina ponovno renderirana lokalnim alatom, metapodaci kadra isti.
+- **O nama.** Novi hero: list nacrta 00 (vidi `docs/hero-art-direction.md`). Stari potpisni hero (predložak, JS,
+  CSS, slike `onama-bg*`) uklonjen iz teme; scena ostaje u `tools/art/scenes/hero-onama.js`. Nacrt na desktopu ima
+  kadar visok barem 760 px (tekst crteža ≥ 12 px i kad je stupac s naslovom kratak).
+- **Sadržaj** (pregled 41 podstranice): gramatika i padeži, engleski ostaci (Live, Custom, Responsive, booking,
+  „Hero:“ u strukturi), jedinstveno obraćanje s Vi na gumbima, „Šest dijelova SEO-a“ uz šest kartica, ista
+  kontrolna lista za 10 minuta, FAQ o cijeni prema vrsti usluge, „Pisana ponuda, bez obveze“ u izborniku i traci,
+  „Naziv tvrtke, ime i kontakt“ na provjeri (forma traži ime), provjera bez oznaka o ponudi i izradi, „Povezano“ bez
+  „Djelatnosti / Djelatnosti“, oznaka kadra bez ponovljenog kickera. Cijene i uvjeti nisu mijenjani.
+- **Za vlasnika (nije u kodu):** obrisati WordPressove „Hello world!“ i „Sample Page“; jezik stranice postaviti na
+  Hrvatski (datumi „4. October“, `lang="en-US"`, „Page not found“); vodiči su u bazi, pa se ispravci u
+  `inc/seed/guides` ne bi vidjeli; OIB i e-mail na webu (Zakon o elektroničkoj trgovini); Održavanje: „fiksna
+  cijena“ i „sati izmjena“.
+- Provjere: nacrt 180/180 (O nama + 11 listova × 15 veličina), mobilni rub 124/124, Izrada 6/6, pregled 34
+  stranice × 360/390/768/1440 bez grešaka u konzoli, 4xx, bočnog skrola i slomljenih slika. Naglasak u kadru:
+  na složenom rasporedu 960 × 1000 samo kutija drugog retka (16 %, kao na ostalim stranicama).
+

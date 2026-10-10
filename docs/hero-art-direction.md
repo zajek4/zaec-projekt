@@ -13,8 +13,8 @@ signal s tornja. **Naslovnica se ne dira.** Podstranice su sljedeća poglavlja i
 ## Razine
 | Razina | Stranice | Pristup |
 |---|---|---|
-| **1 — potpis** | Izrada web stranica, O nama, Kontakt | Jedna ideja po stranici, vlastiti kadar (desktop 16:9 i zaseban mobilni 9:16), slojevi, vlastiti pokret i vlastiti prijelaz u sekciju 2 |
-| **2 — urednički** | Ostale usluge, djelatnosti, Usluge/Djelatnosti (hubovi), Osijek, Provjera vidljivosti, Cijene, Radovi | Prevelik kadar koji izlazi iz rešetke i preko ruba ekrana; naslov prelazi s papira u kadar i mijenja boju (mix-blend: difference — jedan tekst, bez kopije); filmski "slate" s oznakom kadra; suzdržan pokret |
+| **1 — potpis** | Izrada web stranica, Kontakt (O nama do 10. 10. 2026, vidi ispod) | Jedna ideja po stranici, vlastiti kadar (desktop 16:9 i zaseban mobilni 9:16), slojevi, vlastiti pokret i vlastiti prijelaz u sekciju 2 |
+| **2 — urednički** | Ostale usluge, djelatnosti, Usluge/Djelatnosti (hubovi), Osijek, Provjera vidljivosti, Cijene, Radovi, O nama (list nacrta 00) | Prevelik kadar koji izlazi iz rešetke i preko ruba ekrana; naslov prelazi s papira u kadar i mijenja boju (mix-blend: difference — jedan tekst, bez kopije); filmski "slate" s oznakom kadra; suzdržan pokret |
 | **3 — tihi** | Vodiči (i svaka stranica bez slike) | Tipografski hero bez slike: naslov, uvod, kotna crta nacrta s metapodacima |
 
 Članci, privatnost, pojedinačni projekti, hvala i 404 imaju vlastite, već tihe predloške (ne prolaze kroz
@@ -38,6 +38,13 @@ stvarni redoslijed stranice koja zove (iz sekcije "Kako izgleda stranica koja zo
 - *Odbačeno:* 3D tekst kao skyline (trik), "portal" kroz izlog u trgovinu (preteško za prvi dojam, zamagljuje poruku).
 
 ### O nama — "Mali studio. Velika odgovornost."
+> **Od 10. 10. 2026 zamijenjeno** (vlasnik: „O nama treba bit drugačiji hero“): urednički hero s listom nacrta 00
+> (`tools/art/nacrt/o-nama.mjs`). Naslov je vodoravan, na papiru; list u istom crtačkom standardu kao djelatnosti
+> crta pročelje zvonika konkatedrale s kotom 90 m. Oznake vežu dijelove zvonika s načelima rada (portal: prvi
+> razgovor, kontrafor: nacrt prije dizajna, vrh: jedna osoba odgovara), svjetlo je sat s radnim vremenom, a u
+> sastavnici stoji odgovorna osoba i sjedište iz postavki teme. Na mobitelu gumb je u prvom ekranu (design/04, 17).
+> Opis ispod je prva verzija, za povijest.
+
 *Što samo ova stranica može reći:* omjer. Jedan upaljen prozor malog studija i toranj od 90 metara.
 - **Kadar:** pogled odozdo s trga na konkatedralu sv. Petra i Pavla; signal s tornja odlazi izvan kadra.
   Dolje u uglu jedan topao prozor.

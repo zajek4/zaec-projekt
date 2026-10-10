@@ -1,0 +1,134 @@
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt00d nd00d"><title id="nt00d">Pročelje zvonika konkatedrale sv. Petra i Pavla u Osijeku, mjerilo 1:500</title><desc id="nd00d">Tehnički crtež zvonika konkatedrale u Osijeku, visokog 90 m od tla do križa. Oznake povezuju dijelove zvonika s načinom rada studija: portal je prvi razgovor, kontrafori nacrt prije dizajna, a vrh jedna osoba koja odgovara za projekt. Sat je označen toplim svjetlom s radnim vremenom. U sastavnici su odgovorna osoba i sjedište studija.</desc>
+<defs><pattern id="hz00d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid00d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid00d)"/>
+<g class="nd nd-1">
+<line class="ln-con" x1="900" y1="824" x2="900" y2="80"/>
+<rect class="wool" x="560" y="812" width="632" height="12" fill="url(#hz00d)"/>
+</g>
+<g class="nd nd-2">
+<line class="cut" pathLength="1" x1="560" y1="812" x2="1192" y2="812"/>
+<rect class="ln-2" pathLength="1" x="840" y="284" width="120" height="528"/>
+<path class="ln-2" pathLength="1" d="M840 812 L828 812 L828 700 L831 695 L831 572 L834 567 L834 444 L837 439 L837 332 L840 332"/>
+<path class="ln-2" pathLength="1" d="M960 812 L972 812 L972 700 L969 695 L969 572 L966 567 L966 444 L963 439 L963 332 L960 332"/>
+<path class="ln-2" pathLength="1" d="M828 812 L756 812 L756 660 L828 604"/>
+<line class="ln-beyond" x1="828" y1="544" x2="744" y2="622"/>
+<path class="ln-2" pathLength="1" d="M780.8 812V778.4A22.4 22.4 0 0 1 792 759.0A22.4 22.4 0 0 1 803.2 778.4V812"/>
+<path class="ln-2" pathLength="1" d="M774 761 L792 727 L810 761"/>
+<rect class="ln-2" pathLength="1" x="750" y="640" width="11.2" height="20"/>
+<path class="ln-2" pathLength="1" d="M750 640 L756 608 L762 640"/>
+<path class="ln-2" pathLength="1" d="M972 812 L1044 812 L1044 660 L972 604"/>
+<line class="ln-beyond" x1="972" y1="544" x2="1056" y2="622"/>
+<path class="ln-2" pathLength="1" d="M996.8 812V778.4A22.4 22.4 0 0 1 1008 759.0A22.4 22.4 0 0 1 1019.2 778.4V812"/>
+<path class="ln-2" pathLength="1" d="M990 761 L1008 727 L1026 761"/>
+<rect class="ln-2" pathLength="1" x="1038" y="640" width="11.2" height="20"/>
+<path class="ln-2" pathLength="1" d="M1038 640 L1044 608 L1050 640"/>
+</g>
+<g class="nd nd-3">
+<line class="ln-h" x1="860" y1="808" x2="940" y2="808"/>
+<path class="ln-2" pathLength="1" d="M872 808.4V756A56.0 56.0 0 0 1 900 707.5A56.0 56.0 0 0 1 928 756V808.4"/>
+<path class="ln-2" pathLength="1" d="M880 808.4V756A40.0 40.0 0 0 1 900 721.4A40.0 40.0 0 0 1 920 756V808.4"/>
+<path class="ln-h" d="M880 756L920 756M900 808L900 756"/>
+<path class="ln-2" pathLength="1" d="M866 714 L900 655 L934 714"/>
+<line class="ln-2" pathLength="1" x1="900" y1="655" x2="900" y2="645"/>
+<circle class="ln-2" pathLength="1" cx="900" cy="690" r="8.8"/>
+<line class="ln-2" pathLength="1" x1="840" y1="650" x2="960" y2="650"/>
+<line class="ln-h" x1="840" y1="646" x2="960" y2="646"/>
+<path class="ln-2" pathLength="1" d="M876 636V580A48.0 48.0 0 0 1 900 538.4A48.0 48.0 0 0 1 924 580V636"/>
+<path class="ln-h" d="M892 636L892 585M908 636L908 585"/>
+<path class="ln-h" d="M876 592.8V584.8A16.0 16.0 0 0 1 884 570.9A16.0 16.0 0 0 1 892 584.8V592.8"/>
+<path class="ln-h" d="M892 592.8V584.8A16.0 16.0 0 0 1 900 570.9A16.0 16.0 0 0 1 908 584.8V592.8"/>
+<path class="ln-h" d="M908 592.8V584.8A16.0 16.0 0 0 1 916 570.9A16.0 16.0 0 0 1 924 584.8V592.8"/>
+<circle class="ln-h" cx="900" cy="560" r="8"/>
+<line class="ln-2" pathLength="1" x1="840" y1="529" x2="960" y2="529"/>
+<line class="ln-2" pathLength="1" x1="842" y1="524" x2="958" y2="524"/>
+<line class="ln-2" pathLength="1" x1="842" y1="515" x2="958" y2="515"/>
+<path class="ln-h" d="M845 524L845 515M851 524L851 515M857 524L857 515M863 524L863 515M868 524L868 515M874 524L874 515M880 524L880 515M886 524L886 515M891 524L891 515M897 524L897 515M903 524L903 515M909 524L909 515M914 524L914 515M920 524L920 515M926 524L926 515M932 524L932 515M937 524L937 515M943 524L943 515M949 524L949 515M955 524L955 515"/>
+<path class="ln-2" pathLength="1" d="M879.2 503.2V463.2A16.0 16.0 0 0 1 887.2 449.3A16.0 16.0 0 0 1 895.2 463.2V503.2"/>
+<path class="ln-2" pathLength="1" d="M904.8 503.2V463.2A16.0 16.0 0 0 1 912.8 449.3A16.0 16.0 0 0 1 920.8 463.2V503.2"/>
+</g>
+<g class="nd nd-4">
+<circle class="lamp-fill" pathLength="1" cx="900" cy="418" r="16"/>
+<line class="lamp-ln" pathLength="1" x1="900" y1="418" x2="892" y2="418"/>
+<line class="lamp-ln" pathLength="1" x1="900" y1="418" x2="900" y2="406"/>
+<line class="ln-2" pathLength="1" x1="838" y1="391" x2="962" y2="391"/>
+<line class="ln-h" x1="840" y1="386" x2="960" y2="386"/>
+<path class="ln-2" pathLength="1" d="M873.6 376.8V320.8A18.4 18.4 0 0 1 882.8 304.9A18.4 18.4 0 0 1 892 320.8V376.8"/>
+<path class="ln-h" d="M874 370L892 370M874 364L892 364M874 358L892 358M874 351L892 351M874 345L892 345M874 338L892 338M874 332L892 332M874 326L892 326"/>
+<path class="ln-2" pathLength="1" d="M869 308 L883 270 L897 308"/>
+<path class="ln-2" pathLength="1" d="M908 376.8V320.8A18.4 18.4 0 0 1 917.2 304.9A18.4 18.4 0 0 1 926.4 320.8V376.8"/>
+<path class="ln-h" d="M908 370L926 370M908 364L926 364M908 358L926 358M908 351L926 351M908 345L926 345M908 338L926 338M908 332L926 332M908 326L926 326"/>
+<path class="ln-2" pathLength="1" d="M903 308 L917 270 L931 308"/>
+<path class="ln-2" pathLength="1" d="M897 313 L900 263 L903 313"/>
+<line class="ln-2" pathLength="1" x1="840" y1="284" x2="960" y2="284"/>
+<line class="ln-2" pathLength="1" x1="840" y1="274" x2="960" y2="274"/>
+<path class="ln-h" d="M843 284L843 274M849 284L849 274M855 284L855 274M861 284L861 274M867 284L867 274M873 284L873 274M879 284L879 274M885 284L885 274M891 284L891 274M897 284L897 274M903 284L903 274M909 284L909 274M915 284L915 274M921 284L921 274M927 284L927 274M933 284L933 274M939 284L939 274M945 284L945 274M951 284L951 274M957 284L957 274"/>
+<rect class="ln-2" pathLength="1" x="835" y="279" width="11.2" height="53"/>
+<path class="ln-2" pathLength="1" d="M835 279 L841 225 L846 279"/>
+<rect class="ln-2" pathLength="1" x="954" y="279" width="11.2" height="53"/>
+<path class="ln-2" pathLength="1" d="M954 279 L959 225 L965 279"/>
+<path class="ln-2" pathLength="1" d="M860 274 L900 108 L940 274"/>
+<path class="ln-h" d="M883 274L900 108M917 274L900 108M881 188L919 188"/>
+<path class="ln-h" d="M894 249 L900 226 L906 249"/>
+<path class="ln-h" d="M869 263 L873 246 L877 263"/>
+<path class="ln-h" d="M923 263 L927 246 L931 263"/>
+<circle class="ln-2" pathLength="1" cx="900" cy="105" r="2.9"/>
+<line class="ln-2" pathLength="1" x1="900" y1="102" x2="900" y2="92"/>
+<line class="ln-2" pathLength="1" x1="896" y1="97" x2="904" y2="97"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="906" y1="92" x2="1072" y2="92"/>
+<line class="ln-dim" pathLength="1" x1="1047" y1="810" x2="1072" y2="810"/>
+<line class="ln-dim" pathLength="1" x1="1064" y1="812" x2="1064" y2="92"/>
+<line class="ln-dim" pathLength="1" x1="1060" y1="816" x2="1068" y2="808"/>
+<line class="ln-dim" pathLength="1" x1="1060" y1="96" x2="1068" y2="88"/>
+<text class="t-dim" text-anchor="middle" transform="translate(1080 452) rotate(-90)">90 m</text>
+</g>
+</g>
+<g class="nd nd-5 key">
+<rect class="ln-2" pathLength="1" x="1018" y="134" width="16" height="16"/>
+<rect class="ln-2" pathLength="1" x="1034" y="130" width="84" height="24"/>
+<rect class="ln-2" pathLength="1" x="1092" y="112" width="22" height="60"/>
+<path class="ln-2" pathLength="1" d="M1118 130h10l8 6v12l-8 6h-10"/>
+<circle class="dot" cx="1012" cy="142" r="2.5"/>
+<text class="t-small" x="1012" y="204">KLJUČ · TLOCRT</text>
+</g>
+<g class="nd nd-6">
+<g class="call c01">
+<circle class="dot" cx="889" cy="776" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="889,776 812,700 682,700"/>
+<text class="t-call" text-anchor="end" x="674" y="705"><tspan class="t-n">01</tspan>  PORTAL</text>
+<text class="t-web" text-anchor="end" x="674" y="725">→ Prvi razgovor</text>
+</g>
+<g class="call c02">
+<circle class="dot" cx="834" cy="492" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="834,492 790,532 745,532"/>
+<text class="t-call" text-anchor="end" x="737" y="537"><tspan class="t-n">02</tspan>  KONTRAFOR</text>
+<text class="t-web" text-anchor="end" x="737" y="557">→ Nacrt prije dizajna</text>
+</g>
+<g class="call c03">
+<circle class="dot" cx="886" cy="172" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="886,172 800,172"/>
+<text class="t-call" text-anchor="end" x="792" y="177"><tspan class="t-n">03</tspan>  VRH</text>
+<text class="t-web" text-anchor="end" x="792" y="197">→ Jedna osoba odgovara</text>
+</g>
+<g class="call lamp">
+<circle class="halo" cx="900" cy="418" r="30"/>
+<circle class="dot" cx="900" cy="418" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="878,418 528,418"/>
+<text class="t-call" x="528" y="444">{sati}</text>
+<text class="t-web" x="528" y="465">„izrada web stranica Osijek“</text>
+</g>
+</g>
+<g class="nd nd-6 tb">
+<rect class="tb-bg" x="732" y="836" width="440" height="112"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
+<text class="t-tb" x="744" y="857">ZAEC · WEB STUDIO · OSIJEK</text>
+<text class="t-tb" x="1054" y="857">LIST 00</text>
+<text class="t-tb-b" x="744" y="894">{owner}</text>
+<text class="t-tb" x="744" y="914">ODGOVORNA OSOBA ZA SVAKI PROJEKT</text>
+<text class="t-tb" x="744" y="943">{adresa}</text>
+</g>
+</svg>

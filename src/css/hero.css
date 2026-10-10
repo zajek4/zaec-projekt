@@ -121,38 +121,6 @@
   .sh-izrada.is-live .sh-hint { display: none; }
 }
 
-/* ═════════ O nama — "Mali studio. Velika odgovornost." — tipografija kao mjera ═════════ */
-/* kota iz nacrta: pomoćne crte s tornja, kotna crta s kosim crticama, okomit naslov dug kao toranj */
-.on-title { position: absolute; inset: 0; margin: 0; pointer-events: none; }
-.on-type { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.on-type--m { display: none; }
-.on-ext line { stroke: rgba(207, 216, 255, 0.42); stroke-width: 1px; vector-effect: non-scaling-stroke; stroke-dasharray: 3 5; }
-.on-dim { stroke: #d6deff; stroke-width: 1.2px; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; }
-.on-ticks line { stroke: #d6deff; stroke-width: 1.4px; vector-effect: non-scaling-stroke; }
-.on-dim-label { fill: #cfd8ff; font-family: var(--font-mono); font-weight: 500; letter-spacing: 0.14em; }
-.on-v-em { font-family: var(--font-serif); font-style: italic; font-weight: 400; fill: var(--amber); }
-.on-v-b { font-family: var(--font-sans); font-weight: 800; font-stretch: 112%; font-variation-settings: 'wdth' 112; letter-spacing: -0.02em; fill: #eef0f7; }
-.on-m { font-family: var(--font-sans); font-weight: 700; letter-spacing: 0.01em; fill: #f6dcb1; }
-.on-small-dim { stroke: #f6dcb1; stroke-width: 1px; vector-effect: non-scaling-stroke; }
-.on-window { position: absolute; left: calc(var(--wx) * 1%); top: calc(var(--wy) * 1%); width: 4cqw; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 196, 119, 0.6), rgba(255, 160, 70, 0.14) 40%, rgba(255, 160, 70, 0) 70%); pointer-events: none; mix-blend-mode: screen; }
-.on-copy { position: absolute; inset: 0; z-index: 4; display: grid; grid-template-rows: auto 1fr; padding-top: calc(var(--header-h) + 24px); padding-bottom: 72px; pointer-events: none; }
-.on-copy > * { pointer-events: auto; }
-.on-aside { align-self: center; display: grid; gap: 20px; max-width: min(31vw, 440px); margin-top: -6vh; }
-.on-aside .lead { font-size: 1.02rem; }
-.on-caption { position: absolute; right: var(--gutter); bottom: 26px; margin: 0; font-size: var(--fs-label); letter-spacing: 0.16em; text-transform: uppercase; color: #6f7894; }
-.sh-onama.is-live .on-window { opacity: 0; }
-@media (max-aspect-ratio: 4/5), (max-width: 760px) {
-  .on-type--d { display: none; }
-  .on-type--m { display: block; }
-  .on-window { left: calc(var(--wxm) * 1%); top: calc(var(--wym) * 1%); width: 10cqw; }
-  .sh-onama .sh-stage { height: auto; min-height: 0; overflow: visible; }
-  .sh-onama .sh-frame { position: relative; height: 100vh; height: 100svh; min-height: 560px; }
-  .on-copy { position: relative; inset: auto; display: block; padding: 28px var(--gutter) 40px; }
-  .on-copy .crumbs { display: none; }
-  .on-aside { max-width: none; margin: 0; }
-  .on-caption { position: static; margin-top: 22px; }
-}
-
 /* ═════════ Kontakt — svako polje pali jedan kat ═════════ */
 /* Kuća je u lijevoj trećini kadra (desktop), forma je staklena ploča desno od nje; na tabletu i mobitelu kadar
    prikazuje natpis i kuću, a ploča je ispod. Pozornica raste sa sadržajem (min. visina ekrana), a kadar je
@@ -218,6 +186,7 @@
 .kt-after .kicker { color: #9fb4ff; }
 .kt-after .h2 { color: #fff; }
 .kt-after .h2 em { color: var(--sh-blue); }
+.kt-after-head { display: grid; gap: 18px; justify-items: start; } /* kao .stack (--stack:18px) u ostalim blokovima: kvačica na Š ne dira kicker */
 .kt-after-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px) clamp(28px, 6vw, 100px); align-items: start; }
 .kt-steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(178, 192, 255, 0.16); }
 .kt-step { display: grid; grid-template-columns: 54px 1fr; gap: 18px; padding: 24px 0; border-bottom: 1px solid rgba(178, 192, 255, 0.16); transition: opacity 0.6s var(--ease-out); }
@@ -229,13 +198,6 @@
 .kt-after.is-live .kt-step .kt-step-n { background: rgba(178, 192, 255, 0.1); color: #9fb4ff; box-shadow: inset 0 0 0 1px rgba(178, 192, 255, 0.25); }
 .kt-after.is-live .kt-step.is-on { opacity: 1; }
 .kt-after.is-live .kt-step.is-on .kt-step-n { background: var(--paper); color: var(--ink); box-shadow: none; }
-.kt-ways { grid-column: 2; display: grid; gap: 14px; }
-.kt-ways-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.kt-ways-list a { display: grid; grid-template-columns: 22px 1fr; gap: 14px; align-items: center; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(178, 192, 255, 0.16); color: #eef0f7; text-decoration: none; transition: border-color 0.3s, background 0.3s; }
-.kt-ways-list a:hover { border-color: rgba(159, 180, 255, 0.6); background: rgba(159, 180, 255, 0.06); }
-.kt-ways-list .icon { color: var(--sh-blue); }
-.kt-ways-list b { display: block; font-weight: 650; }
-.kt-ways-list small { display: block; color: #8f98b6; font-size: 0.82rem; }
 
 /* tablet i mobitel: kadar s natpisom i kućom, ispod njega ploča s formom */
 @media (max-width: 960px), (max-aspect-ratio: 5/4) {
@@ -247,7 +209,6 @@
   .kt-main { width: 100%; max-width: 680px; margin-inline: auto; }
   .kt-col .crumbs { display: none; }
   .kt-after-grid { grid-template-columns: 1fr; }
-  .kt-ways { grid-column: auto; }
 }
 /* uspravno (slika 9:16, isti prag kao <picture>): natpis (20 %) do pločnika (92 %) između zaglavlja i dna okvira */
 @media (max-aspect-ratio: 4/5) {
@@ -258,7 +219,6 @@
   .kt-panel { padding: 18px 16px; border-radius: 14px; }
   .kt-panel .cform-foot { flex-wrap: wrap; }
   .kt-panel .cform-submit { width: 100%; }
-  .kt-ways-list { grid-template-columns: 1fr; }
 }
 /* uspravni tablet: kadar uži od ekrana, rubovi se stapaju s noći, forma počinje u prvom ekranu */
 @media (max-aspect-ratio: 4/5) and (min-width: 601px) {
@@ -474,6 +434,9 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh-sheet-img--nacrt img { filter: none; }
 .eh-sheet-list a:hover .eh-sheet-img--nacrt img, .eh-sheet-list a:focus-visible .eh-sheet-img--nacrt img { transform: scale(1.03); }
 .eh--hub .eh-stage { min-height: clamp(440px, calc(100svh - var(--header-h) - 300px), 760px); }
+/* nacrt na desktopu: kadar visok barem 760 px, pa 16 u teksta u crtežu ostaje ≥ 12 px i kad je stupac s naslovom
+   kratak (O nama); tablet ima svoj prag (712 px, ispod), složeni raspored svoj omjer */
+@media (min-width: 1101px) { .eh--nacrt:not(.eh--hub) .eh-stage { min-height: clamp(760px, calc(100svh - var(--header-h) - 90px), 860px); } }
 
 /* između uspravnog i uskog desktopa: kadar uži, naslov manji (samo prozori širi od kvadrata; uži su složeni, ispod) */
 @media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 1001/1000) {

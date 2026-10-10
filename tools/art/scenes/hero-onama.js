@@ -1,3 +1,4 @@
+// Ne koristi se od 10. 10. 2026: O nama je list nacrta 00 (tools/art/nacrt/o-nama.mjs). Scena ostaje za povijest.
 // Hero "O nama" — Mali studio. Velika odgovornost. Tipografija kao mjera.
 // Arhitektonska kamera (bez nagiba): toranj konkatedrale stoji okomito od tla do vrha kadra, a na istom trgu, na
 // istoj dubini, niska kuća s jednim upaljenim prozorom (studio). Naslov se u HTML-u slaže prema mjerama iz kadra:

@@ -78,14 +78,19 @@ export default function kontakt(sec) {
   // priložena konfiguracija (form.js) može popuniti izbornike nakon ovoga
   setTimeout(check, 400);
 
+  // visina stupca prije slanja: poruka stanja („Šaljemo…“, „Upit je stigao.“) privremeno produži formu, a s tom
+  // visinom stupac bi prerastao kadar i cijeli se pomaknuo gore (capture: prije form.js, koji odmah ispiše stanje)
+  const main = form.closest('.kt-main');
+  let mainH = 0;
+  sec.addEventListener('submit', () => { mainH = main?.offsetHeight || 0; }, true);
+
   form.addEventListener('zaec:sent', () => {
     sent = true;
     // potvrda je kraća od forme. Desktop: stupac zadrži visinu, pa ploča ostane na mjestu i samo se skrati.
     // Tablet i mobitel (kuća je iznad forme): kadar se vrati na ekran da se vidi kako se kuća pali.
-    const main = form.closest('.kt-main');
     if (window.matchMedia('(max-width: 960px), (max-aspect-ratio: 5/4)').matches) {
       requestAnimationFrame(() => sec.scrollIntoView({ behavior: motion ? 'smooth' : 'auto', block: 'start' }));
-    } else if (main) main.style.minHeight = `${main.offsetHeight}px`;
+    } else if (main) main.style.minHeight = `${mainH || main.offsetHeight}px`;
     FIELDS.forEach((_, i) => { if (!on[i]) { on[i] = true; light(`--f${i}`, 1); } });
     gsap.to(sec, { '--fg': 1, duration: motion ? 0.6 : 0.3, ease: 'power2.out' });
     gsap.to(sec, { '--fc': 1, duration: motion ? 0.9 : 0.3, delay: motion ? 0.35 : 0, ease: 'power2.out' });

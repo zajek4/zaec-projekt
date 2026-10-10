@@ -176,7 +176,7 @@ $step   = static function ( $n, $q, $ans, $help = '' ) use ( $cid ) {
 			</div>
 			<ul class="cfg-sum" data-summary role="list"></ul>
 			<p class="cfg-urgent" data-urgent hidden><?php zaec_the_icon( 'clock-circle', 16 ); ?> Hitni rok ovisi o slobodnom terminu, pa ga potvrđujemo u ponudi.</p>
-			<button type="button" class="btn btn--signal cfg-send" data-cfg-send data-magnetic>Pošalji i dobij fiksnu ponudu <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?></button>
+			<button type="button" class="btn btn--signal cfg-send" data-cfg-send data-magnetic>Zatražite fiksnu ponudu <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?></button>
 			<p class="cfg-why"><b>Zašto ovdje nema cijene?</b> Cijena bez opsega ne znači ništa. Za ovu konfiguraciju šaljemo pisanu ponudu s fiksnom cijenom i rokom, bez obveze i bez „sitnih izmjena” poslije.</p>
 		</div>
 	</aside>

@@ -1,5 +1,5 @@
 // Zajednička infrastruktura heroja podstranica: kretanje, mjerenje, uspravna kompozicija, napredak scrolla.
-// Režija pojedinog heroja živi u vlastitom modulu (izrada.js, onama.js, kontakt.js, editorial.js).
+// Režija pojedinog heroja živi u vlastitom modulu (izrada.js, kontakt.js, editorial.js).
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 

@@ -28,7 +28,7 @@ $host = $p['website_url'] ? preg_replace( '#^https?://(www\.)?#', '', untrailing
 		<?php if ( $p['result'] ) : ?><p class="pcard-result"><?php zaec_the_icon( 'graph-up', 16 ); ?> <?php echo esc_html( $p['result'] ); ?></p><?php endif; ?>
 		<div class="pcard-links">
 			<a class="link-arrow" href="<?php echo esc_url( $p['permalink'] ); ?>">Studija <?php zaec_the_icon( 'arrow-right', 16 ); ?></a>
-			<?php if ( $p['website_url'] ) : ?><a class="link-arrow pcard-live" href="<?php echo esc_url( $p['website_url'] ); ?>" target="_blank" rel="noopener">Live <?php zaec_the_icon( 'arrow-right-up', 16 ); ?></a><?php endif; ?>
+			<?php if ( $p['website_url'] ) : ?><a class="link-arrow pcard-live" href="<?php echo esc_url( $p['website_url'] ); ?>" target="_blank" rel="noopener">Web <?php zaec_the_icon( 'arrow-right-up', 16 ); ?></a><?php endif; ?>
 		</div>
 	</div>
 </article>

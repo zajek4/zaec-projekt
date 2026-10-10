@@ -70,6 +70,9 @@ $zaec_direct = static function () use ( $o ) {
 		<?php if ( zaec_whatsapp_href() ) : ?>
 			<li><a href="<?php echo esc_url( zaec_whatsapp_href() ); ?>" target="_blank" rel="noopener" data-track="click_whatsapp"><?php zaec_the_icon( 'chat-round-dots', 18 ); ?> <span><b>WhatsApp</b><small>Poruka ili fotografija</small></span></a></li>
 		<?php endif; ?>
+		<?php if ( $o['email'] && '1' === (string) $o['show_public_email'] ) : ?>
+			<li><a href="mailto:<?php echo esc_attr( $o['email'] ); ?>"><?php zaec_the_icon( 'letter', 18 ); ?> <span><b><?php echo esc_html( $o['email'] ); ?></b><small>Email</small></span></a></li>
+		<?php endif; ?>
 		<li><a href="<?php echo esc_url( zaec_maps_href() ); ?>" target="_blank" rel="noopener"><?php zaec_the_icon( 'map-point', 18 ); ?> <span><b><?php echo esc_html( $o['address'] ); ?></b><small><?php echo esc_html( $o['postal_code'] . ' ' . $o['city'] ); ?></small></span></a></li>
 	</ul>
 	<?php
