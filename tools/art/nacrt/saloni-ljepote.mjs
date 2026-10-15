@@ -1,106 +1,116 @@
-// LIST 08 · Saloni ljepote — tlocrt salona, M 1:50 (64 u = 1 m). Četiri radna mjesta uz zid s ogledalima, svako s
-// krugom okretanja stolice Ø 1,50 m; dva mjesta za pranje uz desni zid; recepcija uz ulaz, čekaonica uz lijevi zid,
-// polica s proizvodima. Svjetlo: jedno radno mjesto (ogledalo, pult i stolica) — "frizer + grad".
+// LIST 08 · Saloni ljepote — izlog salona noću (tools/art/nacrt/izlog.mjs). Secesijska kuća s jednim katom i atikom;
+// prizemlje je salon: natpis, dva izloga i staklena vrata s pločicom OTVORENO. Kroz staklo: ogledala, stolice, haube
+// sušila i polica s proizvodima u siluetama. Lijevo susjed sa spuštenom roletom, desno rub sljedeće kuće.
+// Svjetlo: jedno radno mjesto (ogledalo i stolica) — „frizer + grad“, utorak u 17:30, kao na prijašnjem listu.
+import { G, street, rustica, window, shop, marker, legend, glowDefs } from './izlog.mjs';
+
 export const meta = {
   slug: 'saloni-ljepote',
   list: '08',
   name: 'Saloni ljepote',
-  view: 'TLOCRT SALONA · M 1:50',
+  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  view: 'IZLOG SALONA NOĆU',
   web: 'CJENIK · TERMINI · RECENZIJE',
-  title: 'Tlocrt frizerskog salona, mjerilo 1:50',
-  desc: 'Tehnički crtež salona: četiri radna mjesta uz zid s ogledalima i krugom okretanja stolice, mjesta za pranje, recepcija uz ulaz i čekaonica. Oznake 01–04 povezuju dijelove salona s dijelovima weba salona ljepote. Jedno radno mjesto označeno je toplim svjetlom.',
+  title: 'Izlog frizerskog salona noću u osječkoj ulici',
+  desc: 'Crtež pročelja secesijske kuće noću: prizemlje je salon s natpisom, dva izloga i staklenim vratima s pločicom Otvoreno. Kroz osvijetljeno staklo vide se ogledala, stolice, hauba sušila i polica s proizvodima. Susjedna trgovina ima spuštenu roletu. Legenda povezuje izlog s galerijom i timom, vrata s online rezervacijom, a natpis s recenzijama. Jedno radno mjesto označeno je toplim svjetlom.',
   lamp: { time: 'UTORAK · 17:30', search: 'frizer + grad' },
-  mvb: '440 60 680 562',
-  mobileCallout: 'c03',
+  mvb: '420 380 680 562',
+  mobileCallout: null,
+  defs: glowDefs,
 };
 
 export function draw(b) {
-  const s = 64;
-  const X = (m) => 440 + m * s;
-  const Y = (m) => 230 + m * s;
-  const R = (x0, y0, x1, y1, cls, attrs = '') => b.rect(X(x0), Y(y0), (x1 - x0) * s, (y1 - y0) * s, cls, attrs);
-  const L = (x0, y0, x1, y1, cls) => b.line(X(x0), Y(y0), X(x1), Y(y1), cls);
-  const hz = ` fill="${b.url('hz')}"`;
-  const stations = [2.6, 4.1, 5.6, 7.1];
-  const LAMP = 1;
-  const CY = 0.95; // središte stolice od zida s ogledalima
-  // radno mjesto: pult s ogledalom na zidu, stolica (sjedalo i naslon)
-  const station = (c) => `M${X(c - 0.5)} ${Y(0)} H${X(c + 0.5)} V${Y(0.35)} H${X(c - 0.5)} Z M${X(c - 0.28)} ${Y(CY)} a${0.28 * s} ${0.28 * s} 0 1 0 ${0.56 * s} 0 a${0.28 * s} ${0.28 * s} 0 1 0 ${-0.56 * s} 0 Z`;
+  const [L, R] = [430, 1130]; // kuća salona
+  const GF = 556; // vrh prizemlja
 
-  // 1 osi radnih mjesta
+  // 1 ulica i obrisi kuća
   b.g('nd nd-1', () => {
-    for (const c of stations) L(c, -0.6, c, 1.9, 'ln-con');
-    L(-0.6, CY, 8.6, CY, 'ln-con');
+    street(b, [[472, 688], [724, 826], [862, 1088]]);
   });
 
-  // 2 zidovi u presjeku s otvorima za vrata i izlog
+  // 2 pročelja: susjed lijevo (roleta), kuća salona (kat, vijenac, atika), rub kuće desno
   b.g('nd nd-2', () => {
-    R(-0.25, -0.25, 8.25, 0, 'cut', hz);
-    R(-0.25, 0, 0, 6, 'cut', hz);
-    R(8, 0, 8.25, 6, 'cut', hz);
-    for (const [a, c] of [[-0.25, 0.6], [1.6, 2], [5.8, 8.25]]) R(a, 6, c, 6.25, 'cut', hz);
+    // susjed: dvokatnica, prizemlje s roletom
+    b.path([[80, G], [80, 250], [L, 250], [L, G]], 'ln-2', false);
+    b.line(80, 270, L, 270, 'ln-2');
+    for (const x of [120, 250]) {
+      window(b, x, 310, 86, 120, { hood: false });
+      window(b, x, 470, 86, 120, { hood: false });
+    }
+    rustica(b, 80, L, 620, G, 18);
+    b.rect(130, 660, 250, 140, 'mask');
+    b.rect(130, 660, 250, 140, 'ln-2');
+    for (let y = 672; y < G; y += 12) b.line(132, y, 378, y, 'ln-h');
+    // kuća salona
+    b.path([[L, G], [L, 230], [R, 230], [R, G]], 'ln-2', false);
+    b.rect(L - 14, 206, R - L + 28, 24, 'ln-2'); // vijenac
+    for (let x = L - 6; x < R + 8; x += 18) b.line(x, 230, x, 238, 'ln-h');
+    // atika: secesijski zabat s ovalnim prozorom
+    const cx = (L + R) / 2;
+    b.d(`M${cx - 150} 206C${cx - 120} 156 ${cx - 96} 104 ${cx} 92C${cx + 96} 104 ${cx + 120} 156 ${cx + 150} 206`, 'ln-2', ' fill="none"');
+    b.P(`<ellipse class="win" cx="${cx}" cy="156" rx="30" ry="21"/>`);
+    b.P(`<ellipse class="ln-h" cx="${cx}" cy="156" rx="42" ry="31"/>`);
+    // kat: tri prozora, balkon s ogradom u sredini
+    window(b, 482, 300, 108, 176);
+    window(b, cx - 54, 286, 108, 214);
+    window(b, R - 160, 300, 108, 176);
+    b.rect(cx - 116, 500, 232, 14, 'ln-2');
+    b.d(`M${cx - 108} 500V452H${cx + 108}V500`, 'ln-2', ' fill="none"');
+    for (let x = cx - 92; x < cx + 100; x += 36) b.d(`M${x} 500C${x - 12} 484 ${x + 12} 470 ${x} 456`, 'ln-h', ' fill="none"');
+    b.line(L, GF, R, GF, 'ln-2');
+    // rub sljedeće kuće desno
+    b.path([[R, 300], [1240, 300]], 'ln-2', false);
+    window(b, R + 40, 360, 80, 150, { hood: false });
+    rustica(b, R, 1240, 620, G, 18);
   });
 
-  // 3 radna mjesta: ogledala, pultovi, stolice i krugovi okretanja
+  // 3 prizemlje salona: pilastri, natpis, izlozi i vrata (toplo staklo)
   b.g('nd nd-3', () => {
-    stations.forEach((c, i) => {
-      L(c - 0.45, 0.05, c + 0.45, 0.05, 'ln-2'); // ogledalo
-      b.circle(X(c), Y(CY), 0.75 * s, 'ln-3');
-      if (i === LAMP) return;
-      b.d(station(c), 'ln-2');
-      b.d(`M${X(c - 0.24)} ${Y(CY + 0.2)} A${0.32 * s} ${0.32 * s} 0 0 0 ${X(c + 0.24)} ${Y(CY + 0.2)}`, 'ln-2');
+    rustica(b, L, L + 28, GF, G);
+    rustica(b, R - 28, R, GF, G);
+    b.rect(L + 40, GF + 10, R - L - 80, 40, 'lit');
+    b.say((L + R) / 2, GF + 42, 'S A L O N', 34, 't-real t-b t-sign', ' text-anchor="middle"');
+    // izlog A: dva ogledala i stolice
+    shop(b, 472, 620, 216, 160, 14, () => {
+      for (const x of [526, 634]) {
+        b.circle(x, 676, 26, 'mirror');
+        b.rect(x - 34, 712, 68, 8, 'sil');
+        b.d(`M${x - 18} 780V760H${x - 22}V732Q${x - 22} 722 ${x - 12} 722H${x + 12}Q${x + 22} 722 ${x + 22} 732V760H${x + 18}V780Z`, 'sil');
+      }
+      b.d('M580 620V646', 'sil-ln');
+      b.d('M566 658A14 12 0 0 1 594 658Z', 'sil');
+    });
+    // vrata s pločicom OTVORENO
+    shop(b, 724, 616, 102, 184, 0, () => {
+      b.rect(729, 684, 92, 32, 'plate', ' rx="3"');
+      if (b.v !== 'm') b.say(775, 706, 'OTVORENO', 17, 't-plate', ' text-anchor="middle"');
+      b.line(748, 684, 775, 664, 'sil-ln');
+      b.line(802, 684, 775, 664, 'sil-ln');
+    });
+    b.line(812, 720, 812, 770, 'cut-w');
+    // izlog B: hauba sušila, stolica i polica s proizvodima
+    shop(b, 862, 620, 226, 160, 14, () => {
+      b.d('M902 694A34 26 0 0 1 970 694Z', 'sil');
+      b.line(936, 694, 936, 780, 'sil-ln');
+      b.d('M912 780V760H908V734Q908 726 916 726H956Q964 726 964 734V760H960V780Z', 'sil');
+      for (const y of [672, 724]) b.rect(1004, y, 76, 5, 'sil');
+      [[1010, 16], [1024, 24], [1038, 12], [1052, 20], [1066, 18]].forEach(([x, h]) => b.rect(x, 672 - h, 9, h, 'sil', ' rx="2"'));
+      [[1012, 20], [1030, 14], [1046, 22], [1062, 16]].forEach(([x, h]) => b.rect(x, 724 - h, 11, h, 'sil', ' rx="2"'));
+      b.d('M994 620V646', 'sil-ln');
+      b.d('M980 658A14 12 0 0 1 1008 658Z', 'sil');
     });
   });
 
-  // 4 pranje, recepcija, čekaonica, polica; vrata i izlog
-  b.g('nd nd-4', () => {
-    for (const c of [3.2, 4.2]) {
-      R(7.5, c - 0.3, 8, c + 0.3, 'ln-2');
-      b.P(`<ellipse class="ln-2" cx="${X(7.76)}" cy="${Y(c)}" rx="${0.15 * s}" ry="${0.2 * s}"/>`);
-      R(6.3, c - 0.28, 7.45, c + 0.28, 'ln-2', ` rx="${0.12 * s}"`);
-      L(7.1, c - 0.28, 7.1, c + 0.28, 'ln-h');
-    }
-    b.d(`M${X(2.2)} ${Y(4.3)} H${X(3.6)} V${Y(4.6)} Q${X(2.9)} ${Y(5.15)} ${X(2.2)} ${Y(4.6)} Z`, 'cut-w');
-    b.circle(X(2.9), Y(3.95), 0.22 * s, 'ln-2');
-    R(0, 2.4, 0.8, 4.4, 'ln-2');
-    L(0.2, 2.4, 0.2, 4.4, 'ln-h');
-    for (const y of [3.07, 3.73]) L(0.2, y, 0.8, y, 'ln-h');
-    b.circle(X(1.4), Y(3.4), 0.35 * s, 'ln-2');
-    R(0, 0.6, 0.35, 2, 'ln-2');
-    for (const y of [0.95, 1.3, 1.65]) L(0, y, 0.35, y, 'ln-h');
-    // ulazna vrata i izlog
-    L(1.6, 6, 1.6, 5, 'ln-2');
-    b.d(`M${X(0.6)} ${Y(6)} A${s} ${s} 0 0 1 ${X(1.6)} ${Y(5)}`, 'ln-h', ' fill="none"');
-    R(2, 6, 5.8, 6.25, 'ln-2');
-    L(2, 6.125, 5.8, 6.125, 'ln-h');
-  });
-
-  // 5 kote i nazivi
-  b.g('nd nd-5', () => {
-    if (b.v !== 'm') b.dim([X(-0.25), Y(6.25) + 34], [X(8.25), Y(6.25) + 34], '8,50', { side: -10 });
-    b.text(X(5.6), Y(b.v === 'm' ? 3.6 : 3.82), 'PRANJE', 't-dim', ' text-anchor="middle"'); // mobilni: iznad zatamnjenja kadra
-  });
-
-  // detalj S: radno mjesto s krugom okretanja stolice
-  b.key(() => {
-    const [cx, cy] = [1062, 492];
-    b.line(cx - 32, 430, cx + 32, 430, 'cut-w');
-    b.rect(cx - 32, 430, 64, 22, 'ln-2');
-    b.circle(cx, cy, 18, 'ln-2');
-    b.circle(cx, cy, 48, 'ln-3');
-    b.dim([cx - 48, cy + 62], [cx + 48, cy + 62], 'Ø 1,50', { side: 18, ext: [[[cx - 48, cy], [cx - 48, cy + 68]], [[cx + 48, cy], [cx + 48, cy + 68]]] });
-    b.text(1000, 610, 'DETALJ S · M 1:25', 't-small');
-  });
-
-  // 6 oznake i svjetlo: jedno radno mjesto
+  // 6 legenda, brojevi i svjetlo
   b.g('nd nd-6', () => {
-    const c4 = stations[3];
-    b.callout('01', [X(c4) + 0.28 * s, Y(CY)], [[990, Y(CY)]], 'RADNO MJESTO', '→ Cjenik');
-    b.callout('02', [X(2.9), Y(4.75)], [[X(2.9), 690], [X(2.9) + 12, 690]], 'RECEPCIJA', '→ Online rezervacija');
-    b.callout('03', [X(stations[2]), Y(0.05)], [[X(stations[2]), 96], [X(stations[2]) + 14, 96]], 'OGLEDALA', '→ Galerija i tim');
-    b.callout('04', [X(0.4), Y(3.4)], [[X(0.4), 760], [X(0.4) + 12, 760]], 'ČEKAONICA', '→ Recenzije');
-    const c = stations[LAMP];
-    b.d(station(c), 'lamp-fill');
-    b.lamp({ at: [X(c), Y(CY)], d: [545, 170, 'up'], m: [497, 176, 'up'] });
+    marker(b, '01', [688, 640], 10, -8);
+    marker(b, '02', [826, 630], 10, -8);
+    marker(b, '03', [R - 40, GF + 30], 10, -14);
+    legend(b, 968, 44, [
+      ['01', 'IZLOG', '→ Galerija i tim'],
+      ['02', 'VRATA', '→ Online rezervacija'],
+      ['03', 'NATPIS', '→ Recenzije'],
+    ]);
+    b.lamp({ at: [634, 700], r: 40, d: [512, 892, 'down'], m: [452, 520, 'up'] });
   });
 }

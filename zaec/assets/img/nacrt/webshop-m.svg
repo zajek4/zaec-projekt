@@ -1,0 +1,84 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="496 88 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="gridU2m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU2m)"/>
+<g class="nd nd-1">
+<line class="ln-2" pathLength="1" x1="600" y1="40" x2="600" y2="820"/>
+<line class="ln-2" pathLength="1" x1="-200" y1="286" x2="612" y2="286"/>
+<line class="cut-w" pathLength="1" x1="-200" y1="300" x2="612" y2="300"/>
+<line class="ln-2" pathLength="1" x1="-200" y1="546" x2="612" y2="546"/>
+<line class="cut-w" pathLength="1" x1="-200" y1="560" x2="612" y2="560"/>
+</g>
+<g class="nd nd-2">
+<path class="ln-2" pathLength="1" d="M-92 268Q-88 291 -64 291H-36Q-12 291 -8 268ZM-62 291V300H-38V291"/>
+<path class="ln-2" pathLength="1" d="M40 300C-0.1 253 4.1 198 50 172L43 140L89 140L82 172C128 198 132 253 92 300Z"/>
+<path class="ln-2" pathLength="1" d="M235 300L235 203C235 178 253 176 253 159L253 132L271 132L271 159C271 176 289 178 289 203L289 300Z"/>
+<path class="ln-2" pathLength="1" d="M313 300L313 224C313 204 327 203 327 189L327 168L341 168L341 189C341 203 355 204 355 224L355 300Z"/>
+<rect class="ln-2" pathLength="1" x="418" y="288" width="104" height="10" rx="5"/>
+<rect class="ln-2" pathLength="1" x="421" y="276" width="98" height="10" rx="5"/>
+<rect class="ln-2" pathLength="1" x="418" y="264" width="104" height="10" rx="5"/>
+<rect class="ln-2" pathLength="1" x="421" y="252" width="98" height="10" rx="5"/>
+<rect class="ln-2" pathLength="1" x="418" y="240" width="104" height="10" rx="5"/>
+<rect class="ln-2" pathLength="1" x="421" y="228" width="98" height="10" rx="5"/>
+<path class="ln-2" pathLength="1" d="M515 240 L590 240 L581 300 L524 300 Z"/>
+<path class="ln-2" pathLength="1" d="M552 240Q544 185 498 153Q521 199 552 240Z"/>
+<path class="ln-2" pathLength="1" d="M552 240Q576 189 558 135Q551 187 552 240Z"/>
+<path class="ln-2" pathLength="1" d="M552 240Q567 192 612 171Q585 208 552 240Z"/>
+<line class="sk" pathLength="1" x1="424" y1="340" x2="536" y2="340"/>
+<line class="sk-b" pathLength="1" x1="424" y1="368" x2="472" y2="368"/>
+<path class="ln-2" pathLength="1" d="M-120 504Q-127 452 -170 423Q-149 466 -120 504Z"/>
+<path class="ln-2" pathLength="1" d="M-120 504Q-98 456 -114 406Q-121 455 -120 504Z"/>
+<path class="ln-2" pathLength="1" d="M-120 504Q-106 459 -64 440Q-89 474 -120 504Z"/>
+<path class="ln-2" pathLength="1" d="M14 516Q18 551 53 551H91Q126 551 130 516ZM55 551V560H89V551"/>
+<path class="ln-2" pathLength="1" d="M228 490V552Q228 560 236 560H280Q288 560 288 552V490Z"/>
+<path class="ln-2" pathLength="1" d="M288 504C319 504 319 542 288 542M288 514C305 514 305 532 288 532"/>
+<path class="ln-2" pathLength="1" d="M310 490V552Q310 560 318 560H362Q370 560 370 552V490Z"/>
+<path class="ln-2" pathLength="1" d="M370 504C401 504 401 542 370 542M370 514C387 514 387 532 370 532"/>
+<path class="ln-2" pathLength="1" d="M464 560C419 508 424 447 474 419L466 384L518 384L510 419C560 447 565 508 520 560Z"/>
+<line class="sk" pathLength="1" x1="424" y1="600" x2="536" y2="600"/>
+<line class="sk-b" pathLength="1" x1="424" y1="628" x2="472" y2="628"/>
+<path class="ln-2" pathLength="1" d="M-124 820C-162 776 -158 724 -115 700L-122 670L-78 670L-85 700C-42 724 -38 776 -76 820Z"/>
+<path class="ln-2" pathLength="1" d="M64 756Q56 697 6.4 663Q31 712 64 756Z"/>
+<path class="ln-2" pathLength="1" d="M64 756Q90 701 70 644Q63 700 64 756Z"/>
+<path class="ln-2" pathLength="1" d="M64 756Q80 705 128 682Q99 722 64 756Z"/>
+<path class="ln-2" pathLength="1" d="M312 790Q316 811 339 811H365Q388 811 392 790ZM341 811V820H363V811"/>
+<path class="ln-2" pathLength="1" d="M440 820L440 728C440 704 457 702 457 686L457 660L475 660L475 686C475 702 492 704 492 728L492 820Z"/>
+<path class="ln-2" pathLength="1" d="M515 758V813Q515 820 523 820H561Q569 820 569 813V758Z"/>
+<path class="ln-2" pathLength="1" d="M569 770C596 770 596 804 569 804M569 779C584 779 584 795 569 795"/>
+</g>
+<g class="nd nd-3">
+<rect class="lit" x="616" y="50" width="552" height="506" rx="8"/>
+<path class="lit-ln" pathLength="1" d="M945 240V381Q945 400 964 400H1064Q1083 400 1083 381V240Z"/>
+<path class="lit-ln" pathLength="1" d="M1083 272C1153 272 1153 358 1083 358M1083 294C1121 294 1121 336 1083 336"/>
+<line class="lit-ln" pathLength="1" x1="930" y1="400" x2="1146" y2="400"/>
+<text class="t-real t-h" x="646" y="144" style="--fs:42px">Keramička</text>
+<text class="t-real t-h" x="646" y="192" style="--fs:42px">šalica</text>
+<line class="sk-b" pathLength="1" x1="652" y1="240" x2="764" y2="240"/>
+<text class="t-real t-dim2" x="646" y="300" style="--fs:24px">Boja: bijela</text>
+<circle class="lit-ln" pathLength="1" cx="664" cy="338" r="13"/>
+<circle class="lit-ln" pathLength="1" cx="710" cy="338" r="13"/>
+<circle class="lit-ln" pathLength="1" cx="756" cy="338" r="13"/>
+<circle class="lit-ln" pathLength="1" cx="664" cy="338" r="19"/>
+</g>
+<g class="nd nd-4">
+<rect class="lamp-fill" pathLength="1" x="646" y="372" width="250" height="64" rx="6"/>
+<text class="t-real t-lamp" x="765" y="413" style="--fs:24px" text-anchor="middle">Dodaj u košaricu</text>
+</g>
+<g class="nd nd-5">
+<polyline class="ln-3" points="700,556 700,700 1072,700"/>
+<rect class="tile" pathLength="1" x="802" y="668" width="100" height="64" rx="7"/>
+<rect class="tile" pathLength="1" x="1072" y="650" width="180" height="120"/>
+<line class="ln-h" x1="1072" y1="672" x2="1252" y2="672"/>
+<rect class="ln-h" x="1142" y="650" width="26" height="22"/>
+<circle class="nib" cx="700" cy="556" r="5"/>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<circle class="halo" cx="771" cy="404" r="46"/>
+<circle class="dot" cx="771" cy="404" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="771,412 771,500 1157,500"/>
+<rect class="lamp-bg" x="781" y="437" width="382" height="57"/>
+<text class="t-call" x="787" y="457">22:40 · NAKON SMJENE</text>
+<text class="t-web" x="787" y="486">„webshop dostava Hrvatska“</text>
+</g>
+</g>
+</svg>

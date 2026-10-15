@@ -1,0 +1,107 @@
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntU8d ndU8d"><title id="ntU8d">Jednopolna shema mjerenja: od klika i forme do konverzije u GA4</title><desc id="ndU8d">Shema nacrtana kao jednopolna električna shema. Gore su tri izvora: klik na poziv, poslana forma i kupnja, spojeni na sabirnicu dataLayer. Ispod je tag manager kao pretvarač, pa sklopka privole koju pokreće traka privole, zatim GA4 kao mjerni instrument. Iza njega se vod grana prema oglasima i izvještaju, a završava žaruljom konverzije s nazivom događaja generate_lead, osvijetljenom toplim svjetlom. Lijevo je ključ: stranica na mobitelu s tri mjesta na kojima nastaju izvori. Oznake povezuju tag manager, privolu i događaje s dijelovima usluge.</desc>
+<defs><pattern id="gridU8d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU8d)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M-20 196L1220 196M-20 574L1220 574M-20 664L1220 664"/>
+</g>
+<g class="nd nd-2">
+<circle class="ln-2" pathLength="1" cx="610" cy="108" r="8"/>
+<line class="ln-2" pathLength="1" x1="610" y1="116" x2="610" y2="196"/>
+<circle class="ln-2" pathLength="1" cx="820" cy="108" r="8"/>
+<line class="ln-2" pathLength="1" x1="820" y1="116" x2="820" y2="196"/>
+<circle class="ln-2" pathLength="1" cx="1030" cy="108" r="8"/>
+<line class="ln-2" pathLength="1" x1="1030" y1="116" x2="1030" y2="196"/>
+<line class="cut-w" pathLength="1" x1="574" y1="196" x2="1066" y2="196"/>
+<line class="ln-beyond" x1="-20" y1="196" x2="566" y2="196"/>
+<line class="ln-2" pathLength="1" x1="820" y1="196" x2="820" y2="262"/>
+<rect class="ln-2" pathLength="1" x="760" y="262" width="120" height="88"/>
+<line class="ln-h" x1="760" y1="350" x2="880" y2="262"/>
+<line class="ln-2" pathLength="1" x1="820" y1="350" x2="820" y2="418"/>
+<path class="ln-2" pathLength="1" d="M812 418H828M820 488L804 422"/>
+<line class="ln-2" pathLength="1" x1="820" y1="488" x2="820" y2="528"/>
+<circle class="ln-2" pathLength="1" cx="820" cy="574" r="46"/>
+<line class="ln-2" pathLength="1" x1="820" y1="620" x2="820" y2="718"/>
+<line class="ln-2" pathLength="1" x1="648" y1="664" x2="992" y2="664"/>
+<circle class="ln-2" pathLength="1" cx="640" cy="664" r="8"/>
+<circle class="ln-2" pathLength="1" cx="1000" cy="664" r="8"/>
+<circle class="nib" cx="610" cy="196" r="3"/>
+<circle class="nib" cx="820" cy="196" r="3"/>
+<circle class="nib" cx="1030" cy="196" r="3"/>
+<circle class="nib" cx="820" cy="196" r="3"/>
+<circle class="nib" cx="820" cy="664" r="3"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="574" y="426" width="150" height="60" rx="6"/>
+<line class="sk" pathLength="1" x1="592" y1="446" x2="690" y2="446"/>
+<line class="sk" pathLength="1" x1="592" y1="466" x2="640" y2="466"/>
+<rect class="ln-2" pathLength="1" x="660" y="458" width="48" height="18" rx="9"/>
+<line class="ln-3" x1="724" y1="456" x2="812" y2="456"/>
+</g>
+<g class="nd nd-4">
+<text class="t-dim" x="610" y="80" text-anchor="middle">KLIK NA POZIV</text>
+<text class="t-dim" x="820" y="80" text-anchor="middle">POSLANA FORMA</text>
+<text class="t-dim" x="1030" y="80" text-anchor="middle">KUPNJA</text>
+<text class="t-dim" x="925" y="184" text-anchor="middle">DATALAYER</text>
+<text class="t-dim" x="574" y="412">TRAKA PRIVOLE</text>
+<text class="t-dim" x="820" y="580" text-anchor="middle">GA4</text>
+<text class="t-dim" x="640" y="642" text-anchor="middle">OGLASI</text>
+<text class="t-dim" x="1000" y="642" text-anchor="middle">IZVJEŠTAJ</text>
+<circle class="lamp-fill" pathLength="1" cx="820" cy="738" r="20"/>
+<path class="lamp-ln" pathLength="1" d="M806 724L834 752M806 752L834 724"/>
+<text class="t-real" x="860" y="748" style="--fs:32px">generate_lead</text>
+</g>
+<g class="nd nd-5 key c-wide c-a90">
+<rect class="ln-2" pathLength="1" x="340" y="500" width="140" height="270" rx="16"/>
+<line class="sk" pathLength="1" x1="358" y1="524" x2="402" y2="524"/>
+<line class="sk-b" pathLength="1" x1="358" y1="554" x2="460" y2="554"/>
+<line class="sk" pathLength="1" x1="358" y1="574" x2="432" y2="574"/>
+<rect class="ln-2" pathLength="1" x="358" y="592" width="72" height="24" rx="12"/>
+<circle class="ln-2" pathLength="1" cx="452" cy="604" r="6"/>
+<rect class="ln-2" pathLength="1" x="358" y="634" width="104" height="18" rx="4"/>
+<rect class="ln-2" pathLength="1" x="358" y="658" width="104" height="18" rx="4"/>
+<rect class="ln-2" pathLength="1" x="358" y="684" width="60" height="22" rx="11"/>
+<circle class="ln-2" pathLength="1" cx="440" cy="695" r="6"/>
+<rect class="ln-2" pathLength="1" x="358" y="722" width="46" height="30" rx="4"/>
+<line class="sk" pathLength="1" x1="414" y1="730" x2="452" y2="730"/>
+<circle class="ln-2" pathLength="1" cx="452" cy="746" r="6"/>
+<text class="t-small" x="340" y="800">KLJUČ · STRANICA</text>
+</g>
+<g class="nd nd-6">
+<g class="call c01">
+<circle class="dot" cx="880" cy="306" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="880,306 948,306"/>
+<text class="t-call" x="956" y="311"><tspan class="t-n">01</tspan>  TAG MANAGER</text>
+<text class="t-web" x="956" y="331">→ Sve oznake</text>
+</g>
+<g class="call c02">
+<circle class="dot" cx="812" cy="456" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="812,456 948,456"/>
+<text class="t-call" x="956" y="461"><tspan class="t-n">02</tspan>  PRIVOLA</text>
+<text class="t-web" x="956" y="481">→ Consent Mode v2</text>
+</g>
+<g class="call c03">
+<circle class="dot" cx="866" cy="574" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="866,574 948,574"/>
+<text class="t-call" x="956" y="579"><tspan class="t-n">03</tspan>  DOGAĐAJ</text>
+<text class="t-web" x="956" y="599">→ Što točno pratimo</text>
+</g>
+<g class="call lamp">
+<circle class="halo" cx="820" cy="738" r="40"/>
+<circle class="dot" cx="820" cy="738" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="812,738 583,738"/>
+<text class="t-call" x="583" y="706">10:05 · POSLAN UPIT</text>
+<text class="t-web" x="583" y="727">„servis klime cijena“</text>
+</g>
+</g>
+<g class="nd nd-6 tb">
+<rect class="tb-bg" x="732" y="836" width="440" height="112"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
+<text class="t-tb" x="744" y="857">ZAEC · USLUGE</text>
+<text class="t-tb" x="1054" y="857">U.08</text>
+<text class="t-tb-b" x="744" y="894">GA4 i praćenje konverzija</text>
+<text class="t-tb" x="744" y="914">SHEMA MJERENJA</text>
+<text class="t-tb" x="744" y="943">WEB · GTM · PRIVOLA · GA4</text>
+</g>
+</svg>

@@ -510,7 +510,8 @@ function zaec_registry_industries() {
 			'service_type' => $d['service_type'] ?? 'Web stranica i lokalni SEO za ' . $d['name'],
 			'seo_title'    => $d['seo_title'],
 			'description'  => $d['description'],
-			'kicker'       => $sector['short'] === $d['label'] ? $d['label'] : $sector['short'] . ' · ' . $d['label'],
+			// sektor se ne ponavlja kad je naziv iz istog korijena („Trgovina · Trgovine“)
+			'kicker'       => 0 === strncasecmp( $sector['short'], $d['label'], 6 ) ? $d['label'] : $sector['short'] . ' · ' . $d['label'],
 			'h1'           => $d['h1'],
 			'lead'         => $d['lead'],
 			'short'        => $d['short'],
@@ -545,8 +546,8 @@ function zaec_registry_special() {
 		'seo_title'    => 'Izrada web stranica Osijek — za obrte i tvrtke | ZAEC',
 		'description'  => 'Izrada web stranica u Osijeku: web, SEO, Google Business profil i GA4 iz jednog mjesta. Sastanak uživo u Osijeku i Slavoniji, na daljinu za cijelu Hrvatsku.',
 		'kicker'       => 'Osijek · Slavonija',
-		'h1'           => 'Izrada web stranica u <em>Osijeku</em> — za tvrtke koje žele više poziva.',
-		'lead'         => 'ZAEC je web studio iz Osijeka. Radimo web stranice, SEO i Google profile za obrte i tvrtke u Osijeku, Osječko-baranjskoj županiji i Slavoniji — uživo, za istim stolom. Za ostatak Hrvatske radimo na daljinu.',
+		'h1'           => 'Izrada web stranica u <em>Osijeku</em>.', // design/04 §2: naslov završava gradom, cilj ide u uvod
+		'lead'         => 'Za tvrtke koje žele više poziva, ne samo novi izgled. ZAEC je web studio iz Osijeka: radimo web stranice, SEO i Google profile za obrte i tvrtke u Osijeku, Osječko-baranjskoj županiji i Slavoniji — uživo, za istim stolom. Za ostatak Hrvatske radimo na daljinu.',
 		'answer'       => 'ZAEC je web studio sa sjedištem u Osijeku (Čvrsnička ulica 29 A). Izrađuje web stranice, webshopove i landing stranice te radi SEO, Google Business profil i GA4 mjerenje za tvrtke u Osijeku, Osječko-baranjskoj županiji i cijeloj Hrvatskoj.',
 		'image'        => 'world/usluga-kontakt.webp',
 		'image_alt'    => 'Osijek noću iz zraka: grad u plavom nacrtu, osvijetljena konkatedrala i svjetlosni signal s njezina tornja.',
@@ -620,6 +621,7 @@ function zaec_registry_special() {
 		'lead'        => 'Pošaljite naziv tvrtke i grad. Ručno provjeravamo Google profil, recenzije, web, brzinu i što o vama kažu ChatGPT i Google AI — uz usporedbu s tri konkurenta i tri koraka koja najviše donose.',
 		'answer'      => 'Besplatna provjera vidljivosti uključuje ručnu analizu Google Business profila, recenzija, web stranice (sadržaj, brzina, mobitel, mjerenje) i odgovora AI asistenata o vašoj tvrtki, usporedbu s tri lokalna konkurenta i kratko izvješće s tri prioritetna koraka.',
 		'image'       => 'world/usluga-provjera.webp',
+		'nacrt'       => true,
 		'image_alt'   => 'Vaš obrt osvijetljen sprijeda, iza njega tri konkurenta u nacrtu; uz svaku zgradu kota visine, crta mjerila spaja vrhove.',
 		'cta'         => array( 'Pošaljite za provjeru', '#upit' ),
 		'blocks'      => array(

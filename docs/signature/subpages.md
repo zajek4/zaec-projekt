@@ -238,3 +238,40 @@ bugovit, izrada-web-stranica je bugovita. Provjeri i sadržaj.“
   stranicama. Održavanje ondje ima 86 % jer kratki naslov u jednom retku stoji na rubu kadra; čitljivo je (zlatno
   na tamnom) i isto je na mainu, pa nije mijenjano.
 
+
+## 15. Heroji podstranica: tri obitelji listova i dorade (15. 10. 2026)
+
+Vlasnik: slike na podstranicama (npr. landing, SEO) „izgledaju izgenerirano i nepovezano… ne smije biti
+generičko“; nacrt ima smisla za građevinu, vodoinstalatere, električare i krovopokrivače, ne za restorane, smještaj
+ili salone; neke izmjene iz pregleda nisu napravljene. Odluke i pravila: `docs/hero-art-direction.md`, „Listovi
+razine 2: tri obitelji“.
+
+- **Izlozi noću (novo):** ugostiteljstvo i smještaj (recepcija apartmana s pločom ključeva i sobom za doručak),
+  trgovine (izlog s policama, postoljem i paketima iza vrata sa „ZATVORENO“, uz naslov „prodaja i kad je
+  zatvoreno“), saloni ljepote, stručne usluge (osvijetljen ured na katu, ploča zvona s „URED“), ustanove i udruge
+  (barokni ulaz s oglasnom pločom, rampom i info pultom). Kazalo djelatnosti ih vodi kao „PROČELJE · NOĆU“.
+- **Predmet usluge (novo):** Webshop (U.02, police i kartica proizvoda), Landing (U.03, oglas i stranica), SEO
+  (U.04, uvećan rezultat pretrage), Lokalni SEO (U.05, karta središta Osijeka), Google Business profil (U.06,
+  rastavljen profil na karti), AI vidljivost (U.07, odgovor s izvorima), GA4 (U.08, shema mjerenja do
+  `generate_lead`), Brzina (U.09, traka učitavanja do praga 2,5 s), Održavanje (U.10, dnevnik radova), Besplatna
+  provjera (P.01, izvješće s „Vaš obrt“ i tri konkurenta). Hub Usluge: kazalo U.00 (zajednički `kazalo-tab.mjs`
+  s djelatnostima), arak ispod kadra sa sličicama listova; Izrada (potpisni hero) ondje ima sličicu kule.
+- Nisu mijenjani: Izrada i Kontakt (potpisni heroji), Cijene (kartica procjene), Radovi, Osijek, zanati (nacrt).
+- Mobilni izrez: oznaka svjetla ima tamnu podlogu (`.lamp-bg`), jer u tijesnom kadru često sjedi na crtežu.
+  Sličice: cijeli predmet (`tvb`), topli tekst kao topla traka.
+- og:image iz lista za sve stranice s listom, ponovno snimljene (djelatnosti s kickerom „Djelatnosti · list
+  06/10“, ostale s kickerom stranice).
+- **Dorade iz pregleda:** sitni tekst povećan na 11–12 px (usporedba, anatomija, cijene, konfigurator, kartice
+  projekata); naslov članka i 404 na `--fs-d3`; CTA traka i podnožje kao jedan tamni blok (bez horizonta kad
+  stranica završava CTA trakom); sekundarni gumb u heroju bez ikone; forma ima `aria-busy` dok šalje; „Sve
+  djelatnosti“ u podnožju; speakable `.ukratko-t`; O nama „Tko *stoji* iza ZAEC-a.“; Osijek „Izrada web stranica u
+  *Osijeku*.“ (cilj u uvodu); Lokalni SEO upućuje na zasebnu uslugu Google Business profila; tamne kartice
+  (citati, brojke, sljedeća stranica, bočni okvir članka) na abyss paleti; kicker djelatnosti bez ponavljanja
+  („Trgovine“, ne „Trgovina · Trgovine“).
+- Ostaje kako je: sivi mobilni izbornik (zaglavlje je u drugoj niti), jantarna oznaka u noćnoj anatomiji,
+  naglasak Održavanja na složenom rasporedu (§14).
+- Provjere: nacrt 332/345 (23 stranice s listom × 15 veličina). Preostalih 13 su naglasak u kadru na složenom
+  rasporedu: 960 × 1000 s 16 % (kutija retka, kao u §12) na devet stranica i Održavanje na četiri veličine (§14).
+  Popravljeno usput: hub djelatnosti na 1366 × 768 (tekst 11,7 px; kadar huba s kazalom sada barem 690 px) i
+  „SOBA 1“ na građevini (na 1024 × 768 pod prvim retkom naslova; oznaka desno od sredine sobe).
+- Pregled 30 stranica × 360/390/768/1440: 120/120 bez grešaka u konzoli, 4xx, bočnog skrola i slomljenih slika.

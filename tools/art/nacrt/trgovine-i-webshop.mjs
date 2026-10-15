@@ -1,116 +1,144 @@
-// LIST 07 · Trgovine i webshop — pogled na pročelje prizemne trgovine, M 1:50 (100 u = 1 m), uz detalj paketa
-// u tri projekcije (nacrt, bokocrt, tlocrt), M 1:10. Iza stakla izloga isprekidano: police na stražnjem zidu;
-// ispred njih podest s proizvodima. Svjetlo: jedan proizvod u izlogu — "naziv proizvoda + kupiti".
+// LIST 07 · Trgovine i webshop — izlog trgovine noću (tools/art/nacrt/izlog.mjs). Prizemna kuća u Donjem gradu sa
+// zabatom prema ulici; lijevo dvorišni zid s kapijom. Široki izlog u tri polja: postolje s jednim proizvodom
+// (čajnik pod reflektorom) i police pune robe u siluetama (staklenke, složeni tekstil, košare, kutije, stolna
+// svjetiljka, boce). Na staklenim vratima pločica ZATVORENO, iza njih paketi spremni za dostavu: trgovina je zatvorena,
+// a prodaja ide dalje. Svjetlo: proizvod na postolju — u 22:15 netko s kauča traži „naziv proizvoda + kupiti“.
+import { G, street, shop, marker, legend, glowDefs, sash } from './izlog.mjs';
+
 export const meta = {
   slug: 'trgovine-i-webshop',
   list: '07',
   name: 'Trgovine i webshop',
-  view: 'POGLED NA PROČELJE · M 1:50',
-  web: 'PROIZVODI · DOSTAVA · KONTAKT',
-  title: 'Pogled na pročelje trgovine s izlogom i detalj paketa, mjerilo 1:50',
-  desc: 'Tehnički crtež pročelja trgovine: izlog s podestom i proizvodima, police iza stakla, ulazna vrata s pločicom radnog vremena i natpis, uz detalj paketa u tri projekcije. Oznake 01–04 povezuju dijelove trgovine s dijelovima weba trgovine ili webshopa. Jedan proizvod u izlogu označen je toplim svjetlom.',
+  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  view: 'IZLOG TRGOVINE NOĆU',
+  web: 'KATALOG · PLAĆANJE · DOSTAVA',
+  title: 'Izlog trgovine noću u osječkoj ulici',
+  desc: 'Crtež pročelja prizemne kuće sa zabatom prema ulici noću: široki izlog s policama punim robe u siluetama (staklenke, složeni tekstil, košare, kutije, stolna svjetiljka i boce) i jednim proizvodom na postolju pod reflektorom, staklena vrata s pločicom Zatvoreno i paketima spremnima za dostavu. Iznad izloga je natpis Trgovina. Legenda povezuje police s katalogom, postolje sa stranicom proizvoda, a pakete s dostavom i plaćanjem. Proizvod na postolju označen je toplim svjetlom.',
   lamp: { time: '22:15 · S KAUČA', search: 'naziv proizvoda + kupiti' },
-  mvb: '450 282 680 562',
-  mobileCallout: null, // mobilni izrez: oznaka svjetla ide iznad izloga, a ispod bi bila u zatamnjenju kadra
+  mvb: '440 330 680 562',
+  mobileCallout: null,
+  defs: glowDefs,
 };
 
 export function draw(b) {
-  const X = (m) => 430 + m * 100;
-  const Y = (h) => 740 - h * 100;
-  const R = (x0, h0, x1, h1, cls, attrs = '') => b.rect(X(x0), Y(h1), (x1 - x0) * 100, (h1 - h0) * 100, cls, attrs);
-  const L = (x0, h0, x1, h1, cls) => b.line(X(x0), Y(h0), X(x1), Y(h1), cls);
-  // paket 40 × 30 × 20 cm, detalj M 1:10 (2,4 u = 1 cm)
-  const k = 2.4;
-  const F = { x: 975, y: 200, w: 40 * k, h: 20 * k }; // nacrt
-  const S = { x: 1095, y: 200, w: 30 * k, h: 20 * k }; // bokocrt
-  const T = { x: 975, y: 268, w: 40 * k, h: 30 * k }; // tlocrt
+  const [L, R] = [340, 1150]; // kuća sa zabatom
+  const cx = (L + R) / 2;
+  const EV = 476; // vijenac na dnu zabata
+  const top = 132; // sljeme
+  const k = (EV - top) / (cx - L); // nagib zabata
 
-  // 1 osi i projekcijske crte detalja
+  // 1 ulica i svjetlo na pločniku
   b.g('nd nd-1', () => {
-    b.line(400, Y(0), 950, Y(0), 'ln-con');
-    if (b.v !== 'm') for (const yy of [F.y, F.y + F.h]) b.line(F.x + F.w, yy, S.x, yy, 'ln-con');
-    if (b.v !== 'm') for (const xx of [F.x, F.x + F.w]) b.line(xx, F.y + F.h, xx, T.y, 'ln-con');
+    street(b, [[500, 900], [936, 1046]]);
   });
 
-  // 2 pročelje: rubovi, sokl, natpis, prekid iznad prizemlja
+  // 2 pročelja: dvorišni zid s kapijom, kuća sa zabatom (tavanski prozori, odušak), rub kuće desno
   b.g('nd nd-2', () => {
-    L(0, 0, 0, 3.6, 'ln-2');
-    L(5, 0, 5, 3.6, 'ln-2');
-    b.breakH(Y(3.6), X(0), X(5));
-    for (const [a, c] of [[0, 3.5], [4.6, 5]]) R(a, 0, c, 0.3, 'cut', ` fill="${b.url('hz')}"`);
-    R(0.35, 2.95, 4.6, 3.4, 'ln-2');
-    b.rect(X(-0.3), Y(0), 5.6 * 100, 12, 'cut', ` fill="${b.url('hz')}"`);
-    b.line(X(-0.3), Y(0), X(5.3), Y(0), 'cut-w');
+    // dvorišni zid i kapija s krovićem
+    b.rect(-200, 590, L - 4 + 200, 10, 'ln-2');
+    b.line(-200, 600, -200, G, 'ln-2');
+    b.path([[150, 612], [240, 566], [330, 612]], 'ln-2', false);
+    b.line(160, 612, 320, 612, 'ln-2');
+    b.rect(176, 620, 128, G - 620, 'mask');
+    b.rect(176, 620, 128, G - 620, 'ln-2');
+    for (let x = 192; x < 304; x += 16) b.line(x, 622, x, G, 'ln-h');
+    for (const y of [650, 760]) b.line(176, y, 304, y, 'ln-h');
+    b.circle(292, 712, 2.5, 'nib');
+    // zabat: dvostruka crta strehe, vijenac, odušak i dva tavanska prozora
+    b.path([[L - 16, EV], [cx, top - 12], [R + 16, EV]], 'ln-2', false);
+    b.path([[L + 6, EV], [cx, top + 6], [R - 6, EV]], 'ln-h', false);
+    b.circle(cx, 236, 18, 'win');
+    for (const a of [0, 45, 90, 135]) {
+      const r = (a * Math.PI) / 180;
+      b.line(cx - 18 * Math.cos(r), 236 - 18 * Math.sin(r), cx + 18 * Math.cos(r), 236 + 18 * Math.sin(r), 'ln-h');
+    }
+    sash(b, cx - 58, 296, 42, 62, { hood: false, t: 0.45 });
+    sash(b, cx + 16, 296, 42, 62, { hood: false, t: 0.45 });
+    b.rect(L - 10, EV, R - L + 20, 14, 'ln-2');
+    b.line(L, EV + 22, R, EV + 22, 'ln-h');
+    // zidovi i lezene na uglovima
+    b.path([[L, G], [L, EV + 14], [R, EV + 14], [R, G]], 'ln-2', false);
+    b.rect(L, EV + 22, 22, G - EV - 22, 'ln-2');
+    b.rect(R - 22, EV + 22, 22, G - EV - 22, 'ln-2');
+    // prozor stana uz trgovinu: roleta napola spuštena
+    sash(b, 392, 596, 70, 150);
+    b.rect(392, 596, 70, 66, 'win');
+    for (let y = 604; y < 662; y += 8) b.line(394, y, 460, y, 'ln-h');
+    // rub više kuće desno
+    b.path([[R + 26, G], [R + 26, 300], [1240, 300]], 'ln-2', false);
+    b.line(R + 26, 312, 1240, 312, 'ln-h');
+    sash(b, R + 44, 360, 80, 140, { hood: false });
+    sash(b, R + 44, 600, 80, 150, { hood: false });
   });
 
-  // 3 izlog i vrata
+  // 3 trgovina: natpis, izlog u tri polja, vrata s pločicom i paketima (toplo staklo)
   b.g('nd nd-3', () => {
-    R(0.35, 0.3, 3.05, 2.75, 'cut-w');
-    R(0.43, 0.38, 2.97, 2.67, 'ln-2');
-    R(3.5, 0, 4.6, 2.35, 'cut-w');
-    R(3.58, 0.1, 4.52, 2.27, 'ln-2');
-    R(3.5, 2.4, 4.6, 2.75, 'ln-2');
-    L(4.4, 0.9, 4.4, 1.5, 'cut-w'); // ručka
-    R(4.7, 1.4, 4.95, 1.8, 'ln-2'); // radno vrijeme
-    for (const h of [1.5, 1.57, 1.64, 1.71]) L(4.74, h, 4.91, h, 'ln-h');
+    b.rect(500, 504, 546, 46, 'lit');
+    b.say(cx + 18, 539, 'TRGOVINA', 30, 't-real t-b t-sign', ' text-anchor="middle"');
+    shop(b, 500, 576, 400, 200, 0, () => {
+      // postolje s proizvodom (čajnik) i reflektor
+      b.line(565, 616, 565, 624, 'sil-ln');
+      b.d('M557 624H573L577 640H553Z', 'sil');
+      b.rect(538, 712, 54, 64, 'sil');
+      b.d('M541 712Q539 684 565 680Q591 684 589 712Z', 'sil');
+      b.d('M555 680Q565 670 575 680Z', 'sil');
+      b.circle(565, 669, 3, 'sil');
+      b.d('M543 702Q530 698 523 684L527 682Q534 692 545 694Z', 'sil');
+      b.d('M587 690Q603 692 600 704Q597 712 588 709', 'sil-ln');
+      // police: srednje polje (staklenke, tekstil, košare), desno (kutije, svjetiljka, vaza, boce)
+      for (const [x0, x1] of [[640, 760], [780, 892]]) {
+        for (const x of [x0 + 2, x1 - 2]) b.line(x, 628, x, 776, 'sil-ln');
+        for (const y of [664, 716, 770]) b.rect(x0, y, x1 - x0, 4, 'sil');
+      }
+      [[650, 18, 26], [672, 16, 20], [692, 20, 30], [716, 16, 22], [736, 18, 26]].forEach(([x, w, h]) => {
+        b.rect(x, 664 - h, w, h, 'sil', ' rx="4"');
+        b.rect(x - 1, 664 - h - 5, w + 2, 5, 'sil');
+      });
+      [[650, 40, 4], [702, 46, 5]].forEach(([x, w, n]) => {
+        for (let i = 0; i < n; i++) b.rect(x + (i % 2) * 2, 709 - i * 8, w - 2, 6, 'sil', ' rx="3"');
+      });
+      [[652, 46], [706, 46]].forEach(([x, w]) => {
+        b.path([[x, 740], [x + w, 740], [x + w - 6, 770], [x + 6, 770]], 'sil');
+        b.d(`M${x + 8} 740Q${x + w / 2} 716 ${x + w - 8} 740`, 'sil-ln');
+      });
+      b.rect(790, 636, 30, 28, 'sil');
+      b.rect(824, 646, 24, 18, 'sil');
+      b.rect(852, 626, 30, 38, 'sil');
+      b.d('M794 690L800 670H820L826 690Z', 'sil');
+      b.line(810, 690, 810, 712, 'sil-ln');
+      b.rect(800, 710, 20, 6, 'sil');
+      b.d('M848 716Q838 700 848 690V682H862V690Q872 700 862 716Z', 'sil');
+      for (const x of [796, 818, 840, 862]) {
+        b.rect(x - 7, 736, 14, 34, 'sil', ' rx="3"');
+        b.rect(x - 3, 722, 6, 16, 'sil');
+      }
+    });
+    for (const x of [630, 770]) b.line(x, 576, x, 776, 'cut-w');
+    // vrata: pločica ZATVORENO, iza stakla paketi za dostavu
+    shop(b, 936, 566, 110, 234, 0, () => {
+      b.rect(940, 668, 102, 32, 'plate', ' rx="3"');
+      if (b.v !== 'm') b.say(991, 690, 'ZATVORENO', 17, 't-plate', ' text-anchor="middle"');
+      b.line(962, 668, 991, 648, 'sil-ln');
+      b.line(1020, 668, 991, 648, 'sil-ln');
+      for (const [x, y, w, h] of [[944, 744, 64, 56], [952, 702, 46, 42], [1012, 764, 30, 36]]) {
+        b.rect(x, y, w, h, 'sil');
+        b.line(x + w / 2, y, x + w / 2, y + h, '', ' stroke="#ffe3b8" stroke-opacity=".55" stroke-width="2"');
+        b.rect(x + 6, y + 8, Math.min(16, w / 2 - 10), 10, '', ' fill="#ffe3b8" fill-opacity=".8"');
+      }
+    });
+    b.line(1034, 712, 1034, 740, 'cut-w');
   });
 
-  // 4 iza stakla: police i proizvodi (isprekidano), podest; detalj paketa
-  b.g('nd nd-4', () => {
-    for (const h of [1.35, 1.85, 2.35]) {
-      L(0.55, h, 2.85, h, 'ln-beyond');
-      for (let x = 0.65; x < 2.7; x += 0.42) R(x, h, x + 0.2 + ((x * 7) % 3) * 0.04, h + 0.22 + ((x * 5) % 2) * 0.06, 'ln-beyond');
-    }
-    R(0.75, 0.38, 2.65, 0.75, 'ln-2');
-    R(0.95, 0.75, 1.3, 1.15, 'ln-2');
-    b.d(`M${X(2.2)} ${Y(0.75)} V${Y(1.05)} L${X(2.26)} ${Y(1.18)} V${Y(1.3)} H${X(2.34)} V${Y(1.18)} L${X(2.4)} ${Y(1.05)} V${Y(0.75)}`, 'ln-2');
-    // paket: nacrt, bokocrt, tlocrt; traka i adresnica
-    if (b.v === 'm') return; // mobilni izrez: samo pročelje
-    b.rect(F.x, F.y, F.w, F.h, 'cut-w');
-    b.rect(F.x + F.w / 2 - 5, F.y, 10, F.h, 'ln-2');
-    b.rect(S.x, S.y, S.w, S.h, 'cut-w');
-    b.rect(S.x + S.w / 2 - 5, S.y, 10, S.h, 'ln-2');
-    b.rect(T.x, T.y, T.w, T.h, 'cut-w');
-    b.rect(T.x + T.w / 2 - 5, T.y, 10, T.h, 'ln-2');
-    b.rect(T.x + 58, T.y + 10, 30, 22, 'ln-2');
-    for (const dy of [17, 23, 28]) b.line(T.x + 62, T.y + dy, T.x + 84, T.y + dy, 'ln-h');
-  });
-
-  // 5 kote i nazivi
-  b.g('nd nd-5', () => {
-    b.dim([X(3.27), Y(0.3)], [X(3.27), Y(2.35)], '2,35', { side: 0 });
-    b.text(X(2.475), Y(3.175) + 5, 'NATPIS', 't-small', ' text-anchor="middle"');
-    if (b.v === 'd') {
-      b.dim([F.x, F.y - 14], [F.x + F.w, F.y - 14], '40', { side: -8 });
-      b.dim([S.x, S.y - 14], [S.x + S.w, S.y - 14], '30', { side: -8 });
-      b.dim([S.x + S.w + 14, S.y], [S.x + S.w + 14, S.y + S.h], '20', { side: 10 });
-      b.text(F.x, 372, 'DETALJ P · M 1:10', 't-small');
-    }
-  });
-
-  // ključ: tlocrt trgovine, pogled A na pročelje
-  b.key(() => {
-    const [kx, ky] = [444, 120];
-    b.rect(kx, ky, 140, 76, 'ln-2');
-    b.line(kx + 10, ky + 8, kx + 130, ky + 8, 'ln-h');
-    b.line(kx + 10, ky + 40, kx + 90, ky + 40, 'ln-h');
-    b.rect(kx + 10, ky + 72, 70, 8, 'ln-2');
-    b.rect(kx + 98, ky + 70, 22, 6, 'ln-2');
-    b.line(kx + 70, ky + 120, kx + 70, ky + 90, 'ln-sec');
-    b.d(`M${kx + 64} ${ky + 100} L${kx + 70} ${ky + 88} L${kx + 76} ${ky + 100}`, 'ln-2');
-    b.text(kx + 80, ky + 118, 'A', 't-key');
-    // naziv iznad skice: ispod nje (y 255–274) ga na visokim prozorima prekriva prvi red naslova (design/09, A)
-    b.text(kx, ky - 14, 'KLJUČ · TLOCRT', 't-small');
-  });
-
-  // 6 oznake i svjetlo: jedan proizvod na podestu
+  // 6 legenda, brojevi i svjetlo
   b.g('nd nd-6', () => {
-    b.callout('01', [X(0.6), Y(2.5)], [[X(0.6), 320], [X(0.6) + 12, 320]], 'IZLOG', '→ Istaknuti proizvodi');
-    b.callout('02', [X(2.82), Y(2.35)], [[740, 320], [752, 320]], 'POLICE', '→ Katalog');
-    b.callout('03', [X(4.1), Y(0.5)], [[X(4.6), 786], [X(4.6) + 12, 786]], 'VRATA', '→ O trgovini i lokacija');
-    b.callout('04', [T.x, T.y + 52], [[T.x - 16, T.y + 52], [T.x - 16, 410], [T.x - 8, 410]], 'PAKET', '→ Dostava i plaćanje');
-    // kutija u pogledu: pravokutnik s trakom preko sredine (preklopi su na vrhu, u pogledu se ne vide)
-    b.d(`M${X(1.52)} ${Y(0.75)} V${Y(1.3)} H${X(2.06)} V${Y(0.75)} Z M${X(1.765)} ${Y(1.3)} V${Y(1.08)} M${X(1.815)} ${Y(1.3)} V${Y(1.08)}`, 'lamp-fill');
-    b.lamp({ at: [X(1.79), Y(1)], r: 36, d: [616, 806, 'down'], m: [616, 346, 'up'] });
+    marker(b, '01', [900, 640], 8, -8);
+    marker(b, '02', [592, 744], 10, -8);
+    marker(b, '03', [1046, 760], 10, -8);
+    legend(b, 968, 44, [
+      ['01', 'POLICE', '→ Katalog / webshop'],
+      ['02', 'POSTOLJE', '→ Stranica proizvoda'],
+      ['03', 'PAKETI', '→ Dostava i plaćanje'],
+    ]);
+    b.lamp({ at: [565, 694], r: 44, d: [512, 440, 'up'], m: [470, 444, 'up'] });
   });
 }

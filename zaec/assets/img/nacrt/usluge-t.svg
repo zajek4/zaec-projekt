@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="440 120 760 570" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.sk,.sk-b{stroke:var(--l);stroke-opacity:.2;stroke-width:8;stroke-linecap:round;fill:none}.sk-b{stroke-width:13;stroke-opacity:.28}
+.lit{fill:rgba(255,207,138,.06);stroke:var(--lamp);stroke-opacity:.45;stroke-width:2.4}.lit-ln{stroke:var(--lamp);stroke-opacity:.7;stroke-width:2.8;fill:none}.lit-star{fill:var(--lamp);fill-opacity:.85;stroke:none}
+.map-w{fill:rgba(227,233,255,.07);stroke:var(--l);stroke-opacity:.45;stroke-width:2}.map-0,.map-1,.map-2{stroke:var(--l);fill:none;stroke-linejoin:round}.map-0{stroke-opacity:.55;stroke-width:3.6}.map-1{stroke-opacity:.4;stroke-width:2.6}.map-2{stroke-opacity:.16;stroke-width:1.6}
+.win{fill:var(--sheet);stroke:var(--l);stroke-opacity:.55;stroke-width:2.2}.glow{stroke:none}.spill{fill:var(--lamp);fill-opacity:.14;stroke:none}.ln-glass{stroke:var(--l);stroke-opacity:.5;stroke-width:2.4}
+.sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
+.say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="gridundefinedt" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridundefinedt)"/>
+<g class="nd nd-1">
+<line class="cut-w" pathLength="1" x1="504" y1="190" x2="1192" y2="190"/>
+<line class="ln-frame" pathLength="1" x1="602" y1="156" x2="602" y2="762"/>
+<line class="ln-frame" pathLength="1" x1="986" y1="156" x2="986" y2="762"/>
+</g>
+<g class="nd nd-2">
+<text class="t-call" x="504" y="138" font-weight="700" style="font-size:20px">KAZALO LISTOVA</text>
+<text class="t-small" x="600" y="178" style="font-size:18px" text-anchor="end">ŠIFRA</text>
+<text class="t-small" x="616" y="178" style="font-size:18px">USLUGA</text>
+<text class="t-small" x="1000" y="178" style="font-size:18px">NA LISTU</text>
+</g>
+<g class="nd nd-3">
+<text class="t-call" x="540" y="224" font-weight="700" style="font-size:22px">U.01</text>
+<text class="t-call" x="616" y="224" style="font-size:22px">Izrada web stranica</text>
+<text class="t-dim" x="1000" y="224" style="font-size:18px">KATOVI STRANICE</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="242" x2="1192" y2="242"/>
+<text class="t-call" x="540" y="276" font-weight="700" style="font-size:22px">U.02</text>
+<text class="t-call" x="616" y="276" style="font-size:22px">Webshop</text>
+<text class="t-dim" x="1000" y="276" style="font-size:18px">POLICE KATALOGA</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="294" x2="1192" y2="294"/>
+<text class="t-call" x="540" y="328" font-weight="700" style="font-size:22px">U.03</text>
+<text class="t-call" x="616" y="328" style="font-size:22px">Landing stranice</text>
+<text class="t-dim" x="1000" y="328" style="font-size:18px">OGLAS I LANDING</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="346" x2="1192" y2="346"/>
+<text class="t-call" x="540" y="380" font-weight="700" style="font-size:22px">U.04</text>
+<text class="t-call" x="616" y="380" style="font-size:22px">SEO</text>
+<text class="t-dim" x="1000" y="380" style="font-size:18px">REZULTAT GOOGLA</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="398" x2="1192" y2="398"/>
+<text class="t-call" x="540" y="432" font-weight="700" style="font-size:22px">U.05</text>
+<text class="t-call" x="616" y="432" style="font-size:22px">Lokalni SEO</text>
+<text class="t-dim" x="1000" y="432" style="font-size:18px">KARTA OSIJEKA</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="450" x2="1192" y2="450"/>
+</g>
+<g class="nd nd-4">
+<text class="t-call" x="540" y="484" font-weight="700" style="font-size:22px">U.06</text>
+<text class="t-call" x="616" y="484" style="font-size:22px">Google Business profil</text>
+<text class="t-dim" x="1000" y="484" style="font-size:18px">PROFIL NA KARTI</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="502" x2="1192" y2="502"/>
+<text class="t-call" x="540" y="536" font-weight="700" style="font-size:22px">U.07</text>
+<text class="t-call" x="616" y="536" style="font-size:22px">AI vidljivost</text>
+<text class="t-dim" x="1000" y="536" style="font-size:18px">ODGOVOR AI-JA</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="554" x2="1192" y2="554"/>
+<text class="t-call" x="540" y="588" font-weight="700" style="font-size:22px">U.08</text>
+<text class="t-call" x="616" y="588" style="font-size:22px">GA4 i konverzije</text>
+<text class="t-dim" x="1000" y="588" style="font-size:18px">SHEMA MJERENJA</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="606" x2="1192" y2="606"/>
+<text class="t-call" x="540" y="640" font-weight="700" style="font-size:22px">U.09</text>
+<text class="t-call" x="616" y="640" style="font-size:22px">Brzina web stranice</text>
+<text class="t-dim" x="1000" y="640" style="font-size:18px">TRAKA KADROVA</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="658" x2="1192" y2="658"/>
+<text class="t-call" x="540" y="692" font-weight="700" style="font-size:22px">U.10</text>
+<text class="t-call" x="616" y="692" style="font-size:22px">Održavanje weba</text>
+<text class="t-dim" x="1000" y="692" style="font-size:18px">DNEVNIK RADOVA</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="710" x2="1192" y2="710"/>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<text class="t-call" x="540" y="744" font-weight="700" style="font-size:22px">P.01</text>
+<text class="t-call" x="616" y="744" style="font-size:22px">Besplatna provjera</text>
+<text class="t-dim" x="1000" y="744" style="font-size:18px">BEZ OBVEZE</text>
+</g>
+</g>
+</svg>

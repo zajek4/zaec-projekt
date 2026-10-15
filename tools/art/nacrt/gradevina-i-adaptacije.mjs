@@ -95,7 +95,8 @@ export function draw(b) {
   // 5 kote i površine
   b.g('nd nd-5', () => {
     if (b.v !== 'm') b.dim([X(0), Y(7.55)], [X(9), Y(7.55)], '9,00', { side: -10, ext: [[[X(0), Y(7.1)], [X(0), Y(7.65)]], [[X(9), Y(7.1)], [X(9), Y(7.65)]]] });
-    label(1.92, 1.75, 'SOBA 1', area(0.25, 0.25, 3.6, 3.5));
+    // SOBA 1 desno od sredine: na 1024 × 768 prvi redak naslova završava odmah iznad sredine sobe
+    label(2.75, 1.75, 'SOBA 1', area(0.25, 0.25, 3.6, 3.5));
     label(4.95, 1.75, 'SOBA 2', area(3.72, 0.25, 6.3, 3.5));
     label(7.55, 1.45, 'KUPAONICA', area(6.42, 0.25, 8.75, 3));
     label(7.55, b.v === 'm' ? 4.3 : 4.5, 'HODNIK', area(6.42, 3.1, 8.75, 6.75));

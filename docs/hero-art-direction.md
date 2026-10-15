@@ -110,6 +110,32 @@ blokiran je mrežnim pravilima okruženja. Kadrovi su zato renderirani iz koda �
 - Pokret: kadar se otvara s ruba s kojeg izlazi, slika se smiri iz blagog približavanja; pri scrollu slika klizi
   sporije od okvira. Bez kretanja: završno stanje.
 
+## Listovi razine 2: tri obitelji (15. 10. 2026)
+Vlasnik: kadrovi na podstranicama (npr. SEO, landing) izgledali su generirano i nepovezano; nacrt ima smisla za
+građevinu, vodoinstalatere, električare i krovopokrivače, ali ne za restorane, smještaj ili salone. Zato je
+uređivački hero sada uvijek *list*: isti okvir, mreža, sastavnica (glava, šifra, naziv, pogled, redak) i jedno
+toplo svjetlo s trenutkom i pretragom („08:12 · POZIV „hitni vodoinstalater““). Crtež se bira po tome kako kupac
+bira taj posao:
+
+| Obitelj | Stranice | Što je nacrtano |
+|---|---|---|
+| **Nacrt** | Zanati: klima i grijanje, vodoinstalateri, električari, krovopokrivači, građevina; O nama (list 00) | Tehnički crtež posla s kotama i vodilicama |
+| **Izlog noću** | Ugostiteljstvo i smještaj, trgovine, saloni ljepote, stručne usluge, ustanove i udruge | Osječka ulica u plavoj crti; prizemlje jedne kuće svijetli toplim svjetlom, unutrašnjost u siluetama; brojevi stoje na dijelovima, legenda je na nebu |
+| **Predmet usluge** | Usluge U.02–U.10, hub Usluge (U.00, kazalo), Besplatna provjera (P.01) | Ono što usluga stvarno mijenja, uvećano: rezultat pretrage, karta središta, profil na karti, odgovor AI-ja, police kataloga, traka učitavanja, shema mjerenja, dnevnik radova, izvješće provjere. Sve je kostur u plavoj crti, a toplo je samo ono što radimo mi |
+
+- Primjeri na listovima su izmišljeni obrti („Vaš obrt“, vasobrt.hr) i obične pretrage; nema stvarnih klijenata,
+  brojki ni rezultata.
+- Karte (Lokalni SEO, Google Business profil) su stvarni OSM podaci središta Osijeka (`city.mjs`), isti kao na
+  naslovnici.
+- Hubovi su kazala istog kompleta (`kazalo-tab.mjs`): Djelatnosti s listovima djelatnosti, Usluge sa šiframa
+  U.01–U.10 i toplim redom „Besplatna provjera“. Kontaktni arak ispod kadra prikazuje sličice listova.
+- Sličica (pogled `t`) prikazuje cijeli predmet (`tvb` u listu), bez teksta; topli tekst (`say`) postaje topla
+  traka, pa se sličice razlikuju po obliku, ne po natpisu.
+- Izrada web stranica i Kontakt zadržavaju potpisne heroje (razina 1); Izrada na hubu ima sličicu (kula od etaža).
+  Cijene (kartica procjene), Radovi i Osijek zadržavaju svoje kadrove.
+- *Odbačeno:* generirane fotografije (izgledaju kao stock i ne nastavljaju naslovnicu), nacrt za sve djelatnosti
+  (frizera se ne bira po presjeku zida), animirani hero na svakoj stranici (pokret ostaje za razinu 1).
+
 ## Produkcija slika
 Kadrovi se renderiraju iz koda (`tools/art`, isti model konkatedrale i podaci grada kao naslovnica), jer
 koncepti traže piksel-točno poravnate slojeve iz iste kamere (nacrt/stvarno, alfa maska tornja, osvjetljenje
@@ -127,3 +153,7 @@ mrežnim pravilima okruženja.
 - Zaglavlje na potpisnim herojima kreće tamno već u HTML-u (prvi prikaz, rad bez JS-a).
 - Bez JS-a ili uz smanjeno kretanje svaki hero prikazuje završno stanje (sagrađeno, osvijetljeno, ispunjen naslov).
 - LCP: prvi sloj se preloada po mediju (desktop/mobilni), slojevi u WebP-u, alfa slojevi samo gdje treba.
+- Listovi: `tools/art/nacrt/<slug>.mjs` (`std.mjs` list i sastavnica, `izlog.mjs` ulica, `city.mjs` karta,
+  `kazalo-tab.mjs` kazalo), `node tools/art/nacrt/build.mjs <slug>` piše `assets/img/nacrt/<slug>-{d,m,t}.svg`.
+  Stranica dobiva list ako je djelatnost ili ima `'nacrt' => true` u registru; slika za dijeljenje:
+  `node tools/art/nacrt/og.mjs zaec/assets/img/og <slug>` (za ostale stranice `<slug>@<put>`).

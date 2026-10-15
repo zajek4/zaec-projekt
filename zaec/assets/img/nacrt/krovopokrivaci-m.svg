@@ -53,6 +53,7 @@
 <circle class="halo" cx="611" cy="594" r="30"/>
 <circle class="dot" cx="611" cy="594" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="611,586 611,434 480,434"/>
+<rect class="lamp-bg" x="474" y="371" width="372" height="57"/>
 <text class="t-call" x="480" y="391">23:10 · NAKON NEVREMENA</text>
 <text class="t-web" x="480" y="420">„popravak krova“</text>
 </g>

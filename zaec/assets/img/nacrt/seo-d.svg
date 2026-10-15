@@ -1,0 +1,88 @@
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntU4d ndU4d"><title id="ntU4d">Rezultat pretrage za vodoinstalatera u Osijeku, uvećan kao detalj tehničkog crteža</title><desc id="ndU4d">Uvećan rezultat Google pretrage „hitni vodoinstalater“. Rezultati iznad i ispod nacrtani su samo kao kostur, a jedan je stvaran i osvijetljen: naziv obrta, adresa stranice, naslov, opis, ocjena i gumb Nazovi. Oznake povezuju naslov sa sadržajem, adresu sa strukturom i ocjenu sa schema podacima; toplo svjetlo je na gumbu Nazovi.</desc>
+<defs><pattern id="gridU4d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU4d)"/>
+<g class="nd nd-1">
+<line class="ln-con" x1="530" y1="-20" x2="530" y2="1020"/>
+<path class="ln-beyond" d="M530 160L1210 160M530 806L1210 806"/>
+</g>
+<g class="nd nd-2">
+<circle class="ln-2" pathLength="1" cx="578" cy="-72" r="16"/>
+<line class="sk" pathLength="1" x1="610" y1="-80" x2="728" y2="-80"/>
+<line class="sk" pathLength="1" x1="610" y1="-56" x2="822" y2="-56"/>
+<line class="sk-b" pathLength="1" x1="560" y1="0" x2="1067" y2="0"/>
+<line class="sk-b" pathLength="1" x1="560" y1="44" x2="902" y2="44"/>
+<line class="sk" pathLength="1" x1="560" y1="92" x2="1126" y2="92"/>
+<line class="sk" pathLength="1" x1="560" y1="124" x2="973" y2="124"/>
+<circle class="ln-2" pathLength="1" cx="578" cy="854" r="16"/>
+<line class="sk" pathLength="1" x1="610" y1="846" x2="728" y2="846"/>
+<line class="sk" pathLength="1" x1="610" y1="870" x2="905" y2="870"/>
+<line class="sk-b" pathLength="1" x1="560" y1="926" x2="1044" y2="926"/>
+<line class="sk-b" pathLength="1" x1="560" y1="970" x2="885" y2="970"/>
+<line class="sk" pathLength="1" x1="560" y1="1018" x2="1103" y2="1018"/>
+<line class="sk" pathLength="1" x1="560" y1="1050" x2="949" y2="1050"/>
+</g>
+<g class="nd nd-3">
+<rect class="lit" x="530" y="186" width="650" height="594" rx="6"/>
+<circle class="lit-ln" pathLength="1" cx="582" cy="238" r="22"/>
+<text class="t-real t-b" x="582" y="246" style="--fs:22px" text-anchor="middle">V</text>
+<text class="t-real" x="622" y="231" style="--fs:25px">Vaš obrt</text>
+<text class="t-real t-dim2" x="622" y="263" style="--fs:22px">vasobrt.hr › hitne-intervencije</text>
+<text class="t-real t-h" x="560" y="348" style="--fs:50px">Hitne intervencije</text>
+<text class="t-real t-h" x="560" y="408" style="--fs:50px">vodoinstalatera</text>
+<text class="t-real t-h" x="560" y="468" style="--fs:50px">u Osijeku · 0–24</text>
+<text class="t-real t-p" x="560" y="528" style="--fs:26px">Curi bojler ili je pukla cijev? Dolazimo isti</text>
+<text class="t-real t-p" x="560" y="564" style="--fs:26px">dan, a cijenu izlaska znate unaprijed.</text>
+<path class="lit-star" d="M573 600L576.2 607.6L584.4 608.3L578.1 613.7L580.1 621.7L573 617.4L565.9 621.7L567.9 613.7L561.6 608.3L569.8 607.6Z"/>
+<path class="lit-star" d="M604 600L607.2 607.6L615.4 608.3L609.1 613.7L611.1 621.7L604 617.4L596.9 621.7L598.9 613.7L592.6 608.3L600.8 607.6Z"/>
+<path class="lit-star" d="M635 600L638.2 607.6L646.4 608.3L640.1 613.7L642.1 621.7L635 617.4L627.9 621.7L629.9 613.7L623.6 608.3L631.8 607.6Z"/>
+<path class="lit-star" d="M666 600L669.2 607.6L677.4 608.3L671.1 613.7L673.1 621.7L666 617.4L658.9 621.7L660.9 613.7L654.6 608.3L662.8 607.6Z"/>
+<path class="lit-star" d="M697 600L700.2 607.6L708.4 608.3L702.1 613.7L704.1 621.7L697 617.4L689.9 621.7L691.9 613.7L685.6 608.3L693.8 607.6Z"/>
+<line class="sk" pathLength="1" x1="736" y1="612" x2="890" y2="612"/>
+<rect class="lit-ln" pathLength="1" x="560" y="654" width="184" height="58" rx="29"/>
+<text class="t-real t-dim2" x="652" y="692" style="--fs:23px" text-anchor="middle">Web stranica</text>
+<rect class="lit-ln" pathLength="1" x="760" y="654" width="124" height="58" rx="29"/>
+<text class="t-real t-dim2" x="822" y="692" style="--fs:23px" text-anchor="middle">Upute</text>
+</g>
+<g class="nd nd-4">
+<rect class="lamp-fill" pathLength="1" x="900" y="654" width="150" height="58" rx="29"/>
+<text class="t-real t-lamp" x="975" y="692" style="--fs:23px" text-anchor="middle">Nazovi</text>
+</g>
+<g class="nd nd-6">
+<g class="call c02 c-wide c-a85">
+<circle class="dot" cx="612" cy="256" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="612,256 496,256"/>
+<text class="t-call" text-anchor="end" x="488" y="261"><tspan class="t-n">02</tspan>  ADRESA</text>
+<text class="t-web" text-anchor="end" x="488" y="281">→ Struktura</text>
+</g>
+<g class="call c01 c-wide c-a85">
+<circle class="dot" cx="552" cy="390" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="552,390 496,390"/>
+<text class="t-call" text-anchor="end" x="488" y="395"><tspan class="t-n">01</tspan>  NASLOV</text>
+<text class="t-web" text-anchor="end" x="488" y="415">→ Sadržaj</text>
+</g>
+<g class="call c03 c-wide c-a85">
+<circle class="dot" cx="552" cy="612" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="552,612 496,612"/>
+<text class="t-call" text-anchor="end" x="488" y="617"><tspan class="t-n">03</tspan>  OCJENA</text>
+<text class="t-web" text-anchor="end" x="488" y="637">→ Schema</text>
+</g>
+<g class="call lamp">
+<circle class="halo" cx="975" cy="683" r="50"/>
+<circle class="dot" cx="975" cy="683" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="975,691 975,773 717,773"/>
+<text class="t-call" x="717" y="741">08:12 · POZIV</text>
+<text class="t-web" x="717" y="762">„hitni vodoinstalater“</text>
+</g>
+</g>
+<g class="nd nd-6 tb">
+<rect class="tb-bg" x="732" y="836" width="440" height="112"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
+<text class="t-tb" x="744" y="857">ZAEC · USLUGE</text>
+<text class="t-tb" x="1054" y="857">U.04</text>
+<text class="t-tb-b" x="744" y="894">SEO</text>
+<text class="t-tb" x="744" y="914">REZULTAT PRETRAGE · UVEĆANO</text>
+<text class="t-tb" x="744" y="943">WEB · SADRŽAJ · STRUKTURA · SCHEMA</text>
+</g>
+</svg>

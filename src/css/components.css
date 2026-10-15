@@ -9,8 +9,8 @@
   .cfg-q { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 0; margin-bottom: 14px; float: left; }
   .cfg-q + * { clear: both; }
   .cfg-q-t { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; font-variation-settings: 'wdth' 106; }
-  .cfg-n { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; padding: 4px 7px; border-radius: 4px; background: var(--abyss-3); color: var(--abyss-fg); letter-spacing: 0.05em; }
-  .cfg-ans { justify-self: end; max-width: 26ch; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--signal-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cfg-n { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; padding: 4px 7px; border-radius: 4px; background: var(--abyss-3); color: var(--abyss-fg); letter-spacing: 0.05em; }
+  .cfg-ans { justify-self: end; max-width: 26ch; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--signal-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cfg-ans.is-empty { color: var(--muted); }
   .cfg-hint { clear: both; margin: -6px 0 14px; color: var(--muted); font-size: 0.9rem; line-height: 1.45; max-width: 60ch; }
   .cfg-row { display: grid; grid-template-columns: 1fr; }
@@ -79,7 +79,7 @@
   .cfg-sum li.is-empty span { color: var(--abyss-muted); }
   .cfg-fix { margin-left: 6px; padding: 0; border: 0; background: none; color: #9fb4ff; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
   .cfg-fix:hover { color: #fff; }
-  .cfg-urgent { display: flex; gap: 8px; align-items: center; color: var(--amber); font-size: 0.86rem; }
+  .cfg-urgent { display: flex; gap: 8px; align-items: center; color: var(--abyss-fg); font-size: 0.86rem; }
   .cfg-send { width: 100%; --btn-fill: #fff; --btn-fill-fg: var(--ink); }
   .cfg-why { font-size: 0.82rem; color: var(--abyss-muted); line-height: 1.5; }
   .cfg-why b { color: #c9cfe4; }

@@ -133,6 +133,7 @@ function init(form) {
     }
     btn.classList.add('is-loading');
     btn.disabled = true;
+    form.setAttribute('aria-busy', 'true');
     setStatus('Šaljemo…');
     try {
       const { res, json } = await send();
@@ -168,6 +169,7 @@ function init(form) {
     } finally {
       btn.classList.remove('is-loading');
       btn.disabled = false;
+      form.removeAttribute('aria-busy');
     }
   });
 

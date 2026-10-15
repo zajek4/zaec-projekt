@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="400 160 800 600" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.sk,.sk-b{stroke:var(--l);stroke-opacity:.2;stroke-width:8;stroke-linecap:round;fill:none}.sk-b{stroke-width:13;stroke-opacity:.28}
+.lit{fill:rgba(255,207,138,.06);stroke:var(--lamp);stroke-opacity:.45;stroke-width:2.4}.lit-ln{stroke:var(--lamp);stroke-opacity:.7;stroke-width:2.8;fill:none}.lit-star{fill:var(--lamp);fill-opacity:.85;stroke:none}
+.map-w{fill:rgba(227,233,255,.07);stroke:var(--l);stroke-opacity:.45;stroke-width:2}.map-0,.map-1,.map-2{stroke:var(--l);fill:none;stroke-linejoin:round}.map-0{stroke-opacity:.55;stroke-width:3.6}.map-1{stroke-opacity:.4;stroke-width:2.6}.map-2{stroke-opacity:.16;stroke-width:1.6}
+.win{fill:var(--sheet);stroke:var(--l);stroke-opacity:.55;stroke-width:2.2}.glow{stroke:none}.spill{fill:var(--lamp);fill-opacity:.14;stroke:none}.ln-glass{stroke:var(--l);stroke-opacity:.5;stroke-width:2.4}
+.sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
+.say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="gridU8t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU8t)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M-20 196L1220 196M-20 574L1220 574M-20 664L1220 664"/>
+</g>
+<g class="nd nd-2">
+<line class="ln-2" pathLength="1" x1="610" y1="116" x2="610" y2="196"/>
+<line class="ln-2" pathLength="1" x1="820" y1="116" x2="820" y2="196"/>
+<line class="ln-2" pathLength="1" x1="1030" y1="116" x2="1030" y2="196"/>
+<line class="cut-w" pathLength="1" x1="574" y1="196" x2="1066" y2="196"/>
+<line class="ln-beyond" x1="-20" y1="196" x2="566" y2="196"/>
+<line class="ln-2" pathLength="1" x1="820" y1="196" x2="820" y2="262"/>
+<rect class="ln-2" pathLength="1" x="760" y="262" width="120" height="88"/>
+<line class="ln-h" x1="760" y1="350" x2="880" y2="262"/>
+<line class="ln-2" pathLength="1" x1="820" y1="350" x2="820" y2="418"/>
+<path class="ln-2" pathLength="1" d="M812 418H828M820 488L804 422"/>
+<line class="ln-2" pathLength="1" x1="820" y1="488" x2="820" y2="528"/>
+<circle class="ln-2" pathLength="1" cx="820" cy="574" r="46"/>
+<line class="ln-2" pathLength="1" x1="820" y1="620" x2="820" y2="718"/>
+<line class="ln-2" pathLength="1" x1="648" y1="664" x2="992" y2="664"/>
+<circle class="ln-2" pathLength="1" cx="640" cy="664" r="8"/>
+<circle class="ln-2" pathLength="1" cx="1000" cy="664" r="8"/>
+<circle class="nib" cx="610" cy="196" r="3"/>
+<circle class="nib" cx="820" cy="196" r="3"/>
+<circle class="nib" cx="1030" cy="196" r="3"/>
+<circle class="nib" cx="820" cy="196" r="3"/>
+<circle class="nib" cx="820" cy="664" r="3"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="574" y="426" width="150" height="60" rx="6"/>
+<line class="sk" pathLength="1" x1="592" y1="446" x2="690" y2="446"/>
+<line class="sk" pathLength="1" x1="592" y1="466" x2="640" y2="466"/>
+<rect class="ln-2" pathLength="1" x="660" y="458" width="48" height="18" rx="9"/>
+<line class="ln-3" x1="724" y1="456" x2="812" y2="456"/>
+</g>
+<g class="nd nd-4">
+<text class="t-dim" x="610" y="80" text-anchor="middle">KLIK NA POZIV</text>
+<text class="t-dim" x="820" y="80" text-anchor="middle">POSLANA FORMA</text>
+<text class="t-dim" x="1030" y="80" text-anchor="middle">KUPNJA</text>
+<text class="t-dim" x="925" y="184" text-anchor="middle">DATALAYER</text>
+<text class="t-dim" x="574" y="412">TRAKA PRIVOLE</text>
+<text class="t-dim" x="820" y="580" text-anchor="middle">GA4</text>
+<text class="t-dim" x="640" y="642" text-anchor="middle">OGLASI</text>
+<text class="t-dim" x="1000" y="642" text-anchor="middle">IZVJEŠTAJ</text>
+<circle class="lamp-fill" pathLength="1" cx="820" cy="738" r="20"/>
+<path class="lamp-ln" pathLength="1" d="M806 724L834 752M806 752L834 724"/>
+<line class="say-t" x1="860" y1="737" x2="1068" y2="737" style="stroke-width:16"/>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<circle class="halo" cx="820" cy="738" r="40"/>
+<circle class="dot" cx="820" cy="738" r="3.5"/>
+</g>
+</g>
+</svg>

@@ -83,10 +83,10 @@ add_action( 'wp_head', 'zaec_hero_preload', 2 );
  * Nacrt djelatnosti (design/02): oba pogleda lista kao inline SVG (stilovi i fontovi stranice moraju djelovati
  * na tekst u crtežu, zato ne <img>). Generira ih tools/art/nacrt/build.mjs. Nema lista → null.
  */
-/** Sličica lista nacrta (kazalo na hubu): URL ili ''. */
+/** Sličica lista (arak na hubu): stranica čiji list ima sličicu (<slug>-t.svg); URL ili ''. Slug kao u zaec_nacrt(). */
 function zaec_nacrt_thumb( $l ) {
-	$slug = (string) ( $l['slug'] ?? '' );
-	if ( '' === $slug || 'industry' !== ( $l['type'] ?? '' ) ) {
+	$slug = (string) ( $l['slug'] ?? basename( (string) ( $l['key'] ?? '' ) ) );
+	if ( '' === $slug ) {
 		return '';
 	}
 	$file = 'nacrt/' . sanitize_file_name( $slug ) . '-t.svg';
@@ -148,7 +148,7 @@ function zaec_hero_ctas( $cta, $href ) {
 	echo '<div class="phero-cta">';
 	echo zaec_button( $cta[0], $href, 'signal', array( 'magnetic' => true, 'track' => 'cta_subpage' ) ); // phpcs:ignore
 	if ( false === strpos( (string) $cta[1], 'kontakt' ) ) {
-		echo '<a class="btn btn--ghost" href="' . esc_url( zaec_inquiry_url() ) . '" data-track="cta_inquiry">' . zaec_icon( 'letter', 18 ) . ' Pošaljite upit</a>'; // phpcs:ignore
+		echo '<a class="btn btn--ghost" href="' . esc_url( zaec_inquiry_url() ) . '" data-track="cta_inquiry">Pošaljite upit</a>'; // phpcs:ignore
 	}
 	echo '</div>';
 }
