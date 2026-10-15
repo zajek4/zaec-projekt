@@ -19,7 +19,7 @@ function zaec_org_id() {
 /** Opis trenutne stranice. */
 function zaec_meta_description() {
 	if ( is_front_page() ) {
-		return 'Izrada web stranica, webshopova i landing stranica koje donose upite. SEO, lokalni SEO, AI vidljivost i GA4 praćenje za obrte i tvrtke — Osijek i cijela Hrvatska. Fiksna cijena u pisanoj ponudi.';
+		return 'Web studio iz Osijeka: web stranice, webshopovi i SEO koji donose upite, uz mjerenje poziva i upita. Fiksna cijena u pisanoj ponudi, za tvrtke diljem Hrvatske.';
 	}
 	$l = zaec_get_landing();
 	if ( $l && ! empty( $l['description'] ) ) {
