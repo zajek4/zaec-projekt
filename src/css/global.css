@@ -37,7 +37,7 @@
   --lamp: #ffcf8a;
 
   --font-sans: 'Archivo Variable', 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Instrument Serif', 'Times New Roman', Georgia, serif;
+  --font-serif: 'Instrument Serif', 'Instrument Serif Fallback', 'Instrument Serif Fallback Noto', 'Times New Roman', Georgia, serif;
   --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   --gutter: clamp(16px, 4.2vw, 64px);
