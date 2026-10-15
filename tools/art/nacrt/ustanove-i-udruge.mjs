@@ -1,132 +1,161 @@
-// LIST 10 · Ustanove i udruge — tlocrt prizemlja ustanove, M 1:100 (32 u = 1 m). Predvorje kao kralježnica od ulaza
-// do dvorišnog zida, info pult uz ulaz, oglasna ploča, sobe lijevo, dvorana s podijem i arhiva desno; ispred ulaza
-// podest sa stubama i rampa nagiba 5 %. Svjetlo: info pult u vrijeme upisa — "upis u vrtić + grad".
+// LIST 10 · Ustanove i udruge — ulaz ustanove noću (tools/art/nacrt/izlog.mjs). Barokna jednokatnica kao u Tvrđi:
+// visoki krov s krovnim prozorima, srednji rizalit s lezenama, trokutnim zabatom i natpisom u frizu, prozori s uškama.
+// Svijetli predvorje: kroz lijevi prozor oglasna ploča s pribodenim listovima, kroz kameni portal s lukom fenjer i
+// unutarnja staklena vrata, kroz desni prozor info pult. Pred portalom podest i dvije stube, uz njih rampa s
+// rukohvatima. Svjetlo: oglasna ploča — u rujnu su upisi: „upis u vrtić + grad“.
+import { G, street, shop, marker, legend, glowDefs } from './izlog.mjs';
+
 export const meta = {
   slug: 'ustanove-i-udruge',
   list: '10',
   name: 'Ustanove i udruge',
-  view: 'TLOCRT PRIZEMLJA · M 1:100',
+  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  view: 'ULAZ USTANOVE NOĆU',
   web: 'NOVOSTI · DOKUMENTI · UPIT',
-  title: 'Tlocrt prizemlja ustanove s rampom, mjerilo 1:100',
-  desc: 'Tehnički crtež prizemlja ustanove: ulaz s podestom, stubama i rampom, predvorje s info pultom i oglasnom pločom, sobe, dvorana s podijem i arhiva. Oznake 01–04 povezuju dijelove ustanove s dijelovima weba ustanove ili udruge. Info pult uz ulaz označen je toplim svjetlom.',
+  title: 'Ulaz ustanove noću u baroknoj zgradi',
+  desc: 'Crtež pročelja barokne jednokatnice noću: visoki krov s krovnim prozorima, srednji rizalit s trokutnim zabatom i natpisom Ustanova u frizu. Osvijetljeno je predvorje: kroz lijevi prozor vidi se oglasna ploča s pribodenim listovima, kroz kameni portal s lukom fenjer i unutarnja staklena vrata, a kroz desni prozor info pult. Pred portalom su podest i dvije stube, a uz njih rampa s rukohvatima. Legenda povezuje oglasnu ploču s novostima i projektima, rampu s pristupačnošću, a pult s dokumentima. Oglasna ploča označena je toplim svjetlom.',
   lamp: { time: 'RUJAN · UPISI', search: 'upis u vrtić + grad', searchShort: 'upis u vrtić' },
-  mvb: '450 124 680 562',
-  mobileCallout: 'c04', // mobilni izrez: svjetlo na pultu traži izrez niže, iznad zgrade ostaje mjesto za ARHIVU
+  mvb: '400 300 680 562',
+  mobileCallout: null,
+  defs: glowDefs,
 };
 
+/** Barokni prozor: staklo s križem, okvir s uškama, segmentni nadprozornik i klupčica. */
+function baroque(b, x, y, w, h, { hood = true } = {}) {
+  b.rect(x, y, w, h, 'win');
+  b.line(x + w / 2, y, x + w / 2, y + h, 'ln-h');
+  b.line(x, y + h * 0.32, x + w, y + h * 0.32, 'ln-h');
+  const [fx, fy, fw] = [x - 8, y - 8, w + 16];
+  b.path([[fx, y + h + 4], [fx, fy + 16], [fx - 5, fy + 16], [fx - 5, fy], [fx + fw + 5, fy], [fx + fw + 5, fy + 16], [fx + fw, fy + 16], [fx + fw, y + h + 4]], 'ln-2', false);
+  if (hood) b.d(`M${fx - 8} ${fy - 6}Q${x + w / 2} ${fy - 26} ${fx + fw + 8} ${fy - 6}`, 'ln-2');
+  b.rect(x - 12, y + h + 4, w + 24, 6, 'ln-2');
+}
+
 export function draw(b) {
-  const s = 32;
-  const X = (m) => 450 + m * s;
-  const Y = (m) => 222 + m * s;
-  const R = (x0, y0, x1, y1, cls, attrs = '') => b.rect(X(x0), Y(y0), (x1 - x0) * s, (y1 - y0) * s, cls, attrs);
-  const L = (x0, y0, x1, y1, cls) => b.line(X(x0), Y(y0), X(x1), Y(y1), cls);
-  const segs = (a0, a1, gaps) => {
-    const out = [];
-    let a = a0;
-    for (const [g0, g1] of gaps) {
-      out.push([a, g0]);
-      a = g1;
-    }
-    out.push([a, a1]);
-    return out;
-  };
-  const win = (x0, y0, x1, y1) => {
-    R(x0, y0, x1, y1, 'ln-2');
-    if (x1 - x0 > y1 - y0) L(x0, (y0 + y1) / 2, x1, (y0 + y1) / 2, 'ln-h');
-    else L((x0 + x1) / 2, y0, (x0 + x1) / 2, y1, 'ln-h');
-  };
-  const door = (hinge, leaf, from) => {
-    L(hinge[0], hinge[1], leaf[0], leaf[1], 'ln-2');
-    const r = Math.hypot(leaf[0] - hinge[0], leaf[1] - hinge[1]) * s;
-    const cw = (from[0] - hinge[0]) * (leaf[1] - hinge[1]) - (from[1] - hinge[1]) * (leaf[0] - hinge[0]) > 0 ? 1 : 0;
-    b.d(`M${X(from[0])} ${Y(from[1])} A${r} ${r} 0 0 ${cw} ${X(leaf[0])} ${Y(leaf[1])}`, 'ln-h', ' fill="none"');
-  };
-  const TOP = [[1, 4], [6, 8.2], [10, 13]];
-  const BOT = [[1, 4], [6.2, 8], [10, 13.5]];
-  const RIGHT = [[5, 10.5]];
-  const P = { x0: 7.4, x1: 8.8, y0: 8.6, y1: 9.4 }; // info pult
+  const [L, R] = [230, 1090]; // zgrada
+  const C = 660; // os portala i rizalita
+  const [RL, RR] = [470, 850]; // rizalit
+  const EV = 292; // vrh vijenca
+  const SC = 540; // vijenac između katova
+  const LAND = 774; // podest pred portalom
+  const [PW, PS] = [56, 694]; // polumjer luka portala, visina pete luka
+  const [GY, GH] = [612, 88]; // prozori prizemlja
+  const [r0, r1] = [C + PW + 46, 1040]; // rampa: gornji i donji kraj
 
-  // 1 osi i granica
+  // 1 ulica i svjetlo iz predvorja
   b.g('nd nd-1', () => {
-    L(5.08, -0.8, 5.08, 15, 'ln-con');
-    L(9.08, -0.8, 9.08, 15, 'ln-con');
-    L(-0.8, 4.08, 16.8, 4.08, 'ln-con');
+    street(b, [[508, 572], [C - PW + 4, C + PW - 4], [748, 812]]);
   });
 
-  // 2 vanjski i nosivi zidovi
+  // 2 pročelja: susjedi, krov s krovnim prozorima, zabat rizalita, kat s prozorima s uškama, tamni prozori prizemlja
   b.g('nd nd-2', () => {
-    for (const [a, c] of segs(-0.3, 16.3, TOP)) R(a, -0.3, c, 0, 'wall');
-    for (const [a, c] of segs(-0.3, 16.3, BOT)) R(a, 12, c, 12.3, 'wall');
-    R(-0.3, 0, 0, 12, 'wall');
-    for (const [a, c] of segs(0, 12, RIGHT)) R(16, a, 16.3, c, 'wall');
-    for (const [a, c] of segs(0, 12, [[1.6, 2.6], [8.4, 9.4]])) R(5, a, 5.15, c, 'wall');
-    for (const [a, c] of segs(0, 12, [[1.4, 2.6], [9.8, 11.2]])) R(9, a, 9.15, c, 'wall');
-    R(0, 5.6, 5, 5.75, 'wall');
-    for (const [a, c] of segs(9.15, 16, [[12.6, 13.6]])) R(a, 4, c, 4.15, 'wall');
-    R(12, 0, 12.15, 4, 'wall');
+    // susjed lijevo: niža kuća s vijencem
+    b.rect(-200, 340, L - 4 + 200, 12, 'ln-2');
+    for (const x of [44, 144]) {
+      baroque(b, x, 400, 56, 120, { hood: false });
+      baroque(b, x, GY, 56, 110, { hood: false });
+    }
+    // susjed desno: prizemnica s krovom
+    b.path([[R + 14, G], [R + 14, 480], [1240, 480]], 'ln-2', false);
+    b.path([[R + 14, 480], [1160, 420], [1240, 420]], 'ln-2', false);
+    // krov: četiri vode, dva krovna prozora
+    const ridge = 214;
+    b.path([[L - 6, EV - 18], [L + 84, ridge], [R - 84, ridge], [R + 6, EV - 18]], 'ln-2', false);
+    for (const x of [370, 950]) {
+      b.rect(x - 22, 230, 44, 44, 'mask');
+      b.d(`M${x - 22} 274V250Q${x} 226 ${x + 22} 250V274`, 'ln-2');
+      b.d(`M${x - 14} 274V254Q${x} 240 ${x + 14} 254V274Z`, 'win');
+    }
+    // vijenac, zidovi, kvadri na uglovima
+    b.rect(L - 14, EV - 18, R - L + 28, 18, 'ln-2');
+    b.line(L - 6, EV + 6, R + 6, EV + 6, 'ln-h');
+    b.path([[L, G], [L, EV], [R, EV], [R, G]], 'ln-2', false);
+    for (let y = SC + 10, i = 0; y < G - 4; y += 26, i++) {
+      const w = i % 2 ? 22 : 34;
+      b.rect(L, y, w, Math.min(26, G - y), 'ln-h');
+      b.rect(R - w, y, w, Math.min(26, G - y), 'ln-h');
+    }
+    // rizalit: lezene, trokutni zabat s okulusom
+    for (const x of [RL, RR - 18]) b.rect(x, EV, 18, G - EV, 'ln-2');
+    b.path([[RL - 14, EV - 18], [C, EV - 92], [RR + 14, EV - 18]], 'ln-2');
+    b.path([[RL + 12, EV - 24], [C, EV - 80], [RR - 12, EV - 24]], 'ln-h');
+    b.P(`<ellipse class="win" cx="${C}" cy="${EV - 46}" rx="24" ry="14"/>`);
+    // kat: prozori s uškama (krila po dva, rizalit tri)
+    for (const x of [270, 370, 515, C - 30, 745, 890, 990]) baroque(b, x, 384, 60, 124);
+    // vijenac između katova
+    b.rect(L - 6, SC, R - L + 12, 10, 'ln-2');
+    // prizemlje krila: tamni prozori s rešetkom
+    for (const x of [272, 372, 892, 992]) {
+      b.rect(x, GY, 56, GH, 'win');
+      for (let xx = x + 11; xx < x + 56; xx += 11) b.line(xx, GY, xx, GY + GH, 'ln-h');
+      b.rect(x - 6, GY - 6, 68, GH + 6, 'ln-2');
+      b.rect(x - 12, GY + GH, 80, 6, 'ln-2');
+    }
+    // portal: arhivolt, impost, zaglavni kamen
+    const ar = PW + 16;
+    b.d(`M${C - ar} ${LAND}V${PS}A${ar} ${ar} 0 0 1 ${C + ar} ${PS}V${LAND}`, 'ln-2');
+    b.path([[C - 12, PS - ar - 10], [C + 12, PS - ar - 10], [C + 8, PS - PW + 6], [C - 8, PS - PW + 6]], 'mask');
+    b.path([[C - 12, PS - ar - 10], [C + 12, PS - ar - 10], [C + 8, PS - PW + 6], [C - 8, PS - PW + 6]], 'ln-2');
+    for (const s of [-1, 1]) b.rect(s < 0 ? C - ar - 4 : C + PW, PS - 6, 20, 6, 'ln-2');
+    // kameni okviri osvijetljenih prozora
+    for (const x of [508, 748]) {
+      b.rect(x - 6, GY - 6, 76, GH + 6, 'ln-2');
+      b.rect(x - 12, GY + GH, 88, 6, 'ln-2');
+    }
   });
 
-  // 3 prozori, vrata, podest, stube i rampa
+  // 3 natpis u frizu, osvijetljeno predvorje (prozor, portal, prozor); podest, stube i rampa
   b.g('nd nd-3', () => {
-    for (const [a, c] of TOP) win(a, -0.3, c, 0);
-    for (const [a, c] of [[1, 4], [10, 13.5]]) win(a, 12, c, 12.3);
-    for (const [a, c] of RIGHT) win(16, a, 16.3, c);
-    door([6.2, 12], [6.2, 11.1], [7.1, 12]);
-    door([8, 12], [8, 11.1], [7.1, 12]);
-    door([5, 2.6], [4, 2.6], [5, 1.6]);
-    door([5, 9.4], [4, 9.4], [5, 8.4]);
-    door([9, 2.6], [8, 2.6], [9, 1.4]);
-    door([9.15, 11.2], [10.55, 11.2], [9.15, 9.8]);
-    door([13.6, 4.15], [13.6, 5.15], [12.6, 4.15]);
-    // podest, dvije stube po 13 cm, rampa 5 % uz pročelje s rukohvatima (≈ 5,1 m × 5 % ≈ 26 cm, ista visina)
-    R(5.7, 12.3, 8.5, 13.8, 'ln-2');
-    for (const y of [14.1, 14.4]) L(5.7, y, 8.5, y, 'ln-2');
-    L(5.7, 13.8, 5.7, 14.4, 'ln-2');
-    L(8.5, 13.8, 8.5, 14.4, 'ln-2');
-    R(0.6, 12.45, 5.7, 13.8, 'ln-2');
-    for (const y of [12.6, 13.65]) L(0.4, y, 5.7, y, 'ln-h');
-    b.d(`M${X(5.2)} ${Y(13.12)} H${X(2.3)} m8 -5 l-8 5 l8 5`, 'ln-2');
+    b.rect(RL + 40, EV + 14, RR - RL - 80, 40, 'lit');
+    b.say(C, EV + 44, 'USTANOVA', 26, 't-real t-b t-sign', ' text-anchor="middle"');
+    // oglasna ploča s pribodenim listovima
+    shop(b, 508, GY, 64, GH, 0, () => {
+      b.rect(514, GY + 44, 52, 40, 'sil');
+      [[518, 3, 13, 16], [534, 6, 12, 12], [549, 2, 13, 17], [519, 23, 15, 13], [538, 22, 11, 15], [552, 24, 11, 12]].forEach(([x, dy, w, h]) => {
+        b.rect(x, GY + 46 + dy, w, h, '', ' fill="#fff3dc"');
+        b.circle(x + w / 2, GY + 48 + dy, 1.6, 'sil');
+      });
+    });
+    // portal: fenjer, unutarnja staklena vrata
+    const arch = `M${C - PW} ${LAND}V${PS}A${PW} ${PW} 0 0 1 ${C + PW} ${PS}V${LAND}Z`;
+    b.d(arch, 'glow', ` fill="${b.url('gl')}"`);
+    b.line(C, PS - PW, C, 664, 'sil-ln');
+    b.d(`M${C - 8} 664H${C + 8}L${C + 11} 671L${C + 6} 684H${C - 6}L${C - 11} 671Z`, 'sil');
+    b.rect(C - 32, 700, 64, LAND - 700, 'sil-ln');
+    b.line(C, 700, C, LAND, 'sil-ln');
+    b.line(C - 32, 726, C + 32, 726, 'sil-ln');
+    b.d(arch, 'cut-w');
+    // info pult sa zaštitnim staklom i letcima
+    shop(b, 748, GY, 64, GH, 0, () => {
+      b.rect(752, GY + 54, 56, 6, 'sil');
+      b.rect(756, GY + 60, 48, GH - 60, 'sil');
+      b.rect(760, GY + 22, 40, 32, 'sil-ln');
+      b.rect(786, GY + 42, 12, 12, 'sil');
+    });
+    // podest i dvije stube
+    b.rect(C - PW - 40, LAND, r0 - (C - PW - 40), 13, 'ln-2');
+    b.rect(C - PW - 52, LAND + 13, r0 - (C - PW - 52) - 8, G - LAND - 13, 'ln-2');
+    // rampa: kosina, dva rukohvata sa stupićima i vodoravnim produžecima
+    b.path([[r0, LAND], [r1, G], [r0, G]], 'ln-2');
+    const rail = (dy) => [[r0 - 20, LAND - dy], [r0, LAND - dy], [r1, G - dy], [r1 + 24, G - dy]];
+    b.poly(rail(56), 'ln-2');
+    b.poly(rail(26), 'ln-h');
+    for (let x = r0 + 4; x <= r1; x += 72) {
+      const y = LAND + ((x - r0) / (r1 - r0)) * (G - LAND);
+      b.line(x, y, x, y - 56, 'ln-2');
+    }
   });
 
-  // 4 oprema: info pult, oglasna ploča, klupe, dvorana s podijem, police arhive
-  b.g('nd nd-4', () => {
-    R(5.15, 2.9, 5.32, 5.4, 'cut', ` fill="${b.url('dots')}"`);
-    for (const y of [6.4, 7.6]) R(5.25, y, 5.75, y + 0.9, 'ln-2');
-    R(14.2, 5.6, 16, 11, 'ln-2');
-    for (const y of [5.9, 6.2]) L(13.9, y, 14.2, y, 'ln-2');
-    for (let x = 9.9; x < 13.6; x += 0.85) for (let y = 5.6; y < 11.4; y += 0.8) R(x, y, x + 0.42, y + 0.4, 'ln-h', ' fill="none"');
-    for (const y of [0.5, 1.5, 2.5]) R(12.6, y, 15.6, y + 0.45, 'ln-2');
-    // sobe: stolovi
-    for (const [cx, cy] of [[1.6, 2.4], [3.4, 2.4], [1.6, 8.6], [3.4, 8.6]]) R(cx - 0.6, cy - 0.4, cx + 0.6, cy + 0.4, 'ln-h', ' fill="none"');
-  });
-
-  // 5 nazivi i kota
-  b.g('nd nd-5', () => {
-    b.text(X(2.5), Y(4.4), 'SOBA 1', 't-dim', ' text-anchor="middle"');
-    if (b.v !== 'm') b.text(X(2.5), Y(10.4), 'SOBA 2', 't-dim', ' text-anchor="middle"'); // mobilni: u zatamnjenju kadra
-    b.text(X(11.6), Y(5.2), 'DVORANA', 't-dim', ' text-anchor="middle"');
-    b.text(X(15.1), Y(8.3) + 5, 'PODIJ', 't-dim', ' text-anchor="middle"');
-    if (b.v !== 'm') b.text(X(1.35), Y(13.12) + 5, '5 %', 't-dim', ' text-anchor="middle"');
-    if (b.v !== 'm') b.dim([X(16.3) + 22, Y(-0.3)], [X(16.3) + 22, Y(12.3)], '12,60', { side: -12, ext: [[[X(16.3), Y(-0.3)], [X(16.3) + 28, Y(-0.3)]], [[X(16.3), Y(12.3)], [X(16.3) + 28, Y(12.3)]]] });
-  });
-
-  // ključ: čestica s ulicom i ulazom
-  b.key(() => {
-    const [kx, ky] = [962, 42];
-    b.rect(kx, ky, 150, 66, 'ln-h', ' fill="none"');
-    b.rect(kx + 30, ky + 10, 70, 46, 'ln-2', ' style="fill:rgba(227,233,255,.08)"');
-    b.line(kx - 6, ky + 76, kx + 156, ky + 76, 'ln-2');
-    b.d(`M${kx + 62} ${ky + 72} V${ky + 60} m-5 7 l5 -7 l5 7`, 'ln-2');
-    b.text(kx, ky + 100, 'KLJUČ · SITUACIJA', 't-small');
-  });
-
-  // 6 oznake i svjetlo: info pult
+  // 6 legenda, brojevi i svjetlo
   b.g('nd nd-6', () => {
-    b.callout('01', [X(7.1), Y(12.15)], [[X(7.1), 740], [X(7.1) + 12, 740]], 'ULAZ', '→ Ulaz za svakog posjetitelja');
-    b.callout('02', [X(5.32), Y(4.1)], [[X(5.32), 100], [X(5.32) + 12, 100]], 'OGLASNA PLOČA', '→ Novosti i projekti');
-    b.callout('03', [X(3), Y(13.4)], [[X(3), 800], [X(3) + 12, 800]], 'RAMPA', '→ Pristupačnost');
-    b.callout('04', [X(15.6), Y(1.5) + 7], [[1000, Y(1.5) + 7]], 'ARHIVA', '→ Dokumenti', false, { p: [[949, 165]], end: true });
-    b.path([[X(P.x0), Y(P.y0)], [X(P.x1), Y(P.y0)], [X(P.x1), Y(P.y1)], [X(P.x0 + 0.4), Y(P.y1)], [X(P.x0), Y(P.y1 - 0.4)]], 'lamp-fill');
-    b.lamp({ at: [X((P.x0 + P.x1) / 2), Y((P.y0 + P.y1) / 2)], d: [725, 175, 'up'], m: [470, 190, 'up'] });
+    marker(b, '01', [540, GY - 6], 10, -10);
+    marker(b, '02', [r1, G - 56], 10, -10);
+    marker(b, '03', [780, GY - 6], 10, -10);
+    legend(b, 968, 44, [
+      ['01', 'OGLASNA PLOČA', '→ Novosti i projekti'],
+      ['02', 'RAMPA', '→ Pristupačnost'],
+      ['03', 'PULT', '→ Dokumenti'],
+    ]);
+    b.lamp({ at: [540, GY + 64], r: 38, d: [508, 878, 'down'], m: [470, 470, 'up'] });
   });
 }

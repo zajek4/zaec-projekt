@@ -60,10 +60,10 @@
 <line class="ln-dim" pathLength="1" x1="992" y1="655" x2="1000" y2="663"/>
 <text class="t-dim" text-anchor="middle" transform="translate(708 649) rotate(0)">9,00</text>
 </g>
-<text class="t-dim" x="543" y="288" text-anchor="middle">SOBA 1</text>
-<text class="t-dim" x="543" y="308" text-anchor="middle">10,9 m²</text>
-<text class="t-dim" x="737" y="288" text-anchor="middle">SOBA 2</text>
-<text class="t-dim" x="737" y="308" text-anchor="middle">8,4 m²</text>
+<text class="t-dim" x="543" y="304" text-anchor="middle">SOBA 1</text>
+<text class="t-dim" x="543" y="324" text-anchor="middle">10,9 m²</text>
+<text class="t-dim" x="737" y="304" text-anchor="middle">SOBA 2</text>
+<text class="t-dim" x="737" y="324" text-anchor="middle">8,4 m²</text>
 <text class="t-dim" x="903" y="269" text-anchor="middle">KUPAONICA</text>
 <text class="t-dim" x="903" y="289" text-anchor="middle">6,4 m²</text>
 <text class="t-dim" x="903" y="464" text-anchor="middle">HODNIK</text>

@@ -510,7 +510,8 @@ function zaec_registry_industries() {
 			'service_type' => $d['service_type'] ?? 'Web stranica i lokalni SEO za ' . $d['name'],
 			'seo_title'    => $d['seo_title'],
 			'description'  => $d['description'],
-			'kicker'       => $sector['short'] === $d['label'] ? $d['label'] : $sector['short'] . ' · ' . $d['label'],
+			// sektor se ne ponavlja kad je naziv iz istog korijena („Trgovina · Trgovine“)
+			'kicker'       => 0 === strncasecmp( $sector['short'], $d['label'], 6 ) ? $d['label'] : $sector['short'] . ' · ' . $d['label'],
 			'h1'           => $d['h1'],
 			'lead'         => $d['lead'],
 			'short'        => $d['short'],

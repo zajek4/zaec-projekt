@@ -92,6 +92,7 @@
 <circle class="halo" cx="634" cy="700" r="40"/>
 <circle class="dot" cx="634" cy="700" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="634,692 634,534 452,534"/>
+<rect class="lamp-bg" x="446" y="471" width="231" height="57"/>
 <text class="t-call" x="452" y="491">UTORAK · 17:30</text>
 <text class="t-web" x="452" y="520">„frizer + grad“</text>
 </g>

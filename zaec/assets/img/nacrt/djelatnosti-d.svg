@@ -1,4 +1,4 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt00d nd00d"><title id="nt00d">Kazalo kompleta Nacrt djelatnosti</title><desc id="nd00d">Naslovni list kompleta tehničkih crteža, jedan list po djelatnosti: 01 Klima i grijanje, 02 Vodoinstalateri, 03 Električari, 04 Krovopokrivači, 05 Građevina i adaptacije, 06 Ugostiteljstvo i smještaj, 07 Trgovine i webshop, 08 Saloni ljepote, 09 Stručne usluge, 10 Ustanove i udruge. Posljednji red, vaša djelatnost, označen je toplim svjetlom.</desc>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt00d nd00d"><title id="nt00d">Kazalo listova djelatnosti</title><desc id="nd00d">Naslovni list kompleta, jedan list po djelatnosti (nacrt za zanate, pročelje noću za ostale): 01 Klima i grijanje, 02 Vodoinstalateri, 03 Električari, 04 Krovopokrivači, 05 Građevina i adaptacije, 06 Ugostiteljstvo i smještaj, 07 Trgovine i webshop, 08 Saloni ljepote, 09 Stručne usluge, 10 Ustanove i udruge. Posljednji red, vaša djelatnost, označen je toplim svjetlom.</desc>
 <defs><pattern id="grid00d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
 <rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid00d)"/>
 <g class="nd nd-1">
@@ -38,23 +38,23 @@
 <g class="nd nd-4">
 <text class="t-call" x="524" y="484" font-weight="700" style="font-size:22px">06</text>
 <text class="t-call" x="582" y="484" style="font-size:22px">Ugostiteljstvo i smještaj</text>
-<text class="t-dim" x="980" y="484" style="font-size:18px">SITUACIJA · 1:100</text>
+<text class="t-dim" x="980" y="484" style="font-size:18px">PROČELJE · NOĆU</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="502" x2="1192" y2="502"/>
 <text class="t-call" x="524" y="536" font-weight="700" style="font-size:22px">07</text>
 <text class="t-call" x="582" y="536" style="font-size:22px">Trgovine i webshop</text>
-<text class="t-dim" x="980" y="536" style="font-size:18px">POGLED · 1:50</text>
+<text class="t-dim" x="980" y="536" style="font-size:18px">PROČELJE · NOĆU</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="554" x2="1192" y2="554"/>
 <text class="t-call" x="524" y="588" font-weight="700" style="font-size:22px">08</text>
 <text class="t-call" x="582" y="588" style="font-size:22px">Saloni ljepote</text>
-<text class="t-dim" x="980" y="588" style="font-size:18px">TLOCRT · 1:50</text>
+<text class="t-dim" x="980" y="588" style="font-size:18px">PROČELJE · NOĆU</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="606" x2="1192" y2="606"/>
 <text class="t-call" x="524" y="640" font-weight="700" style="font-size:22px">09</text>
 <text class="t-call" x="582" y="640" style="font-size:22px">Stručne usluge</text>
-<text class="t-dim" x="980" y="640" style="font-size:18px">TLOCRT · 1:50</text>
+<text class="t-dim" x="980" y="640" style="font-size:18px">PROČELJE · NOĆU</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="658" x2="1192" y2="658"/>
 <text class="t-call" x="524" y="692" font-weight="700" style="font-size:22px">10</text>
 <text class="t-call" x="582" y="692" style="font-size:22px">Ustanove i udruge</text>
-<text class="t-dim" x="980" y="692" style="font-size:18px">TLOCRT · 1:100</text>
+<text class="t-dim" x="980" y="692" style="font-size:18px">PROČELJE · NOĆU</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="710" x2="1192" y2="710"/>
 </g>
 <g class="nd nd-6">
@@ -70,7 +70,7 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857" style="font-size:18px;letter-spacing:.02em">ZAEC · NACRT DJELATNOSTI</text>
+<text class="t-tb" x="744" y="857" style="font-size:18px;letter-spacing:.02em">ZAEC · DJELATNOSTI</text>
 <text class="t-tb" x="1054" y="857" style="font-size:18px;letter-spacing:.02em">LIST 00/10</text>
 <text class="t-tb-b" x="744" y="894">Djelatnosti</text>
 <text class="t-tb" x="744" y="914" style="font-size:18px;letter-spacing:.02em">KAZALO KOMPLETA</text>

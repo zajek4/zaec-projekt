@@ -4,6 +4,7 @@
 // Primjer obrta je izmišljen i bez brojki (bez ocjene, broja recenzija i pozicije).
 export const meta = {
   slug: 'seo',
+  tvb: '480 170 720 540', // sličica na hubu: cijeli predmet usluge, ne samo svjetlo
   list: 'U4',
   name: 'SEO',
   title: 'Rezultat pretrage za vodoinstalatera u Osijeku, uvećan kao detalj tehničkog crteža',
@@ -11,6 +12,7 @@ export const meta = {
   lamp: { time: '08:12 · POZIV', search: 'hitni vodoinstalater' },
   mvb: '520 362 680 562',
   mobileCallout: null,
+  index: 'REZULTAT GOOGLA', // stupac u kazalu usluga (≤ 15 znakova)
   tb: ['ZAEC · USLUGE', 'U.04', 'SEO', 'REZULTAT PRETRAGE · UVEĆANO', 'WEB · SADRŽAJ · STRUKTURA · SCHEMA'],
 };
 

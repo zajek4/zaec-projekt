@@ -1,0 +1,44 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="480 378 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="gridU8m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU8m)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M-20 574L1220 574M-20 664L1220 664"/>
+</g>
+<g class="nd nd-2">
+<line class="ln-2" pathLength="1" x1="820" y1="350" x2="820" y2="418"/>
+<path class="ln-2" pathLength="1" d="M812 418H828M820 488L804 422"/>
+<line class="ln-2" pathLength="1" x1="820" y1="488" x2="820" y2="528"/>
+<circle class="ln-2" pathLength="1" cx="820" cy="574" r="46"/>
+<line class="ln-2" pathLength="1" x1="820" y1="620" x2="820" y2="718"/>
+<line class="ln-2" pathLength="1" x1="648" y1="664" x2="992" y2="664"/>
+<circle class="ln-2" pathLength="1" cx="640" cy="664" r="8"/>
+<circle class="ln-2" pathLength="1" cx="1000" cy="664" r="8"/>
+<circle class="nib" cx="820" cy="664" r="3"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="574" y="426" width="150" height="60" rx="6"/>
+<line class="sk" pathLength="1" x1="592" y1="446" x2="690" y2="446"/>
+<line class="sk" pathLength="1" x1="592" y1="466" x2="640" y2="466"/>
+<rect class="ln-2" pathLength="1" x="660" y="458" width="48" height="18" rx="9"/>
+<line class="ln-3" x1="724" y1="456" x2="812" y2="456"/>
+</g>
+<g class="nd nd-4">
+<text class="t-dim" x="574" y="412">TRAKA PRIVOLE</text>
+<text class="t-dim" x="820" y="580" text-anchor="middle">GA4</text>
+<text class="t-dim" x="640" y="642" text-anchor="middle">OGLASI</text>
+<text class="t-dim" x="1000" y="642" text-anchor="middle">IZVJEŠTAJ</text>
+<circle class="lamp-fill" pathLength="1" cx="820" cy="738" r="20"/>
+<path class="lamp-ln" pathLength="1" d="M806 724L834 752M806 752L834 724"/>
+<text class="t-real" x="860" y="748" style="--fs:32px">generate_lead</text>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<circle class="halo" cx="820" cy="738" r="40"/>
+<circle class="dot" cx="820" cy="738" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="812,738 504,738"/>
+<rect class="lamp-bg" x="498" y="675" width="311" height="57"/>
+<text class="t-call" x="504" y="695">10:05 · POSLAN UPIT</text>
+<text class="t-web" x="504" y="724">„servis klime cijena“</text>
+</g>
+</g>
+</svg>

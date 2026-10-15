@@ -1,0 +1,73 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="510 112 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="gridU9m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU9m)"/>
+<g class="nd nd-1">
+<line class="cut-w" pathLength="1" x1="-20" y1="692" x2="1176" y2="692"/>
+<polyline class="ln-2" pathLength="1" points="1162,685 1178,692 1162,699"/>
+<line class="ln-2" pathLength="1" x1="528" y1="692" x2="528" y2="700"/>
+<line class="ln-2" pathLength="1" x1="572" y1="692" x2="572" y2="700"/>
+<line class="ln-2" pathLength="1" x1="616" y1="692" x2="616" y2="700"/>
+<line class="ln-2" pathLength="1" x1="660" y1="692" x2="660" y2="710"/>
+<line class="ln-2" pathLength="1" x1="704" y1="692" x2="704" y2="700"/>
+<line class="ln-2" pathLength="1" x1="748" y1="692" x2="748" y2="700"/>
+<line class="ln-2" pathLength="1" x1="792" y1="692" x2="792" y2="700"/>
+<line class="ln-2" pathLength="1" x1="836" y1="692" x2="836" y2="700"/>
+<line class="ln-2" pathLength="1" x1="880" y1="692" x2="880" y2="710"/>
+<line class="ln-2" pathLength="1" x1="924" y1="692" x2="924" y2="700"/>
+<line class="ln-2" pathLength="1" x1="968" y1="692" x2="968" y2="700"/>
+<line class="ln-2" pathLength="1" x1="1012" y1="692" x2="1012" y2="700"/>
+<line class="ln-2" pathLength="1" x1="1056" y1="692" x2="1056" y2="700"/>
+<line class="ln-2" pathLength="1" x1="1100" y1="692" x2="1100" y2="710"/>
+<line class="ln-2" pathLength="1" x1="1144" y1="692" x2="1144" y2="700"/>
+</g>
+<g class="nd nd-2">
+<rect class="ln-2" pathLength="1" x="340" y="208" width="200" height="432" rx="12"/>
+<line class="ln-h" x1="340" y1="264" x2="540" y2="264"/>
+<rect class="ln-3" x="356" y="578" width="168" height="42" rx="6"/>
+<rect class="ln-3" x="356" y="456" width="151" height="26" rx="3"/>
+<rect class="ln-3" x="356" y="504" width="168" height="12" rx="3"/>
+<rect class="ln-2" pathLength="1" x="560" y="208" width="200" height="432" rx="12"/>
+<rect class="ln-2" pathLength="1" x="576" y="226" width="22" height="22" rx="4"/>
+<line class="sk" pathLength="1" x1="612" y1="237" x2="658" y2="237"/>
+<line class="ln-h" x1="560" y1="264" x2="760" y2="264"/>
+<rect class="ln-2" pathLength="1" x="576" y="578" width="168" height="42" rx="6"/>
+<rect class="ln-2" pathLength="1" x="576" y="280" width="168" height="150"/>
+<path class="ln-h" d="M576 280L744 430M576 430L744 280"/>
+<line class="sk-b" pathLength="1" x1="580" y1="470" x2="714" y2="470"/>
+<line class="sk" pathLength="1" x1="580" y1="510" x2="740" y2="510"/>
+<line class="sk" pathLength="1" x1="580" y1="534" x2="697" y2="534"/>
+<path class="ln-3" d="M660 648L660 684M880 648L880 684"/>
+</g>
+<g class="nd nd-3">
+<rect class="lit" x="780" y="208" width="200" height="432" rx="12"/>
+<rect class="ln-2" pathLength="1" x="796" y="226" width="22" height="22" rx="4"/>
+<line class="sk" pathLength="1" x1="832" y1="237" x2="878" y2="237"/>
+<line class="ln-h" x1="780" y1="264" x2="980" y2="264"/>
+<rect class="ln-2" pathLength="1" x="796" y="578" width="168" height="42" rx="6"/>
+<line class="sk" pathLength="1" x1="800" y1="510" x2="960" y2="510"/>
+<line class="sk" pathLength="1" x1="800" y1="534" x2="917" y2="534"/>
+<text class="t-real t-h" x="798" y="478" style="--fs:27px">Curi bojler?</text>
+</g>
+<g class="nd nd-4">
+<rect class="lamp-fill" pathLength="1" x="796" y="280" width="168" height="150"/>
+<line class="lamp-ln" pathLength="1" x1="860" y1="294" x2="900" y2="294"/>
+<rect class="lamp-ln" pathLength="1" x="850" y="300" width="60" height="106" rx="30"/>
+<circle class="lamp-ln" pathLength="1" cx="880" cy="378" r="6"/>
+<path class="lamp-ln" pathLength="1" d="M866 404V422M894 404V422"/>
+</g>
+<g class="nd nd-5">
+<line class="ln-sec" x1="1100" y1="184" x2="1100" y2="714"/>
+</g>
+<g class="nd nd-6">
+<text class="t-call" text-anchor="end" transform="translate(1136 192) rotate(-90)">LCP DO 2,5 s</text>
+<text class="t-web" text-anchor="end" transform="translate(1165 192) rotate(-90)">prag „dobro“ (Google)</text>
+<g class="call lamp">
+<circle class="halo" cx="880" cy="355" r="56"/>
+<circle class="dot" cx="880" cy="355" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="880,347 880,192 566,192"/>
+<rect class="lamp-bg" x="560" y="129" width="310" height="57"/>
+<text class="t-call" x="566" y="149">07:50 · SLAB SIGNAL</text>
+<text class="t-web" x="566" y="178">„curi bojler“</text>
+</g>
+</g>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="250 110 960 720" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.sk,.sk-b{stroke:var(--l);stroke-opacity:.2;stroke-width:8;stroke-linecap:round;fill:none}.sk-b{stroke-width:13;stroke-opacity:.28}
+.lit{fill:rgba(255,207,138,.06);stroke:var(--lamp);stroke-opacity:.45;stroke-width:2.4}.lit-ln{stroke:var(--lamp);stroke-opacity:.7;stroke-width:2.8;fill:none}.lit-star{fill:var(--lamp);fill-opacity:.85;stroke:none}
+.map-w{fill:rgba(227,233,255,.07);stroke:var(--l);stroke-opacity:.45;stroke-width:2}.map-0,.map-1,.map-2{stroke:var(--l);fill:none;stroke-linejoin:round}.map-0{stroke-opacity:.55;stroke-width:3.6}.map-1{stroke-opacity:.4;stroke-width:2.6}.map-2{stroke-opacity:.16;stroke-width:1.6}
+.win{fill:var(--sheet);stroke:var(--l);stroke-opacity:.55;stroke-width:2.2}.glow{stroke:none}.spill{fill:var(--lamp);fill-opacity:.14;stroke:none}.ln-glass{stroke:var(--l);stroke-opacity:.5;stroke-width:2.4}
+.sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
+.say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="gridundefinedt" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="glundefinedt" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridundefinedt)"/>
+<g class="nd nd-1">
+<line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
+<line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
+<path class="ln-h" d="M268 802L268 836M332 802L332 836M396 802L396 836M460 802L460 836M524 802L524 836M588 802L588 836M652 802L652 836M716 802L716 836M780 802L780 836M844 802L844 836M908 802L908 836M972 802L972 836M1036 802L1036 836M1100 802L1100 836M1164 802L1164 836M1228 802L1228 836"/>
+<path class="spill" d="M610 800 L830 800 L864 838 L576 838 Z"/>
+<path class="ln-2" pathLength="1" d="M330 800 L330 560 L540 560 L540 800"/>
+<path class="ln-2" pathLength="1" d="M910 800 L910 430 L1100 430 L1100 800"/>
+<path class="ln-2" pathLength="1" d="M1100 800 L1100 360 L1230 360"/>
+<path class="ln-h" d="M350 600L520 600M350 656L520 656M350 712L520 712M930 470L1080 470M930 526L1080 526M930 582L1080 582M930 638L1080 638M930 694L1080 694M930 750L1080 750"/>
+</g>
+<g class="nd nd-2">
+<rect class="ln-2" pathLength="1" x="556" y="150" width="328" height="10"/>
+<rect class="win" x="570" y="160" width="300" height="62"/>
+<path class="ln-h" d="M645 160L645 222M720 160L720 222M795 160L795 222"/>
+<line class="ln-3" x1="548" y1="191" x2="570" y2="173"/>
+</g>
+<g class="nd nd-2">
+<rect class="ln-2" pathLength="1" x="556" y="222" width="328" height="10"/>
+<rect class="win" x="570" y="232" width="300" height="96"/>
+<path class="ln-h" d="M645 232L645 328M720 232L720 328M795 232L795 328"/>
+<line class="ln-3" x1="548" y1="280" x2="570" y2="262"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="556" y="328" width="328" height="10"/>
+<rect class="win" x="570" y="338" width="300" height="52"/>
+<path class="ln-h" d="M645 338L645 390M720 338L720 390M795 338L795 390"/>
+<line class="ln-3" x1="548" y1="364" x2="570" y2="346"/>
+</g>
+<g class="nd nd-3">
+<rect class="ln-2" pathLength="1" x="556" y="390" width="328" height="10"/>
+<rect class="win" x="570" y="400" width="300" height="88"/>
+<path class="ln-h" d="M645 400L645 488M720 400L720 488M795 400L795 488"/>
+<line class="ln-3" x1="548" y1="444" x2="570" y2="426"/>
+</g>
+<g class="nd nd-4">
+<rect class="ln-2" pathLength="1" x="556" y="488" width="328" height="10"/>
+<rect class="glow" x="570" y="498" width="300" height="108" fill="url(#glundefinedt)"/>
+<path class="sil-ln" d="M645 498L645 606M720 498L720 606M795 498L795 606"/>
+<rect class="cut-w" pathLength="1" x="570" y="498" width="300" height="108"/>
+</g>
+<g class="nd nd-4">
+<rect class="ln-2" pathLength="1" x="556" y="606" width="328" height="10"/>
+<rect class="glow" x="570" y="616" width="300" height="74" fill="url(#glundefinedt)"/>
+<path class="sil-ln" d="M645 616L645 690M720 616L720 690M795 616L795 690"/>
+<rect class="cut-w" pathLength="1" x="570" y="616" width="300" height="74"/>
+</g>
+<g class="nd nd-5">
+<rect class="ln-2" pathLength="1" x="548" y="690" width="344" height="12"/>
+<path class="win" d="M594 720h70v80h-70zM676 720h70v80h-70zM758 720h70v80h-70z"/>
+<line class="ln-dim" pathLength="1" x1="904" y1="150" x2="904" y2="488"/>
+<line class="ln-dim" pathLength="1" x1="894" y1="150" x2="914" y2="150"/>
+<line class="ln-dim" pathLength="1" x1="894" y1="222" x2="914" y2="222"/>
+<line class="ln-dim" pathLength="1" x1="894" y1="328" x2="914" y2="328"/>
+<line class="ln-dim" pathLength="1" x1="894" y1="390" x2="914" y2="390"/>
+<line class="ln-dim" pathLength="1" x1="894" y1="488" x2="914" y2="488"/>
+</g>
+<g class="nd nd-6">
+<line class="lamp-ln" pathLength="1" x1="530" y1="488" x2="910" y2="488"/>
+</g>
+</svg>

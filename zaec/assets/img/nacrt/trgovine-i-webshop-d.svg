@@ -1,118 +1,154 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt07d nd07d"><title id="nt07d">Pogled na pročelje trgovine s izlogom i detalj paketa, mjerilo 1:50</title><desc id="nd07d">Tehnički crtež pročelja trgovine: izlog s podestom i proizvodima, police iza stakla, ulazna vrata s pločicom radnog vremena i natpis, uz detalj paketa u tri projekcije. Oznake 01–04 povezuju dijelove trgovine s dijelovima weba trgovine ili webshopa. Jedan proizvod u izlogu označen je toplim svjetlom.</desc>
-<defs><pattern id="hz07d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid07d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt07d nd07d"><title id="nt07d">Izlog trgovine noću u osječkoj ulici</title><desc id="nd07d">Crtež pročelja prizemne kuće sa zabatom prema ulici noću: široki izlog s policama punim robe u siluetama (staklenke, složeni tekstil, košare, kutije, stolna svjetiljka i boce) i jednim proizvodom na postolju pod reflektorom, staklena vrata s pločicom Zatvoreno i paketima spremnima za dostavu. Iznad izloga je natpis Trgovina. Legenda povezuje police s katalogom, postolje sa stranicom proizvoda, a pakete s dostavom i plaćanjem. Proizvod na postolju označen je toplim svjetlom.</desc>
+<defs><pattern id="grid07d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl07d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
 <rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid07d)"/>
 <g class="nd nd-1">
-<path class="ln-con" d="M400 740L950 740M1071 200L1095 200M1071 248L1095 248M975 248L975 268M1071 248L1071 268"/>
+<line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
+<line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
+<path class="ln-h" d="M-180 802L-180 836M-116 802L-116 836M-52 802L-52 836M12 802L12 836M76 802L76 836M140 802L140 836M204 802L204 836M268 802L268 836M332 802L332 836M396 802L396 836M460 802L460 836M524 802L524 836M588 802L588 836M652 802L652 836M716 802L716 836M780 802L780 836M844 802L844 836M908 802L908 836M972 802L972 836M1036 802L1036 836M1100 802L1100 836M1164 802L1164 836M1228 802L1228 836M1292 802L1292 836M1356 802L1356 836"/>
+<path class="spill" d="M500 800 L900 800 L934 838 L466 838 Z"/>
+<path class="spill" d="M936 800 L1046 800 L1080 838 L902 838 Z"/>
 </g>
 <g class="nd nd-2">
-<line class="ln-2" pathLength="1" x1="430" y1="740" x2="430" y2="380"/>
-<line class="ln-2" pathLength="1" x1="930" y1="740" x2="930" y2="380"/>
-<polyline class="ln-2" pathLength="1" points="420,380 672,380 677,374 683,386 688,380 940,380"/>
-<rect class="cut" pathLength="1" x="430" y="710" width="350" height="30" fill="url(#hz07d)"/>
-<rect class="cut" pathLength="1" x="890" y="710" width="40" height="30" fill="url(#hz07d)"/>
-<rect class="ln-2" pathLength="1" x="465" y="400" width="425" height="45"/>
-<rect class="cut" pathLength="1" x="400" y="740" width="560" height="12" fill="url(#hz07d)"/>
-<line class="cut-w" pathLength="1" x1="400" y1="740" x2="960" y2="740"/>
+<rect class="ln-2" pathLength="1" x="-200" y="590" width="536" height="10"/>
+<line class="ln-2" pathLength="1" x1="-200" y1="600" x2="-200" y2="800"/>
+<path class="ln-2" pathLength="1" d="M150 612 L240 566 L330 612"/>
+<line class="ln-2" pathLength="1" x1="160" y1="612" x2="320" y2="612"/>
+<rect class="mask" x="176" y="620" width="128" height="180"/>
+<rect class="ln-2" pathLength="1" x="176" y="620" width="128" height="180"/>
+<path class="ln-h" d="M192 622L192 800M208 622L208 800M224 622L224 800M240 622L240 800M256 622L256 800M272 622L272 800M288 622L288 800M176 650L304 650M176 760L304 760"/>
+<circle class="nib" cx="292" cy="712" r="2.5"/>
+<path class="ln-2" pathLength="1" d="M324 476 L745 120 L1166 476"/>
+<path class="ln-h" d="M346 476 L745 138 L1144 476"/>
+<circle class="win" cx="745" cy="236" r="18"/>
+<path class="ln-h" d="M727 236L763 236M732 223L758 249M745 218L745 254M758 223L732 249"/>
+<rect class="win" x="687" y="296" width="42" height="62"/>
+<path class="ln-h" d="M708 324L708 358M687 324L729 324"/>
+<line class="ln-2" pathLength="1" x1="679" y1="364" x2="737" y2="364"/>
+<rect class="win" x="761" y="296" width="42" height="62"/>
+<path class="ln-h" d="M782 324L782 358M761 324L803 324"/>
+<line class="ln-2" pathLength="1" x1="753" y1="364" x2="811" y2="364"/>
+<rect class="ln-2" pathLength="1" x="330" y="476" width="830" height="14"/>
+<line class="ln-h" x1="340" y1="498" x2="1150" y2="498"/>
+<path class="ln-2" pathLength="1" d="M340 800 L340 490 L1150 490 L1150 800"/>
+<rect class="ln-2" pathLength="1" x="340" y="498" width="22" height="302"/>
+<rect class="ln-2" pathLength="1" x="1128" y="498" width="22" height="302"/>
+<rect class="win" x="392" y="596" width="70" height="150"/>
+<path class="ln-h" d="M427 641L427 746M392 641L462 641"/>
+<rect class="ln-2" pathLength="1" x="382" y="576" width="90" height="8"/>
+<line class="ln-h" x1="388" y1="584" x2="466" y2="584"/>
+<line class="ln-2" pathLength="1" x1="384" y1="752" x2="470" y2="752"/>
+<rect class="win" x="392" y="596" width="70" height="66"/>
+<path class="ln-h" d="M394 604L460 604M394 612L460 612M394 620L460 620M394 628L460 628M394 636L460 636M394 644L460 644M394 652L460 652M394 660L460 660"/>
+<path class="ln-2" pathLength="1" d="M1176 800 L1176 300 L1240 300"/>
+<line class="ln-h" x1="1176" y1="312" x2="1240" y2="312"/>
+<rect class="win" x="1194" y="360" width="80" height="140"/>
+<path class="ln-h" d="M1234 402L1234 500M1194 402L1274 402"/>
+<line class="ln-2" pathLength="1" x1="1186" y1="506" x2="1282" y2="506"/>
+<rect class="win" x="1194" y="600" width="80" height="150"/>
+<path class="ln-h" d="M1234 645L1234 750M1194 645L1274 645"/>
+<line class="ln-2" pathLength="1" x1="1186" y1="756" x2="1282" y2="756"/>
 </g>
 <g class="nd nd-3">
-<rect class="cut-w" pathLength="1" x="465" y="465" width="270" height="245"/>
-<rect class="ln-2" pathLength="1" x="473" y="473" width="254" height="229"/>
-<rect class="cut-w" pathLength="1" x="780" y="505" width="110" height="235"/>
-<rect class="ln-2" pathLength="1" x="788" y="513" width="94" height="217"/>
-<rect class="ln-2" pathLength="1" x="780" y="465" width="110" height="35"/>
-<line class="cut-w" pathLength="1" x1="870" y1="650" x2="870" y2="590"/>
-<rect class="ln-2" pathLength="1" x="900" y="560" width="25" height="40"/>
-<path class="ln-h" d="M904 590L921 590M904 583L921 583M904 576L921 576M904 569L921 569"/>
-</g>
-<g class="nd nd-4">
-<line class="ln-beyond" x1="485" y1="605" x2="715" y2="605"/>
-<path class="ln-beyond" d="M495 576h26v29h-26zM537 575h26v30h-26zM579 574h26v31h-26zM621 574h25v31h-25zM663 573h25v32h-25z"/>
-<line class="ln-beyond" x1="485" y1="555" x2="715" y2="555"/>
-<path class="ln-beyond" d="M495 526h26v30h-26zM537 525h26v30h-26zM579 524h26v31h-26zM621 524h25v31h-25zM663 523h25v32h-25z"/>
-<line class="ln-beyond" x1="485" y1="505" x2="715" y2="505"/>
-<path class="ln-beyond" d="M495 475h26v30h-26zM537 475h26v30h-26zM579 474h26v31h-26zM621 474h25v31h-25zM663 473h25v32h-25z"/>
-<rect class="ln-2" pathLength="1" x="505" y="665" width="190" height="37"/>
-<rect class="ln-2" pathLength="1" x="525" y="625" width="35" height="40"/>
-<path class="ln-2" pathLength="1" d="M650 665 V635 L656 622 V610 H664 V622 L670 635 V665"/>
-<rect class="cut-w" pathLength="1" x="975" y="200" width="96" height="48"/>
-<rect class="ln-2" pathLength="1" x="1018" y="200" width="10" height="48"/>
-<rect class="cut-w" pathLength="1" x="1095" y="200" width="72" height="48"/>
-<rect class="ln-2" pathLength="1" x="1126" y="200" width="10" height="48"/>
-<rect class="cut-w" pathLength="1" x="975" y="268" width="96" height="72"/>
-<rect class="ln-2" pathLength="1" x="1018" y="268" width="10" height="72"/>
-<rect class="ln-2" pathLength="1" x="1033" y="278" width="30" height="22"/>
-<path class="ln-h" d="M1037 285L1059 285M1037 291L1059 291M1037 296L1059 296"/>
-</g>
-<g class="nd nd-5">
-<g class="dim">
-<line class="ln-dim" pathLength="1" x1="757" y1="710" x2="757" y2="505"/>
-<line class="ln-dim" pathLength="1" x1="753" y1="714" x2="761" y2="706"/>
-<line class="ln-dim" pathLength="1" x1="753" y1="509" x2="761" y2="501"/>
-<text class="t-dim" text-anchor="middle" transform="translate(757 608) rotate(-90)">2,35</text>
-</g>
-<text class="t-small" x="678" y="428" text-anchor="middle">NATPIS</text>
-<g class="dim">
-<line class="ln-dim" pathLength="1" x1="975" y1="186" x2="1071" y2="186"/>
-<line class="ln-dim" pathLength="1" x1="971" y1="182" x2="979" y2="190"/>
-<line class="ln-dim" pathLength="1" x1="1067" y1="182" x2="1075" y2="190"/>
-<text class="t-dim" text-anchor="middle" transform="translate(1023 178) rotate(0)">40</text>
-</g>
-<g class="dim">
-<line class="ln-dim" pathLength="1" x1="1095" y1="186" x2="1167" y2="186"/>
-<line class="ln-dim" pathLength="1" x1="1091" y1="182" x2="1099" y2="190"/>
-<line class="ln-dim" pathLength="1" x1="1163" y1="182" x2="1171" y2="190"/>
-<text class="t-dim" text-anchor="middle" transform="translate(1131 178) rotate(0)">30</text>
-</g>
-<g class="dim">
-<line class="ln-dim" pathLength="1" x1="1181" y1="200" x2="1181" y2="248"/>
-<line class="ln-dim" pathLength="1" x1="1185" y1="196" x2="1177" y2="204"/>
-<line class="ln-dim" pathLength="1" x1="1185" y1="244" x2="1177" y2="252"/>
-<text class="t-dim" text-anchor="middle" transform="translate(1171 224) rotate(90)">20</text>
-</g>
-<text class="t-small" x="975" y="372">DETALJ P · M 1:10</text>
-</g>
-<g class="nd nd-5 key c-wide c-a80">
-<rect class="ln-2" pathLength="1" x="444" y="120" width="140" height="76"/>
-<path class="ln-h" d="M454 128L574 128M454 160L534 160"/>
-<rect class="ln-2" pathLength="1" x="454" y="192" width="70" height="8"/>
-<rect class="ln-2" pathLength="1" x="542" y="190" width="22" height="6"/>
-<line class="ln-sec" x1="514" y1="240" x2="514" y2="210"/>
-<path class="ln-2" pathLength="1" d="M508 220 L514 208 L520 220"/>
-<text class="t-key" x="524" y="238">A</text>
-<text class="t-small" x="444" y="106">KLJUČ · TLOCRT</text>
+<rect class="lit" x="500" y="504" width="546" height="46"/>
+<text class="t-real t-b t-sign" x="763" y="539" style="--fs:30px" text-anchor="middle">TRGOVINA</text>
+<path class="glow" d="M500 576Q700 576 900 576V776H500Z" fill="url(#gl07d)"/>
+<line class="sil-ln" x1="565" y1="616" x2="565" y2="624"/>
+<path class="sil" d="M557 624H573L577 640H553Z"/>
+<rect class="sil" x="538" y="712" width="54" height="64"/>
+<path class="sil" d="M541 712Q539 684 565 680Q591 684 589 712Z"/>
+<path class="sil" d="M555 680Q565 670 575 680Z"/>
+<circle class="sil" cx="565" cy="669" r="3"/>
+<path class="sil" d="M543 702Q530 698 523 684L527 682Q534 692 545 694Z"/>
+<path class="sil-ln" d="M587 690Q603 692 600 704Q597 712 588 709"/>
+<path class="sil-ln" d="M642 628L642 776M758 628L758 776"/>
+<path class="sil" d="M640 664h120v4h-120zM640 716h120v4h-120zM640 770h120v4h-120z"/>
+<path class="sil-ln" d="M782 628L782 776M890 628L890 776"/>
+<path class="sil" d="M780 664h112v4h-112zM780 716h112v4h-112zM780 770h112v4h-112z"/>
+<rect class="sil" x="650" y="638" width="18" height="26" rx="4"/>
+<rect class="sil" x="649" y="633" width="20" height="5"/>
+<rect class="sil" x="672" y="644" width="16" height="20" rx="4"/>
+<rect class="sil" x="671" y="639" width="18" height="5"/>
+<rect class="sil" x="692" y="634" width="20" height="30" rx="4"/>
+<rect class="sil" x="691" y="629" width="22" height="5"/>
+<rect class="sil" x="716" y="642" width="16" height="22" rx="4"/>
+<rect class="sil" x="715" y="637" width="18" height="5"/>
+<rect class="sil" x="736" y="638" width="18" height="26" rx="4"/>
+<rect class="sil" x="735" y="633" width="20" height="5"/>
+<rect class="sil" x="650" y="709" width="38" height="6" rx="3"/>
+<rect class="sil" x="652" y="701" width="38" height="6" rx="3"/>
+<rect class="sil" x="650" y="693" width="38" height="6" rx="3"/>
+<rect class="sil" x="652" y="685" width="38" height="6" rx="3"/>
+<rect class="sil" x="702" y="709" width="44" height="6" rx="3"/>
+<rect class="sil" x="704" y="701" width="44" height="6" rx="3"/>
+<rect class="sil" x="702" y="693" width="44" height="6" rx="3"/>
+<rect class="sil" x="704" y="685" width="44" height="6" rx="3"/>
+<rect class="sil" x="702" y="677" width="44" height="6" rx="3"/>
+<path class="sil" d="M652 740 L698 740 L692 770 L658 770 Z"/>
+<path class="sil-ln" d="M660 740Q675 716 690 740"/>
+<path class="sil" d="M706 740 L752 740 L746 770 L712 770 Z"/>
+<path class="sil-ln" d="M714 740Q729 716 744 740"/>
+<path class="sil" d="M790 636h30v28h-30zM824 646h24v18h-24zM852 626h30v38h-30z"/>
+<path class="sil" d="M794 690L800 670H820L826 690Z"/>
+<line class="sil-ln" x1="810" y1="690" x2="810" y2="712"/>
+<rect class="sil" x="800" y="710" width="20" height="6"/>
+<path class="sil" d="M848 716Q838 700 848 690V682H862V690Q872 700 862 716Z"/>
+<rect class="sil" x="789" y="736" width="14" height="34" rx="3"/>
+<rect class="sil" x="793" y="722" width="6" height="16"/>
+<rect class="sil" x="811" y="736" width="14" height="34" rx="3"/>
+<rect class="sil" x="815" y="722" width="6" height="16"/>
+<rect class="sil" x="833" y="736" width="14" height="34" rx="3"/>
+<rect class="sil" x="837" y="722" width="6" height="16"/>
+<rect class="sil" x="855" y="736" width="14" height="34" rx="3"/>
+<rect class="sil" x="859" y="722" width="6" height="16"/>
+<path class="cut-w" pathLength="1" d="M500 576Q700 576 900 576V776H500Z"/>
+<line class="ln-glass" x1="500" y1="616" x2="900" y2="616"/>
+<line class="cut-w" pathLength="1" x1="630" y1="576" x2="630" y2="776"/>
+<line class="cut-w" pathLength="1" x1="770" y1="576" x2="770" y2="776"/>
+<path class="glow" d="M936 566Q991 566 1046 566V800H936Z" fill="url(#gl07d)"/>
+<rect class="plate" x="940" y="668" width="102" height="32" rx="3"/>
+<text class="t-plate" x="991" y="690" style="--fs:17px" text-anchor="middle">ZATVORENO</text>
+<path class="sil-ln" d="M962 668L991 648M1020 668L991 648"/>
+<rect class="sil" x="944" y="744" width="64" height="56"/>
+<line class="" x1="976" y1="744" x2="976" y2="800" stroke="#ffe3b8" stroke-opacity=".55" stroke-width="2"/>
+<rect class="" x="950" y="752" width="16" height="10" fill="#ffe3b8" fill-opacity=".8"/>
+<rect class="sil" x="952" y="702" width="46" height="42"/>
+<line class="" x1="975" y1="702" x2="975" y2="744" stroke="#ffe3b8" stroke-opacity=".55" stroke-width="2"/>
+<rect class="" x="958" y="710" width="13" height="10" fill="#ffe3b8" fill-opacity=".8"/>
+<rect class="sil" x="1012" y="764" width="30" height="36"/>
+<line class="" x1="1027" y1="764" x2="1027" y2="800" stroke="#ffe3b8" stroke-opacity=".55" stroke-width="2"/>
+<rect class="" x="1018" y="772" width="5" height="10" fill="#ffe3b8" fill-opacity=".8"/>
+<path class="cut-w" pathLength="1" d="M936 566Q991 566 1046 566V800H936Z"/>
+<line class="ln-glass" x1="936" y1="606" x2="1046" y2="606"/>
+<line class="cut-w" pathLength="1" x1="1034" y1="712" x2="1034" y2="740"/>
 </g>
 <g class="nd nd-6">
-<g class="call c01">
-<circle class="dot" cx="490" cy="490" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="490,490 490,320 502,320"/>
-<text class="t-call" x="510" y="325"><tspan class="t-n">01</tspan>  IZLOG</text>
-<text class="t-web" x="510" y="345">→ Istaknuti proizvodi</text>
+<g class="call c01 mk">
+<circle class="dot" cx="900" cy="640" r="3.5"/>
+<text class="t-call t-n" x="908" y="632">01</text>
 </g>
-<g class="call c02">
-<circle class="dot" cx="712" cy="505" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="712,505 740,320 752,320"/>
-<text class="t-call" x="760" y="325"><tspan class="t-n">02</tspan>  POLICE</text>
-<text class="t-web" x="760" y="345">→ Katalog</text>
+<g class="call c02 mk">
+<circle class="dot" cx="592" cy="744" r="3.5"/>
+<text class="t-call t-n" x="602" y="736">02</text>
 </g>
-<g class="call c03">
-<circle class="dot" cx="840" cy="690" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="840,690 890,786 902,786"/>
-<text class="t-call" x="910" y="791"><tspan class="t-n">03</tspan>  VRATA</text>
-<text class="t-web" x="910" y="811">→ O trgovini i lokacija</text>
+<g class="call c03 mk">
+<circle class="dot" cx="1046" cy="760" r="3.5"/>
+<text class="t-call t-n" x="1056" y="752">03</text>
 </g>
-<g class="call c04">
-<circle class="dot" cx="975" cy="320" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="975,320 959,320 959,410 967,410"/>
-<text class="t-call" x="975" y="415"><tspan class="t-n">04</tspan>  PAKET</text>
-<text class="t-web" x="975" y="435">→ Dostava i plaćanje</text>
+<g class="call legend">
+<text class="t-small" x="968" y="44">LEGENDA</text>
+<text class="t-call" x="968" y="78"><tspan class="t-n">01</tspan>  POLICE</text>
+<text class="t-web" x="968" y="98">→ Katalog / webshop</text>
+<text class="t-call" x="968" y="124"><tspan class="t-n">02</tspan>  POSTOLJE</text>
+<text class="t-web" x="968" y="144">→ Stranica proizvoda</text>
+<text class="t-call" x="968" y="170"><tspan class="t-n">03</tspan>  PAKETI</text>
+<text class="t-web" x="968" y="190">→ Dostava i plaćanje</text>
 </g>
-<path class="lamp-fill" pathLength="1" d="M582 665 V610 H636 V665 Z M606.5 610 V632 M611.5 610 V632"/>
 <g class="call lamp">
-<circle class="halo" cx="609" cy="640" r="36"/>
-<circle class="dot" cx="609" cy="640" r="3.5"/>
-<polyline class="ln-lead" pathLength="1" points="609,648 609,817 889,817"/>
-<text class="t-call" x="616" y="785">22:15 · S KAUČA</text>
-<text class="t-web" x="616" y="806">„naziv proizvoda + kupiti“</text>
+<circle class="halo" cx="565" cy="694" r="44"/>
+<circle class="dot" cx="565" cy="694" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="565,686 565,451 512,451"/>
+<text class="t-call" x="512" y="419">22:15 · S KAUČA</text>
+<text class="t-web" x="512" y="440">„naziv proizvoda + kupiti“</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -120,10 +156,10 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857">ZAEC · NACRT DJELATNOSTI</text>
+<text class="t-tb" x="744" y="857">ZAEC · DJELATNOSTI · IZLOZI</text>
 <text class="t-tb" x="1054" y="857">LIST 07/10</text>
 <text class="t-tb-b" x="744" y="894">Trgovine i webshop</text>
-<text class="t-tb" x="744" y="914">POGLED NA PROČELJE · M 1:50</text>
-<text class="t-tb" x="744" y="943">WEB · PROIZVODI · DOSTAVA · KONTAKT</text>
+<text class="t-tb" x="744" y="914">IZLOG TRGOVINE NOĆU</text>
+<text class="t-tb" x="744" y="943">WEB · KATALOG · PLAĆANJE · DOSTAVA</text>
 </g>
 </svg>

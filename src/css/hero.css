@@ -292,6 +292,7 @@
 .nacrt .t-tb { font-size: 16px; fill-opacity: 0.7; }
 .nacrt .t-tb-b { font-family: var(--font-sans); font-size: 26px; font-weight: 780; letter-spacing: -0.01em; font-variation-settings: 'wdth' 112; }
 .nacrt .tb-bg { fill: var(--sheet); stroke: var(--l); stroke-opacity: 0.38; }
+.nacrt .lamp-bg { fill: var(--sheet); fill-opacity: 0.86; stroke: none; }
 .nacrt .lamp .dot { fill: var(--lampc); }
 .nacrt .lamp .ln-lead { stroke: var(--lampc); stroke-opacity: 0.9; }
 .nacrt .lamp text { fill: var(--lampc); }
@@ -467,6 +468,8 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 /* nacrt na desktopu: kadar visok barem 760 px, pa 16 u teksta u crtežu ostaje ≥ 12 px i kad je stupac s naslovom
    kratak (O nama); tablet ima svoj prag (712 px, ispod), složeni raspored svoj omjer */
 @media (min-width: 1101px) { .eh--nacrt:not(.eh--hub) .eh-stage { min-height: clamp(760px, calc(100svh - var(--header-h) - 90px), 860px); } }
+/* hub (kazalo, 18 u): kadar visok barem 690 px, inače na 1366 × 768 kratak stupac s naslovom spusti tekst na 11,7 px */
+@media (min-width: 1101px) { .eh--nacrt.eh--hub .eh-stage { min-height: 690px; } }
 
 /* između uspravnog i uskog desktopa: kadar uži, naslov manji (samo prozori širi od kvadrata; uži su složeni, ispod) */
 @media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 1001/1000) {

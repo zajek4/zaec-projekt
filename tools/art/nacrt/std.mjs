@@ -73,6 +73,14 @@ export function builder(meta, view, tvb = meta.tvb) {
     },
     /** Stvarni tekst predmeta (sučelje, natpis): Archivo, vlastita veličina u jedinicama crteža (ne mijenja se po pogledu). */
     say(x, y, s, size, cls = 't-ui', attrs = '') {
+      // sličica (<img>, bez fontova stranice): stvarni tekst kao topla crta duljine retka
+      if (view === 't') {
+        const w = s.length * size * 0.5;
+        const x0 = attrs.includes('text-anchor="middle"') ? x - w / 2 : attrs.includes('text-anchor="end"') ? x - w : x;
+        const yy = y - size * 0.33;
+        o.push(`<line class="say-t" x1="${f(x0)}" y1="${f(yy)}" x2="${f(x0 + w)}" y2="${f(yy)}" style="stroke-width:${f(size * 0.5)}"/>`);
+        return;
+      }
       o.push(`<text class="${cls}" x="${f(x)}" y="${f(y)}" style="--fs:${size}px"${attrs}>${esc(s)}</text>`);
     },
     /** Kostur retka teksta (nacrt sučelja): zaobljena crta od x1 do x2. */
@@ -182,6 +190,8 @@ export function builder(meta, view, tvb = meta.tvb) {
         const ty = h ? cy - 10 * k : ly;
         const end = [right ? lx + w : lx, shelf];
         b.poly(h ? [[right ? cx + 8 : cx - 8, cy], end] : [[cx, dir === 'up' ? cy - 8 : cy + 8], [cx, shelf], end], 'ln-lead');
+        // mobilni izrez je tijesan i oznaka često sjedi na crtežu (prozori, kapci): tamna podloga ispod teksta
+        if (view === 'm') b.rect(lx - 6, ty - 20 * k - 20, w + 12, 20 * k + 28, 'lamp-bg');
         b.text(lx, ty - 20 * k, time, 't-call');
         b.text(lx, ty, `„${q}“`, 't-web');
       }
@@ -257,6 +267,7 @@ const THUMB_CSS = `svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
 .map-w{fill:rgba(227,233,255,.07);stroke:var(--l);stroke-opacity:.45;stroke-width:2}.map-0,.map-1,.map-2{stroke:var(--l);fill:none;stroke-linejoin:round}.map-0{stroke-opacity:.55;stroke-width:3.6}.map-1{stroke-opacity:.4;stroke-width:2.6}.map-2{stroke-opacity:.16;stroke-width:1.6}
 .win{fill:var(--sheet);stroke:var(--l);stroke-opacity:.55;stroke-width:2.2}.glow{stroke:none}.spill{fill:var(--lamp);fill-opacity:.14;stroke:none}.ln-glass{stroke:var(--l);stroke-opacity:.5;stroke-width:2.4}
 .sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
+.say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}`;
 
 // uzastopni pravokutnici i crte iste klase bez vlastitih atributa (zidovi, šrafure, sjedala) postaju jedan <path>
@@ -285,7 +296,7 @@ function merge(lines) {
 }
 
 // sličica u kontaktnom arku (180 × 135 px): izrez 4:3 širok 480 u, centriran na svjetlo (design/06, 13);
-// list bez kruga svjetla (kazalo) zadržava svoj tvb
+// list s vlastitim izrezom (meta.tvb: kazalo, usluge, gdje je predmet cijeli list, a ne detalj) zadržava svoj
 function thumbBox(o, fallback) {
   const m = o.join(' ').match(/<circle class="halo"[^>]*? cx="(-?[\d.]+)" cy="(-?[\d.]+)"/);
   if (!m) return fallback || '240 120 960 720';
@@ -299,7 +310,7 @@ export function render(sheet, view) {
   const { meta } = sheet;
   // sličica: izrez se računa iz položaja svjetla na cijelom listu, pa se crta samo ono što je u izrezu
   let tvb = meta.tvb;
-  if (view === 't') {
+  if (view === 't' && !tvb) {
     const pre = builder(meta, 'd');
     sheet.draw(pre);
     tvb = thumbBox(pre.o, meta.tvb);

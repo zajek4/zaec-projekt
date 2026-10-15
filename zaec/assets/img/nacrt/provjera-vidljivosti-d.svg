@@ -1,0 +1,106 @@
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntP1d ndP1d"><title id="ntP1d">Izvješće besplatne provjere vidljivosti: vaš obrt i tri konkurenta, tri koraka koja najviše donose</title><desc id="ndP1d">Ispitni list izvješća provjere vidljivosti. U stupcima su vaš obrt i tri lokalna konkurenta, u retcima ono što se provjerava: Google profil, recenzije, sadržaj weba, brzina, mobitel, mjerenje i odgovori AI asistenata. Polja su prazna jer rezultat daje tek provjera. Osvijetljen je stupac vašeg obrta i blok s tri koraka koja najviše donose; pečat označava ručnu provjeru.</desc>
+<defs><pattern id="gridP1d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridP1d)"/>
+<g class="nd nd-1">
+<rect class="ln-2" pathLength="1" x="520" y="70" width="652" height="746"/>
+<line class="ln-frame" pathLength="1" x1="520" y1="298" x2="1172" y2="298"/>
+<line class="ln-frame" pathLength="1" x1="520" y1="346" x2="1172" y2="346"/>
+<line class="ln-frame" pathLength="1" x1="520" y1="394" x2="1172" y2="394"/>
+<line class="ln-frame" pathLength="1" x1="520" y1="442" x2="1172" y2="442"/>
+<line class="ln-frame" pathLength="1" x1="520" y1="490" x2="1172" y2="490"/>
+<line class="ln-frame" pathLength="1" x1="520" y1="538" x2="1172" y2="538"/>
+<line class="ln-frame" pathLength="1" x1="1037" y1="140" x2="1037" y2="586"/>
+<line class="ln-frame" pathLength="1" x1="1105" y1="140" x2="1105" y2="586"/>
+<line class="ln-frame" pathLength="1" x1="970" y1="140" x2="970" y2="586"/>
+</g>
+<g class="nd nd-2">
+<line class="ln-2" pathLength="1" x1="520" y1="140" x2="1172" y2="140"/>
+<line class="ln-2" pathLength="1" x1="520" y1="250" x2="1172" y2="250"/>
+<line class="ln-2" pathLength="1" x1="520" y1="586" x2="1172" y2="586"/>
+<line class="ln-2" pathLength="1" x1="830" y1="140" x2="830" y2="586"/>
+<text class="t-call" x="544" y="100">IZVJEŠĆE O VIDLJIVOSTI</text>
+<text class="t-web" x="544" y="122">Google · karta · AI asistenti</text>
+<text class="t-small" x="1071" y="178" text-anchor="middle">KONKURENTI</text>
+<line class="ln-dim" pathLength="1" x1="984" y1="192" x2="1158" y2="192"/>
+<text class="t-call" x="1004" y="230" text-anchor="middle">K1</text>
+<text class="t-call" x="1071" y="230" text-anchor="middle">K2</text>
+<text class="t-call" x="1138" y="230" text-anchor="middle">K3</text>
+<text class="t-call" x="544" y="280">GOOGLE PROFIL</text>
+<text class="t-call" x="544" y="328">RECENZIJE</text>
+<text class="t-call" x="544" y="376">WEB · SADRŽAJ</text>
+<text class="t-call" x="544" y="424">BRZINA</text>
+<text class="t-call" x="544" y="472">MOBITEL</text>
+<text class="t-call" x="544" y="520">MJERENJE</text>
+<text class="t-call" x="544" y="568">AI ODGOVORI</text>
+</g>
+<g class="nd nd-3">
+<line class="sk" pathLength="1" x1="860" y1="274" x2="922" y2="274"/>
+<line class="sk" pathLength="1" x1="992" y1="274" x2="1015" y2="274"/>
+<line class="sk" pathLength="1" x1="1059" y1="274" x2="1083" y2="274"/>
+<line class="sk" pathLength="1" x1="1127" y1="274" x2="1150" y2="274"/>
+<line class="sk" pathLength="1" x1="860" y1="322" x2="922" y2="322"/>
+<line class="sk" pathLength="1" x1="992" y1="322" x2="1015" y2="322"/>
+<line class="sk" pathLength="1" x1="1059" y1="322" x2="1083" y2="322"/>
+<line class="sk" pathLength="1" x1="1127" y1="322" x2="1150" y2="322"/>
+<line class="sk" pathLength="1" x1="860" y1="370" x2="922" y2="370"/>
+<line class="sk" pathLength="1" x1="992" y1="370" x2="1015" y2="370"/>
+<line class="sk" pathLength="1" x1="1059" y1="370" x2="1083" y2="370"/>
+<line class="sk" pathLength="1" x1="1127" y1="370" x2="1150" y2="370"/>
+<line class="sk" pathLength="1" x1="860" y1="418" x2="922" y2="418"/>
+<line class="sk" pathLength="1" x1="992" y1="418" x2="1015" y2="418"/>
+<line class="sk" pathLength="1" x1="1059" y1="418" x2="1083" y2="418"/>
+<line class="sk" pathLength="1" x1="1127" y1="418" x2="1150" y2="418"/>
+<line class="sk" pathLength="1" x1="860" y1="466" x2="922" y2="466"/>
+<line class="sk" pathLength="1" x1="992" y1="466" x2="1015" y2="466"/>
+<line class="sk" pathLength="1" x1="1059" y1="466" x2="1083" y2="466"/>
+<line class="sk" pathLength="1" x1="1127" y1="466" x2="1150" y2="466"/>
+<line class="sk" pathLength="1" x1="860" y1="514" x2="922" y2="514"/>
+<line class="sk" pathLength="1" x1="992" y1="514" x2="1015" y2="514"/>
+<line class="sk" pathLength="1" x1="1059" y1="514" x2="1083" y2="514"/>
+<line class="sk" pathLength="1" x1="1127" y1="514" x2="1150" y2="514"/>
+<line class="sk" pathLength="1" x1="860" y1="562" x2="922" y2="562"/>
+<line class="sk" pathLength="1" x1="992" y1="562" x2="1015" y2="562"/>
+<line class="sk" pathLength="1" x1="1059" y1="562" x2="1083" y2="562"/>
+<line class="sk" pathLength="1" x1="1127" y1="562" x2="1150" y2="562"/>
+<rect class="ln-2" pathLength="1" x="1004" y="80" width="148" height="58" rx="3"/>
+<rect class="ln-3" x="1009" y="85" width="138" height="48" rx="2"/>
+<text class="t-small" x="1078" y="104" text-anchor="middle">RUČNA</text>
+<text class="t-small" x="1078" y="123" text-anchor="middle">PROVJERA</text>
+</g>
+<g class="nd nd-4">
+<rect class="lit" x="830" y="140" width="140" height="446"/>
+<text class="t-real t-h" x="870" y="230" style="--fs:24px">Vaš obrt</text>
+<circle class="lamp-fill" pathLength="1" cx="852" cy="222" r="8"/>
+<rect class="lit" x="544" y="602" width="604" height="198" rx="6"/>
+<text class="t-real t-h" x="568" y="648" style="--fs:26px">Tri koraka koja najviše donose</text>
+<circle class="lit-ln" pathLength="1" cx="588" cy="688" r="16"/>
+<text class="t-real t-b" x="588" y="696" style="--fs:20px" text-anchor="middle">1</text>
+<line class="sk" pathLength="1" x1="624" y1="688" x2="966" y2="688"/>
+<circle class="lit-ln" pathLength="1" cx="588" cy="732" r="16"/>
+<text class="t-real t-b" x="588" y="740" style="--fs:20px" text-anchor="middle">2</text>
+<line class="sk" pathLength="1" x1="624" y1="732" x2="1044" y2="732"/>
+<circle class="lit-ln" pathLength="1" cx="588" cy="776" r="16"/>
+<text class="t-real t-b" x="588" y="784" style="--fs:20px" text-anchor="middle">3</text>
+<line class="sk" pathLength="1" x1="624" y1="776" x2="917" y2="776"/>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<circle class="halo" cx="852" cy="222" r="26"/>
+<circle class="dot" cx="852" cy="222" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="844,222 609,222"/>
+<text class="t-call" x="609" y="190">18:05 · KVAR KLIME</text>
+<text class="t-web" x="609" y="211">„servis klime“</text>
+</g>
+</g>
+<g class="nd nd-6 tb">
+<rect class="tb-bg" x="732" y="836" width="440" height="112"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
+<line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
+<text class="t-tb" x="744" y="857">ZAEC · PROVJERA</text>
+<text class="t-tb" x="1054" y="857">P.01</text>
+<text class="t-tb-b" x="744" y="894">Provjera vidljivosti</text>
+<text class="t-tb" x="744" y="914">IZVJEŠĆE PROVJERE</text>
+<text class="t-tb" x="744" y="943">GOOGLE · RECENZIJE · WEB · AI</text>
+</g>
+</svg>

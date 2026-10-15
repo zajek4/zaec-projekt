@@ -22,7 +22,7 @@ for (const arg of slugs) {
     const logo = document.querySelector('.brand .zaec-logo').outerHTML;
     const tb = [...document.querySelectorAll('.eh-frame.nacrt svg.d text')].map((t) => t.textContent).find((t) => /^LIST \d/.test(t)) || '';
     // usluge i ostale stranice: kicker same stranice („Usluga · U.05“)
-    const kicker = own ? (document.querySelector('.eh .kicker')?.textContent || '').trim() : `Nacrt djelatnosti${tb ? ' · ' + tb.replace('LIST ', 'list ') : ''}`;
+    const kicker = own ? (document.querySelector('.eh .kicker')?.textContent || '').trim() : `Djelatnosti${tb ? ' · ' + tb.replace('LIST ', 'list ') : ''}`;
     document.documentElement.className = '';
     document.body.className = '';
     document.body.innerHTML = `<div class="og"><div class="og-copy"><p class="kicker">${kicker}</p><h1 class="h1">${h1}</h1></div><div class="og-brand">${logo}<span class="og-word"><b>ZAEC</b><span>web studio · Osijek</span></span></div><div class="eh-frame nacrt og-frame">${svg}</div></div>`;

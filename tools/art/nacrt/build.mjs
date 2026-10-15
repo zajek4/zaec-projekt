@@ -21,8 +21,8 @@ for (const file of readdirSync(here).filter((n) => n.endsWith('.mjs') && !['std.
   // sastavnica na tabletnih 17 u: redovi stanu u 440 u (36 znakova)
   for (const [k, t] of sheet.meta.tb ? sheet.meta.tb.slice(3).map((t, i) => [`tb${i + 3}`, t]) : [['view', sheet.meta.view], ['web', `WEB · ${sheet.meta.web}`]]) if (t.length > 36) console.warn(`! ${slug}: ${k} "${t}" je dulji od 36 znakova`);
   const sizes = [];
-  // list izvan kompleta nema sličicu (kazalo na hubu prikazuje samo djelatnosti)
-  for (const v of sheet.meta.thumb === false ? ['d', 'm'] : ['d', 'm', 't']) {
+  // list bez sličice (thumb: false) ili samo sličica (views: ['t'], stranica s vlastitim herojem, npr. Izrada)
+  for (const v of sheet.meta.views || (sheet.meta.thumb === false ? ['d', 'm'] : ['d', 'm', 't'])) {
     const svg = render(sheet, v);
     writeFileSync(join(out, `${slug}-${v}.svg`), svg + '\n');
     sizes.push(`${v} ${(svg.length / 1024).toFixed(1)} kB`);

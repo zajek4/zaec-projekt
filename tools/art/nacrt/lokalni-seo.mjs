@@ -6,6 +6,7 @@ import { mapPaths } from './city.mjs';
 
 export const meta = {
   slug: 'lokalni-seo',
+  tvb: '480 240 720 540', // sličica na hubu: cijeli predmet usluge, ne samo svjetlo
   list: 'U5',
   name: 'Lokalni SEO',
   title: 'Karta središta Osijeka s tri oznake lokalnog rezultata pretrage',
@@ -13,6 +14,7 @@ export const meta = {
   lamp: { time: '21:40 · NESTALO STRUJE', search: 'električar osijek' },
   mvb: '500 300 680 562',
   mobileCallout: null,
+  index: 'KARTA OSIJEKA', // stupac u kazalu usluga (≤ 15 znakova)
   tb: ['ZAEC · USLUGE', 'U.05', 'Lokalni SEO', 'KARTA SREDIŠTA OSIJEKA', 'WEB · PROFIL · RECENZIJE · STRANICE'],
 };
 

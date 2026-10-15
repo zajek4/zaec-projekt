@@ -1,0 +1,52 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="440 128 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="gridundefinedm" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridundefinedm)"/>
+<g class="nd nd-1">
+<line class="cut-w" pathLength="1" x1="504" y1="172" x2="1192" y2="172"/>
+<line class="cut-w" pathLength="1" x1="504" y1="546" x2="1192" y2="546"/>
+</g>
+<g class="nd nd-2">
+<text class="t-call" x="504" y="156" font-weight="700">KAZALO LISTOVA</text>
+</g>
+<g class="nd nd-3">
+<text class="t-call" x="540" y="197" font-weight="700">U.01</text>
+<text class="t-call" x="616" y="197">Izrada web stranica</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="206" x2="1192" y2="206"/>
+<text class="t-call" x="540" y="231" font-weight="700">U.02</text>
+<text class="t-call" x="616" y="231">Webshop</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="240" x2="1192" y2="240"/>
+<text class="t-call" x="540" y="265" font-weight="700">U.03</text>
+<text class="t-call" x="616" y="265">Landing stranice</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="274" x2="1192" y2="274"/>
+<text class="t-call" x="540" y="299" font-weight="700">U.04</text>
+<text class="t-call" x="616" y="299">SEO</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="308" x2="1192" y2="308"/>
+<text class="t-call" x="540" y="333" font-weight="700">U.05</text>
+<text class="t-call" x="616" y="333">Lokalni SEO</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="342" x2="1192" y2="342"/>
+</g>
+<g class="nd nd-4">
+<text class="t-call" x="540" y="367" font-weight="700">U.06</text>
+<text class="t-call" x="616" y="367">Google Business profil</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="376" x2="1192" y2="376"/>
+<text class="t-call" x="540" y="401" font-weight="700">U.07</text>
+<text class="t-call" x="616" y="401">AI vidljivost</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="410" x2="1192" y2="410"/>
+<text class="t-call" x="540" y="435" font-weight="700">U.08</text>
+<text class="t-call" x="616" y="435">GA4 i konverzije</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="444" x2="1192" y2="444"/>
+<text class="t-call" x="540" y="469" font-weight="700">U.09</text>
+<text class="t-call" x="616" y="469">Brzina web stranice</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="478" x2="1192" y2="478"/>
+<text class="t-call" x="540" y="503" font-weight="700">U.10</text>
+<text class="t-call" x="616" y="503">Održavanje weba</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="512" x2="1192" y2="512"/>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<circle class="dot" cx="492" cy="530" r="3.5"/>
+<text class="t-call" x="540" y="537" font-weight="700">P.01</text>
+<text class="t-call" x="616" y="537">Besplatna provjera</text>
+</g>
+</g>
+</svg>

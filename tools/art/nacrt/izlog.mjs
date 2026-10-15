@@ -65,3 +65,52 @@ export function legend(b, x, y, items) {
   });
   b.P('</g>');
 }
+
+// Dodatni dijelovi za listove 06, 07, 09 i 10 (kuća s apartmanima, trgovina, ured na katu, ustanova). Saloni ih ne
+// koriste, pa se njihov list ne mijenja.
+
+/** Klasicistički prozor: pravokutno staklo s nadsvjetlom i križem, ravni vijenčić iznad i klupčica. */
+export function sash(b, x, y, w, h, { hood = true, sill = true, t = 0.3 } = {}) {
+  b.rect(x, y, w, h, 'win');
+  b.line(x + w / 2, y + h * t, x + w / 2, y + h, 'ln-h');
+  b.line(x, y + h * t, x + w, y + h * t, 'ln-h');
+  if (hood) {
+    b.rect(x - 10, y - 20, w + 20, 8, 'ln-2');
+    b.line(x - 4, y - 12, x + w + 4, y - 12, 'ln-h');
+  }
+  if (sill) b.line(x - 8, y + h + 6, x + w + 8, y + h + 6, 'ln-2');
+}
+
+/** Grilje: otvorena krila uz prozor ili zatvorena preko njega, s vodoravnim letvicama. */
+export function shutters(b, x, y, w, h, open = true, step = 12) {
+  const lw = w / 2;
+  const leaves = open ? [x - lw - 3, x + w + 3] : [x, x + lw];
+  for (const lx of leaves) {
+    b.rect(lx, y, lw, h, open ? 'ln-2' : 'win');
+    for (let yy = y + step; yy < y + h - 4; yy += step) b.line(lx + 4, yy, lx + lw - 4, yy, 'ln-h');
+  }
+}
+
+/** Siluete namještaja iza stakla: stolica sa strane (s = 1 naslon lijevo, sjedalo desno; −1 obrnuto). */
+export function sideChair(b, x, floor, s = 1) {
+  const seat = floor - 40;
+  b.d(`M${x} ${floor}V${floor - 88}`, 'sil-ln');
+  b.d(`M${x + 28 * s} ${seat}V${floor}`, 'sil-ln');
+  b.rect(s > 0 ? x - 2 : x - 30, seat - 5, 32, 6, 'sil');
+  b.d(`M${x} ${floor - 86}H${x + 7 * s}V${floor - 62}H${x}`, 'sil-ln');
+}
+
+/** Stol: ploča, po želji stolnjak koji visi `cloth` u, noga i stopa. */
+export function table(b, cx, floor, w, cloth = 0, h = 70) {
+  const top = floor - h;
+  b.rect(cx - w / 2, top, w, 6, 'sil');
+  if (cloth) b.path([[cx - w / 2, top], [cx + w / 2, top], [cx + w / 2 + 3, top + cloth], [cx - w / 2 - 3, top + cloth]], 'sil');
+  b.line(cx, top + 6, cx, floor - 4, 'sil-ln');
+  b.rect(cx - 16, floor - 5, 32, 5, 'sil');
+}
+
+/** Viseća svjetiljka: vrpca od stropa i sjenilo (kao u salonu). */
+export function pendant(b, x, y0, len, r = 14) {
+  b.d(`M${x} ${y0}V${y0 + len}`, 'sil-ln');
+  b.d(`M${x - r} ${y0 + len + 12}A${r} 12 0 0 1 ${x + r} ${y0 + len + 12}Z`, 'sil');
+}

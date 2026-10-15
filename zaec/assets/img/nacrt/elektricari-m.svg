@@ -76,6 +76,7 @@
 <circle class="halo" cx="1000" cy="686" r="44"/>
 <circle class="dot" cx="1000" cy="686" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="1000,694 1000,784 590,784"/>
+<rect class="lamp-bg" x="584" y="721" width="382" height="57"/>
 <text class="t-call" x="590" y="741">19:30 · AUTO U GARAŽI</text>
 <text class="t-web" x="590" y="770">„ugradnja punjača za auto“</text>
 </g>

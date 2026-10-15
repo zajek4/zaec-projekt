@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="300 150 880 660" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.sk,.sk-b{stroke:var(--l);stroke-opacity:.2;stroke-width:8;stroke-linecap:round;fill:none}.sk-b{stroke-width:13;stroke-opacity:.28}
+.lit{fill:rgba(255,207,138,.06);stroke:var(--lamp);stroke-opacity:.45;stroke-width:2.4}.lit-ln{stroke:var(--lamp);stroke-opacity:.7;stroke-width:2.8;fill:none}.lit-star{fill:var(--lamp);fill-opacity:.85;stroke:none}
+.map-w{fill:rgba(227,233,255,.07);stroke:var(--l);stroke-opacity:.45;stroke-width:2}.map-0,.map-1,.map-2{stroke:var(--l);fill:none;stroke-linejoin:round}.map-0{stroke-opacity:.55;stroke-width:3.6}.map-1{stroke-opacity:.4;stroke-width:2.6}.map-2{stroke-opacity:.16;stroke-width:1.6}
+.win{fill:var(--sheet);stroke:var(--l);stroke-opacity:.55;stroke-width:2.2}.glow{stroke:none}.spill{fill:var(--lamp);fill-opacity:.14;stroke:none}.ln-glass{stroke:var(--l);stroke-opacity:.5;stroke-width:2.4}
+.sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
+.say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="gridU9t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU9t)"/>
+<g class="nd nd-1">
+<line class="cut-w" pathLength="1" x1="-20" y1="692" x2="1176" y2="692"/>
+<polyline class="ln-2" pathLength="1" points="1162,685 1178,692 1162,699"/>
+<line class="ln-2" pathLength="1" x1="308" y1="692" x2="308" y2="700"/>
+<line class="ln-2" pathLength="1" x1="352" y1="692" x2="352" y2="700"/>
+<line class="ln-2" pathLength="1" x1="396" y1="692" x2="396" y2="700"/>
+<line class="ln-2" pathLength="1" x1="440" y1="692" x2="440" y2="710"/>
+<line class="ln-2" pathLength="1" x1="484" y1="692" x2="484" y2="700"/>
+<line class="ln-2" pathLength="1" x1="528" y1="692" x2="528" y2="700"/>
+<line class="ln-2" pathLength="1" x1="572" y1="692" x2="572" y2="700"/>
+<line class="ln-2" pathLength="1" x1="616" y1="692" x2="616" y2="700"/>
+<line class="ln-2" pathLength="1" x1="660" y1="692" x2="660" y2="710"/>
+<line class="ln-2" pathLength="1" x1="704" y1="692" x2="704" y2="700"/>
+<line class="ln-2" pathLength="1" x1="748" y1="692" x2="748" y2="700"/>
+<line class="ln-2" pathLength="1" x1="792" y1="692" x2="792" y2="700"/>
+<line class="ln-2" pathLength="1" x1="836" y1="692" x2="836" y2="700"/>
+<line class="ln-2" pathLength="1" x1="880" y1="692" x2="880" y2="710"/>
+<line class="ln-2" pathLength="1" x1="924" y1="692" x2="924" y2="700"/>
+<line class="ln-2" pathLength="1" x1="968" y1="692" x2="968" y2="700"/>
+<line class="ln-2" pathLength="1" x1="1012" y1="692" x2="1012" y2="700"/>
+<line class="ln-2" pathLength="1" x1="1056" y1="692" x2="1056" y2="700"/>
+<line class="ln-2" pathLength="1" x1="1100" y1="692" x2="1100" y2="710"/>
+<line class="ln-2" pathLength="1" x1="1144" y1="692" x2="1144" y2="700"/>
+</g>
+<g class="nd nd-2">
+<rect class="ln-2" pathLength="1" x="120" y="208" width="200" height="432" rx="12"/>
+<rect class="ln-2" pathLength="1" x="340" y="208" width="200" height="432" rx="12"/>
+<rect class="ln-2" pathLength="1" x="356" y="226" width="22" height="22" rx="4"/>
+<line class="sk" pathLength="1" x1="392" y1="237" x2="438" y2="237"/>
+<line class="ln-h" x1="340" y1="264" x2="540" y2="264"/>
+<rect class="ln-3" x="356" y="578" width="168" height="42" rx="6"/>
+<rect class="ln-3" x="356" y="456" width="151" height="26" rx="3"/>
+<rect class="ln-3" x="356" y="504" width="168" height="12" rx="3"/>
+<rect class="ln-3" x="356" y="528" width="124" height="12" rx="3"/>
+<rect class="ln-2" pathLength="1" x="560" y="208" width="200" height="432" rx="12"/>
+<rect class="ln-2" pathLength="1" x="576" y="226" width="22" height="22" rx="4"/>
+<line class="sk" pathLength="1" x1="612" y1="237" x2="658" y2="237"/>
+<line class="ln-h" x1="560" y1="264" x2="760" y2="264"/>
+<rect class="ln-2" pathLength="1" x="576" y="578" width="168" height="42" rx="6"/>
+<rect class="ln-2" pathLength="1" x="576" y="280" width="168" height="150"/>
+<path class="ln-h" d="M576 280L744 430M576 430L744 280"/>
+<line class="sk-b" pathLength="1" x1="580" y1="470" x2="714" y2="470"/>
+<line class="sk" pathLength="1" x1="580" y1="510" x2="740" y2="510"/>
+<line class="sk" pathLength="1" x1="580" y1="534" x2="697" y2="534"/>
+<path class="ln-3" d="M440 648L440 684M660 648L660 684M880 648L880 684"/>
+</g>
+<g class="nd nd-3">
+<rect class="lit" x="780" y="208" width="200" height="432" rx="12"/>
+<rect class="ln-2" pathLength="1" x="796" y="226" width="22" height="22" rx="4"/>
+<line class="sk" pathLength="1" x1="832" y1="237" x2="878" y2="237"/>
+<line class="ln-h" x1="780" y1="264" x2="980" y2="264"/>
+<rect class="ln-2" pathLength="1" x="796" y="578" width="168" height="42" rx="6"/>
+<line class="sk" pathLength="1" x1="800" y1="510" x2="960" y2="510"/>
+<line class="sk" pathLength="1" x1="800" y1="534" x2="917" y2="534"/>
+<line class="say-t" x1="798" y1="469" x2="960" y2="469" style="stroke-width:13.5"/>
+</g>
+<g class="nd nd-4">
+<rect class="lamp-fill" pathLength="1" x="796" y="280" width="168" height="150"/>
+<line class="lamp-ln" pathLength="1" x1="860" y1="294" x2="900" y2="294"/>
+<rect class="lamp-ln" pathLength="1" x="850" y="300" width="60" height="106" rx="30"/>
+<circle class="lamp-ln" pathLength="1" cx="880" cy="378" r="6"/>
+<path class="lamp-ln" pathLength="1" d="M866 404V422M894 404V422"/>
+</g>
+<g class="nd nd-5">
+<line class="ln-sec" x1="1100" y1="184" x2="1100" y2="714"/>
+<text class="t-dim c-wide c-a105" x="220" y="736" text-anchor="middle">0,5</text>
+<text class="t-dim c-wide c-a80" x="440" y="736" text-anchor="middle">1,0</text>
+<text class="t-dim" x="660" y="736" text-anchor="middle">1,5</text>
+<text class="t-dim" x="880" y="736" text-anchor="middle">2,0</text>
+<text class="t-dim" x="1100" y="736" text-anchor="middle">2,5 s</text>
+</g>
+<g class="nd nd-6">
+<text class="t-call" text-anchor="end" transform="translate(1130 192) rotate(-90)">LCP DO 2,5 s</text>
+<text class="t-web" text-anchor="end" transform="translate(1151 192) rotate(-90)">prag „dobro“ (Google)</text>
+<g class="call lamp">
+<circle class="halo" cx="880" cy="355" r="56"/>
+<circle class="dot" cx="880" cy="355" r="3.5"/>
+</g>
+</g>
+</svg>

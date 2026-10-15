@@ -50,6 +50,7 @@ function zaec_registry_services() {
 		'lead'        => 'Kupac prolazi tri koraka: pretraga, usporedba, kontakt. Gradimo cijeli put — od Google karte i AI odgovora do stranice koja pretvara posjet u poziv, i mjerenja koje pokazuje što radi.',
 		'answer'      => 'ZAEC radi izradu web stranica, webshopova i landing stranica, SEO i lokalni SEO, Google Business profil, AI vidljivost (ChatGPT, Gemini, Google AI) te postavljanje GA4 i e-commerce praćenja. Sve usluge mogu se uzeti zasebno ili kao jedan sustav.',
 		'image'       => 'world/usluga-web.webp',
+		'nacrt'       => true, // list U.00: kazalo listova usluga (tools/art/nacrt/usluge.mjs)
 		'image_alt'   => 'Web stranica kao svijetleći ekran u noći: pola gotov dizajn, pola plavi nacrt; tragovi upita vode do gumba za kontakt.',
 		'cta'         => array( 'Besplatna provjera vidljivosti', 'provjera-vidljivosti' ),
 		'blocks'      => array(

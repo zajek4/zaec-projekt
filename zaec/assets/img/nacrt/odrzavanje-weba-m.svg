@@ -1,0 +1,75 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="500 130 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="gridU10m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU10m)"/>
+<g class="nd nd-1">
+<path class="ln-tile" d="M820 220L820 758M780 220L780 758M740 220L740 758"/>
+<line class="ln-3" x1="700" y1="220" x2="700" y2="758"/>
+<path class="ln-tile" d="M660 220L660 758M620 220L620 758M580 220L580 758"/>
+<line class="ln-3" x1="540" y1="220" x2="540" y2="758"/>
+<line class="ln-tile" x1="500" y1="220" x2="500" y2="758"/>
+<line class="ln-frame" pathLength="1" x1="-20" y1="390" x2="1172" y2="390"/>
+<line class="ln-frame" pathLength="1" x1="-20" y1="482" x2="1172" y2="482"/>
+<line class="ln-frame" pathLength="1" x1="-20" y1="574" x2="1172" y2="574"/>
+<line class="ln-frame" pathLength="1" x1="-20" y1="666" x2="1172" y2="666"/>
+<line class="ln-con" x1="860" y1="-20" x2="860" y2="1020"/>
+<line class="ln-2" pathLength="1" x1="860" y1="220" x2="860" y2="758"/>
+</g>
+<g class="nd nd-2">
+<line class="ln-2" pathLength="1" x1="-20" y1="220" x2="1172" y2="220"/>
+<text class="t-call" x="884" y="428">AŽURIRANJA</text>
+<text class="t-web" x="884" y="457">s provjerom rada</text>
+<text class="t-call" x="884" y="520">SIGURNOSNA KOPIJA</text>
+<line class="sk" pathLength="1" x1="888" y1="606" x2="998" y2="606"/>
+<line class="sk" pathLength="1" x1="888" y1="698" x2="954" y2="698"/>
+</g>
+<g class="nd nd-3">
+<polyline class="ln-2" pathLength="1" points="671,305 677,312 690,296"/>
+<polyline class="ln-2" pathLength="1" points="511,305 517,312 530,296"/>
+<polyline class="ln-2" pathLength="1" points="791,436 797,443 810,427"/>
+<polyline class="ln-2" pathLength="1" points="711,436 717,443 730,427"/>
+<polyline class="ln-2" pathLength="1" points="671,436 677,443 690,427"/>
+<polyline class="ln-2" pathLength="1" points="591,436 597,443 610,427"/>
+<polyline class="ln-2" pathLength="1" points="471,436 477,443 490,427"/>
+<rect class="ln-2" pathLength="1" x="834" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="794" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="754" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="714" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="674" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="634" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="594" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="554" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="514" y="522" width="12" height="12"/>
+<rect class="ln-2" pathLength="1" x="474" y="522" width="12" height="12"/>
+<line class="sk" pathLength="1" x1="-20" y1="620" x2="846" y2="620"/>
+<polyline class="ln-2" pathLength="1" points="751,712 757,719 770,703"/>
+<polyline class="ln-2" pathLength="1" points="591,712 597,719 610,703"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="520" y1="251" x2="520" y2="289"/>
+<line class="ln-dim" pathLength="1" x1="680" y1="251" x2="680" y2="289"/>
+<line class="ln-dim" pathLength="1" x1="520" y1="259" x2="680" y2="259"/>
+<line class="ln-dim" pathLength="1" x1="516" y1="255" x2="524" y2="263"/>
+<line class="ln-dim" pathLength="1" x1="676" y1="255" x2="684" y2="263"/>
+<text class="t-dim" text-anchor="middle" transform="translate(600 249) rotate(0)">4 TJEDNA</text>
+</g>
+</g>
+<g class="nd nd-4">
+<rect class="lit" x="816" y="228" width="368" height="154" rx="6"/>
+<text class="t-real t-dim2" x="884" y="270" style="--fs:24px">Provjera forme</text>
+<text class="t-real t-h" x="884" y="320" style="--fs:40px">Probni upit</text>
+<text class="t-real t-h" x="884" y="364" style="--fs:40px">je stigao.</text>
+<rect class="lamp-fill" pathLength="1" x="824" y="289" width="32" height="32" rx="5"/>
+<circle class="lamp-ln" pathLength="1" cx="840" cy="305" r="7.5"/>
+</g>
+<g class="nd nd-6">
+<g class="call lamp">
+<circle class="halo" cx="840" cy="305" r="34"/>
+<circle class="dot" cx="840" cy="305" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="840,297 840,196 511,196"/>
+<rect class="lamp-bg" x="505" y="133" width="325" height="57"/>
+<text class="t-call" x="511" y="153">22:40 · UPIT S WEBA</text>
+<text class="t-web" x="511" y="182">„adaptacija kupaonice“</text>
+</g>
+</g>
+</svg>
