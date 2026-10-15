@@ -21,6 +21,11 @@
 .stage-ready .stage-canvas { opacity: 1; }
 .stage-poster { position: absolute; inset: 0; background: var(--void) var(--poster, none) 70% 50% / cover no-repeat; transition: opacity 1.4s var(--ease-out); }
 @media (max-width: 759px), (max-aspect-ratio: 82/100) { .stage-poster { background-image: var(--poster-m, none); background-position: 50% 0; } }
+/* AVIF uz WebP rezervu; preglednik bez image-set(type()) ostaje na WebP-u iznad */
+@supports (background-image: image-set('p.avif' type('image/avif'))) {
+  .stage-poster { background-image: var(--poster-set, var(--poster, none)); }
+  @media (max-width: 759px), (max-aspect-ratio: 82/100) { .stage-poster { background-image: var(--poster-m-set, var(--poster-m, none)); } }
+}
 .stage-ready .stage-poster { opacity: 0; }
 .no-webgl .stage-canvas, .webgl-lost .stage-canvas { display: none; }
 .no-webgl .stage-poster, .webgl-lost .stage-poster { opacity: 1; }

@@ -20,8 +20,12 @@ function zaec_build_ver( $file ) {
 
 function zaec_enqueue_assets() {
 	wp_enqueue_style( 'zaec-app', zaec_build_url( 'app.css' ), array(), zaec_build_ver( 'app.css' ) );
+	// naslovnica ima svoj home.css; stilovi podstranica (landing, heroji, WP sadržaj) su u pages.css,
+	// pa naslovnica ne blokira prvi prikaz na ~60 % CSS-a koji ne koristi
 	if ( is_front_page() ) {
 		wp_enqueue_style( 'zaec-home', zaec_build_url( 'home.css' ), array( 'zaec-app' ), zaec_build_ver( 'home.css' ) );
+	} else {
+		wp_enqueue_style( 'zaec-pages', zaec_build_url( 'pages.css' ), array( 'zaec-app' ), zaec_build_ver( 'pages.css' ) );
 	}
 	// Bez WP blok stilova na stranicama koje ih ne trebaju (naslovnica i landing stranice).
 	if ( is_front_page() || zaec_is_landing() ) {
@@ -61,9 +65,10 @@ function zaec_head_early() {
 		printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( zaec_build_url( 'assets/' . basename( $font[0] ) ) ) );
 	}
 	if ( is_front_page() ) {
-		// svaki uređaj učitava samo svoj poster (isto pravilo za uspravne ekrane kao u CSS-u i world3)
-		printf( '<link rel="preload" href="%s" as="image" type="image/webp" fetchpriority="high" media="(min-width: 760px) and (min-aspect-ratio: 82/100)">' . "\n", esc_url( zaec_img( 'world/poster.webp' ) ) );
-		printf( '<link rel="preload" href="%s" as="image" type="image/webp" fetchpriority="high" media="(max-width: 759px), (max-aspect-ratio: 82/100)">' . "\n", esc_url( zaec_img( 'world/poster-m.webp' ) ) );
+		// svaki uređaj učitava samo svoj poster (isto pravilo za uspravne ekrane kao u CSS-u i world3);
+		// AVIF (type: preglednik bez AVIF-a preskače preload i CSS mu daje WebP)
+		printf( '<link rel="preload" href="%s" as="image" type="image/avif" fetchpriority="high" media="(min-width: 760px) and (min-aspect-ratio: 82/100)">' . "\n", esc_url( zaec_img( 'world/poster.avif' ) ) );
+		printf( '<link rel="preload" href="%s" as="image" type="image/avif" fetchpriority="high" media="(max-width: 759px), (max-aspect-ratio: 82/100)">' . "\n", esc_url( zaec_img( 'world/poster-m.avif' ) ) );
 	}
 	printf( '<meta name="theme-color" content="%s">' . "\n", is_front_page() ? '#04060c' : '#efebe3' );
 	printf( '<link rel="icon" href="%s" type="image/svg+xml">' . "\n", esc_url( zaec_img( 'favicon.svg' ) ) );
