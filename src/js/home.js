@@ -339,7 +339,7 @@ async function bootWorld() {
     const cfg = window.ZAEC_CFG || {};
     const T = (cfg.theme || '') + '/assets/';
     const v = '?v=' + (cfg.ver || '1');
-    world = createWorld3({
+    world = await createWorld3({
       canvas,
       labelsRoot: document.querySelector('[data-stage-labels]'),
       assets: { land: T + 'img/world/land.png' + v, landEu: T + 'img/world/land-eu.png' + v, lights: T + 'img/world/lights.webp' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },

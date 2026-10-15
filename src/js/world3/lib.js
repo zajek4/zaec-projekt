@@ -42,6 +42,33 @@ export function mapScale(Z) {
   return Z < 1 ? Math.pow(22.5, Z - 1) : Math.pow(500, Z - 1);
 }
 
+/* ── predah glavnoj niti ──
+   Priprema svijeta (gradnja mreža, grad, polje Zemlje) inače je jedan dugi zadatak od nekoliko stotina ms na
+   mobitelu: dodir, scroll (Lenis) i crtanje stranice čekaju dok ne završi. Između koraka nit se ustupa;
+   scheduler.yield nastavlja ispred ostalih zadataka, a MessageChannel nema minimalnu odgodu setTimeouta (4 ms). */
+let yieldPort = null;
+const yieldQueue = [];
+export function yieldMain() {
+  if (globalThis.scheduler?.yield) return globalThis.scheduler.yield();
+  return new Promise((resolve) => {
+    if (!yieldPort) {
+      const ch = new MessageChannel();
+      ch.port1.onmessage = () => yieldQueue.shift()?.();
+      yieldPort = ch.port2;
+    }
+    yieldQueue.push(resolve);
+    yieldPort.postMessage(0);
+  });
+}
+/** Za petlje: `if (pace.due()) await pace.pause();` ustupa nit tek kad je od zadnjeg predaha prošlo `budget` ms. */
+export function pacer(budget = 24) {
+  let t = performance.now();
+  return {
+    due: () => performance.now() - t > budget,
+    pause: async () => { await yieldMain(); t = performance.now(); },
+  };
+}
+
 export function seeded(seed = 1) {
   let s = seed >>> 0;
   return () => {
@@ -93,8 +120,9 @@ export function createEarthField() {
   texture.wrapS = THREE.RepeatWrapping;
   texture.needsUpdate = true;
   /** Izračun iz učitane maske (~5 ms): umanjenje na 512×256 pa zamućenje okvirom (2 prolaza ≈ Gauss);
-      po geografskoj dužini polumjer raste s 1/cos(širine), pa je zamućenje izotropno na kugli. */
-  function fill(img) {
+      po geografskoj dužini polumjer raste s 1/cos(širine), pa je zamućenje izotropno na kugli.
+      Na sporom mobitelu to je ~150 ms, pa se nit ustupa između zamućenja (polje se ionako ne vidi prije spuštanja). */
+  async function fill(img) {
     const W = EARTH_W, H = EARTH_H;
     let src;
     try {
@@ -141,7 +169,13 @@ export function createEarthField() {
       for (let p = 0; p < 2; p++) { blurX(b, tmp, r); blurY(tmp, b, Math.max(1, Math.round(r))); }
       return b;
     };
-    const near = blur(0.7), shelf = blur(2), cont = blur(8);
+    await yieldMain();
+    const near = blur(0.7);
+    await yieldMain();
+    const shelf = blur(2);
+    await yieldMain();
+    const cont = blur(8);
+    await yieldMain();
     for (let y = 0; y < H; y++) {
       const row = (H - 1 - y) * W; // slika: sjever gore → tekstura: v = 0 na jugu
       for (let x = 0; x < W; x++) {
@@ -154,7 +188,7 @@ export function createEarthField() {
     texture.needsUpdate = true;
   }
   /** A kanal: regionalni sjaj noćnih svjetala (~0,7° zamućenje), za udaljeni pogled gdje su točke sitne. */
-  function fillLights(img) {
+  async function fillLights(img) {
     const W = EARTH_W, H = EARTH_H;
     let src;
     try {
@@ -168,6 +202,7 @@ export function createEarthField() {
     } catch {
       return;
     }
+    await yieldMain();
     for (let y = 0; y < H; y++) {
       const row = (H - 1 - y) * W;
       for (let x = 0; x < W; x++) {
