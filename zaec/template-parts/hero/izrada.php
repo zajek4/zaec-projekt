@@ -80,7 +80,7 @@ $style = $md && $mm ? sprintf(
 		<div class="sh-stage">
 			<div class="sh-frame">
 				<div class="sh-scene">
-					<?php zaec_hero_picture( 'izrada-plan', array( 'class' => 'sh-layer sh-plan', 'priority' => true ) ); ?>
+					<?php zaec_hero_picture( 'izrada-plan', array( 'class' => 'sh-layer sh-plan', 'priority' => true, 'fade' => true ) ); ?>
 					<div class="sh-layer sh-real" aria-hidden="true"><?php zaec_hero_picture( 'izrada-real', array( 'class' => 'sh-layer' ) ); ?></div>
 					<h1 class="it-title" id="sh-title">
 						<span class="sr-only"><?php echo esc_html( wp_strip_all_tags( $h1 ) ); ?></span>

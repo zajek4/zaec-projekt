@@ -40,13 +40,17 @@ function zaec_hero_meta( $name ) {
  * nego zaseban kadar. Datoteke: hero/<ime>-d.webp (2400w) + -d-1600.webp, hero/<ime>-m.webp (1080w) + -m-720.webp.
  */
 function zaec_hero_picture( $name, $args = array() ) {
-	$a    = wp_parse_args( $args, array( 'class' => '', 'alt' => '', 'priority' => false, 'ext' => 'webp' ) );
+	// fade: slika se pojavi tek kad je učitana (hero.css, img.hero-fade), bez čekanja na skriptu stranice
+	$a    = wp_parse_args( $args, array( 'class' => '', 'alt' => '', 'priority' => false, 'ext' => 'webp', 'fade' => false ) );
 	$ext  = $a['ext'];
 	$d    = zaec_img( "hero/{$name}-d.{$ext}" );
 	$d16  = zaec_img( "hero/{$name}-d-1600.{$ext}" );
 	$m    = zaec_img( "hero/{$name}-m.{$ext}" );
 	$m7   = zaec_img( "hero/{$name}-m-720.{$ext}" );
 	$load = $a['priority'] ? ' fetchpriority="high"' : ' loading="eager"';
+	if ( $a['fade'] ) {
+		$load .= ' class="hero-fade" ' . zaec_hero_fade_onload();
+	}
 	printf(
 		'<picture class="%1$s"><source media="(max-aspect-ratio: 4/5)" srcset="%2$s 720w, %3$s 1080w" sizes="100vw"><img src="%4$s" srcset="%5$s 1600w, %4$s 2400w" sizes="100vw" alt="%6$s" width="2400" height="1350" decoding="async"%7$s></picture>',
 		esc_attr( $a['class'] ),
@@ -57,6 +61,30 @@ function zaec_hero_picture( $name, $args = array() ) {
 		esc_attr( $a['alt'] ),
 		$load // phpcs:ignore
 	);
+}
+
+/**
+ * Slika kadra koja se pojavi tek kad je učitana (klasa hero-fade + ovaj onload). Handler je inline, pa ne čeka module
+ * skripte na dnu stranice. Stil je u hero.css (img.hero-fade); bez kretanja ili bez JS-a slika je odmah vidljiva.
+ * Nakon 3 s CSS sliku pokaže i bez onloada, pa kasniji onload samo označi (is-late) i ne pokreće ulaz ponovno.
+ */
+function zaec_hero_fade_onload() {
+	return 'onload="this.classList.add(performance.now()<3e3?\'is-in\':\'is-late\')"';
+}
+
+/**
+ * Naglašena riječ naslova ostaje na papiru: u kadru je difference boji zlatno, a zlatno je svjetlo (design/02).
+ * Ako bi riječ ušla u kadar, prijelom ide ispred nje (najviše redak više; design/09, B): s kadrom desno riječ
+ * počinje redak uz lijevi rub, a u složenom rasporedu prelazi iz prvog retka (na rubu kadra) na papir.
+ * Inline odmah iza naslova, prije prvog iscrtavanja: dok je bio u skripti stranice, prijelom je stizao nakon
+ * iscrtavanja i naslov je dobivao redak, a sve ispod skočilo (CLS do 0,05). Ponovi se kad stignu fontovi (druge
+ * širine riječi) i kad se promijeni širina prozora. Naslov se pri ulazu diže (translateY u hero.css), pa se taj
+ * pomak oduzima od okomitog preklapanja.
+ */
+function zaec_hero_em_fit() {
+	?>
+<script>(function(){var s=document.currentScript.closest('.eh'),t=s&&s.querySelector('.eh-title'),e=t&&t.querySelector('em'),f=s&&s.querySelector('.eh-frame'),w=0;if(!e||!f||s.classList.contains('eh--dark'))return;function fit(all){if(!all&&innerWidth===w)return;w=innerWidth;var b=t.querySelector('br.eh-br');if(b)b.remove();var F=f.getBoundingClientRect(),T=t.getBoundingClientRect(),tr=getComputedStyle(t).transform,dy=tr&&tr!=='none'?new DOMMatrixReadOnly(tr).m42:0,r=[].slice.call(e.getClientRects());var hit=r.some(function(q){return q.right>F.left+2&&q.left<F.right&&Math.min(q.bottom-dy,F.bottom)-Math.max(q.top-dy,F.top)>q.height/3;});if(hit&&r[0]&&r[0].left>T.left+2){b=document.createElement('br');b.className='eh-br';e.before(b);}}fit(1);if(document.fonts)document.fonts.ready.then(function(){fit(1);});addEventListener('resize',function(){fit();});})();</script>
+	<?php
 }
 
 /** Prvi sloj kadra učitava se odmah (LCP) — svaki uređaj samo svoju kompoziciju. */

@@ -82,7 +82,7 @@ $zaec_direct = static function () use ( $o ) {
 	<div class="sh-stage kt-stage">
 		<div class="sh-frame">
 			<div class="sh-scene">
-				<?php zaec_hero_picture( 'kontakt-bg', array( 'class' => 'sh-layer sh-bg', 'priority' => true ) ); ?>
+				<?php zaec_hero_picture( 'kontakt-bg', array( 'class' => 'sh-layer sh-bg', 'priority' => true, 'fade' => true ) ); ?>
 				<?php if ( $md && $mm ) : ?>
 					<?php foreach ( array( 'd' => $md, 'm' => $mm ) as $zaec_c => $zaec_m ) : ?>
 						<div class="kt-lit kt-lit--<?php echo esc_attr( $zaec_c ); ?>" style="<?php echo esc_attr( $zaec_mask( $zaec_m ) ); ?>" aria-hidden="true">
