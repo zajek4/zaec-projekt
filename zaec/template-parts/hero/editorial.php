@@ -86,8 +86,14 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 		</div>
 	</div>
 	<?php if ( $sheet ) : ?>
-		<nav class="eh-sheet" aria-label="<?php echo esc_attr( $l['title'] ); ?>">
-			<ol class="eh-sheet-list" role="list">
+		<nav class="eh-sheet" aria-label="<?php echo esc_attr( $l['title'] ); ?>" data-sheet>
+			<?php // gumbi za miš (bez njih arak na desktopu nema kako se pomaknuti); JS ih prikaže samo kad arak ne stane ?>
+			<div class="eh-sheet-nav" hidden>
+				<button class="eh-sheet-btn" type="button" data-dir="-1" aria-controls="eh-sheet-list" aria-label="Prethodne stranice"><?php zaec_the_icon( 'alt-arrow-left', 20 ); ?></button>
+				<button class="eh-sheet-btn" type="button" data-dir="1" aria-controls="eh-sheet-list" aria-label="Sljedeće stranice"><?php zaec_the_icon( 'alt-arrow-right', 20 ); ?></button>
+			</div>
+			<?php // data-lenis-prevent-horizontal: vodoravni potez trackpada ide arku, a ne glatkom skrolu stranice ?>
+			<ol class="eh-sheet-list" id="eh-sheet-list" role="list" data-lenis-prevent-horizontal>
 				<?php
 				$zaec_i = 0;
 				foreach ( $sheet as $zaec_k => $zaec_r ) :

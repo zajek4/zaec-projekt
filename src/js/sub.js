@@ -44,6 +44,92 @@ if (tower && motionOK) {
   notes.forEach((li) => io.observe(li));
 }
 
+/* Kontaktni arak hubova (kadrovi podstranica ispod heroja) kao slider. Na dodir je to običan vodoravni skrol;
+   mišem bez ovoga nema kako do kadrova desno (traka je skrivena, kotačić skrola stranicu). Zato: strelice,
+   povlačenje mišem i rub koji blijedi dok iza njega ima još kadrova. */
+function initSheet(nav) {
+  const list = nav.querySelector('.eh-sheet-list');
+  const ctrl = nav.querySelector('.eh-sheet-nav');
+  if (!list || !ctrl) return;
+  const [prev, next] = ctrl.querySelectorAll('.eh-sheet-btn');
+  const mouse = matchMedia('(hover: hover) and (pointer: fine)');
+  const behavior = () => (motionOK ? 'smooth' : 'auto');
+
+  const update = () => {
+    const max = list.scrollWidth - list.clientWidth;
+    const scrollable = max > 1;
+    const start = list.scrollLeft <= 1;
+    const end = list.scrollLeft >= max - 1;
+    nav.classList.toggle('is-scrollable', scrollable);
+    nav.classList.toggle('is-start', start);
+    nav.classList.toggle('is-end', end);
+    nav.classList.toggle('is-drag', scrollable && mouse.matches);
+    ctrl.hidden = !(scrollable && mouse.matches);
+    prev.disabled = start;
+    next.disabled = end;
+  };
+
+  // korak: kadrovi koji cijeli stanu u vidljivi dio, manje jedan (ostaje kao orijentir); barem jedan kadar
+  const step = () => {
+    const items = list.children;
+    if (items.length < 2) return list.clientWidth;
+    const pitch = items[1].offsetLeft - items[0].offsetLeft;
+    const pad = parseFloat(getComputedStyle(list).paddingLeft) || 0;
+    return Math.max(1, Math.floor((list.clientWidth - pad) / pitch) - 1) * pitch;
+  };
+  const go = (dir) => list.scrollBy({ left: dir * step(), behavior: behavior() });
+  prev.addEventListener('click', () => go(-1));
+  next.addEventListener('click', () => go(1));
+
+  // povlačenje mišem (dodir i olovka imaju svoj, nativni skrol)
+  let drag = null;
+  let moved = false;
+  list.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse' || e.button !== 0 || !nav.classList.contains('is-drag')) return;
+    drag = { x: e.clientX, left: list.scrollLeft, id: e.pointerId };
+    moved = false;
+  });
+  list.addEventListener('pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.x;
+    if (!moved && Math.abs(dx) < 6) return;
+    if (!moved) {
+      moved = true;
+      nav.classList.add('is-dragging');
+      list.setPointerCapture(drag.id);
+    }
+    list.scrollLeft = drag.left - dx;
+  });
+  const release = (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    drag = null;
+    if (!moved) return;
+    // poravnaj na najbliži kadar pa vrati snap (bez toga snap skoči bez animacije)
+    const items = [...list.children];
+    const pad = parseFloat(getComputedStyle(list).paddingLeft) || 0;
+    const target = items.reduce((best, li) => {
+      const x = li.offsetLeft - pad;
+      return Math.abs(x - list.scrollLeft) < Math.abs(best - list.scrollLeft) ? x : best;
+    }, 0);
+    list.scrollTo({ left: target, behavior: behavior() });
+    setTimeout(() => { moved = false; }, 0); // klik dolazi odmah iza pointerup; poslije toga klik opet radi
+    setTimeout(() => nav.classList.remove('is-dragging'), motionOK ? 450 : 0);
+  };
+  list.addEventListener('pointerup', release);
+  list.addEventListener('pointercancel', release);
+  // klik koji završava povlačenje ne otvara stranicu
+  list.addEventListener('click', (e) => {
+    if (moved) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
+  list.addEventListener('dragstart', (e) => nav.classList.contains('is-drag') && e.preventDefault());
+
+  list.addEventListener('scroll', update, { passive: true });
+  new ResizeObserver(update).observe(list);
+  mouse.addEventListener?.('change', update);
+  update();
+}
+document.querySelectorAll('[data-sheet]').forEach(initSheet);
+
 /* ───────── heroji podstranica (potpisni + urednički) ───────── */
 import izrada from './hero/izrada.js';
 import kontakt from './hero/kontakt.js';
