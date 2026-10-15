@@ -270,3 +270,8 @@ razine 2: tri obitelji“.
   („Trgovine“, ne „Trgovina · Trgovine“).
 - Ostaje kako je: sivi mobilni izbornik (zaglavlje je u drugoj niti), jantarna oznaka u noćnoj anatomiji,
   naglasak Održavanja na složenom rasporedu (§14).
+- Provjere: nacrt 332/345 (23 stranice s listom × 15 veličina). Preostalih 13 su naglasak u kadru na složenom
+  rasporedu: 960 × 1000 s 16 % (kutija retka, kao u §12) na devet stranica i Održavanje na četiri veličine (§14).
+  Popravljeno usput: hub djelatnosti na 1366 × 768 (tekst 11,7 px; kadar huba s kazalom sada barem 690 px) i
+  „SOBA 1“ na građevini (na 1024 × 768 pod prvim retkom naslova; oznaka desno od sredine sobe).
+- Pregled 30 stranica × 360/390/768/1440: 120/120 bez grešaka u konzoli, 4xx, bočnog skrola i slomljenih slika.
