@@ -2,6 +2,7 @@
 import '@fontsource-variable/archivo/standard.css';
 import '@fontsource/instrument-serif/400-italic.css';
 import '@fontsource-variable/jetbrains-mono';
+import '../css/fonts.css';
 import '../css/app.css';
 import './site.js';
 import { initContactForms } from './form.js';

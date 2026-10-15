@@ -157,7 +157,16 @@
 .hero-trust { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 0.86rem; color: var(--cine-muted); }
 .hero-trust li { display: inline-flex; align-items: center; gap: 8px; }
 .hero-trust .icon { color: var(--glow); }
-.js.motion-ok [data-hero-in] { opacity: 0; transform: translateY(20px); }
+/* ulaz uvoda: CSS od prvog prikaza (ne čeka JS ni fontove), isti ritam kao prije (expo.out):
+   oznaka 0,2 s; riječi naslova od 0,35 s (+55 ms po riječi); ostalo od 0,8 s (+90 ms) */
+@keyframes hero-in { from { opacity: 0; transform: translateY(20px); } }
+@keyframes hero-word { from { transform: translateY(140%) rotate(4deg); } }
+.js.motion-ok [data-hero-in] { animation: hero-in 1.2s var(--ease-out) var(--hd, 0.8s) both; }
+.js.motion-ok .hero-copy .kicker { --hd: 0.2s; animation-duration: 1s; }
+.js.motion-ok .hero-cta { --hd: 0.89s; }
+.js.motion-ok .hero-trust { --hd: 0.98s; }
+.js.motion-ok .scroll-cue { --hd: 1.07s; }
+.js.motion-ok .hero-title .split-w > span { animation: hero-word 1.05s var(--ease-out) calc(0.35s + var(--i, 0) * 55ms) both; }
 .scroll-cue { position: absolute; left: 50%; bottom: 28px; translate: -50% 0; display: inline-flex; align-items: center; gap: 12px; color: var(--cine-muted); font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: var(--tr-micro); text-transform: uppercase; text-decoration: none; }
 .scroll-cue span { width: 1px; height: 38px; background: linear-gradient(transparent, var(--glow)); position: relative; overflow: hidden; }
 .scroll-cue span::after { content: ''; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: #fff; animation: cue 2.2s var(--ease-io) infinite; }

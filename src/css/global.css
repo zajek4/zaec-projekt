@@ -147,14 +147,14 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
-/* papirna tekstura */
+/* papirna tekstura: crni sloj s alfom 0,06·(1 − šum) daje isti piksel kao sivi šum s multiply na 6 %
+   (razlika ≤ 1/255), ali bez mix-blend-mode — preglednik ne mora miješati cijeli ekran (ni 3D platno)
+   u zasebnom prolazu u svakoj sličici. 4-bitna paleta: 13 kB umjesto 39 kB. */
 body::after {
   content: '';
   position: fixed; inset: 0; z-index: 900; pointer-events: none;
-  background-image: url('./img/noise.png');
+  background-image: url('./img/grain.png');
   background-size: 160px;
-  opacity: 0.06;
-  mix-blend-mode: multiply;
 }
 
 /* ───────── layout ───────── */
