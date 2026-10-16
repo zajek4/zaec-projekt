@@ -28,7 +28,7 @@ if ( ! empty( $args['mirror'] ) ) :
 	?>
 	<div class="est cfg-out-inner" data-cfg-mirror="<?php echo esc_attr( $args['mirror'] ); ?>">
 		<p class="mono cfg-out-k">Vaša procjena</p>
-		<div class="est-types" role="group" aria-label="Vrsta projekta" data-est-types hidden>
+		<div class="est-types" role="group" aria-label="Vrsta projekta" data-est-types>
 			<?php foreach ( $types as $zaec_i => $zaec_t ) : ?>
 				<button type="button" class="est-type" data-type="<?php echo esc_attr( $zaec_t[0] ); ?>" aria-pressed="<?php echo 1 === $zaec_i ? 'true' : 'false'; ?>"><?php echo esc_html( strtok( $zaec_t[1], ' ' ) ); ?></button>
 			<?php endforeach; ?>

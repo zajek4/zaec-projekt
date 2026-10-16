@@ -183,7 +183,7 @@ Pregled 07 (design/07-pregled-izrade.md):
   Naslov u složenom rasporedu ima `max-width: 8.6em`, pa je prvi redak (u kadru) kratak.
 - Ostaci na visokim desktop prozorima: FID 30 mA (električari) spušten uz toroid (y 340), ključ krova pomaknut na
   x 632 (uži, 150 u), naziv ključa trgovina iznad skice. Og slike tih triju listova ponovno snimljene.
-- B (naglasak u kadru): `editorial.js` stavlja `<br class="eh-br">` ispred naglašene riječi kad bi ušla u kadar
+- B (naglasak u kadru): `editorial.js` (od §16 inline skripta iza naslova) stavlja `<br class="eh-br">` ispred naglašene riječi kad bi ušla u kadar
   (barem trećina kutije retka; riječ koja već počinje redak se ne dira). Vrijedi i za složeni raspored. Tamni hero
   (Održavanje) se preskače jer je naglasak na noćnom papiru ionako zlatan. Bez JS-a ostaje prijelom iz CSS-a.
   GA4: „Znajte koji euro donosi *posao*.“ (naglasak u drugom retku).
@@ -275,3 +275,45 @@ razine 2: tri obitelji“.
   Popravljeno usput: hub djelatnosti na 1366 × 768 (tekst 11,7 px; kadar huba s kazalom sada barem 690 px) i
   „SOBA 1“ na građevini (na 1024 × 768 pod prvim retkom naslova; oznaka desno od sredine sobe).
 - Pregled 30 stranica × 360/390/768/1440: 120/120 bez grešaka u konzoli, 4xx, bočnog skrola i slomljenih slika.
+
+## 16. Učitavanje heroja podstranica (15. 10. 2026)
+
+Vlasnik: „da se heroji podstranica optimizirano učitavaju, ako treba s fade-in ili slično“. Naslovnica i 3D nisu
+dirani (druga nit).
+
+- **Uzrok treptaja:** ulaz heroja pokretala je skripta stranice (GSAP u modulu na dnu stranice). Hero se iscrtao
+  gotov, a kad je skripta stigla (uz 4× sporiji procesor oko 1 s kasnije) sakrila ga je i pustila ulaz ponovno.
+  Urednički hero je treptao, Izrada je išla iz sagrađene zgrade u nacrt pa natrag, a Kontaktu su nestali uvod i forma.
+- **Ulaz je CSS od prvog iscrtavanja** (`hero.css`, „Ulaz heroja“): kadar se otvara od ruba (clip-path), tekst se
+  diže, oznaka kadra i arak huba ulaze s malim kašnjenjem, a Kontakt diže uvod i ploču. Skripte zadržavaju samo ono
+  što ovisi o scrollu (paralaksa slike, gašenje oznake, gradnja Izrade). Izrada prije skripte stoji u početnom stanju
+  špice (nacrt i obrisi riječi), pa je skripta preuzima bez skoka. Ako skripta ne stigne za 4 s, pokaže se sagrađena
+  zgrada, a kasna skripta je više ne vraća u nacrt.
+- **Slike kadra** (`img.hero-fade`): skrivene dok se ne učitaju, a inline `onload` ih mirno pojavi bez čekanja
+  skripte, pa se slika ne puni odozgo. Ako se slika ne učita za 3 s, pokaže se kakva jest i kasniji onload je ne gasi.
+- **LCP:** ulazi počinju od `opacity: 0.01`. Chrome element s opacity 0 ne broji kao iscrtan, pa je LCP naslova s
+  ulazom od 0 padao na kraj animacije (izmjereno 1,4–1,8 s umjesto 0,4–0,6 s).
+- **Skokovi rasporeda (CLS),** koje je dio skrivao GSAP (sakriveni elementi se ne broje), a dio je postojao i prije:
+  - Prijelom ispred naglašene riječi (§12, B) stizao je nakon iscrtavanja, pa je naslov dobio redak i sve ispod je
+    skočilo (1440 × 900: SEO 0,040, GBP 0,037, Brzina 0,046). Sada je inline odmah iza naslova (`zaec_hero_em_fit`),
+    a ponavlja se kad stignu fontovi i kad se promijeni širina prozora. Odluka je ista kao nakon smirivanja na 12
+    stranica × 6 veličina.
+  - Parser zna iscrtati putokaz i kicker prije velikog nacrta, centrirane u praznoj pozornici, pa ih tekst kad stigne
+    gurne gore (ugostiteljstvo 0,19 na desktopu, u 4 od 5 učitavanja na mainu; Kontakt 0,02–0,05). Kopija heroja se
+    zato ne iscrtava dok parser ne stigne do zadnjeg dijela (`:has()`, stariji preglednici ostaju kao prije).
+  - Cijene: gumbi vrste projekta u kartici pojavljivali su se tek sa skriptom (+32 px, 0,012). Mjesto je sada čuvano,
+    a bez skripte gumba nema.
+- **Fontovi i preload nisu dirani:** podskupovi za hrvatska slova i zamjenski kurziv s mjerama Instrument Serifa
+  (pomak naslova kad font stigne) rade se u niti za performanse naslovnice (PR #16). Skripte se ne preloadaju, jer
+  ih hero za prvi prikaz više ne treba.
+- **Mjerenje** (lokalno, 4× sporiji procesor bez ograničenja mreže, 10 stranica × 390 × 844 i 1440 × 900, po dva
+  učitavanja, main → grana): CLS na svim stranicama najviše 0,0003 (prije do 0,19). LCP teksta ostaje na prvom
+  iscrtavanju (SEO na mobitelu 576–756 → 384–400 ms). LCP slikovnih heroja je trenutak kad se slika pojavi, oko
+  0,1 s kasnije nego kad se slika crtala odozgo (Radovi i Osijek 440–644 → 556–752 ms). Izrada na desktopu: LCP je
+  sagrađena kula kad je skener otkrije (do 1,4 s), kao i na mainu u dijelu učitavanja (1,3 s). Filmske trake (SEO,
+  Radovi, Izrada, Kontakt, Cijene): bez treptaja i bez praznog okvira. Bez JS-a i uz smanjeno kretanje sve je odmah
+  vidljivo. Kasna skripta (5,5 s) i kasna slika (4,5 s): ništa se ne gasi ponovno. Lokalni poslužitelj ne komprimira
+  (gzip), pa brojke za sporu mrežu nisu reprezentativne i nisu navedene.
+- Provjere: pregled 30 stranica × 4 širine 120/120; nacrt 72/75 (5 stranica × 15 veličina; preostala 3 su
+  960 × 1000 s 16 %, isto kao na mainu, §15).
+

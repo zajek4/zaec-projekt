@@ -98,11 +98,7 @@ export default function kontakt(sec) {
     render();
   });
 
-  // špica: kadar je već tu; uvod i ploča ulaze mirno
-  if (motion) {
-    const parts = sec.querySelectorAll('.kt-main > *');
-    if (parts.length) gsap.from(parts, { opacity: 0, y: 16, duration: 1.1, ease: 'power3.out', stagger: 0.07, delay: 0.2, clearProps: 'opacity,transform' });
-  }
+  // špica (uvod i ploča ulaze mirno) je u hero.css od prvog iscrtavanja, ne ovdje: skripta stiže kasnije
 
   // nastavak: koraci nakon upita pale se redom dok prolaze sredinom ekrana
   const after = sec.parentElement?.querySelector('.kt-after');

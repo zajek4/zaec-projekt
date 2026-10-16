@@ -202,7 +202,7 @@ function init(root) {
     m.querySelectorAll('.cfg-meter i').forEach((el, i) => { el.style.left = `${meterAt(TIERS[i][0]).toFixed(1)}%`; });
     const types = m.querySelector('[data-est-types]');
     if (!types) return;
-    types.hidden = false;
+    types.classList.add('is-live');
     // vrsta u kartici je prvo pitanje procjene: mijenja isti odabir u obrascu ispod
     types.addEventListener('click', (e) => {
       const b = e.target.closest('[data-type]');

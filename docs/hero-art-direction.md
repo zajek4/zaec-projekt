@@ -152,6 +152,10 @@ mrežnim pravilima okruženja.
   zatim `node tools/art/layers.mjs onama-bg onama-matte onama-tower` i `node tools/art/layers.mjs --crop kontakt-lit kontakt`.
 - Zaglavlje na potpisnim herojima kreće tamno već u HTML-u (prvi prikaz, rad bez JS-a).
 - Bez JS-a ili uz smanjeno kretanje svaki hero prikazuje završno stanje (sagrađeno, osvijetljeno, ispunjen naslov).
+- Ulaz heroja podstranica je CSS od prvog iscrtavanja (`hero.css`, „Ulaz heroja“), ne skripta: skripta koja stigne
+  nakon iscrtavanja ne smije sakriti ni ponoviti ono što je već na ekranu. Slike kadra se pojave kad se učitaju
+  (`img.hero-fade`, inline onload), ulazi kreću od opacity 0.01 (LCP), a prijelom naslova je inline iza naslova
+  (`zaec_hero_em_fit`). Detalji i mjerenja: `docs/signature/subpages.md` §16.
 - LCP: prvi sloj se preloada po mediju (desktop/mobilni), slojevi u WebP-u, alfa slojevi samo gdje treba.
 - Listovi: `tools/art/nacrt/<slug>.mjs` (`std.mjs` list i sastavnica, `izlog.mjs` ulica, `city.mjs` karta,
   `kazalo-tab.mjs` kazalo), `node tools/art/nacrt/build.mjs <slug>` piše `assets/img/nacrt/<slug>-{d,m,t}.svg`.
