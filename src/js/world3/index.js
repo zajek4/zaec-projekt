@@ -20,7 +20,7 @@ import { createBlueprint } from './blueprint.js';
 import { createFlow } from './flow.js';
 import { GATES } from './gates.js';
 import { FRAMES, KEYS, frameState } from './keyframes.js';
-import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, Z_CITY, CITY_KX, CITY_KZ, BEND, SUN_MAP, DAY_EDGE, CIVIC } from './lib.js';
+import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, Z_CITY, CITY_KX, CITY_KZ, BEND, SUN_MAP, DAY_EDGE, CIVIC, yieldMain } from './lib.js';
 
 // kanali koji se interpoliraju krivuljom (udaljenost i meta idu preko visine i koordinata karte)
 const CH = [...KEYS.filter((k) => !['dist', 'tx', 'ty', 'tz', 'fit'].includes(k)), 'LA', 'mx', 'my', 'mz'];
@@ -41,7 +41,12 @@ const herm = (y0, m0, y1, m1, t) => {
   return (2 * t3 - 3 * t2 + 1) * y0 + (t3 - 2 * t2 + t) * m0 + (-2 * t3 + 3 * t2) * y1 + (t3 - t2) * m1;
 };
 
-export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapter, onFrame }) {
+// Priprema ide u koracima s predahom glavnoj niti između pozornica (na sporom mobitelu je cijela priprema ~0,8 s
+// jednog zadatka): stranica za to vrijeme reagira na dodir i scroll. Redoslijed gradnje je isti kao prije.
+// Koraci imaju prednost pred ostalim poslom (obrada tekstura, gradnja grada), pa prva slika ne kasni.
+const step = () => (globalThis.scheduler?.postTask ? globalThis.scheduler.postTask(() => {}, { priority: 'user-blocking' }) : yieldMain());
+
+export async function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapter, onFrame }) {
   const root = document.documentElement;
   const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
   let disposed = false;
@@ -75,10 +80,13 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   scene.add(rim);
 
   /* ── pozornice ── */
+  await step();
   const globe = createGlobe({ geo, lite, landUrl: assets.land, lightsUrl: assets.lights });
   const network = createNetwork({ geo, lite });
   globe.spin.add(network.group);
+  await step();
   const europe = createEurope({ geo, lite, landTex: globe.land, fieldTex: globe.field, lightsTex: globe.lights, landEuUrl: assets.landEu });
+  await step();
   const morph = createMorph(null, { max: lite ? 3200 : 6500 });
   // rubovi konkatedrale (metri) → svjetske jedinice na mjerilu grada
   const kCity = mapScale(Z_CITY);
@@ -110,6 +118,7 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
     prepare: (mesh) => compile(mesh, scene).catch(() => {}),
     onLoaded: () => { warmPending = true; },
   });
+  await step();
   // reflektor konkatedrale živi u korijenu scene (broj svjetala se nikad ne mijenja → nema ponovnog prevođenja)
   scene.add(city.flood);
   city.group.add(blueprint.group);
@@ -663,10 +672,10 @@ export function createWorld3({ canvas, labelsRoot, assets = {}, onReady, onChapt
   resize(true);
   rig.smooth = rig.target = progressAt(window.scrollY);
   stateAt(rig.smooth, st);
-  // prvo priprema (iza postera), zatim petlja; ako preglednik oklijeva, kreni najkasnije za 2,5 s
+  // prvo priprema (iza postera, u vlastitom zadatku), zatim petlja; ako preglednik oklijeva, kreni najkasnije za 2,5 s
   let started = false;
-  const start = () => { if (started) return; started = true; running = true; last = performance.now(); raf = requestAnimationFrame(loop); };
-  Promise.race([prewarm(), new Promise((r) => setTimeout(r, 2500))]).finally(start);
+  const start = () => { if (started || disposed) return; started = true; running = true; last = performance.now(); raf = requestAnimationFrame(loop); };
+  Promise.race([step().then(() => (disposed ? null : prewarm())), new Promise((r) => setTimeout(r, 2500))]).finally(start);
 
   return {
     lite,

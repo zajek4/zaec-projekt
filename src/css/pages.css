@@ -1,0 +1,4 @@
+/* Podstranice (sve osim naslovnice): landing predlošci, heroji, WP sadržaj. Naslovnica ih ne učitava. */
+@import './sub.css';
+@import './hero.css';
+@import './wp.css';

@@ -24,7 +24,13 @@ $svc_links = zaec_service_links();
 $channels  = array( 'Google pretraga', 'Preporuka', 'Društvene mreže', 'Oglasi', 'AI pretraga' );
 $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 ?>
-<div class="stage" aria-hidden="true" style="--poster:url('<?php echo esc_url( zaec_img( 'world/poster.webp' ) ); ?>');--poster-m:url('<?php echo esc_url( zaec_img( 'world/poster-m.webp' ) ); ?>')">
+<?php
+// poster: AVIF gdje ga preglednik čita (image-set), WebP kao rezerva; preload u inc/assets.php
+$zaec_pset = static function ( $n ) {
+	return sprintf( "image-set(url('%s') type('image/avif'), url('%s') type('image/webp'))", esc_url( zaec_img( "world/{$n}.avif" ) ), esc_url( zaec_img( "world/{$n}.webp" ) ) );
+};
+?>
+<div class="stage" aria-hidden="true" style="--poster:url('<?php echo esc_url( zaec_img( 'world/poster.webp' ) ); ?>');--poster-m:url('<?php echo esc_url( zaec_img( 'world/poster-m.webp' ) ); ?>');--poster-set:<?php echo $zaec_pset( 'poster' ); // phpcs:ignore -- esc_url ?>;--poster-m-set:<?php echo $zaec_pset( 'poster-m' ); // phpcs:ignore ?>">
 	<div class="stage-poster"></div>
 	<canvas class="stage-canvas" data-stage-canvas></canvas>
 	<p class="stage-credit">Karta i zgrade Osijeka: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> suradnici</p>
@@ -76,7 +82,8 @@ $outcomes  = array( 'Poziv', 'Upit', 'Rezervacija', 'Kupnja' );
 	<div class="wrap cine-grid">
 		<div class="cine-copy hero-copy">
 			<p class="kicker" data-hero-in><?php echo esc_html( $h( 'hero_kicker' ) ); ?></p>
-			<h1 id="hero-title" class="h1 hero-title" data-split="manual"><?php echo zaec_kses_title( $h( 'hero_title' ) ); // phpcs:ignore ?></h1>
+			<?php list( $zaec_ht, $zaec_hl ) = zaec_split_title( $h( 'hero_title' ) ); ?>
+			<h1 id="hero-title" class="h1 hero-title split is-in" data-split="manual" data-split-done="1" aria-label="<?php echo esc_attr( $zaec_hl ); ?>"><?php echo $zaec_ht; // phpcs:ignore -- zaec_split_title: kses + DOM ?></h1>
 			<p class="lead" data-hero-in><?php echo esc_html( $h( 'hero_lead' ) ); ?></p>
 			<div class="hero-cta" data-hero-in>
 				<?php echo zaec_button( $h( 'hero_cta' ), '#kontakt', 'signal', array( 'magnetic' => true, 'track' => 'cta_hero_goal' ) ); // phpcs:ignore ?>

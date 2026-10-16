@@ -87,6 +87,80 @@ function zaec_kses_title( $html ) {
 	return wp_kses( (string) $html, array( 'em' => array(), 'strong' => array(), 'br' => array() ) );
 }
 
+/**
+ * Naslov razdvojen na riječi već u HTML-u (isti oblik kao splitWords u site.js), pa ulaz riječi
+ * animira CSS od prvog prikaza: bez čekanja JS-a i bez treptaja (naslov vidljiv → skriven → ulazi).
+ * Vraća [ html, aria-label ].
+ */
+function zaec_split_title( $html ) {
+	$html = zaec_kses_title( $html );
+	$doc  = new DOMDocument();
+	$prev = libxml_use_internal_errors( true );
+	$doc->loadHTML( '<?xml encoding="utf-8"?><div>' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $prev );
+	$root = $doc->getElementsByTagName( 'div' )->item( 0 );
+	if ( ! $root ) {
+		return array( $html, wp_strip_all_tags( $html ) );
+	}
+	$copy = $root->cloneNode( true );
+	foreach ( iterator_to_array( $copy->getElementsByTagName( 'br' ) ) as $br ) {
+		$br->parentNode->replaceChild( $doc->createTextNode( ' ' ), $br );
+	}
+	$label = trim( preg_replace( '/\s+/u', ' ', $copy->textContent ) );
+	$i     = 0;
+	$walk  = function ( $node ) use ( &$walk, $doc, &$i ) {
+		foreach ( iterator_to_array( $node->childNodes ) as $child ) {
+			if ( XML_TEXT_NODE === $child->nodeType ) {
+				$parts = preg_split( '/(\s+)/u', $child->textContent, -1, PREG_SPLIT_DELIM_CAPTURE );
+				$frag  = $doc->createDocumentFragment();
+				$glued = null;
+				foreach ( $parts as $k => $p ) {
+					if ( '' === $p ) {
+						continue;
+					}
+					if ( preg_match( '/^\s+$/u', $p ) ) {
+						$frag->appendChild( $doc->createTextNode( ' ' ) );
+						continue;
+					}
+					$w = $doc->createElement( 'span' );
+					$w->setAttribute( 'class', 'split-w' );
+					$in = $doc->createElement( 'span' );
+					$in->setAttribute( 'style', '--i:' . $i++ );
+					$in->appendChild( $doc->createTextNode( $p ) );
+					$w->appendChild( $in );
+					$frag->appendChild( $w );
+					if ( 0 === $k ) {
+						$glued = $w; // npr. zarez odmah iza <em>riječi</em>
+					}
+				}
+				$before = $child->previousSibling;
+				if ( $frag->hasChildNodes() ) {
+					$child->parentNode->replaceChild( $frag, $child );
+				} else {
+					$child->parentNode->removeChild( $child );
+				}
+				// interpunkcija ne smije pasti u novi red odvojeno od riječi ispred sebe
+				if ( $glued && $before && XML_ELEMENT_NODE === $before->nodeType && 'br' !== strtolower( $before->nodeName ) ) {
+					$nb = $doc->createElement( 'span' );
+					$nb->setAttribute( 'class', 'split-nb' );
+					$before->parentNode->insertBefore( $nb, $before );
+					$nb->appendChild( $before );
+					$nb->appendChild( $glued );
+				}
+			} elseif ( XML_ELEMENT_NODE === $child->nodeType && 'br' !== strtolower( $child->nodeName ) ) {
+				$walk( $child );
+			}
+		}
+	};
+	$walk( $root );
+	$out = '';
+	foreach ( $root->childNodes as $c ) {
+		$out .= $doc->saveHTML( $c );
+	}
+	return array( $out, $label );
+}
+
 function zaec_kses_text( $html ) {
 	return wp_kses( (string) $html, array( 'em' => array(), 'strong' => array(), 'br' => array(), 'a' => array( 'href' => array(), 'target' => array(), 'rel' => array() ) ) );
 }
