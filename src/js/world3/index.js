@@ -18,13 +18,17 @@ import { createBeam } from './beam.js';
 import { createMorph, createLayers, LAYER_DEFS } from './wire.js';
 import { createBlueprint } from './blueprint.js';
 import { createFlow } from './flow.js';
+import { createSky } from './sky.js';
 import { GATES } from './gates.js';
 import { FRAMES, KEYS, frameState } from './keyframes.js';
 import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, Z_CITY, CITY_KX, CITY_KZ, BEND, SUN_MAP, DAY_EDGE, CIVIC, yieldMain } from './lib.js';
 
 // kanali koji se interpoliraju krivuljom (udaljenost i meta idu preko visine i koordinata karte)
 const CH = [...KEYS.filter((k) => !['dist', 'tx', 'ty', 'tz', 'fit'].includes(k)), 'LA', 'mx', 'my', 'mz'];
-const KAPPA = 0.9; // 1 = puna brzina kroz sidra, 0 = zaustavljanje na svakom sidru
+const KAPPA = 0.9;
+// jačina pojasa Mliječne staze u orbiti i noću nad gradom (gdje se nebo jedva vidi)
+const SKY_BAND = 0.45;
+const SKY_BAND_NIGHT = 1.6; // 1 = puna brzina kroz sidra, 0 = zaustavljanje na svakom sidru
 
 /** Monotoni kubični nagibi (Fritsch–Carlson, harmonijska sredina): bez prebačaja, ravno gdje se vrijednost drži. */
 function tangents(y) {
@@ -129,19 +133,9 @@ export async function createWorld3({ canvas, labelsRoot, assets = {}, onReady, o
   const flow = createFlow({ lite });
   scene.add(globe.group, europe.group, city.group, morph.object, layers.group, flow.group, beam.group, beacon.group);
 
-  // zvijezde: rijetke, oko kamere (bez "sci-fi" gustoće)
-  const rand = seeded(99);
-  const stars = glowPoints({ count: lite ? 260 : 480, color: '#8d9fd6', core: '#e6ebff', size: 1.2, depthTest: false });
-  for (let i = 0; i < stars.alpha.length; i++) {
-    const u = rand() * 2 - 1, th = rand() * Math.PI * 2, r = 700 + rand() * 300;
-    const q = Math.sqrt(1 - u * u);
-    stars.pos.set([Math.cos(th) * q * r, u * r, Math.sin(th) * q * r], i * 3);
-    stars.alpha[i] = 0.08 + rand() * rand() * 0.6;
-    stars.size[i] = 0.45 + rand() * rand() * 1.8;
-  }
-  stars.uniforms.uMin.value = 1;
-  stars.points.renderOrder = -10;
-  scene.add(stars.points);
+  // noćno nebo: zvijezde polja odmah, pojas Mliječne staze i njegove zvijezde lijeno (sky.js)
+  const sky = createSky({ lite, texUrl: assets.skyTex, starsUrl: assets.skyStars });
+  scene.add(sky.group);
   // sunce iza ruba planeta (gore desno): samo mekani sjaj, bez "sci-fi" bljeska
   const sunGlow = glowPoints({ count: 2, color: '#9fc0ff', core: '#ffffff', size: 1, depthTest: true, additive: true });
   sunGlow.size[0] = 260; sunGlow.size[1] = 40;
@@ -595,10 +589,8 @@ export async function createWorld3({ canvas, labelsRoot, assets = {}, onReady, o
     sunGlow.points.visible = sunGlow.uniforms.uOpacity.value > 0.002;
 
     /* zvijezde prate kameru (noću nad Slavonijom ponovno se naziru) */
-    stars.points.position.copy(camera.position);
-    stars.uniforms.uPR.value = dpr;
-    stars.uniforms.uOpacity.value = st.stars * (1 - smooth(0.6, 1.0, Z)) + st.stars * 0.25 * smooth(1.5, 2, Z);
-    stars.points.visible = stars.uniforms.uOpacity.value > 0.002;
+    // pojas se vidi u orbiti i, slabije, u noći nad gradom; iza Europe/karte gasi se zajedno sa zvijezdama
+    sky.update({ camera, opacity: st.stars * (1 - smooth(0.6, 1.0, Z)) + st.stars * 0.25 * smooth(1.5, 2, Z), band: SKY_BAND * (1 - smooth(0.6, 1.0, Z)) + SKY_BAND_NIGHT * smooth(1.5, 2, Z), pr: dpr, time, dt, reduce });
 
     scene.updateMatrixWorld();
     ctx.camPos.copy(camera.position);
@@ -674,7 +666,12 @@ export async function createWorld3({ canvas, labelsRoot, assets = {}, onReady, o
   stateAt(rig.smooth, st);
   // prvo priprema (iza postera, u vlastitom zadatku), zatim petlja; ako preglednik oklijeva, kreni najkasnije za 2,5 s
   let started = false;
-  const start = () => { if (started || disposed) return; started = true; running = true; last = performance.now(); raf = requestAnimationFrame(loop); };
+  const start = () => {
+    if (started || disposed) return;
+    started = true; running = true; last = performance.now(); raf = requestAnimationFrame(loop);
+    // nebo (~30 kB) tek kad prva slika već stoji: ne natječe se s globusom i gradom za mrežu
+    (window.requestIdleCallback || ((fn) => setTimeout(fn, 400)))(() => sky.load(), { timeout: 2000 });
+  };
   Promise.race([step().then(() => (disposed ? null : prewarm())), new Promise((r) => setTimeout(r, 2500))]).finally(start);
 
   return {
@@ -698,7 +695,7 @@ export async function createWorld3({ canvas, labelsRoot, assets = {}, onReady, o
     },
     stats: () => flow.stats(),
     debugState: () => ({ ...st }),
-    debug: { camera, scene, globe, europe, city, renderer, beam },
+    debug: { camera, scene, globe, europe, city, renderer, beam, sky },
     /** privremeno nadjačaj stanje (podešavanje kadrova u pregledniku) */
     debugOverride(o) { override = o; return this.debugStep(1); },
     dispose() {
@@ -711,9 +708,8 @@ export async function createWorld3({ canvas, labelsRoot, assets = {}, onReady, o
       canvas.removeEventListener('webglcontextlost', onLost);
       window.removeEventListener('pointermove', onPointer);
       [globe, network, europe, city, morph, layers, flow, beam, beacon].forEach((m) => m.dispose());
-      stars.geometry.dispose();
+      sky.dispose();
       sunGlow.geometry.dispose(); sunGlow.material.dispose();
-      stars.material.dispose();
       renderer.dispose();
     },
   };
