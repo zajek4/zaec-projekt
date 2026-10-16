@@ -26,9 +26,10 @@ import { clamp, lerp, smooth, damp, mapScale, GLOBE_R, DEG, glowPoints, seeded, 
 // kanali koji se interpoliraju krivuljom (udaljenost i meta idu preko visine i koordinata karte)
 const CH = [...KEYS.filter((k) => !['dist', 'tx', 'ty', 'tz', 'fit'].includes(k)), 'LA', 'mx', 'my', 'mz'];
 const KAPPA = 0.9;
-// jačina pojasa Mliječne staze u orbiti i noću nad gradom (gdje se nebo jedva vidi)
-const SKY_BAND = 0.45;
-const SKY_BAND_NIGHT = 1.6; // 1 = puna brzina kroz sidra, 0 = zaustavljanje na svakom sidru
+// jačina pojasa Mliječne staze u orbiti i noću nad gradom; SKY_NIGHT: zvijezde nad Osijekom (udio kanala zvijezda)
+const SKY_BAND = 0.6;
+const SKY_BAND_NIGHT = 0.55;
+const SKY_NIGHT = 3;
 
 /** Monotoni kubični nagibi (Fritsch–Carlson, harmonijska sredina): bez prebačaja, ravno gdje se vrijednost drži. */
 function tangents(y) {
@@ -589,8 +590,8 @@ export async function createWorld3({ canvas, labelsRoot, assets = {}, onReady, o
     sunGlow.points.visible = sunGlow.uniforms.uOpacity.value > 0.002;
 
     /* zvijezde prate kameru (noću nad Slavonijom ponovno se naziru) */
-    // pojas se vidi u orbiti i, slabije, u noći nad gradom; iza Europe/karte gasi se zajedno sa zvijezdama
-    sky.update({ camera, opacity: st.stars * (1 - smooth(0.6, 1.0, Z)) + st.stars * 0.25 * smooth(1.5, 2, Z), band: SKY_BAND * (1 - smooth(0.6, 1.0, Z)) + SKY_BAND_NIGHT * smooth(1.5, 2, Z), pr: dpr, time, dt, reduce });
+    // pojas se vidi u orbiti i noću nad gradom; iza Europe/karte gasi se zajedno sa zvijezdama
+    sky.update({ camera, opacity: st.stars * (1 - smooth(0.6, 1.0, Z)) + st.stars * SKY_NIGHT * smooth(1.5, 2, Z), band: SKY_BAND * (1 - smooth(0.6, 1.0, Z)) + SKY_BAND_NIGHT * smooth(1.5, 2, Z), city: Z > 1.25, pr: dpr, time, dt, reduce });
 
     scene.updateMatrixWorld();
     ctx.camPos.copy(camera.position);
