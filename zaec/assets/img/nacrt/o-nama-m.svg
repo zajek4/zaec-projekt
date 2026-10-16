@@ -81,7 +81,7 @@
 <circle class="dot" cx="886" cy="172" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="886,172 852,172"/>
 <text class="t-call" text-anchor="end" x="844" y="177"><tspan class="t-n">03</tspan>  VRH</text>
-<text class="t-web" text-anchor="end" x="844" y="206">→ Jedna osoba odgovara</text>
+<text class="t-web" text-anchor="end" x="844" y="206">→ Objava i mjerenje</text>
 </g>
 <g class="call lamp">
 <circle class="halo" cx="900" cy="418" r="30"/>

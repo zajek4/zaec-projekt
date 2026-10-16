@@ -13,7 +13,7 @@ export const meta = {
   mvb: '520 362 680 562',
   mobileCallout: null,
   index: 'REZULTAT GOOGLA', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.04', 'SEO', 'REZULTAT PRETRAGE · UVEĆANO', 'WEB · SADRŽAJ · STRUKTURA · SCHEMA'],
+  tb: ['USLUGE', 'U.04', 'SEO', 'REZULTAT PRETRAGE · UVEĆANO', 'WEB · SADRŽAJ · STRUKTURA · SCHEMA'],
 };
 
 const X0 = 560; // lijevi rub stupca rezultata (stvaran tekst je cijeli u zoni čitanja, x ≥ 508)

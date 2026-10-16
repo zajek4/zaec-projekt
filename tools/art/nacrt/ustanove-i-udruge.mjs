@@ -9,7 +9,7 @@ export const meta = {
   slug: 'ustanove-i-udruge',
   list: '10',
   name: 'Ustanove i udruge',
-  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  head: 'DJELATNOSTI · IZLOZI',
   view: 'ULAZ USTANOVE NOĆU',
   web: 'NOVOSTI · DOKUMENTI · UPIT',
   title: 'Ulaz ustanove noću u baroknoj zgradi',

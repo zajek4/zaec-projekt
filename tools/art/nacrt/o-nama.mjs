@@ -2,7 +2,7 @@
 // Shematski crtež prema fotografijama: portal s wimpergom, veliki prozor, galerija, dva prozora, sat, zvonik s
 // dvama otvorima i wimpergama, kutne fijale, osmerostrani šiljak, jabuka i križ. Jedina izmjerena kota je visina
 // do vrha križa, 90 m. Oznake vežu dijelove zvonika s načinom rada studija (načela na stranici O nama), svjetlo je
-// sat s radnim vremenom. Sastavnica: odgovorna osoba i sjedište; {owner}, {adresa} i {sati} puni tema iz postavki
+// sat s radnim vremenom. Sastavnica: sjedište; {adresa} i {sati} puni tema iz postavki
 // (inc/hero.php, zaec_nacrt), zato se ne mogu razići s podacima na ostatku weba.
 export const meta = {
   slug: 'o-nama',
@@ -11,12 +11,12 @@ export const meta = {
   view: 'PROČELJE ZVONIKA · M 1:500',
   web: '',
   title: 'Pročelje zvonika konkatedrale sv. Petra i Pavla u Osijeku, mjerilo 1:500',
-  desc: 'Tehnički crtež zvonika konkatedrale u Osijeku, visokog 90 m od tla do križa. Oznake povezuju dijelove zvonika s načinom rada studija: portal je prvi razgovor, kontrafori nacrt prije dizajna, a vrh jedna osoba koja odgovara za projekt. Sat je označen toplim svjetlom s radnim vremenom. U sastavnici su odgovorna osoba i sjedište studija.',
+  desc: 'Tehnički crtež zvonika konkatedrale u Osijeku, visokog 90 m od tla do križa. Oznake povezuju dijelove zvonika s načinom rada studija: portal je prvi razgovor, kontrafori nacrt prije dizajna, a vrh objava i mjerenje. Sat je označen toplim svjetlom s radnim vremenom. U sastavnici je sjedište studija.',
   lamp: null,
   mvb: '470 80 680 562',
   mobileCallout: 'c03',
   thumb: false,
-  tb: ['ZAEC · WEB STUDIO · OSIJEK', 'LIST 00', '{owner}', 'ODGOVORNA OSOBA ZA SVAKI PROJEKT', '{adresa}'],
+  tb: ['WEB STUDIO · OSIJEK', 'LIST 00', 'O nama', 'PROČELJE ZVONIKA · M 1:500', '{adresa}'],
 };
 
 const CX = 900; // os zvonika
@@ -156,7 +156,7 @@ export function draw(b) {
   b.g('nd nd-6', () => {
     b.callout('01', [X(-1.4), Y(4.5)], [[X(-11), 700], [682, 700]], 'PORTAL', '→ Prvi razgovor', true);
     b.callout('02', [X(-8.2), Y(40)], [[790, 532], [745, 532]], 'KONTRAFOR', '→ Nacrt prije dizajna', true);
-    b.callout('03', [X(-1.7), Y(80)], [[800, Y(80)]], 'VRH', '→ Jedna osoba odgovara', true, { p: [[852, Y(80)]] });
+    b.callout('03', [X(-1.7), Y(80)], [[800, Y(80)]], 'VRH', '→ Objava i mjerenje', true, { p: [[852, Y(80)]] });
     // svjetlo: sat; vodoravna vodilica ulijevo, tekst ispod nje (iznad bi na 1024 × 768 dirao drugi redak naslova).
     // Širina iz zadanih vrijednosti (PON–PET · 9–17 H), jer {sati} puni tema
     const [cx, cy] = [X(0), Y(49.2)];

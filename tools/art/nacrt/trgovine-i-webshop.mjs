@@ -9,7 +9,7 @@ export const meta = {
   slug: 'trgovine-i-webshop',
   list: '07',
   name: 'Trgovine i webshop',
-  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  head: 'DJELATNOSTI · IZLOZI',
   view: 'IZLOG TRGOVINE NOĆU',
   web: 'KATALOG · PLAĆANJE · DOSTAVA',
   title: 'Izlog trgovine noću u osječkoj ulici',

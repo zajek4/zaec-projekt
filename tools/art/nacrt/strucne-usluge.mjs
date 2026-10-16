@@ -9,7 +9,7 @@ export const meta = {
   slug: 'strucne-usluge',
   list: '09',
   name: 'Stručne usluge',
-  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  head: 'DJELATNOSTI · IZLOZI',
   view: 'UREDI NA KATU NOĆU',
   web: 'USLUGE · TIM · UPIT',
   title: 'Ured na katu modernističke zgrade noću u osječkoj ulici',

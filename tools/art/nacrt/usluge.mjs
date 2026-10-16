@@ -20,7 +20,7 @@ export const meta = {
   tvb: '440 120 760 570',
   mobileCallout: '',
   tbFs: 18, // kao kazalo djelatnosti: sastavnica u manjem kadru huba
-  tb: ['ZAEC · USLUGE', 'U.00', 'Usluge', 'KAZALO USLUGA', 'WEB · PRETRAGA · USPOREDBA · KONTAKT'],
+  tb: ['USLUGE', 'U.00', 'Usluge', 'KAZALO USLUGA', 'WEB · PRETRAGA · USPOREDBA · KONTAKT'],
 };
 
 export function draw(b) {

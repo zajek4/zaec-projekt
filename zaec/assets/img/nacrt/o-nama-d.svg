@@ -1,4 +1,4 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt00d nd00d"><title id="nt00d">Pročelje zvonika konkatedrale sv. Petra i Pavla u Osijeku, mjerilo 1:500</title><desc id="nd00d">Tehnički crtež zvonika konkatedrale u Osijeku, visokog 90 m od tla do križa. Oznake povezuju dijelove zvonika s načinom rada studija: portal je prvi razgovor, kontrafori nacrt prije dizajna, a vrh jedna osoba koja odgovara za projekt. Sat je označen toplim svjetlom s radnim vremenom. U sastavnici su odgovorna osoba i sjedište studija.</desc>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt00d nd00d"><title id="nt00d">Pročelje zvonika konkatedrale sv. Petra i Pavla u Osijeku, mjerilo 1:500</title><desc id="nd00d">Tehnički crtež zvonika konkatedrale u Osijeku, visokog 90 m od tla do križa. Oznake povezuju dijelove zvonika s načinom rada studija: portal je prvi razgovor, kontrafori nacrt prije dizajna, a vrh objava i mjerenje. Sat je označen toplim svjetlom s radnim vremenom. U sastavnici je sjedište studija.</desc>
 <defs><pattern id="hz00d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid00d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
 <rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid00d)"/>
 <g class="nd nd-1">
@@ -110,7 +110,7 @@
 <circle class="dot" cx="886" cy="172" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="886,172 800,172"/>
 <text class="t-call" text-anchor="end" x="792" y="177"><tspan class="t-n">03</tspan>  VRH</text>
-<text class="t-web" text-anchor="end" x="792" y="197">→ Jedna osoba odgovara</text>
+<text class="t-web" text-anchor="end" x="792" y="197">→ Objava i mjerenje</text>
 </g>
 <g class="call lamp">
 <circle class="halo" cx="900" cy="418" r="30"/>
@@ -125,10 +125,10 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857">ZAEC · WEB STUDIO · OSIJEK</text>
+<text class="t-tb" x="744" y="857">WEB STUDIO · OSIJEK</text>
 <text class="t-tb" x="1054" y="857">LIST 00</text>
-<text class="t-tb-b" x="744" y="894">{owner}</text>
-<text class="t-tb" x="744" y="914">ODGOVORNA OSOBA ZA SVAKI PROJEKT</text>
+<text class="t-tb-b" x="744" y="894">O nama</text>
+<text class="t-tb" x="744" y="914">PROČELJE ZVONIKA · M 1:500</text>
 <text class="t-tb" x="744" y="943">{adresa}</text>
 </g>
 </svg>

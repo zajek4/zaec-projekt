@@ -13,7 +13,7 @@ export const meta = {
   mvb: '494 144 680 562',
   mobileCallout: null,
   index: 'OGLAS I LANDING', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.03', 'Landing stranice', 'OGLAS I STRANICA', 'WEB · OGLAS · NASLOV · JEDAN GUMB'],
+  tb: ['USLUGE', 'U.03', 'Landing stranice', 'OGLAS I STRANICA', 'WEB · OGLAS · NASLOV · JEDAN GUMB'],
 };
 
 const P = { x0: 820, x1: 1170, top: 40, bot: 812 }; // stranica (traka)

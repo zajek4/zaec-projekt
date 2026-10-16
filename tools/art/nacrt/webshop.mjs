@@ -15,7 +15,7 @@ export const meta = {
   mvb: '496 88 680 562',
   mobileCallout: null,
   index: 'POLICE KATALOGA', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.02', 'Webshop', 'KATALOG KAO POLICE', 'WEB · KATALOG · PLAĆANJE · DOSTAVA'],
+  tb: ['USLUGE', 'U.02', 'Webshop', 'KATALOG KAO POLICE', 'WEB · KATALOG · PLAĆANJE · DOSTAVA'],
 };
 
 const K = { x0: 616, x1: 1168, y0: 50, y1: 556 }; // kartica proizvoda

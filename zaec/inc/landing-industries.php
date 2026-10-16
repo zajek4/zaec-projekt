@@ -148,7 +148,7 @@ function zaec_project_by_host( $host ) {
 /** Zajednički FAQ za djelatnosti. */
 function zaec_industry_common_faq() {
 	return array(
-		array( 'Koliko košta web za moju djelatnost?', 'Ovisi o broju usluga, stranica i funkcija (npr. rezervacije ili webshop). Složite procjenu projekta — vaša djelatnost je već odabrana — i dobit ćete pisanu ponudu s fiksnom cijenom.' ),
+		array( 'Koliko košta web za moju djelatnost?', 'Ovisi o broju usluga, stranica i funkcija (npr. rezervacije ili webshop). Složite procjenu projekta — vaša djelatnost je već odabrana — i dobit ćete pisanu ponudu.' ),
 		array( 'Što ako već imam web?', 'Prvo napravimo besplatnu provjeru vidljivosti. Često je dovoljno popraviti profil, dodati stranice za usluge i složiti recenzije — bez izrade novog weba.' ),
 	);
 }
@@ -180,7 +180,7 @@ function zaec_registry_industries() {
 			'tab' => 'Klima', 'sector' => 'instalacije', 'label' => 'Klima i grijanje', 'icon' => 'snowflake', 'prop' => 0, 'sign' => 'KLIMA SERVIS',
 			'title' => 'Klima i grijanje', 'name' => 'klima servise',
 			'seo_title' => 'Web stranica i Google profil za klima servise | ZAEC',
-			'description' => 'Web za klima servise: montaža, servis i čišćenje klima, dizalice topline, upit za termin u dva koraka i lokalni SEO prije sezone. Fiksna cijena u ponudi.',
+			'description' => 'Web za klima servise: montaža, servis i čišćenje klima, dizalice topline, upit za termin u dva koraka i lokalni SEO prije sezone. Cijena u pisanoj ponudi.',
 			'h1' => 'Web za klima servise: budite <em>prvi</em>&nbsp;izbor prije sezone.',
 			'lead' => 'Prvi vrući tjedan i prvi hladni dan donesu najviše poziva. Tko je tada vidljiv na karti i ima jasnu ponudu — puni raspored. Ostali gledaju kako konkurencija radi.',
 			'short' => 'Servis, montaža i čišćenje. Kupac mora odmah vidjeti što radite, gdje dolazite i kako do termina — prije nego nazove konkurenciju.',
@@ -236,7 +236,7 @@ function zaec_registry_industries() {
 			'tab' => 'Struja', 'sector' => 'instalacije', 'label' => 'Električari', 'icon' => 'bolt', 'prop' => 2, 'sign' => 'ELEKTRO',
 			'title' => 'Električari', 'name' => 'električare',
 			'seo_title' => 'Web stranica i Google profil za električare | ZAEC',
-			'description' => 'Web za električare: kvarovi, instalacije, atesti, solari i punionice kao zasebne usluge, ovlaštenja, područje rada i brz upit. Fiksna cijena u ponudi.',
+			'description' => 'Web za električare: kvarovi, instalacije, atesti, solari i punionice kao zasebne usluge, ovlaštenja, područje rada i brz upit. Cijena u pisanoj ponudi.',
 			'h1' => 'Web za električare: od <em>sitnog</em> kvara do solara.',
 			'lead' => 'Netko traži električara za kvar, netko za nove instalacije, a netko za atest ili punjač za auto. To su različiti kupci — kad ih web razdvoji, dobivate bolje upite.',
 			'short' => 'Od sitnog kvara do instalacija, atesta i solara — jasno odvojene usluge, reference i područje rada, da vas zovu za poslove koje želite.',
@@ -457,11 +457,11 @@ function zaec_registry_industries() {
 			),
 			'structure' => array( 'Prvi ekran: tko ste i ulazi za posjetitelje', 'Programi i usluge', 'Novosti i projekti', 'Dokumenti', 'O ustanovi i tim', 'Kontakt i lokacija' ),
 			'faq' => array(
-				// vlasnik potvrdio (10. 10. 2026); fiksna cijena kao u svakoj ponudi, bez obećanja proizvoljnog obrasca
-				array( 'Možete li poslati ponudu za jednostavnu nabavu ili projekt?', 'Da. Pisana ponuda sadrži opseg, rok i fiksnu cijenu. Ako nabava ili projekt traže određeni obrazac ili prilog, pošaljite ga uz upit.' ),
+				// vlasnik potvrdio (10. 10. 2026); cijena kao u svakoj ponudi, bez obećanja proizvoljnog obrasca
+				array( 'Možete li poslati ponudu za jednostavnu nabavu ili projekt?', 'Da. Pisana ponuda sadrži opseg, rok i cijenu. Ako nabava ili projekt traže određeni obrazac ili prilog, pošaljite ga uz upit.' ),
 				array( 'Hoćemo li sami objavljivati novosti?', 'Da. Pri primopredaji pokažemo kako objavljujete novosti, projekte, galerije i dokumente, bez programera.' ),
 			),
-			'faq_price' => array( 'Koliko košta web za ustanovu?', 'Ovisi o broju stranica i funkcija (npr. dokumenti s pretragom, novosti ili više jezika). Složite procjenu projekta — vaše područje je već odabrano — i dobit ćete pisanu ponudu s fiksnom cijenom.' ),
+			'faq_price' => array( 'Koliko košta web za ustanovu?', 'Ovisi o broju stranica i funkcija (npr. dokumenti s pretragom, novosti ili više jezika). Složite procjenu projekta — vaše područje je već odabrano — i dobit ćete pisanu ponudu.' ),
 			'proof' => 'cza-os.hr',
 			'related' => array( 'usluge/izrada-web-stranica', 'usluge/odrzavanje-weba', 'djelatnosti/strucne-usluge' ),
 		),
@@ -493,7 +493,7 @@ function zaec_registry_industries() {
 		);
 		if ( ! empty( $d['proof'] ) ) {
 			// dokaz: samo stvaran, objavljen projekt (blok se ne prikaže ako ga nema)
-			$blocks[] = array( 'type' => 'projects', 'host' => $d['proof'], 'title' => 'Iz <em>prakse</em>.', 'lead' => 'Stvaran projekt iz ovog područja, s problemom, rješenjem i adresom koju možete otvoriti.' );
+			$blocks[] = array( 'type' => 'projects', 'host' => $d['proof'], 'title' => 'Iz <em>prakse</em>.', 'lead' => 'Stvaran projekt iz ovog područja, s problemom, rješenjem i ishodom.' );
 		}
 		$blocks[] = array( 'type' => 'anatomy', 'title' => 'Struktura koja vodi do <em>' . ( $goal[ $slug ] ?? 'poziva' ) . '</em>.', 'lead' => 'Predložak redoslijeda za naslovnicu — prilagođavamo ga vašim uslugama, ali logika ostaje.', 'label' => 'nacrt — ' . $slug . '.pdf', 'parts' => array_map( null, $d['structure'] ) );
 		$faq_common = zaec_industry_common_faq();
@@ -547,9 +547,10 @@ function zaec_registry_special() {
 		'description'  => 'Izrada web stranica u Osijeku: web, SEO, Google Business profil i GA4 iz jednog mjesta. Sastanak uživo u Osijeku i Slavoniji, na daljinu za cijelu Hrvatsku.',
 		'kicker'       => 'Osijek · Slavonija',
 		'h1'           => 'Izrada web stranica u <em>Osijeku</em>.', // design/04 §2: naslov završava gradom, cilj ide u uvod
-		'lead'         => 'Za tvrtke koje žele više poziva, ne samo novi izgled. ZAEC je web studio iz Osijeka: radimo web stranice, SEO i Google profile za obrte i tvrtke u Osijeku, Osječko-baranjskoj županiji i Slavoniji — uživo, za istim stolom. Za ostatak Hrvatske radimo na daljinu.',
+		'lead'         => 'Za tvrtke koje žele više poziva, ne samo novi izgled. Radimo web stranice, SEO i Google profile za obrte i tvrtke u Osijeku, Osječko-baranjskoj županiji i Slavoniji — uživo, za istim stolom. Za ostatak Hrvatske radimo na daljinu.',
 		'answer'       => 'ZAEC je web studio sa sjedištem u Osijeku (Čvrsnička ulica 29 A). Izrađuje web stranice, webshopove i landing stranice te radi SEO, Google Business profil i GA4 mjerenje za tvrtke u Osijeku, Osječko-baranjskoj županiji i cijeloj Hrvatskoj.',
 		'image'        => 'world/usluga-kontakt.webp',
+		'nacrt'        => true,
 		'image_alt'    => 'Osijek noću iz zraka: grad u plavom nacrtu, osvijetljena konkatedrala i svjetlosni signal s njezina tornja.',
 		'cta'          => array( 'Dogovorimo kratak razgovor', 'kontakt#upit' ),
 		'blocks'       => array(
@@ -568,7 +569,6 @@ function zaec_registry_special() {
 				'items' => array(
 					array( 'hand-shake', 'Sastanak uživo', 'Kod vas, u radionici ili na kavi — pogledamo posao na licu mjesta.' ),
 					array( 'map-point', 'Poznavanje tržišta', 'Znamo kako ljudi u Slavoniji traže usluge i koja mjesta trebate pokriti.' ),
-					array( 'user-check', 'Jedna osoba od početka do kraja', 'Bez prebacivanja između prodaje, dizajna i razvoja.' ),
 					array( 'layers', 'Web, SEO i mjerenje zajedno', 'Sve što je potrebno da vas lokalni kupci nađu — na jednom mjestu.' ),
 				),
 			),
@@ -576,7 +576,7 @@ function zaec_registry_special() {
 		),
 		'faq'          => array(
 			array( 'Radite li i izvan Osijeka?', 'Da. Za Osijek, Osječko-baranjsku županiju i Slavoniju možemo se naći uživo, a za ostatak Hrvatske radimo preko poziva i videopoziva.' ),
-			array( 'Koliko košta izrada web stranice u Osijeku?', 'Jednako kao i drugdje — ovisi o opsegu. Nakon kratkog razgovora dobivate pisanu ponudu s fiksnom cijenom. Okvirni opseg vidite u procjeni projekta.' ),
+			array( 'Koliko košta izrada web stranice u Osijeku?', 'Jednako kao i drugdje — ovisi o opsegu. Nakon kratkog razgovora dobivate pisanu ponudu. Okvirni opseg vidite u procjeni projekta.' ),
 			array( 'Gdje ste točno?', 'Sjedište je u Osijeku, Čvrsnička ulica 29 A. Sastanke dogovaramo unaprijed.' ),
 		),
 		'related'      => array( 'usluge/izrada-web-stranica', 'usluge/lokalni-seo', 'djelatnosti' ),
@@ -586,11 +586,11 @@ function zaec_registry_special() {
 		'type'        => 'pricing',
 		'title'       => 'Cijene i procjena',
 		'seo_title'   => 'Koliko košta web stranica? Procjena u 60 sekundi | ZAEC',
-		'description' => 'Koliko košta web stranica, landing ili webshop? Složite projekt i odmah vidite opseg i okvirni rok. Točna cijena stiže u pisanoj ponudi — fiksno, bez obveze.',
+		'description' => 'Koliko košta web stranica, landing ili webshop? Složite projekt i odmah vidite opseg i okvirni rok. Točna cijena stiže u pisanoj ponudi, bez obveze.',
 		'kicker'      => 'Cijene · procjena u 60 sekundi',
 		'h1'          => 'Složite svoj web. <em>Cijenu</em> dobivate na papiru.',
-		'lead'        => 'Odaberite što trebate i odmah vidite razinu opsega i okvirni rok. Pošaljite konfiguraciju — dobivate pisanu ponudu s fiksnom cijenom, bez obveze.',
-		'answer'      => 'Cijena izrade web stranice ovisi o opsegu: broju stranica, funkcijama (rezervacije, webshop, više jezika, integracije) i tome imate li tekstove i fotografije. ZAEC ne objavljuje paušalne „od” cijene; nakon kratkog razgovora šalje pisanu ponudu s fiksnom cijenom i rokom. Plaćanje je 50 % na početku i 50 % prije objave.',
+		'lead'        => 'Odaberite što trebate i odmah vidite razinu opsega i okvirni rok. Pošaljite konfiguraciju — dobivate pisanu ponudu, bez obveze.',
+		'answer'      => 'Cijena izrade web stranice ovisi o opsegu: broju stranica, funkcijama (rezervacije, webshop, više jezika, integracije) i tome imate li tekstove i fotografije. Ne objavljujemo paušalne „od” cijene; nakon kratkog razgovora šaljemo pisanu ponudu s cijenom i rokom. Plaćanje je 50 % na početku i 50 % prije objave.',
 		'image'       => 'world/usluga-procjena.webp',
 		'image_alt'   => 'Svjetlosni skener prolazi kroz web stranicu: iza njega ostaje plavi nacrt s mjernim oznakama i pet slojeva provjere.',
 		'cta'         => array( 'Na procjenu', '#konfigurator' ),
@@ -600,7 +600,7 @@ function zaec_registry_special() {
 			array( 'type' => 'contact', 'title' => 'Pošaljite <em>konfiguraciju</em>.' ),
 		),
 		'faq'         => array(
-			array( 'Zašto na webu nema cjenika?', 'Jer cijena bez opsega ne znači ništa — dvije „web stranice” mogu se razlikovati po trudu nekoliko puta. Umjesto „od” iznosa koji navodi na krivi zaključak, dobivate pisanu ponudu s fiksnom cijenom za točno ono što trebate.' ),
+			array( 'Zašto na webu nema cjenika?', 'Jer cijena bez opsega ne znači ništa — dvije „web stranice” mogu se razlikovati po trudu nekoliko puta. Umjesto „od” iznosa koji navodi na krivi zaključak, dobivate pisanu ponudu za točno ono što trebate.' ),
 			array( 'Je li procjena obvezujuća?', 'Ne. Procjena vam pomaže razumjeti opseg i rok, a ni ponuda koju dobijete ne obvezuje vas ni na što.' ),
 			array( 'Kako se plaća?', 'Standardno 50 % za rezervaciju termina i početak rada, 50 % prije objave. Veći projekti mogu se podijeliti u faze.' ),
 			array( 'Kada počinje teći rok?', 'Od dana kad je sadržaj kompletan: tekstovi, fotografije i podaci za svaku stranicu. Rok u procjeni je rok izrade, bez čekanja na sadržaj. Ako trebate pomoć s tekstovima, to je već uračunato.' ),
@@ -669,14 +669,14 @@ function zaec_registry_special() {
 	$r['o-nama'] = array(
 		'type'        => 'about',
 		'hero'        => 'editorial',
-		'nacrt'       => true, // list 00: pročelje zvonika konkatedrale, 90 m, sastavnica s odgovornom osobom (tools/art/nacrt/o-nama.mjs)
+		'nacrt'       => true, // list 00: pročelje zvonika konkatedrale, 90 m, sastavnica sa sjedištem (tools/art/nacrt/o-nama.mjs)
 		'title'       => 'O nama',
 		'seo_title'   => 'O nama — ZAEC web studio iz Osijeka',
-		'description' => 'ZAEC je web studio iz Osijeka koji vodi Filip Zajec: 10+ godina na webu, jedna odgovorna osoba, fiksna cijena u pisanoj ponudi i web koji donosi upite.',
+		'description' => 'ZAEC je web studio iz Osijeka s više od deset godina na webu: pisana ponuda prije početka i web koji donosi upite.',
 		'kicker'      => 'O nama',
 		'h1'          => 'Mali studio. <em>Velika</em> odgovornost.',
 		'lead'        => 'ZAEC je web studio iz Osijeka koji vodi Filip Zajec — više od deset godina na webu, s fokusom na WordPress, UX, SEO i mjerenje. Gradimo web stranice za ljude koji grade sve ostalo.',
-		'answer'      => 'ZAEC (obrt za računalne djelatnosti, vl. Filip Zajec) je web studio iz Osijeka koji izrađuje web stranice, webshopove i landing stranice te radi SEO, lokalni SEO, AI vidljivost i GA4 mjerenje za obrte i tvrtke u Hrvatskoj.',
+		'answer'      => 'ZAEC je web studio iz Osijeka koji izrađuje web stranice, webshopove i landing stranice te radi SEO, lokalni SEO, AI vidljivost i GA4 mjerenje za obrte i tvrtke u Hrvatskoj.',
 		'image'       => 'world/usluga-onama.webp',
 		'image_alt'   => 'Konkatedrala sv. Petra i Pavla u Osijeku noću, s osvijetljenim vitrajima i svjetlosnim signalom s tornja.',
 		'cta'         => array( 'Upoznajmo se', 'kontakt#upit' ),
@@ -689,13 +689,13 @@ function zaec_registry_special() {
 				'items' => array(
 					array( 'Jedna osoba odgovara za cijeli projekt.', 'Razgovor, nacrt, dizajn, kod i mjerenje su u istim rukama. Nema prenošenja poruka između prodaje i razvoja.' ),
 					array( 'Nacrt prije dizajna.', 'Prvo crtamo što posjetitelj mora vidjeti i kojim redom. Boja i animacija dolaze na čvrst temelj.' ),
-					array( 'Dogovor na papiru.', 'Opseg, rok i fiksna cijena prije početka. Sve izvan dogovora prvo dobiva procjenu.' ),
+					array( 'Dogovor na papiru.', 'Opseg, rok i cijena na papiru prije početka. Sve izvan dogovora prvo dobiva procjenu.' ),
 					array( 'Tehnika koju možete provjeriti.', 'Brzina, mobitel, pristupačnost i mjerenje provjeravaju se prije objave, a popis provjera dobivate i vi.' ),
 					array( 'Sve je vaše.', 'Domena, hosting, pristupi i sadržaj registrirani su na vas. Možete otići kad god želite.' ),
 					array( 'Iskreno, i kad to znači manji posao.', 'Ako vam novi web ne treba, reći ćemo vam prije nego išta potpišete.' ),
 				),
 			),
-			array( 'type' => 'projects', 'title' => 'Radovi koje možete <em>otvoriti</em>.' ),
+			array( 'type' => 'projects', 'title' => 'Izbor <em>radova</em>.' ),
 			array( 'type' => 'about', 'part' => 'facts' ), // „Šest razloga“ ostaje samo na Cijenama (design/04 #10)
 		),
 		'related'     => array( 'usluge/izrada-web-stranica', 'djelatnosti', 'cijene' ),

@@ -15,7 +15,7 @@ export const meta = {
   mvb: '500 300 680 562',
   mobileCallout: null,
   index: 'KARTA OSIJEKA', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.05', 'Lokalni SEO', 'KARTA SREDIŠTA OSIJEKA', 'WEB · PROFIL · RECENZIJE · STRANICE'],
+  tb: ['USLUGE', 'U.05', 'Lokalni SEO', 'KARTA SREDIŠTA OSIJEKA', 'WEB · PROFIL · RECENZIJE · STRANICE'],
 };
 
 const S = 0.42; // jedinica lista po metru

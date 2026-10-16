@@ -16,7 +16,7 @@ export const meta = {
   mvb: '500 110 680 562',
   mobileCallout: null,
   index: 'PROFIL NA KARTI', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.06', 'Google Business profil', 'PROFIL · RASTAVLJEN', 'WEB · KATEGORIJA · FOTO · RECENZIJE'],
+  tb: ['USLUGE', 'U.06', 'Google Business profil', 'PROFIL · RASTAVLJEN', 'WEB · KATEGORIJA · FOTO · RECENZIJE'],
 };
 
 const X0 = 560; // kartica profila

@@ -12,7 +12,7 @@ export const meta = {
   lamp: { time: '18:05 · KVAR KLIME', search: 'servis klime' },
   mvb: '504 60 680 562',
   mobileCallout: null,
-  tb: ['ZAEC · PROVJERA', 'P.01', 'Provjera vidljivosti', 'IZVJEŠĆE PROVJERE', 'GOOGLE · RECENZIJE · WEB · AI'],
+  tb: ['PROVJERA', 'P.01', 'Provjera vidljivosti', 'IZVJEŠĆE PROVJERE', 'GOOGLE · RECENZIJE · WEB · AI'],
 };
 
 const PX0 = 520; // list izvješća

@@ -16,7 +16,7 @@ export const meta = {
   mvb: '510 112 680 562',
   mobileCallout: null,
   index: 'TRAKA KADROVA', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.09', 'Brzina web stranice', 'KADROVI UČITAVANJA', 'WEB · LCP · SLIKE · FONTOVI · CACHE'],
+  tb: ['USLUGE', 'U.09', 'Brzina web stranice', 'KADROVI UČITAVANJA', 'WEB · LCP · SLIKE · FONTOVI · CACHE'],
 };
 
 const S = 440; // jedinica po sekundi

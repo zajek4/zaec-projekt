@@ -18,7 +18,7 @@ export const meta = {
   slug: 'djelatnosti',
   list: '00',
   name: 'Djelatnosti',
-  head: 'ZAEC · DJELATNOSTI', // komplet su nacrti zanata i izlozi noću
+  head: 'DJELATNOSTI', // komplet su nacrti zanata i izlozi noću
   view: 'KAZALO KOMPLETA',
   web: 'STRANICA ZA SVAKU DJELATNOST',
   title: 'Kazalo listova djelatnosti',

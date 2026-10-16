@@ -21,7 +21,7 @@ function zaec_home_defaults() {
 		'hero_title'      => 'Web koji donosi <em>upite</em>, ne samo dojam.',
 		'hero_lead'       => 'ZAEC je web studio iz Osijeka. Projektiramo, gradimo i mjerimo web stranice, webshopove i SEO za tvrtke kojima web mora donositi pozive, upite i prodaju.',
 		'hero_cta'        => 'Recite nam što želite postići',
-		'hero_trust_1'    => 'Fiksna cijena u pisanoj ponudi',
+		'hero_trust_1'    => 'Pisana ponuda prije početka',
 		'hero_trust_2'    => 'Domena, hosting i pristupi na vaše ime',
 		'hero_trust_3'    => 'Mjerimo pozive, upite i prodaju',
 		'hero_cue'        => 'Od mreže do upita — pomaknite',
@@ -70,7 +70,7 @@ function zaec_home_defaults() {
 		// kako početi). Smjernice: /mnt/project-files/zaec-signature/strategy/04-naslovnica.md.
 		'recog_kicker'    => '08 — ZAEC',
 		'recog_title'     => 'Svako svjetlo je nečiji posao. <em>Naš</em> je da se vaš vidi.',
-		'recog_lead'      => 'ZAEC je web studio iz Osijeka. Projektiramo, gradimo i mjerimo web stranice za tvrtke kojima web mora donositi posao: od obrta i trgovina do stručnih usluga, proizvodnje i ustanova.',
+		'recog_lead'      => 'Za tvrtke kojima web mora donositi posao: od obrta i trgovina do stručnih usluga, proizvodnje i ustanova. Svaki projekt počinje nacrtom, a završava mjerenjem.',
 		'recog_cta'       => 'Recite nam što želite postići',
 		'recog_start'     => 'Prvi korak: razgovor od dvadesetak minuta i pisana procjena, bez obveze.',
 		// Lijepo vs učinkovito.
@@ -84,7 +84,7 @@ function zaec_home_defaults() {
 		// Radovi.
 		'work_kicker'     => 'Radovi',
 		'work_title'      => 'Stvarni projekti. <em>Stvarni</em> ljudi.',
-		'work_lead'       => 'Bez izmišljenih klijenata i lažnih brojki. Ovo su radovi koje možete otvoriti i provjeriti — s problemom, razmišljanjem, rješenjem i ishodom.',
+		'work_lead'       => 'Izbor radova koje smijemo javno pokazati, s problemom, razmišljanjem, rješenjem i ishodom. Brojke objavljujemo samo uz dopuštenje klijenta.',
 		// Možda ne.
 		'maybe_kicker'    => 'Iskreno',
 		'maybe_title'     => 'Možda vam novi web <em>još ne treba</em>.',
@@ -96,7 +96,7 @@ function zaec_home_defaults() {
 		// Ulaganje.
 		'invest_kicker'   => 'Ulaganje',
 		'invest_title'    => 'Cijena prema opsegu. <em>Napisana</em> unaprijed.',
-		'invest_lead'     => 'Već ste se jednom opekli? Zato opseg, rok i cijenu dobivate na papiru prije početka. „Od” cijene ne objavljujemo jer ništa ne znače: web za obrt i webshop s integracijama nisu isti posao. Ponuda je fiksna i bez obveze.',
+		'invest_lead'     => 'Već ste se jednom opekli? Zato opseg, rok i cijenu dobivate na papiru prije početka. „Od” cijene ne objavljujemo jer ništa ne znače: web za obrt i webshop s integracijama nisu isti posao. Ponuda je pisana i bez obveze.',
 		// FAQ.
 		'faq_kicker'      => 'Pitanja',
 		'faq_title'       => 'Prije nego <em>pitate</em>.',
@@ -139,7 +139,7 @@ function zaec_home_about_rows() {
 		array(
 			'03',
 			'Kako radimo',
-			'Nacrt prije dizajna. Fiksna cijena u pisanoj ponudi prije početka. Jedna osoba odgovara za projekt od prvog razgovora do objave.',
+			'Nacrt prije dizajna. Opseg, rok i cijena u pisanoj ponudi prije početka, a mjerenje od prvog dana.',
 			array( array( '#proces', 'Proces u šest koraka' ) ),
 		),
 		array(
@@ -237,7 +237,7 @@ function zaec_home_maybe() {
 function zaec_home_steps() {
 	return array(
 		array( 'Razumijemo posao', 'Kratki razgovor od dvadesetak minuta: kako radite, tko su vam kupci, odakle dolaze upiti i gdje se gube.', 'Iskrenu procjenu — i preporuku da ne radite ništa, ako je to pametnije.' ),
-		array( 'Projektiramo put korisnika', 'Mapiramo pitanja kupca i redoslijed odluke: s kojih kanala dolazi, što mora vidjeti i gdje se odlučuje.', 'Strukturu stranica i pisanu ponudu s fiksnom cijenom i rokom.' ),
+		array( 'Projektiramo put korisnika', 'Mapiramo pitanja kupca i redoslijed odluke: s kojih kanala dolazi, što mora vidjeti i gdje se odlučuje.', 'Strukturu stranica i pisanu ponudu s cijenom i rokom.' ),
 		array( 'Dizajniramo sustav', 'Vizualni smjer, tipografija, komponente i ključni ekrani — prvo za mobitel.', 'Pregled dizajna i dogovoreni broj korekcija prije razvoja.' ),
 		array( 'Gradimo', 'WordPress po mjeri, tekstovi, SEO temelji, schema i mjerenje — sve prema nacrtu.', 'Pristup radnoj verziji tijekom izrade.' ),
 		array( 'Testiramo', 'Stvarni mobiteli, brzina, svaki obrazac, svaki gumb za poziv i svaki događaj u GA4.', 'Popis provjera koji možete proći i sami.' ),
@@ -249,7 +249,7 @@ function zaec_home_steps() {
 function zaec_home_process() {
 	return array(
 		array( 'K.01', 'Besplatan razgovor', 'Saznamo kako radite, tko su vam kupci i gdje gubite upite. Ako vam ne trebamo — reći ćemo.', '20 minuta · bez obveze' ),
-		array( 'K.02', 'Nacrt i fiksna ponuda', 'Struktura stranica, sadržaj, funkcije i mjerenje — na papiru, uz fiksnu cijenu i rok.', 'opseg potvrđen pisano' ),
+		array( 'K.02', 'Nacrt i pisana ponuda', 'Struktura stranica, sadržaj, funkcije i mjerenje — na papiru, uz cijenu i rok.', 'opseg potvrđen pisano' ),
 		array( 'K.03', 'Izrada i testiranje', 'Dizajn, tekstovi i razvoj prema nacrtu. Na stvarnim mobitelima testiramo brzinu i svaki obrazac.', 'pregled u tijeku rada' ),
 		array( 'K.04', 'Objava, mjerenje, rast', 'Objava, Search Console, GA4 i Google profil. Pristupi, edukacija i 14 dana jamstva.', 'brojke od prvog dana' ),
 	);
@@ -286,7 +286,7 @@ function zaec_home_goals() {
 function zaec_guarantees() {
 	return array(
 		array( 'chat-round-dots', 'Besplatan prvi razgovor', '20 minuta, bez obveze. Ako vam ne trebamo, reći ćemo.' ),
-		array( 'document', 'Fiksna cijena na papiru', 'Opseg, rok i cijena u pisanoj ponudi prije početka.' ),
+		array( 'document', 'Cijena na papiru', 'Opseg, rok i cijena u pisanoj ponudi prije početka.' ),
 		array( 'card', '50 % na početku, 50 % prije objave', 'Ne plaćate cijeli iznos unaprijed.' ),
 		array( 'key', 'Sve na vaše ime', 'Domena, hosting, pristupi i sadržaj su vaši. Bez zaključavanja.' ),
 		array( 'shield-check', '14 dana jamstva', 'Tehničke greške na isporučenom radu ispravljamo bez naplate.' ),
@@ -309,7 +309,7 @@ function zaec_home_faq() {
 		}
 	}
 	return array(
-		array( 'Koliko košta izrada web stranice?', 'Ovisi o opsegu: broju stranica, funkcijama i tome imate li sadržaj. Zato ne objavljujemo „od” cijene koje ništa ne znače. Nakon kratkog razgovora dobivate pisanu ponudu s fiksnom cijenom i rokom, bez obveze. Okvirni opseg i rok možete odmah složiti u procjeni projekta.' ),
+		array( 'Koliko košta izrada web stranice?', 'Ovisi o opsegu: broju stranica, funkcijama i tome imate li sadržaj. Zato ne objavljujemo „od” cijene koje ništa ne znače. Nakon kratkog razgovora dobivate pisanu ponudu s cijenom i rokom, bez obveze. Okvirni opseg i rok možete odmah složiti u procjeni projekta.' ),
 		array( 'Koliko traje izrada?', 'Landing stranica je najbrža, webshop i integracije traju najdulje. Okvirni rok vidite u procjeni projekta, a točan rok piše u ponudi prije početka.' ),
 		array( 'Garantirate li prvo mjesto na Googleu?', 'Ne — i bježite od svakoga tko to garantira. Garantiramo ispravno postavljene temelje (brzina, struktura, schema, Google profil, mjerenje) i brojke koje pokazuju što se mijenja.' ),
 		array( 'Što ako mi se dizajn ne svidi?', 'Zato prvo ide nacrt i vizualni smjer, uz dogovoreni broj korekcija prije razvoja. Ne gradimo naslijepo pa onda mijenjamo iz temelja.' ),

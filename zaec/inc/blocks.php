@@ -277,7 +277,7 @@ function zaec_block_projects( $b, $l, $alt ) {
 		return;
 	}
 	zaec_block_open( $alt );
-	zaec_block_head( $b['title'] ?? 'Radovi koje možete <em>otvoriti</em>.', $b['lead'] ?? 'Stvarni projekti — bez izmišljenih klijenata i brojki.', 'Radovi' );
+	zaec_block_head( $b['title'] ?? 'Izbor <em>radova</em>.', $b['lead'] ?? 'Stvarni projekti, bez izmišljenih klijenata i brojki.', 'Radovi' );
 	echo '<div class="pgrid' . ( 1 === count( $projects ) ? ' pgrid--one' : '' ) . '">';
 	foreach ( $projects as $p ) {
 		get_template_part( 'template-parts/project-card', null, array( 'p' => $p ) );
@@ -529,7 +529,7 @@ function zaec_block_contact( $b, $l, $alt ) {
 	echo '<a class="item" href="' . esc_url( zaec_maps_href() ) . '" target="_blank" rel="noopener"><span class="ic">' . zaec_icon( 'map-point', 20 ) . '</span><div><b>' . esc_html( $o['address'] ) . '</b><span>' . esc_html( $o['postal_code'] . ' ' . $o['city'] ) . ' · otvori kartu</span></div></a>'; // phpcs:ignore
 	echo '<a class="item" href="' . esc_url( zaec_url( 'kontakt' ) ) . '"><span class="ic">' . zaec_icon( 'phone', 20 ) . '</span><div><b>Telefon i radno vrijeme</b><span>Na stranici Kontakt</span></div></a>'; // phpcs:ignore
 	echo '<div><p class="kicker" style="margin:18px 0 12px">Što se događa nakon upita</p><ol class="anat-notes" role="list">';
-	foreach ( array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i fiksna cijena. Odlučujete bez pritiska.' ) ) as $i => $s ) {
+	foreach ( array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i cijena. Odlučujete bez pritiska.' ) ) as $i => $s ) {
 		echo '<li><span class="anat-n">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $s[0] ) . '</b><p>' . esc_html( $s[1] ) . '</p></div></li>';
 	}
 	echo '</ol></div></div></div></div></section>';
@@ -540,7 +540,7 @@ function zaec_block_contact( $b, $l, $alt ) {
  * etaže — redom, dok prolaze sredinom ekrana. Izravni kontakti su samo u heroju, ispod forme (ne ponavljaju se ovdje).
  */
 function zaec_block_contact_after() {
-	$steps = array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i fiksna cijena. Odlučujete bez pritiska.' ) );
+	$steps = array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i cijena. Odlučujete bez pritiska.' ) );
 	echo '<section class="block kt-after" data-header-theme="night" aria-labelledby="kt-after-h"><div class="wrap kt-after-grid"><div class="kt-after-head"><p class="kicker">Nakon upita</p><h2 class="h2" id="kt-after-h">Što se događa <em>dalje</em>.</h2></div><ol class="kt-steps" role="list">';
 	foreach ( $steps as $i => $st ) {
 		echo '<li class="kt-step"><span class="kt-step-n mono">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $st[0] ) . '</b><p>' . esc_html( $st[1] ) . '</p></div></li>';
@@ -564,13 +564,13 @@ function zaec_block_about( $b, $l, $alt ) {
 	if ( 'facts' !== $part ) {
 		echo '<section class="block' . esc_attr( $alt ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Zašto ZAEC</p>';
 		zaec_heading( 'Prvo nacrt. Onda <em>sve</em> ostalo.' );
-		echo '</div><div class="prose" data-reveal><p>Previše tvrtki platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>ZAEC radi drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače videopozivom i jasnim pisanim dogovorom.</p></div></div></section>';
+		echo '</div><div class="prose" data-reveal><p>Previše tvrtki platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>Mi radimo drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače videopozivom i jasnim pisanim dogovorom.</p></div></div></section>';
 	}
 	if ( 'intro' === $part ) {
 		return;
 	}
 	echo '<section class="block' . esc_attr( 'facts' === $part ? $alt : ' block--paper2' ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Podaci</p>';
-	zaec_heading( 'Tko <em>stoji</em> iza ZAEC-a.' ); // pravi naslov bloka, ne fusnota uz tablicu (design/04 §2, O nama)
+	zaec_heading( 'Tko <em>stoji</em> iza studija.' ); // pravi naslov bloka, ne fusnota uz tablicu (design/04 §2, O nama)
 	echo '</div><div class="prose" data-reveal><table><tbody>';
 	$rows = array( 'Naziv' => $o['legal_name'], 'Nositelj' => $o['owner_name'], 'Sjedište' => $o['address'] . ', ' . $o['postal_code'] . ' ' . $o['city'], 'Matični broj' => $o['mb'], 'OIB' => $o['oib'], 'Djelatnost (NKD)' => $o['nkd'] ? $o['nkd'] . ' — računalno programiranje' : '', 'Radno vrijeme' => $o['hours'], 'Iskustvo' => $o['experience'] ? $o['experience'] . ' godina rada na webu' : '' );
 	foreach ( $rows as $k => $v ) {

@@ -9,7 +9,7 @@ export const meta = {
   slug: 'ugostiteljstvo-i-smjestaj',
   list: '06',
   name: 'Ugostiteljstvo i smještaj',
-  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  head: 'DJELATNOSTI · IZLOZI',
   view: 'RECEPCIJA APARTMANA NOĆU',
   web: 'SMJEŠTAJ · GALERIJA · UPIT',
   title: 'Kuća s apartmanima noću u osječkoj ulici',

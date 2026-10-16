@@ -14,7 +14,7 @@ export const meta = {
   tvb: '250 110 960 720',
   defs: glowDefs,
   index: 'KATOVI STRANICE', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.01', 'Izrada web stranica', 'ZGRADA OD RIJEČI', 'WEB · STRUKTURA · TEKST · MJERENJE'],
+  tb: ['USLUGE', 'U.01', 'Izrada web stranica', 'ZGRADA OD RIJEČI', 'WEB · STRUKTURA · TEKST · MJERENJE'],
 };
 
 const [L, R] = [570, 870];

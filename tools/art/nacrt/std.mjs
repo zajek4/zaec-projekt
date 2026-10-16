@@ -210,7 +210,7 @@ export function builder(meta, view, tvb = meta.tvb) {
       // tbFs: veći tekst sastavnice gdje je kadar manji (hub); inline stil nadjačava tabletnih 17 u
       const st = meta.tbFs ? ` style="font-size:${meta.tbFs}px;letter-spacing:.02em"` : ''; // uži razmak: retci ostaju u okviru 440 u
       // list izvan kompleta (O nama) ima svoje retke sastavnice: [zaglavlje, broj lista, naziv, pogled, donji red]
-      const [head, no, name, sub, foot] = meta.tb || [meta.head || 'ZAEC · NACRT DJELATNOSTI', `LIST ${meta.list}/${String(TOTAL).padStart(2, '0')}`, meta.name, meta.view, `WEB · ${meta.web}`];
+      const [head, no, name, sub, foot] = meta.tb || [meta.head || 'NACRT DJELATNOSTI', `LIST ${meta.list}/${String(TOTAL).padStart(2, '0')}`, meta.name, meta.view, `WEB · ${meta.web}`];
       b.text(bx + 12, by + 21, head, 't-tb', st);
       b.text(bx + 322, by + 21, no, 't-tb', st);
       b.text(bx + 12, by + 58, name, 't-tb-b');

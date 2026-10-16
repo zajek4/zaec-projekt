@@ -341,18 +341,19 @@ html.motion-ok .kt-main > :nth-child(n + 5) { animation-delay: 0.48s; }
 @container nacrt (min-aspect-ratio: 115/100) { .nacrt svg.d .c-a115 { display: inline; } }
 @container nacrt (min-aspect-ratio: 120/100) { .nacrt svg.d .c-a120 { display: inline; } }
 /* iscrtavanje redom kojim se crta na papiru, jednom (bez JS-a i uz smanjen pokret: završno stanje) */
-html.motion-ok .nacrt .nd { animation: nd-in 0.5s var(--ease-out) both; }
-html.motion-ok .nacrt .nd [pathLength] { stroke-dasharray: 1; animation: nd-draw 0.6s var(--ease-out) both; animation-delay: inherit; }
-html.motion-ok .nacrt .nd-1 { animation-delay: 0.2s; }
-html.motion-ok .nacrt .nd-2 { animation-delay: 0.35s; }
-html.motion-ok .nacrt :is(.nd-3, .nd-4) { animation-delay: 0.55s; }
-html.motion-ok .nacrt .nd-5 { animation-delay: 0.85s; }
-html.motion-ok .nacrt .nd-6 { animation-delay: 1.05s; animation-duration: 0.4s; }
+/* tempo prati otvaranje kadra (1,4 s): crta kreće dok se kadar još otvara, svjetlo se pali kad je list nacrtan */
+html.motion-ok .nacrt .nd { animation: nd-in 0.6s var(--ease-out) both; }
+html.motion-ok .nacrt .nd [pathLength] { stroke-dasharray: 1; animation: nd-draw 1s var(--ease-out) both; animation-delay: inherit; }
+html.motion-ok .nacrt .nd-1 { animation-delay: 0.3s; }
+html.motion-ok .nacrt .nd-2 { animation-delay: 0.5s; }
+html.motion-ok .nacrt :is(.nd-3, .nd-4) { animation-delay: 0.8s; }
+html.motion-ok .nacrt .nd-5 { animation-delay: 1.15s; }
+html.motion-ok .nacrt .nd-6 { animation-delay: 1.4s; animation-duration: 0.5s; }
 html.motion-ok .nacrt .nd-6 [pathLength] { animation: none; stroke-dasharray: none; }
-html.motion-ok .nacrt .lamp .halo { animation: nd-lamp 0.5s var(--ease-out) 1.35s both; transform-box: fill-box; transform-origin: center; }
-html.motion-ok .nacrt .nd .lamp-fill { animation: nd-in 0.5s var(--ease-out) 1.35s both; }
-html.motion-ok .nacrt .nd .lamp-ln { stroke-dasharray: 1; animation: nd-draw 0.7s var(--ease-out) 1.35s both; }
-html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s both; }
+html.motion-ok .nacrt .lamp .halo { animation: nd-lamp 0.7s var(--ease-out) 1.75s both; transform-box: fill-box; transform-origin: center; }
+html.motion-ok .nacrt .nd .lamp-fill { animation: nd-in 0.6s var(--ease-out) 1.75s both; }
+html.motion-ok .nacrt .nd .lamp-ln { stroke-dasharray: 1; animation: nd-draw 0.9s var(--ease-out) 1.75s both; }
+html.motion-ok .nacrt .lamp text { animation: nd-in 0.5s var(--ease-out) 2s both; }
 @keyframes nd-in { from { opacity: 0; } }
 @keyframes nd-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes nd-lamp { from { opacity: 0; transform: scale(0.2); } }
@@ -365,16 +366,26 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
    svojstva (paralaksa slike, gašenje oznake kadra pri scrollu). Bez kretanja (motion-ok nema) sve je odmah tu.
    Ulazi počinju od opacity 0.01, ne 0: Chrome element s opacity 0 ne broji kao iscrtan, pa bi LCP (Core Web
    Vitals) naslova i leada pao tek na kraj animacije. Od 0.01 LCP ostaje na prvom iscrtavanju, a oku je isto. */
-@keyframes hero-rise { from { opacity: 0.01; transform: translateY(18px); } }
+@keyframes hero-rise { from { opacity: 0.01; transform: translateY(36px); } }
 @keyframes hero-fade { from { opacity: 0.01; } }
 @keyframes hero-late { to { opacity: 1; } }
 @keyframes eh-open-x { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0); } }
 @keyframes eh-open-y { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
 @keyframes eh-settle { from { opacity: 0.01; scale: 1.16; } }
-html.motion-ok .eh-frame { animation: eh-open-x 1.1s var(--ease-out) backwards; }
-html.motion-ok :is(.eh-head, .eh-title, .eh-body) { animation: hero-rise 0.9s var(--ease-out) backwards; }
-html.motion-ok .eh-title { animation-delay: 0.06s; }
-html.motion-ok .eh-body { animation-delay: 0.12s; }
+html.motion-ok .eh-frame { animation: eh-open-x 1.4s var(--ease-out) backwards; }
+/* svjetlosni rub kadra: tanka topla crta putuje s rubom koji se otvara i gasi se kad je kadar otvoren. Samo
+   ukras (pseudo-element, bez rasporeda), pa ne dira LCP ni CLS */
+@keyframes eh-edge-x { from { left: 100%; } to { left: 0%; } }
+@keyframes eh-edge-y { from { top: 0%; } to { top: 100%; } }
+@keyframes eh-edge-off { to { opacity: 0; } }
+html.motion-ok .eh-frame::before {
+  content: ''; position: absolute; z-index: 3; top: 0; bottom: 0; left: 0; width: 2px; pointer-events: none;
+  background: #ffcf8a; box-shadow: 0 0 22px 3px rgba(255, 207, 138, 0.5);
+  animation: eh-edge-x 1.4s var(--ease-out) both, eh-edge-off 0.5s ease 1s forwards;
+}
+html.motion-ok :is(.eh-head, .eh-title, .eh-body) { animation: hero-rise 1.1s var(--ease-out) 0.1s backwards; }
+html.motion-ok .eh-title { animation-delay: 0.2s; }
+html.motion-ok .eh-body { animation-delay: 0.32s; }
 html.motion-ok .eh-slate { animation: hero-fade 0.8s var(--ease-out) 0.8s backwards; }
 html.motion-ok .eh-sheet-list li { animation: hero-rise 0.8s var(--ease-out) backwards; animation-delay: calc(0.4s + var(--i, 0) * 50ms); }
 /* slike kadra (urednički i potpisni heroji): skrivene dok se ne učitaju (onload doda .is-in), pa se mirno pojave;
@@ -386,6 +397,7 @@ html.motion-ok .eh-img { scale: 1.08; } /* rezerva za paralaksu (editorial.js); 
 html.motion-ok img.eh-img.is-in { animation: eh-settle 1.6s var(--ease-out) backwards; }
 @media (prefers-reduced-motion: reduce) {
   html.motion-ok :is(.eh-frame, .eh-head, .eh-title, .eh-body, .eh-slate, .eh-sheet-list li) { animation: none; }
+  html.motion-ok .eh-frame::before { display: none; }
   html.motion-ok img.hero-fade:is(.is-in, :not(.is-in)) { animation: none; opacity: 1; }
 }
 @media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 1001/1000) {
@@ -574,6 +586,7 @@ html:not(.js) .est-types { display: none; } /* bez skripte gumbi ne rade, pa ih 
   .eh .crumbs { display: none; }
   .eh-frame { position: relative; inset: auto; width: 100vw; margin-left: calc(var(--gutter) * -1); aspect-ratio: 4 / 3.3; border-radius: 0; }
   html.motion-ok .eh-frame { animation-name: eh-open-y; }
+  html.motion-ok .eh-frame::before { right: 0; bottom: auto; width: auto; height: 2px; animation-name: eh-edge-y, eh-edge-off; }
   .eh-slate { top: 14px; bottom: auto; left: var(--gutter); right: var(--gutter); }
   .eh-slate span { -webkit-line-clamp: 1; }
   .eh-frame::after { background: linear-gradient(180deg, rgba(4, 6, 12, 0.55), rgba(4, 6, 12, 0) 30%), linear-gradient(0deg, rgba(4, 6, 12, 0.82), rgba(4, 6, 12, 0.5) 14%, rgba(4, 6, 12, 0) 34%); }

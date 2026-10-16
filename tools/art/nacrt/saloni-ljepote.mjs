@@ -8,7 +8,7 @@ export const meta = {
   slug: 'saloni-ljepote',
   list: '08',
   name: 'Saloni ljepote',
-  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  head: 'DJELATNOSTI · IZLOZI',
   view: 'IZLOG SALONA NOĆU',
   web: 'CJENIK · TERMINI · RECENZIJE',
   title: 'Izlog frizerskog salona noću u osječkoj ulici',

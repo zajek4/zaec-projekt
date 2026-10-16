@@ -74,7 +74,7 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 				<?php if ( ! $sheet ) : ?>
 					<ul class="phero-trust mono" role="list">
 						<?php // stranica može imati svoje (npr. besplatna provjera nema ponudu ni izradu): [ ikona, tekst ] ?>
-						<?php foreach ( (array) ( $l['trust'] ?? array( array( 'document', 'Fiksna cijena u ponudi' ), array( 'key', 'Sve na vaše ime' ), array( 'chat-round-dots', 'Prvi razgovor besplatno' ) ) ) as $zaec_t ) : ?>
+						<?php foreach ( (array) ( $l['trust'] ?? array( array( 'document', 'Cijena u pisanoj ponudi' ), array( 'key', 'Sve na vaše ime' ), array( 'chat-round-dots', 'Prvi razgovor besplatno' ) ) ) as $zaec_t ) : ?>
 							<li><?php zaec_the_icon( $zaec_t[0], 16 ); ?> <?php echo esc_html( $zaec_t[1] ); ?></li>
 						<?php endforeach; ?>
 					</ul>
