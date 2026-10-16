@@ -250,8 +250,12 @@ html.motion-ok .kt-main > :nth-child(n + 5) { animation-delay: 0.48s; }
   --wl: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
   --edge: 43vw;
   position: relative; isolation: isolate; background: var(--paper); overflow: clip;
-  padding: calc(var(--header-h) + clamp(18px, 2.4vw, 34px)) 0 clamp(36px, 4.5vw, 64px);
+  padding: calc(var(--header-h) + clamp(18px, 2.4vw, 34px)) 0 132px;
 }
+/* Sjena kadra (.eh-frame, 0 60px 120px −60px) pada do ~120 px ispod njega; .eh ima overflow: clip (kadar izlazi
+   preko desnog ruba), pa je razmak ispod kadra u samom heroju, a sekcija odmah ispod ne dodaje svoj gornji.
+   Obojene sekcije (paper-2, ink) zadržavaju gornji razmak da sadržaj ne sjedne na rub boje. */
+.eh + :is(.block, .section):not(.block--paper2):not(.block--ink) { padding-top: 0; }
 .eh::before {
   content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
