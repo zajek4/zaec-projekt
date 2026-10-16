@@ -48,7 +48,7 @@ function zaec_registry_services() {
 		'kicker'      => 'Usluge',
 		'h1'          => 'Sve potrebno da vas <em>nađu</em>, odaberu i nazovu.',
 		'lead'        => 'Kupac prolazi tri koraka: pretraga, usporedba, kontakt. Gradimo cijeli put — od Google karte i AI odgovora do stranice koja pretvara posjet u poziv, i mjerenja koje pokazuje što radi.',
-		'answer'      => 'ZAEC radi izradu web stranica, webshopova i landing stranica, SEO i lokalni SEO, Google Business profil, AI vidljivost (ChatGPT, Gemini, Google AI) te postavljanje GA4 i e-commerce praćenja. Sve usluge mogu se uzeti zasebno ili kao jedan sustav.',
+		'answer'      => 'Radimo izradu web stranica, webshopova i landing stranica, SEO i lokalni SEO, Google Business profil, AI vidljivost (ChatGPT, Gemini, Google AI) te postavljanje GA4 i e-commerce praćenja. Sve usluge mogu se uzeti zasebno ili kao jedan sustav.',
 		'image'       => 'world/usluga-web.webp',
 		'nacrt'       => true, // list U.00: kazalo listova usluga (tools/art/nacrt/usluge.mjs)
 		'image_alt'   => 'Web stranica kao svijetleći ekran u noći: pola gotov dizajn, pola plavi nacrt; tragovi upita vode do gumba za kontakt.',
@@ -310,6 +310,7 @@ function zaec_registry_services() {
 		),
 		'faq'          => array(
 			array( 'Koja je razlika između landing stranice i web stranice?', 'Web stranica predstavlja cijeli posao kroz više stranica. Landing ima jedan cilj — jedan upit, prijavu ili kupnju — i namjerno uklanja sve što odvlači pažnju.' ),
+			array( 'Zašto oglas ne bi vodio na naslovnicu?', 'Može, ali posjetitelj tamo mora sam tražiti ponudu iz oglasa. Landing ga vodi ravno do upita, a vi točno znate što je oglas donio.' ),
 			array( 'Postavljate li praćenje konverzija za oglase?', 'Da. Postavljamo mjerenje poslanih upita i klikova na poziv te ga povezujemo s Google Ads i Metom. Uz trošak kampanje vaš oglašivač iz toga vidi koliko ga stoji jedan upit. Dio rezultata, kad posjetitelj odbije privolu, Google i Meta procjenjuju.' ),
 			array( 'Vodite li i oglase?', 'Ne. Postavljamo stranicu i mjerenje, a kampanje vodi vaš oglašivač, koji od nas dobiva ispravne konverzije.' ),
 			array( 'Može li landing raditi bez oglasa?', 'Može, ali najviše vrijedi uz promet koji već dolazi: oglase, QR kod, email ili društvene mreže. Za organsku pretragu obično je bolja web stranica s više sadržaja.' ),
@@ -726,6 +727,7 @@ function zaec_registry_services() {
 			array( 'Moram li ugovoriti održavanje?', 'Ne. 14 dana tehničkog jamstva uključeno je u svaku izradu, a održavanje je izbor koji možete prekinuti krajem svakog mjeseca.' ),
 			array( 'Održavate li stranice koje niste vi izradili?', 'Nakon kratke besplatne provjere — često da. Ako je stranica u lošem stanju, prvo kažemo što popraviti.' ),
 			array( 'Mogu li sam ažurirati?', 'Možete. Rizik je ažuriranje bez kopije i bez provjere. Kod nas se prvo napravi kopija, a nakon ažuriranja provjerimo formu i izgled.' ),
+			array( 'Zašto nova stranica nije u održavanju?', 'Nova stranica traži strukturu, tekst i dizajn. To nije izmjena nego mali projekt, pa cijenu dobivate prije rada.' ),
 			array( 'Što ako netko provali u web?', 'Imamo sigurnosnu kopiju izvan servera i vraćamo web. Čišćenje i uzrok procjenjujemo posebno.' ),
 			array( 'Koliko košta održavanje?', 'Ovisi o veličini weba i razini. Cijenu dobivate u ponudi, bez skrivenih stavki i bez dugoročne obveze.' ),
 		),

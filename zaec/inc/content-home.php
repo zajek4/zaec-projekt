@@ -96,7 +96,7 @@ function zaec_home_defaults() {
 		// Ulaganje.
 		'invest_kicker'   => 'Ulaganje',
 		'invest_title'    => 'Cijena prema opsegu. <em>Napisana</em> unaprijed.',
-		'invest_lead'     => 'Već ste se jednom opekli? Zato opseg, rok i cijenu dobivate na papiru prije početka. „Od” cijene ne objavljujemo jer ništa ne znače: web za obrt i webshop s integracijama nisu isti posao. Ponuda je pisana i bez obveze.',
+		'invest_lead'     => 'Već ste se jednom opekli? Rok probijen, cijena narasla, pristupi ostali kod agencije. Zato opseg, rok i cijenu dobivate na papiru prije početka, a sve je na vaše ime. „Od” cijene ne objavljujemo jer ništa ne znače: web za obrt i webshop s integracijama nisu isti posao. Ponuda je bez obveze.',
 		// FAQ.
 		'faq_kicker'      => 'Pitanja',
 		'faq_title'       => 'Prije nego <em>pitate</em>.',
@@ -241,7 +241,7 @@ function zaec_home_steps() {
 		array( 'Dizajniramo sustav', 'Vizualni smjer, tipografija, komponente i ključni ekrani — prvo za mobitel.', 'Pregled dizajna i dogovoreni broj korekcija prije razvoja.' ),
 		array( 'Gradimo', 'WordPress po mjeri, tekstovi, SEO temelji, schema i mjerenje — sve prema nacrtu.', 'Pristup radnoj verziji tijekom izrade.' ),
 		array( 'Testiramo', 'Stvarni mobiteli, brzina, svaki obrazac, svaki gumb za poziv i svaki događaj u GA4.', 'Popis provjera koji možete proći i sami.' ),
-		array( 'Lansiramo', 'Objava, Search Console, Google profil, edukacija i 14 dana jamstva. Onda gledamo brojke.', 'Pristupe na vaše ime i prvi izvještaj.' ),
+		array( 'Lansiramo', 'Objava, Search Console, povezivanje Google profila, edukacija i 14 dana jamstva. Onda gledamo brojke.', 'Pristupe na vaše ime i prvi izvještaj nakon dva tjedna.' ),
 	);
 }
 
@@ -251,7 +251,7 @@ function zaec_home_process() {
 		array( 'K.01', 'Besplatan razgovor', 'Saznamo kako radite, tko su vam kupci i gdje gubite upite. Ako vam ne trebamo — reći ćemo.', '20 minuta · bez obveze' ),
 		array( 'K.02', 'Nacrt i pisana ponuda', 'Struktura stranica, sadržaj, funkcije i mjerenje — na papiru, uz cijenu i rok.', 'opseg potvrđen pisano' ),
 		array( 'K.03', 'Izrada i testiranje', 'Dizajn, tekstovi i razvoj prema nacrtu. Na stvarnim mobitelima testiramo brzinu i svaki obrazac.', 'pregled u tijeku rada' ),
-		array( 'K.04', 'Objava, mjerenje, rast', 'Objava, Search Console, GA4 i Google profil. Pristupi, edukacija i 14 dana jamstva.', 'brojke od prvog dana' ),
+		array( 'K.04', 'Objava, mjerenje, rast', 'Objava, Search Console, GA4 i povezan Google profil. Pristupi, edukacija i 14 dana jamstva.', 'brojke od prvog dana' ),
 	);
 }
 
@@ -310,7 +310,7 @@ function zaec_home_faq() {
 	}
 	return array(
 		array( 'Koliko košta izrada web stranice?', 'Ovisi o opsegu: broju stranica, funkcijama i tome imate li sadržaj. Zato ne objavljujemo „od” cijene koje ništa ne znače. Nakon kratkog razgovora dobivate pisanu ponudu s cijenom i rokom, bez obveze. Okvirni opseg i rok možete odmah složiti u procjeni projekta.' ),
-		array( 'Koliko traje izrada?', 'Landing stranica je najbrža, webshop i integracije traju najdulje. Okvirni rok vidite u procjeni projekta, a točan rok piše u ponudi prije početka.' ),
+		array( 'Koliko traje izrada?', 'Web na predlošku obično 2–4 tjedna izrade, web po nacrtu 4–8 tjedana, a landing je najbrži. Rok teče od dana kad je sadržaj kompletan. Točan rok piše u ponudi prije početka.' ),
 		array( 'Garantirate li prvo mjesto na Googleu?', 'Ne — i bježite od svakoga tko to garantira. Garantiramo ispravno postavljene temelje (brzina, struktura, schema, Google profil, mjerenje) i brojke koje pokazuju što se mijenja.' ),
 		array( 'Što ako mi se dizajn ne svidi?', 'Zato prvo ide nacrt i vizualni smjer, uz dogovoreni broj korekcija prije razvoja. Ne gradimo naslijepo pa onda mijenjamo iz temelja.' ),
 		array( 'Imam web — trebam li novi?', 'Ne nužno. Napravimo besplatnu provjeru vidljivosti i iskreno kažemo isplati li se popravak ili nova izrada.' ),
