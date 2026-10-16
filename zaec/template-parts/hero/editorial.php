@@ -40,6 +40,8 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 			$sheet[ $zaec_k ] = $zaec_r;
 		}
 	}
+	// djelatnosti redom kao u kazalu i footeru (prop: koliko je vjerojatno da djelatnosti treba web)
+	uasort( $sheet, static fn( $a, $b ) => ( $a['prop'] ?? 99 ) <=> ( $b['prop'] ?? 99 ) );
 }
 ?>
 <section class="eh<?php echo $dark ? ' eh--dark' : ''; ?><?php echo $img || $nacrt || $est ? '' : ' eh--noimg'; ?><?php echo $est ? ' eh--est' : ''; ?><?php echo $nacrt ? ' eh--nacrt' : ''; ?><?php echo $sheet ? ' eh--hub' : ''; ?>" data-hero="editorial"<?php echo $dark ? ' data-header-theme="night"' : ''; ?> aria-labelledby="eh-title">

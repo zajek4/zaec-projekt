@@ -1,10 +1,10 @@
-// LIST 02 · Vodoinstalateri — pogled na zid kupaonice s instalacijom, M 1:20 (2,8 u = 1 cm).
+// LIST 10 · Vodoinstalateri — pogled na zid kupaonice s instalacijom, M 1:20 (2,8 u = 1 cm).
 // Vertikala odvoda Ø 110 i uspon hladne vode u kutu, zaporni ventil iza revizijskog otvora, bojler 80 L
 // sa sigurnosnim ventilom na ulazu hladne vode, umivaonik na +0,85, kutni ventili, sifon i
 // odvod u zidu s padom 2 % prema vertikali. Svjetlo: spoj tople vode na bojleru, kap — "curi bojler".
 export const meta = {
   slug: 'vodoinstalateri',
-  list: '02',
+  list: '10',
   name: 'Vodoinstalateri',
   view: 'POGLED NA ZID KUPAONICE A · M 1:20',
   web: 'HITNO · INTERVENCIJE · UPIT',

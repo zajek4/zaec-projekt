@@ -17,8 +17,8 @@
 .sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
 .say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
-<defs><pattern id="grid02t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid02t)"/>
+<defs><pattern id="grid10t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid10t)"/>
 <g class="nd nd-1">
 <path class="ln-tile" d="M380 712L1180 712M380 628L1180 628M380 544L1180 544M380 460L1180 460M380 376L1180 376M548 152L548 880M716 152L716 880M884 152L884 880"/>
 <path class="ln-con" d="M910 522L910 910M663 232L663 910"/>

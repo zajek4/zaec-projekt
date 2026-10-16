@@ -17,8 +17,8 @@
 .sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
 .say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
-<defs><pattern id="grid09t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl09t" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid09t)"/>
+<defs><pattern id="grid06t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl06t" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid06t)"/>
 <g class="nd nd-1">
 </g>
 <g class="nd nd-2">
@@ -51,63 +51,63 @@
 <circle class="lit" cx="661" cy="688" r="4.5"/>
 </g>
 <g class="nd nd-3">
-<path class="glow" d="M600 420Q855 420 1110 420V574H600Z" fill="url(#gl09t)"/>
+<path class="glow" d="M600 420Q855 420 1110 420V574H600Z" fill="url(#gl06t)"/>
 <path class="sil-ln" d="M608 468L608 574M694 468L694 574"/>
 <path class="sil" d="M608 500h86v4h-86zM613 472h10v28h-10z"/>
-<circle class="glow" cx="618" cy="481" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="618" cy="481" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="625" y="476" width="10" height="24"/>
-<circle class="glow" cx="630" cy="485" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="630" cy="485" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="637" y="472" width="10" height="28"/>
-<circle class="glow" cx="642" cy="481" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="642" cy="481" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="649" y="472" width="10" height="28"/>
-<circle class="glow" cx="654" cy="481" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="654" cy="481" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="661" y="476" width="10" height="24"/>
-<circle class="glow" cx="666" cy="485" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="666" cy="485" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="673" y="472" width="10" height="28"/>
-<circle class="glow" cx="678" cy="481" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="678" cy="481" r="2.4" fill="url(#gl06t)"/>
 <path class="sil" d="M608 537h86v4h-86zM613 513h10v24h-10z"/>
-<circle class="glow" cx="618" cy="522" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="618" cy="522" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="625" y="509" width="10" height="28"/>
-<circle class="glow" cx="630" cy="518" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="630" cy="518" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="637" y="509" width="10" height="28"/>
-<circle class="glow" cx="642" cy="518" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="642" cy="518" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="649" y="513" width="10" height="24"/>
-<circle class="glow" cx="654" cy="522" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="654" cy="522" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="661" y="509" width="10" height="28"/>
-<circle class="glow" cx="666" cy="518" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="666" cy="518" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="673" y="509" width="10" height="28"/>
-<circle class="glow" cx="678" cy="518" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="678" cy="518" r="2.4" fill="url(#gl06t)"/>
 <path class="sil" d="M608 571h86v4h-86zM613 543h10v28h-10z"/>
-<circle class="glow" cx="618" cy="552" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="618" cy="552" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="625" y="543" width="10" height="28"/>
-<circle class="glow" cx="630" cy="552" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="630" cy="552" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="637" y="547" width="10" height="24"/>
-<circle class="glow" cx="642" cy="556" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="642" cy="556" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="649" y="543" width="10" height="28"/>
-<circle class="glow" cx="654" cy="552" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="654" cy="552" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="661" y="543" width="10" height="28"/>
-<circle class="glow" cx="666" cy="552" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="666" cy="552" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="673" y="547" width="10" height="24"/>
-<circle class="glow" cx="678" cy="556" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="678" cy="556" r="2.4" fill="url(#gl06t)"/>
 <line class="sil-ln" x1="1016" y1="468" x2="1016" y2="574"/>
 <path class="sil" d="M1016 500h86v4h-86zM1021 472h10v28h-10z"/>
-<circle class="glow" cx="1026" cy="481" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1026" cy="481" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="1033" y="476" width="10" height="24"/>
-<circle class="glow" cx="1038" cy="485" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1038" cy="485" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="1045" y="472" width="10" height="28"/>
-<circle class="glow" cx="1050" cy="481" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1050" cy="481" r="2.4" fill="url(#gl06t)"/>
 <path class="sil" d="M1016 537h86v4h-86zM1021 513h10v24h-10z"/>
-<circle class="glow" cx="1026" cy="522" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1026" cy="522" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="1033" y="509" width="10" height="28"/>
-<circle class="glow" cx="1038" cy="518" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1038" cy="518" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="1045" y="509" width="10" height="28"/>
-<circle class="glow" cx="1050" cy="518" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1050" cy="518" r="2.4" fill="url(#gl06t)"/>
 <path class="sil" d="M1016 571h86v4h-86zM1021 543h10v28h-10z"/>
-<circle class="glow" cx="1026" cy="552" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1026" cy="552" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="1033" y="543" width="10" height="28"/>
-<circle class="glow" cx="1038" cy="552" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1038" cy="552" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="1045" y="547" width="10" height="24"/>
-<circle class="glow" cx="1050" cy="556" r="2.4" fill="url(#gl09t)"/>
+<circle class="glow" cx="1050" cy="556" r="2.4" fill="url(#gl06t)"/>
 <rect class="sil" x="732" y="502" width="132" height="6"/>
 <line class="sil-ln" x1="740" y1="508" x2="740" y2="574"/>
 <path class="sil" d="M820 508h40v66h-40zM756 496h16v6h-16z"/>

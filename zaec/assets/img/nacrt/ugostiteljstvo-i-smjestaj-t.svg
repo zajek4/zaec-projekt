@@ -17,8 +17,8 @@
 .sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
 .say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
-<defs><pattern id="grid06t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl06t" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid06t)"/>
+<defs><pattern id="grid09t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl09t" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid09t)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
 <line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
@@ -53,7 +53,7 @@
 <rect class="lit" x="540" y="538" width="276" height="60"/>
 <line class="say-t" x1="615" y1="559" x2="741" y2="559" style="stroke-width:14"/>
 <line class="say-t" x1="615" y1="587" x2="741" y2="587" style="stroke-width:9"/>
-<path class="glow" d="M544 626Q600 626 656 626V776H544Z" fill="url(#gl06t)"/>
+<path class="glow" d="M544 626Q600 626 656 626V776H544Z" fill="url(#gl09t)"/>
 <rect class="sil-ln" x="572" y="676" width="60" height="42"/>
 <circle class="sil" cx="584" cy="684" r="2.6"/>
 <rect class="sil" x="582" y="686" width="5" height="9"/>
@@ -73,13 +73,13 @@
 <circle class="sil" cx="630" cy="714" r="2.5"/>
 <path class="cut-w" pathLength="1" d="M544 626Q600 626 656 626V776H544Z"/>
 <line class="ln-glass" x1="544" y1="666" x2="656" y2="666"/>
-<path class="glow" d="M710 614Q760 614 810 614V800H710Z" fill="url(#gl06t)"/>
+<path class="glow" d="M710 614Q760 614 810 614V800H710Z" fill="url(#gl09t)"/>
 <path class="sil" d="M710 800 L710 786 L723 786 L723 772 L736 772 L736 758 L749 758 L749 744 L762 744 L762 730 L775 730 L775 716 L788 716 L788 702 L801 702 L810 702 L810 716 L728 800 Z"/>
 <line class="sil-ln" x1="712" y1="744" x2="800" y2="650"/>
 <path class="cut-w" pathLength="1" d="M710 614Q760 614 810 614V800H710Z"/>
 <line class="ln-glass" x1="710" y1="654" x2="810" y2="654"/>
 <line class="cut-w" pathLength="1" x1="726" y1="682" x2="726" y2="722"/>
-<path class="glow" d="M864 626Q920 626 976 626V776H864Z" fill="url(#gl06t)"/>
+<path class="glow" d="M864 626Q920 626 976 626V776H864Z" fill="url(#gl09t)"/>
 <path class="sil-ln" d="M920 626V648"/>
 <path class="sil" d="M906 660A14 12 0 0 1 934 660Z"/>
 <path class="sil-ln" d="M876 776V688"/>
@@ -90,7 +90,7 @@
 <path class="sil-ln" d="M964 690H957V714H964"/>
 <path class="cut-w" pathLength="1" d="M864 626Q920 626 976 626V776H864Z"/>
 <line class="ln-glass" x1="864" y1="666" x2="976" y2="666"/>
-<path class="glow" d="M1024 626Q1080 626 1136 626V776H1024Z" fill="url(#gl06t)"/>
+<path class="glow" d="M1024 626Q1080 626 1136 626V776H1024Z" fill="url(#gl09t)"/>
 <path class="sil-ln" d="M1080 626V648"/>
 <path class="sil" d="M1066 660A14 12 0 0 1 1094 660Z"/>
 <path class="sil-ln" d="M1097 680Q1103 683 1097 687"/>

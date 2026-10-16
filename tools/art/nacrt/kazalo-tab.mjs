@@ -8,7 +8,8 @@ export function kazalo(b, rows, { title = 'KAZALO LISTOVA', head, cols: c = {}, 
   const x0 = 504; // crte i naslov tablice; tekst redova od x 524
   const x1 = 1192;
   const top = m ? 172 : 190;
-  const rh = m ? 34 : 52;
+  // visina reda pada s brojem redova: tablica ostaje iznad sastavnice (desktop) i zatamnjenja kadra (mobilni)
+  const rh = Math.min(m ? 34 : 52, Math.floor(((m ? 540 : 800) - top) / (rows.length + 1)));
   // najduži naziv (25 znakova, 22 u) do x 956, pogled (17 znakova, 18 u) do x 1188
   const cols = { n: 524, nEnd: 554, name: 582, view: 980, ...c };
   const fs = (px) => (m ? '' : ` style="font-size:${px}px"`);

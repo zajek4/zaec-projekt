@@ -14,12 +14,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Sektori (redoslijed = prikaz): stručne usluge i ustanove prvi, zatim energetika i instalacije, gradnja i završni
- * radovi, proizvodnja; trgovina, ugostiteljstvo i saloni na kraju (istraživanje tržišta, listopad 2026).
+ * Sektori (redoslijed = prikaz): po tome koliko je vjerojatno da djelatnosti treba web (istraživanje tržišta,
+ * listopad 2026): energetika i instalacije, gradnja i završni radovi, stručne usluge, ustanove, proizvodnja;
+ * ugostiteljstvo, trgovina i saloni na kraju.
  * short = chip u procjeni i kicker, name = puni naziv (forma, sažetak upita, hub), about = rečenica za hub.
  */
 function zaec_sectors() {
 	return array(
+		'instalacije'    => array(
+			'short'    => 'Instalacije',
+			'name'     => 'Energetika, grijanje i instalacije',
+			'icon'     => 'bolt',
+			'examples' => 'sunčane elektrane, dizalice topline i klima, elektroinstalacije, punionice, vodo- i plinoinstalacije',
+			'about'    => 'Kad Fond otvori poziv za solare ili dizalice topline, ljudi traže tko ugrađuje u svojem kraju. Posao dobiva onaj tko najjasnije objasni postupak.',
+		),
+		'gradnja'        => array(
+			'short'    => 'Gradnja i obnova',
+			'name'     => 'Gradnja, obnova i završni radovi',
+			'icon'     => 'buildings',
+			'examples' => 'stolarija i kuhinje po mjeri, krovovi i fasade, adaptacije, kupaonice i keramika',
+			'about'    => 'Kupac traži tri ponude i gleda radove. Pobjeđuje onaj čiji su projekti stvarni, proces jasan, a ponuda usporediva.',
+		),
 		'strucne-usluge' => array(
 			'short'    => 'Stručne usluge',
 			'name'     => 'Stručne i poslovne usluge',
@@ -36,20 +51,6 @@ function zaec_sectors() {
 			'about'    => 'Mnogo različitih posjetitelja i puno sadržaja: roditelji, korisnici, partneri i javnost moraju naći svoje bez lutanja.',
 			'proof'    => 'cza-os.hr',
 		),
-		'instalacije'    => array(
-			'short'    => 'Instalacije',
-			'name'     => 'Energetika, grijanje i instalacije',
-			'icon'     => 'bolt',
-			'examples' => 'sunčane elektrane, dizalice topline i klima, elektroinstalacije, punionice, vodo- i plinoinstalacije',
-			'about'    => 'Kad Fond otvori poziv za solare ili dizalice topline, ljudi traže tko ugrađuje u svojem kraju. Posao dobiva onaj tko najjasnije objasni postupak.',
-		),
-		'gradnja'        => array(
-			'short'    => 'Gradnja i obnova',
-			'name'     => 'Gradnja, obnova i završni radovi',
-			'icon'     => 'buildings',
-			'examples' => 'stolarija i kuhinje po mjeri, krovovi i fasade, adaptacije, kupaonice i keramika',
-			'about'    => 'Kupac traži tri ponude i gleda radove. Pobjeđuje onaj čiji su projekti stvarni, proces jasan, a ponuda usporediva.',
-		),
 		'proizvodnja'    => array(
 			'short'    => 'Proizvodnja i industrija',
 			'name'     => 'Proizvodnja i industrija',
@@ -57,19 +58,19 @@ function zaec_sectors() {
 			'examples' => 'proizvođači, prerada hrane, metal i drvo, distribucija i veleprodaja',
 			'about'    => 'Kupac je često nabava ili partner iz inozemstva: traži program proizvodnje, certifikate, kapacitete i kontakt prave osobe, po mogućnosti na engleskom.',
 		),
-		'trgovina'       => array(
-			'short'    => 'Trgovina',
-			'name'     => 'Trgovina i webshopovi',
-			'icon'     => 'shop',
-			'examples' => 'specijalizirane trgovine, oprema i rezervni dijelovi, lokalni proizvodi, katalog s upitom',
-			'about'    => 'Nišni proizvod kupac traži po nazivu. Katalog s upitom često je brži put do prodaje od webshopa.',
-		),
 		'ugostiteljstvo' => array(
 			'short'    => 'Ugostiteljstvo',
 			'name'     => 'Ugostiteljstvo i turizam',
 			'icon'     => 'bed',
 			'examples' => 'smještaj i kuće za odmor, vinarije i kušaonice, restorani, catering',
 			'about'    => 'Gost vas prvo vidi na karti. Počinjemo od Google profila, a web dodajemo kad donosi rezervacije bez provizije.',
+		),
+		'trgovina'       => array(
+			'short'    => 'Trgovina',
+			'name'     => 'Trgovina i webshopovi',
+			'icon'     => 'shop',
+			'examples' => 'specijalizirane trgovine, oprema i rezervni dijelovi, lokalni proizvodi, katalog s upitom',
+			'about'    => 'Nišni proizvod kupac traži po nazivu. Katalog s upitom često je brži put do prodaje od webshopa.',
 		),
 		'ljepota'        => array(
 			'short'    => 'Ljepota i njega',
@@ -166,9 +167,9 @@ function zaec_industry_subsidy_block( $what ) {
 	);
 }
 
-function zaec_industry_common_faq() {
+function zaec_industry_common_faq( $ex = 'galerija radova ili više jezika' ) {
 	return array(
-		array( 'Koliko košta web za moju djelatnost?', 'Ovisi o broju usluga, stranica i funkcija (npr. rezervacije ili webshop). Složite procjenu projekta — vaša djelatnost je već odabrana — i dobit ćete pisanu ponudu.' ),
+		array( 'Koliko košta web za moju djelatnost?', 'Ovisi o broju usluga, stranica i funkcija (npr. ' . $ex . '). Složite procjenu projekta — vaša djelatnost je već odabrana — i dobit ćete pisanu ponudu.' ),
 		array( 'Što ako već imam web?', 'Prvo napravimo besplatnu provjeru vidljivosti. Često je dovoljno urediti Google profil, dodati stranice za usluge i prikupiti recenzije — bez izrade novog weba.' ),
 	);
 }
@@ -197,7 +198,7 @@ function zaec_registry_industries() {
 
 	$industries = array(
 		'klima-i-grijanje'          => array(
-			'tab' => 'Klima', 'sector' => 'instalacije', 'label' => 'Klima i dizalice topline', 'icon' => 'snowflake', 'prop' => 2, 'sign' => 'KLIMA SERVIS',
+			'tab' => 'Klima', 'sector' => 'instalacije', 'label' => 'Klima i dizalice topline', 'icon' => 'snowflake', 'prop' => 0, 'sign' => 'KLIMA SERVIS',
 			'title' => 'Klima, grijanje i dizalice topline', 'name' => 'klima servise i dizalice topline',
 			'seo_title' => 'Web za klima servise i dizalice topline | ZAEC',
 			'description' => 'Web za klima servise i ugradnju dizalica topline: stranica „Kako do subvencije”, montaža i servis, upit s podacima o kući i lokalni SEO prije sezone.',
@@ -227,7 +228,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/elektricari', 'djelatnosti/vodoinstalateri', 'usluge/lokalni-seo' ),
 		),
 		'vodoinstalateri'           => array(
-			'tab' => 'Voda', 'sector' => 'instalacije', 'label' => 'Vodoinstalateri', 'icon' => 'waterdrop', 'prop' => 7, 'sign' => 'VODOINSTALATER',
+			'tab' => 'Voda', 'sector' => 'instalacije', 'label' => 'Vodoinstalateri', 'icon' => 'waterdrop', 'prop' => 9, 'sign' => 'VODOINSTALATER',
 			'title' => 'Vodoinstalateri i plinoinstalateri', 'name' => 'vodoinstalatere',
 			'seo_title' => 'Google profil i web za vodoinstalatere | ZAEC',
 			'description' => 'Za vodoinstalaterske tvrtke s hitnom službom: Google profil i lokalni SEO za hitne pretrage, a web s intervencijama, područjem rada i hitnim pozivom kad imate više ekipa.',
@@ -257,7 +258,7 @@ function zaec_registry_industries() {
 			'related' => array( 'usluge/google-business-profil', 'usluge/lokalni-seo', 'djelatnosti/klima-i-grijanje' ),
 		),
 		'elektricari'               => array(
-			'tab' => 'Struja', 'sector' => 'instalacije', 'label' => 'Električari i solari', 'icon' => 'bolt', 'prop' => 3, 'sign' => 'ELEKTRO',
+			'tab' => 'Struja', 'sector' => 'instalacije', 'label' => 'Električari i solari', 'icon' => 'bolt', 'prop' => 1, 'sign' => 'ELEKTRO',
 			'title' => 'Električari i sunčane elektrane', 'name' => 'elektroinstalaterske tvrtke',
 			'seo_title' => 'Web za električare i sunčane elektrane | ZAEC',
 			'description' => 'Web za elektroinstalaterske tvrtke: sunčane elektrane, baterije, punionice i instalacije kao zasebne usluge, postupak subvencije, reference i upit prema krovu i potrošnji.',
@@ -287,7 +288,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/klima-i-grijanje', 'usluge/lokalni-seo', 'usluge/izrada-web-stranica' ),
 		),
 		'krovopokrivaci'            => array(
-			'tab' => 'Krov', 'sector' => 'gradnja', 'label' => 'Krovopokrivači', 'icon' => 'home', 'prop' => 5, 'sign' => 'KROVOVI',
+			'tab' => 'Krov', 'sector' => 'gradnja', 'label' => 'Krovopokrivači', 'icon' => 'home', 'prop' => 3, 'sign' => 'KROVOVI',
 			'title' => 'Krovopokrivači i limari', 'name' => 'krovopokrivače i limare',
 			'seo_title' => 'Web stranica za krovopokrivače i limare | ZAEC',
 			'description' => 'Web za krovopokrivače i limare: galerija prije/poslije, vrste krovova i materijala, hitne sanacije nakon nevremena i upit za procjenu s fotografijama.',
@@ -316,7 +317,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/gradevina-i-adaptacije', 'usluge/izrada-web-stranica', 'usluge/lokalni-seo' ),
 		),
 		'gradevina-i-adaptacije'    => array(
-			'tab' => 'Građevina', 'sector' => 'gradnja', 'label' => 'Izvođači radova', 'icon' => 'buildings', 'prop' => 6, 'sign' => 'GRADNJA',
+			'tab' => 'Građevina', 'sector' => 'gradnja', 'label' => 'Izvođači radova', 'icon' => 'buildings', 'prop' => 4, 'sign' => 'GRADNJA',
 			'title' => 'Građevina i adaptacije', 'name' => 'građevinske obrte i adaptacije',
 			'seo_title' => 'Web stranica za građevinske obrte i adaptacije | ZAEC',
 			'description' => 'Web za građevinske obrte: adaptacije stanova i kupaonica, fasade, keramika i završni radovi. Projekti kao studije, jasan proces i upit prema opsegu.',
@@ -345,7 +346,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/stolarija-kuhinje-i-interijeri', 'djelatnosti/krovopokrivaci', 'usluge/izrada-web-stranica' ),
 		),
 		'stolarija-kuhinje-i-interijeri' => array(
-			'tab' => 'Stolarija', 'sector' => 'gradnja', 'label' => 'Stolarija i interijeri', 'icon' => 'window-frame', 'prop' => 4, 'sign' => 'STOLARIJA',
+			'tab' => 'Stolarija', 'sector' => 'gradnja', 'label' => 'Stolarija i interijeri', 'icon' => 'window-frame', 'prop' => 2, 'sign' => 'STOLARIJA',
 			'title' => 'Stolarija, kuhinje i interijeri', 'name' => 'stolarije, kuhinje po mjeri i interijere',
 			'seo_title' => 'Web stranica za stolariju, kuhinje i interijere | ZAEC',
 			'description' => 'Web za stolarije i proizvođače namještaja: PVC, ALU i drvena stolarija, kuhinje i interijeri po mjeri. Galerija radova, usporedba materijala i upit s mjerama.',
@@ -374,7 +375,7 @@ function zaec_registry_industries() {
 			'related' => array( 'djelatnosti/gradevina-i-adaptacije', 'djelatnosti/krovopokrivaci', 'usluge/izrada-web-stranica' ),
 		),
 		'ugostiteljstvo-i-smjestaj' => array(
-			'tab' => 'Smještaj', 'sector' => 'ugostiteljstvo', 'label' => 'Smještaj i vinarije', 'icon' => 'bed', 'prop' => 9, 'sign' => 'APARTMANI',
+			'tab' => 'Smještaj', 'sector' => 'ugostiteljstvo', 'label' => 'Smještaj i vinarije', 'icon' => 'bed', 'prop' => 8, 'sign' => 'APARTMANI',
 			'title' => 'Smještaj, vinarije i restorani', 'name' => 'smještaj, vinarije i restorane',
 			'seo_title' => 'Web za smještaj, vinarije i restorane | ZAEC',
 			'description' => 'Za smještaj, vinarije, kušaonice i restorane: prvo Google profil, zatim web s ponudom, više jezika i direktnom rezervacijom ili terminom kušanja bez provizije platformi.',
@@ -404,7 +405,7 @@ function zaec_registry_industries() {
 			'related' => array( 'usluge/google-business-profil', 'usluge/izrada-web-stranica', 'djelatnosti/saloni-ljepote' ),
 		),
 		'trgovine-i-webshop'        => array(
-			'tab' => 'Shop', 'sector' => 'trgovina', 'label' => 'Specijalizirane trgovine', 'icon' => 'shop', 'prop' => 8, 'sign' => 'TRGOVINA',
+			'tab' => 'Shop', 'sector' => 'trgovina', 'label' => 'Specijalizirane trgovine', 'icon' => 'shop', 'prop' => 10, 'sign' => 'TRGOVINA',
 			'title' => 'Specijalizirane trgovine', 'name' => 'specijalizirane trgovine',
 			'seo_title' => 'Katalog i webshop za specijalizirane trgovine | ZAEC',
 			'description' => 'Web za specijalizirane trgovine: katalog s upitom, webshop kad su cijene i dostava jasne, lokalni podaci i GA4 mjerenje prodaje. Za nišne proizvode, opremu i dijelove.',
@@ -433,7 +434,7 @@ function zaec_registry_industries() {
 			'related' => array( 'usluge/webshop', 'usluge/ga4-i-pracenje-konverzija', 'usluge/izrada-web-stranica' ),
 		),
 		'saloni-ljepote'            => array(
-			'tab' => 'Salon', 'sector' => 'ljepota', 'label' => 'Saloni ljepote', 'icon' => 'star', 'prop' => 10, 'sign' => 'SALON',
+			'tab' => 'Salon', 'sector' => 'ljepota', 'label' => 'Saloni ljepote', 'icon' => 'star', 'prop' => 11, 'sign' => 'SALON',
 			'title' => 'Saloni ljepote i frizeri', 'name' => 'salone ljepote i frizere',
 			'seo_title' => 'Google profil i web za salone ljepote | ZAEC',
 			'description' => 'Za salone ljepote, frizere i kozmetičare: Google profil s cjenikom, fotografijama i poveznicom na rezervacije, a web za veće salone s više djelatnika.',
@@ -464,7 +465,7 @@ function zaec_registry_industries() {
 		),
 		// Nove stranice (strategija 03, točka 3): svaka ima stvaran projekt kao dokaz.
 		'strucne-usluge'            => array(
-			'tab' => 'Struka', 'sector' => 'strucne-usluge', 'label' => 'Stručne usluge', 'icon' => 'clipboard-check', 'prop' => 0, 'sign' => 'URED',
+			'tab' => 'Struka', 'sector' => 'strucne-usluge', 'label' => 'Stručne usluge', 'icon' => 'clipboard-check', 'prop' => 5, 'sign' => 'URED',
 			'title' => 'Stručne i poslovne usluge', 'name' => 'stručne i poslovne usluge',
 			'service_type' => 'Web stranica za stručne i poslovne usluge',
 			'seo_title' => 'Web stranica za stručne i poslovne usluge | ZAEC',
@@ -492,10 +493,10 @@ function zaec_registry_industries() {
 				array( 'Trebam li web i na engleskom?', 'Ako radite sa stranim klijentima ili partnerima, da, barem za ključne usluge. Svaki jezik dobiva svoju adresu, pa ga Google može prikazati klijentima na tom jeziku.' ),
 			),
 			'proof' => 'eurokontrola.hr',
-			'related' => array( 'usluge/izrada-web-stranica', 'djelatnosti/ustanove-i-udruge', 'usluge/seo' ),
+			'related' => array( 'usluge/izrada-web-stranica', 'djelatnosti/ustanove-i-udruge', 'djelatnosti/proizvodnja-i-industrija' ),
 		),
 		'ustanove-i-udruge'         => array(
-			'tab' => 'Ustanove', 'sector' => 'ustanove', 'label' => 'Ustanove i udruge', 'icon' => 'users-group-rounded', 'prop' => 1, 'sign' => 'USTANOVA',
+			'tab' => 'Ustanove', 'sector' => 'ustanove', 'label' => 'Ustanove i udruge', 'icon' => 'users-group-rounded', 'prop' => 6, 'sign' => 'USTANOVA',
 			'title' => 'Ustanove, udruge i obrazovanje', 'name' => 'ustanove i udruge',
 			'service_type' => 'Web stranica za ustanove i udruge',
 			'seo_title' => 'Web stranica za ustanove, udruge i škole | ZAEC',
@@ -527,6 +528,36 @@ function zaec_registry_industries() {
 			'proof' => 'cza-os.hr',
 			'related' => array( 'usluge/izrada-web-stranica', 'usluge/odrzavanje-weba', 'djelatnosti/strucne-usluge' ),
 		),
+		'proizvodnja-i-industrija'  => array(
+			'tab' => 'Proizvodnja', 'sector' => 'proizvodnja', 'label' => 'Proizvodnja i industrija', 'icon' => 'box-minimalistic', 'prop' => 7, 'sign' => 'PROIZVODNJA',
+			'title' => 'Proizvodnja i industrija', 'name' => 'proizvođače i izvoznike',
+			'service_type' => 'Web stranica za proizvođače i izvoznike',
+			'seo_title' => 'Web stranica za proizvođače i izvoznike | ZAEC',
+			'description' => 'Web za proizvođače, prerađivače i izvoznike: proizvodi, kapaciteti, certifikati i reference jasni stranom kupcu, više jezika i upit za ponudu.',
+			'h1' => 'Web za proizvodnju: da vas strani kupac <em>razumije</em> u prvoj minuti.',
+			'lead' => 'Nabavljač iz Njemačke ili Italije provjeri dobavljača na webu prije prvog maila. Traži što proizvodite, u kojim količinama, prema kojim normama i za koga već radite. Web koji to kaže jasno i na jeziku kupca skraćuje put do upita za ponudu.',
+			'short' => 'Proizvodi, kapaciteti, certifikati i reference na jeziku kupca, uz upit za ponudu s količinom i rokom.',
+			'onweb' => array( 'Proizvodi i kapaciteti', 'Certifikati i kvaliteta', 'Reference i tržišta', 'Upit za ponudu' ),
+			'searches' => array( 'CNC obrada po narudžbi', 'metal processing Croatia', 'proizvođač + proizvod', 'private label food Croatia', 'drvna industrija Slavonija' ),
+			'problems' => array(
+				array( 'Web govori o vama, a ne kupcu', 'Povijest tvrtke i vizija na prvom ekranu, a kupac traži proizvode, kapacitete i certifikate.' ),
+				array( 'Samo na hrvatskom', 'Strani nabavljač ne prevodi stranicu da bi vas razumio. Javi se dobavljaču kojeg razumije.' ),
+				array( 'Upit bez podataka', 'Mail „pošaljite cijenu” bez količine, materijala i roka. Prvi krug razgovora ode na pitanja.' ),
+			),
+			'deliver' => array(
+				array( 'Proizvodi i kapaciteti', 'Što proizvodite, od kojih materijala, u kojim serijama i na kojoj opremi. Pregledno, s brojkama.' ),
+				array( 'Certifikati i kvaliteta', 'ISO, HACCP, CE i ostalo što imate, s rokom valjanosti i dokumentima za preuzimanje.' ),
+				array( 'Više jezika', 'Engleski i njemački uz hrvatski, označeni tako da Google svakom kupcu pokaže stranicu na njegovu jeziku.' ),
+				array( 'Upit za ponudu s prilogom', 'Forma pita proizvod, količinu i rok te prima crtež ili specifikaciju.' ),
+			),
+			'structure' => array( 'Prvi ekran: što proizvodite i za koga', 'Proizvodi i kapaciteti', 'Certifikati i kvaliteta', 'Reference i tržišta', 'FAQ', 'Upit za ponudu' ),
+			'faq' => array(
+				array( 'Trebam li web na više jezika?', 'Ako izvozite ili to planirate, da. Najčešće hrvatski i engleski, a njemački ili talijanski prema tržištu. Prijevod radi stručni prevoditelj ili vaš tim, a mi ga složimo i označimo za Google.' ),
+				array( 'Smijem li pokazati kupce za koje radim?', 'Samo uz njihovo dopuštenje. Kad ime ne smijete navesti, pokažite industriju, tržište i vrstu posla: „dobavljač za automobilsku industriju u Njemačkoj” kaže dovoljno.' ),
+				array( 'Može li upit primiti crtež ili specifikaciju?', 'Da. Forma prima PDF, DWG ili sliku te pita materijal, količinu i rok, pa ponudu možete izračunati bez dodatnih mailova.' ),
+			),
+			'related' => array( 'djelatnosti/strucne-usluge', 'usluge/izrada-web-stranica', 'usluge/seo' ),
+		),
 	);
 
 	// Po djelatnosti: opis kadra (alt) i podnaslovi s nazivom zanata (umjesto istih H2 na svih osam stranica).
@@ -541,11 +572,26 @@ function zaec_registry_industries() {
 		'trgovine-i-webshop'        => array( 'Osvijetljeni izlog trgovine s plavom tendom; paketi odlijeću svjetlosnim lukovima prema kupcima, dio dućana je nacrt webshopa.', 'Gdje specijalizirane trgovine <em>gube</em> kupce.', 'Što web specijalizirane trgovine <em>mora</em> imati.' ),
 		'saloni-ljepote'            => array( 'Salon noću: stolica i okruglo ogledalo s prstenastim svjetlom; sljedeća radna mjesta su nacrt, a tragovi rezervacija stižu do ogledala.', 'Gdje saloni <em>gube</em> termine.', 'Što web salona <em>mora</em> imati.' ),
 		'strucne-usluge'            => array( 'Tlocrt ureda: prijem, sala za sastanke, radna mjesta i arhiva.', 'Gdje stručne usluge <em>gube</em> klijente.', 'Što web za stručne usluge <em>mora</em> imati.' ),
+		'proizvodnja-i-industrija'  => array( 'Prirubnica u tehničkom crtežu: pogled s provrtima i presjek A–A, s kotama i toplo osvijetljenim provrtom.', 'Gdje proizvođači <em>gube</em> kupce.', 'Što web proizvođača <em>mora</em> imati.' ),
 		'ustanove-i-udruge'         => array( 'Tlocrt prizemlja ustanove: ulaz s rampom, info pult s oglasnom pločom, dvorana i arhiva.', 'Gdje ustanove <em>gube</em> posjetitelje.', 'Što web ustanove <em>mora</em> imati.' ),
 	);
 
 	// cilj stranice po djelatnosti (podnaslov strukture)
-	$goal = array( 'saloni-ljepote' => 'rezervacije', 'ugostiteljstvo-i-smjestaj' => 'rezervacije', 'trgovine-i-webshop' => 'upita', 'gradevina-i-adaptacije' => 'upita', 'strucne-usluge' => 'upita', 'ustanove-i-udruge' => 'upita', 'klima-i-grijanje' => 'upita', 'elektricari' => 'upita', 'stolarija-kuhinje-i-interijeri' => 'upita' );
+	$goal = array( 'saloni-ljepote' => 'rezervacije', 'ugostiteljstvo-i-smjestaj' => 'rezervacije', 'trgovine-i-webshop' => 'upita', 'gradevina-i-adaptacije' => 'upita', 'strucne-usluge' => 'upita', 'ustanove-i-udruge' => 'upita', 'klima-i-grijanje' => 'upita', 'elektricari' => 'upita', 'stolarija-kuhinje-i-interijeri' => 'upita', 'proizvodnja-i-industrija' => 'upita za ponudu' );
+
+	$price_ex = array(
+		'klima-i-grijanje'               => 'stranica o subvenciji ili upit s podacima o kući',
+		'elektricari'                    => 'stranica o subvenciji, galerija elektrana ili upit s računom za struju',
+		'stolarija-kuhinje-i-interijeri' => 'galerija radova, usporedba materijala ili upit s mjerama',
+		'krovopokrivaci'                 => 'galerija prije i poslije ili upit s fotografijama krova',
+		'gradevina-i-adaptacije'         => 'galerija projekata ili upit s fotografijama i mjerama',
+		'strucne-usluge'                 => 'reference, više jezika ili upit prema opsegu posla',
+		'proizvodnja-i-industrija'       => 'katalog proizvoda, više jezika ili upit za ponudu s prilogom',
+		'ugostiteljstvo-i-smjestaj'      => 'više jezika ili izravna rezervacija',
+		'vodoinstalateri'                => 'područje dolaska ili upit za hitnu intervenciju',
+		'trgovine-i-webshop'             => 'katalog s upitom ili webshop',
+		'saloni-ljepote'                 => 'cjenik usluga ili poveznica na rezervacije',
+	);
 
 	foreach ( $industries as $slug => $d ) {
 		$c      = $copy[ $slug ] ?? array( $d['title'] . ': noćni kadar djelatnosti, pola stvarno, pola tehnički nacrt.', 'Gdje se <em>gube</em> pozivi.', 'Što vaš web <em>mora</em> imati.' );
@@ -564,7 +610,8 @@ function zaec_registry_industries() {
 			$blocks[] = array( 'type' => 'projects', 'host' => $d['proof'], 'title' => 'Iz <em>prakse</em>.', 'lead' => 'Stvaran projekt iz ovog područja, s problemom, rješenjem i ishodom.' );
 		}
 		$blocks[] = array( 'type' => 'anatomy', 'title' => 'Struktura koja vodi do <em>' . ( $goal[ $slug ] ?? 'poziva' ) . '</em>.', 'lead' => 'Predložak redoslijeda za naslovnicu — prilagođavamo ga vašim uslugama, ali logika ostaje.', 'label' => 'nacrt — ' . $slug . '.pdf', 'parts' => array_map( null, $d['structure'] ) );
-		$faq_common = zaec_industry_common_faq();
+		// primjer funkcija u odgovoru o cijeni: samo ono što ta djelatnost stvarno treba (bez webshopa na Građevini)
+		$faq_common = zaec_industry_common_faq( $price_ex[ $slug ] ?? 'galerija radova ili više jezika' );
 		if ( ! empty( $d['faq_price'] ) ) {
 			$faq_common[0] = $d['faq_price'];
 		}

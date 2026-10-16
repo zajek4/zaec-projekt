@@ -1,6 +1,6 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt09d nd09d"><title id="nt09d">Ured na katu modernističke zgrade noću u osječkoj ulici</title><desc id="nd09d">Crtež pročelja modernističke katnice noću. Prizemlje obloženo kamenim pločama je tamno: ulaz u stubišnom tornju s nadstrešnicom i uz njega ploča sa zvoncima na kojoj svijetli samo pločica Ured. Na katu svijetli trakasti prozor ureda: police s registratorima, stol sa stolnom svjetiljkom i dvije stolice, uokvirena ovlaštenja i biljka. Legenda povezuje ploču s timom i ovlaštenjima, police s referencama, a stol s upitom prema opsegu. Stol u uredu označen je toplim svjetlom.</desc>
-<defs><pattern id="grid09d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl09d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid09d)"/>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt06d nd06d"><title id="nt06d">Ured na katu modernističke zgrade noću u osječkoj ulici</title><desc id="nd06d">Crtež pročelja modernističke katnice noću. Prizemlje obloženo kamenim pločama je tamno: ulaz u stubišnom tornju s nadstrešnicom i uz njega ploča sa zvoncima na kojoj svijetli samo pločica Ured. Na katu svijetli trakasti prozor ureda: police s registratorima, stol sa stolnom svjetiljkom i dvije stolice, uokvirena ovlaštenja i biljka. Legenda povezuje ploču s timom i ovlaštenjima, police s referencama, a stol s upitom prema opsegu. Stol u uredu označen je toplim svjetlom.</desc>
+<defs><pattern id="grid06d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl06d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid06d)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
 <line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
@@ -80,81 +80,81 @@
 <line class="ln-2" pathLength="1" x1="1182" y1="756" x2="1274" y2="756"/>
 </g>
 <g class="nd nd-3">
-<path class="glow" d="M600 420Q855 420 1110 420V574H600Z" fill="url(#gl09d)"/>
+<path class="glow" d="M600 420Q855 420 1110 420V574H600Z" fill="url(#gl06d)"/>
 <path class="sil-ln" d="M608 468L608 574M694 468L694 574"/>
 <path class="sil" d="M608 500h86v4h-86zM613 472h10v28h-10z"/>
-<circle class="glow" cx="618" cy="481" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="618" cy="481" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="625" y="476" width="10" height="24"/>
-<circle class="glow" cx="630" cy="485" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="630" cy="485" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="637" y="472" width="10" height="28"/>
-<circle class="glow" cx="642" cy="481" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="642" cy="481" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="649" y="472" width="10" height="28"/>
-<circle class="glow" cx="654" cy="481" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="654" cy="481" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="661" y="476" width="10" height="24"/>
-<circle class="glow" cx="666" cy="485" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="666" cy="485" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="673" y="472" width="10" height="28"/>
-<circle class="glow" cx="678" cy="481" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="678" cy="481" r="2.4" fill="url(#gl06d)"/>
 <path class="sil" d="M608 537h86v4h-86zM613 513h10v24h-10z"/>
-<circle class="glow" cx="618" cy="522" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="618" cy="522" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="625" y="509" width="10" height="28"/>
-<circle class="glow" cx="630" cy="518" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="630" cy="518" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="637" y="509" width="10" height="28"/>
-<circle class="glow" cx="642" cy="518" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="642" cy="518" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="649" y="513" width="10" height="24"/>
-<circle class="glow" cx="654" cy="522" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="654" cy="522" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="661" y="509" width="10" height="28"/>
-<circle class="glow" cx="666" cy="518" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="666" cy="518" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="673" y="509" width="10" height="28"/>
-<circle class="glow" cx="678" cy="518" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="678" cy="518" r="2.4" fill="url(#gl06d)"/>
 <path class="sil" d="M608 571h86v4h-86zM613 543h10v28h-10z"/>
-<circle class="glow" cx="618" cy="552" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="618" cy="552" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="625" y="543" width="10" height="28"/>
-<circle class="glow" cx="630" cy="552" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="630" cy="552" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="637" y="547" width="10" height="24"/>
-<circle class="glow" cx="642" cy="556" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="642" cy="556" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="649" y="543" width="10" height="28"/>
-<circle class="glow" cx="654" cy="552" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="654" cy="552" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="661" y="543" width="10" height="28"/>
-<circle class="glow" cx="666" cy="552" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="666" cy="552" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="673" y="547" width="10" height="24"/>
-<circle class="glow" cx="678" cy="556" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="678" cy="556" r="2.4" fill="url(#gl06d)"/>
 <path class="sil-ln" d="M1016 468L1016 574M1102 468L1102 574"/>
 <path class="sil" d="M1016 500h86v4h-86zM1021 472h10v28h-10z"/>
-<circle class="glow" cx="1026" cy="481" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1026" cy="481" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1033" y="476" width="10" height="24"/>
-<circle class="glow" cx="1038" cy="485" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1038" cy="485" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1045" y="472" width="10" height="28"/>
-<circle class="glow" cx="1050" cy="481" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1050" cy="481" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1057" y="472" width="10" height="28"/>
-<circle class="glow" cx="1062" cy="481" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1062" cy="481" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1069" y="476" width="10" height="24"/>
-<circle class="glow" cx="1074" cy="485" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1074" cy="485" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1081" y="472" width="10" height="28"/>
-<circle class="glow" cx="1086" cy="481" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1086" cy="481" r="2.4" fill="url(#gl06d)"/>
 <path class="sil" d="M1016 537h86v4h-86zM1021 513h10v24h-10z"/>
-<circle class="glow" cx="1026" cy="522" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1026" cy="522" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1033" y="509" width="10" height="28"/>
-<circle class="glow" cx="1038" cy="518" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1038" cy="518" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1045" y="509" width="10" height="28"/>
-<circle class="glow" cx="1050" cy="518" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1050" cy="518" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1057" y="513" width="10" height="24"/>
-<circle class="glow" cx="1062" cy="522" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1062" cy="522" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1069" y="509" width="10" height="28"/>
-<circle class="glow" cx="1074" cy="518" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1074" cy="518" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1081" y="509" width="10" height="28"/>
-<circle class="glow" cx="1086" cy="518" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1086" cy="518" r="2.4" fill="url(#gl06d)"/>
 <path class="sil" d="M1016 571h86v4h-86zM1021 543h10v28h-10z"/>
-<circle class="glow" cx="1026" cy="552" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1026" cy="552" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1033" y="543" width="10" height="28"/>
-<circle class="glow" cx="1038" cy="552" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1038" cy="552" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1045" y="547" width="10" height="24"/>
-<circle class="glow" cx="1050" cy="556" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1050" cy="556" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1057" y="543" width="10" height="28"/>
-<circle class="glow" cx="1062" cy="552" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1062" cy="552" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1069" y="543" width="10" height="28"/>
-<circle class="glow" cx="1074" cy="552" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1074" cy="552" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="1081" y="547" width="10" height="24"/>
-<circle class="glow" cx="1086" cy="556" r="2.4" fill="url(#gl09d)"/>
+<circle class="glow" cx="1086" cy="556" r="2.4" fill="url(#gl06d)"/>
 <rect class="sil" x="732" y="502" width="132" height="6"/>
 <line class="sil-ln" x1="740" y1="508" x2="740" y2="574"/>
 <path class="sil" d="M820 508h40v66h-40zM756 496h16v6h-16z"/>
@@ -220,7 +220,7 @@
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
 <text class="t-tb" x="744" y="857">DJELATNOSTI · IZLOZI</text>
-<text class="t-tb" x="1054" y="857">LIST 09/11</text>
+<text class="t-tb" x="1054" y="857">LIST 06/12</text>
 <text class="t-tb-b" x="744" y="894">Stručne usluge</text>
 <text class="t-tb" x="744" y="914">UREDI NA KATU NOĆU</text>
 <text class="t-tb" x="744" y="943">WEB · USLUGE · TIM · UPIT</text>

@@ -1,6 +1,6 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt03d nd03d"><title id="nt03d">Jednopolna shema kućnog razdjelnika s novim krugom punjača</title><desc id="nd03d">Tehnički crtež: priključak na mrežu preko brojila, glavna sklopka, zaštitna strujna sklopka i strujni krugovi kuće, fotonaponska elektrana s izmjenjivačem te novi strujni krug punjača za električni automobil. Oznake 01–04 povezuju dijelove sheme s dijelovima weba električara. Novi krug punjača označen je toplim svjetlom.</desc>
-<defs><pattern id="grid03d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid03d)"/>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt02d nd02d"><title id="nt02d">Jednopolna shema kućnog razdjelnika s novim krugom punjača</title><desc id="nd02d">Tehnički crtež: priključak na mrežu preko brojila, glavna sklopka, zaštitna strujna sklopka i strujni krugovi kuće, fotonaponska elektrana s izmjenjivačem te novi strujni krug punjača za električni automobil. Oznake 01–04 povezuju dijelove sheme s dijelovima weba električara. Novi krug punjača označen je toplim svjetlom.</desc>
+<defs><pattern id="grid02d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid02d)"/>
 <g class="nd nd-1">
 <path class="ln-con" d="M420 260L1180 260M420 380L1180 380M420 591L1180 591"/>
 <rect class="ln-beyond" x="470" y="148" width="670" height="322"/>
@@ -147,7 +147,7 @@
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
 <text class="t-tb" x="744" y="857">NACRT DJELATNOSTI</text>
-<text class="t-tb" x="1054" y="857">LIST 03/11</text>
+<text class="t-tb" x="1054" y="857">LIST 02/12</text>
 <text class="t-tb-b" x="744" y="894">Električari i solari</text>
 <text class="t-tb" x="744" y="914">JEDNOPOLNA SHEMA R1 · BEZ MJERILA</text>
 <text class="t-tb" x="744" y="943">WEB · USLUGE · OVLAŠTENJA · UPIT</text>

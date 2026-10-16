@@ -1,6 +1,6 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt10d nd10d"><title id="nt10d">Ulaz ustanove noću u baroknoj zgradi</title><desc id="nd10d">Crtež pročelja barokne jednokatnice noću: visoki krov s krovnim prozorima, srednji rizalit s trokutnim zabatom i natpisom Ustanova u frizu. Osvijetljeno je predvorje: kroz lijevi prozor vidi se oglasna ploča s pribodenim listovima, kroz kameni portal s lukom fenjer i unutarnja staklena vrata, a kroz desni prozor info pult. Pred portalom su podest i dvije stube, a uz njih rampa s rukohvatima. Legenda povezuje oglasnu ploču s novostima i projektima, rampu s pristupačnošću, a pult s dokumentima. Oglasna ploča označena je toplim svjetlom.</desc>
-<defs><pattern id="grid10d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl10d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid10d)"/>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt07d nd07d"><title id="nt07d">Ulaz ustanove noću u baroknoj zgradi</title><desc id="nd07d">Crtež pročelja barokne jednokatnice noću: visoki krov s krovnim prozorima, srednji rizalit s trokutnim zabatom i natpisom Ustanova u frizu. Osvijetljeno je predvorje: kroz lijevi prozor vidi se oglasna ploča s pribodenim listovima, kroz kameni portal s lukom fenjer i unutarnja staklena vrata, a kroz desni prozor info pult. Pred portalom su podest i dvije stube, a uz njih rampa s rukohvatima. Legenda povezuje oglasnu ploču s novostima i projektima, rampu s pristupačnošću, a pult s dokumentima. Oglasna ploča označena je toplim svjetlom.</desc>
+<defs><pattern id="grid07d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl07d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid07d)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
 <line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
@@ -110,7 +110,7 @@
 <g class="nd nd-3">
 <rect class="lit" x="510" y="306" width="300" height="40"/>
 <text class="t-real t-b t-sign" x="660" y="336" style="--fs:26px" text-anchor="middle">USTANOVA</text>
-<path class="glow" d="M508 612Q540 612 572 612V700H508Z" fill="url(#gl10d)"/>
+<path class="glow" d="M508 612Q540 612 572 612V700H508Z" fill="url(#gl07d)"/>
 <rect class="sil" x="514" y="656" width="52" height="40"/>
 <rect class="" x="518" y="661" width="13" height="16" fill="#fff3dc"/>
 <circle class="sil" cx="525" cy="663" r="1.6"/>
@@ -126,13 +126,13 @@
 <circle class="sil" cx="558" cy="684" r="1.6"/>
 <path class="cut-w" pathLength="1" d="M508 612Q540 612 572 612V700H508Z"/>
 <line class="ln-glass" x1="508" y1="652" x2="572" y2="652"/>
-<path class="glow" d="M604 774V694A56 56 0 0 1 716 694V774Z" fill="url(#gl10d)"/>
+<path class="glow" d="M604 774V694A56 56 0 0 1 716 694V774Z" fill="url(#gl07d)"/>
 <line class="sil-ln" x1="660" y1="638" x2="660" y2="664"/>
 <path class="sil" d="M652 664H668L671 671L666 684H654L649 671Z"/>
 <rect class="sil-ln" x="628" y="700" width="64" height="74"/>
 <path class="sil-ln" d="M660 700L660 774M628 726L692 726"/>
 <path class="cut-w" pathLength="1" d="M604 774V694A56 56 0 0 1 716 694V774Z"/>
-<path class="glow" d="M748 612Q780 612 812 612V700H748Z" fill="url(#gl10d)"/>
+<path class="glow" d="M748 612Q780 612 812 612V700H748Z" fill="url(#gl07d)"/>
 <path class="sil" d="M752 666h56v6h-56zM756 672h48v28h-48z"/>
 <rect class="sil-ln" x="760" y="634" width="40" height="32"/>
 <rect class="sil" x="786" y="654" width="12" height="12"/>
@@ -184,7 +184,7 @@
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
 <text class="t-tb" x="744" y="857">DJELATNOSTI · IZLOZI</text>
-<text class="t-tb" x="1054" y="857">LIST 10/11</text>
+<text class="t-tb" x="1054" y="857">LIST 07/12</text>
 <text class="t-tb-b" x="744" y="894">Ustanove i udruge</text>
 <text class="t-tb" x="744" y="914">ULAZ USTANOVE NOĆU</text>
 <text class="t-tb" x="744" y="943">WEB · NOVOSTI · DOKUMENTI · UPIT</text>

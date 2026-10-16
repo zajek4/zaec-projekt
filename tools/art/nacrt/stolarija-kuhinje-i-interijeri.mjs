@@ -1,9 +1,9 @@
-// LIST 11 · Stolarija, kuhinje i interijeri — pogled prozora iznutra, 1200 × 1400 mm, M 1:10.
+// LIST 03 · Stolarija, kuhinje i interijeri — pogled prozora iznutra, 1200 × 1400 mm, M 1:10.
 // Dvokrilni prozor sa stupom: lijevo krilo okretno, desno okretno-nagibno. Simbol otvaranja po normi: isprekidane
 // crte kreću od strane šarki, vrh trokuta je na strani kvake. Svjetlo: toplo okno desnog krila (kuća navečer).
 export const meta = {
   slug: 'stolarija-kuhinje-i-interijeri',
-  list: '11',
+  list: '03',
   name: 'Stolarija i interijeri',
   view: 'POGLED PROZORA · M 1:10',
   web: 'RADOVI · MATERIJALI · UPIT',
