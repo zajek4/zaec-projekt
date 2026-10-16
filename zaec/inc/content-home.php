@@ -70,7 +70,7 @@ function zaec_home_defaults() {
 		// kako početi). Smjernice: /mnt/project-files/zaec-signature/strategy/04-naslovnica.md.
 		'recog_kicker'    => '08 — ZAEC',
 		'recog_title'     => 'Svako svjetlo je nečiji posao. <em>Naš</em> je da se vaš vidi.',
-		'recog_lead'      => 'Za tvrtke kojima web mora donositi posao: od obrta i trgovina do stručnih usluga, proizvodnje i ustanova. Svaki projekt počinje nacrtom, a završava mjerenjem.',
+		'recog_lead'      => 'Za tvrtke kojima web mora donositi posao: od stručnih usluga i ustanova do izvođača, proizvodnje i specijaliziranih trgovina. Svaki projekt počinje nacrtom, a završava mjerenjem.',
 		'recog_cta'       => 'Recite nam što želite postići',
 		'recog_start'     => 'Prvi korak: razgovor od dvadesetak minuta i pisana procjena, bez obveze.',
 		// Lijepo vs učinkovito.
@@ -133,7 +133,7 @@ function zaec_home_about_rows() {
 		array(
 			'02',
 			'Za koga',
-			'Za tvrtke kojima web mora donositi upite: instalacije i gradnja, trgovina i ugostiteljstvo, stručne usluge, proizvodnja i ustanove.',
+			'Za tvrtke kojima web mora donositi upite: stručne usluge i ustanove, energetika i instalacije, gradnja i stolarija, proizvodnja, specijalizirane trgovine i ugostiteljstvo.',
 			array( array( 'djelatnosti', 'Pogledajte djelatnosti' ) ),
 		),
 		array(

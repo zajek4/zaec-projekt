@@ -1,5 +1,5 @@
-// LIST 00 · Djelatnosti (hub) — naslovni list kompleta: kazalo deset listova istog standarda.
-// Nema toplog svjetla na crtežu; jedino toplo je red 11 "Vaša djelatnost", poziv za posao koji nije na popisu.
+// LIST 00 · Djelatnosti (hub) — naslovni list kompleta: kazalo jedanaest listova istog standarda.
+// Nema toplog svjetla na crtežu; jedino toplo je red 12 "Vaša djelatnost", poziv za posao koji nije na popisu.
 import { kazalo } from './kazalo-tab.mjs';
 import * as klima from './klima-i-grijanje.mjs';
 import * as vodo from './vodoinstalateri.mjs';
@@ -11,8 +11,9 @@ import * as trgovine from './trgovine-i-webshop.mjs';
 import * as saloni from './saloni-ljepote.mjs';
 import * as struka from './strucne-usluge.mjs';
 import * as ustanove from './ustanove-i-udruge.mjs';
+import * as stolarija from './stolarija-kuhinje-i-interijeri.mjs';
 
-const sheets = [klima, vodo, elektro, krov, gradnja, smjestaj, trgovine, saloni, struka, ustanove].map((s) => s.meta);
+const sheets = [klima, vodo, elektro, krov, gradnja, smjestaj, trgovine, saloni, struka, ustanove, stolarija].map((s) => s.meta);
 
 export const meta = {
   slug: 'djelatnosti',
@@ -40,6 +41,6 @@ export function draw(b) {
   };
   kazalo(b, sheets.map((s) => ({ n: s.list, name: s.name, view: view(s.view, s.head) })), {
     head: ['LIST', 'DJELATNOST', 'POGLED · MJERILO'],
-    last: { n: '11', name: 'Vaša djelatnost', view: 'NA UPIT' },
+    last: { n: '12', name: 'Vaša djelatnost', view: 'NA UPIT' },
   });
 }

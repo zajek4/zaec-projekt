@@ -1,11 +1,11 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt00d nd00d"><title id="nt00d">Kazalo listova djelatnosti</title><desc id="nd00d">Naslovni list kompleta, jedan list po djelatnosti (nacrt za zanate, pročelje noću za ostale): 01 Klima i grijanje, 02 Vodoinstalateri, 03 Električari, 04 Krovopokrivači, 05 Građevina i adaptacije, 06 Ugostiteljstvo i smještaj, 07 Trgovine i webshop, 08 Saloni ljepote, 09 Stručne usluge, 10 Ustanove i udruge. Posljednji red, vaša djelatnost, označen je toplim svjetlom.</desc>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt00d nd00d"><title id="nt00d">Kazalo listova djelatnosti</title><desc id="nd00d">Naslovni list kompleta, jedan list po djelatnosti (nacrt za zanate, pročelje noću za ostale): 01 Klima i grijanje, 02 Vodoinstalateri, 03 Električari, 04 Krovopokrivači, 05 Građevina i adaptacije, 06 Ugostiteljstvo i smještaj, 07 Trgovine i webshop, 08 Saloni ljepote, 09 Stručne usluge, 10 Ustanove i udruge, 11 Stolarija i interijeri. Posljednji red, vaša djelatnost, označen je toplim svjetlom.</desc>
 <defs><pattern id="grid00d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
 <rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid00d)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="504" y1="190" x2="1192" y2="190"/>
-<line class="cut-w" pathLength="1" x1="504" y1="762" x2="1192" y2="762"/>
-<line class="ln-frame" pathLength="1" x1="568" y1="156" x2="568" y2="762"/>
-<line class="ln-frame" pathLength="1" x1="966" y1="156" x2="966" y2="762"/>
+<line class="cut-w" pathLength="1" x1="504" y1="814" x2="1192" y2="814"/>
+<line class="ln-frame" pathLength="1" x1="568" y1="156" x2="568" y2="814"/>
+<line class="ln-frame" pathLength="1" x1="966" y1="156" x2="966" y2="814"/>
 </g>
 <g class="nd nd-2">
 <text class="t-call" x="504" y="138" font-weight="700" style="font-size:20px">KAZALO LISTOVA</text>
@@ -34,12 +34,12 @@
 <text class="t-call" x="582" y="432" style="font-size:22px">Građevina i adaptacije</text>
 <text class="t-dim" x="980" y="432" style="font-size:18px">TLOCRT · 1:50</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="450" x2="1192" y2="450"/>
-</g>
-<g class="nd nd-4">
 <text class="t-call" x="524" y="484" font-weight="700" style="font-size:22px">06</text>
 <text class="t-call" x="582" y="484" style="font-size:22px">Ugostiteljstvo i smještaj</text>
 <text class="t-dim" x="980" y="484" style="font-size:18px">PROČELJE · NOĆU</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="502" x2="1192" y2="502"/>
+</g>
+<g class="nd nd-4">
 <text class="t-call" x="524" y="536" font-weight="700" style="font-size:22px">07</text>
 <text class="t-call" x="582" y="536" style="font-size:22px">Trgovine i webshop</text>
 <text class="t-dim" x="980" y="536" style="font-size:18px">PROČELJE · NOĆU</text>
@@ -56,13 +56,17 @@
 <text class="t-call" x="582" y="692" style="font-size:22px">Ustanove i udruge</text>
 <text class="t-dim" x="980" y="692" style="font-size:18px">PROČELJE · NOĆU</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="710" x2="1192" y2="710"/>
+<text class="t-call" x="524" y="744" font-weight="700" style="font-size:22px">11</text>
+<text class="t-call" x="582" y="744" style="font-size:22px">Stolarija i interijeri</text>
+<text class="t-dim" x="980" y="744" style="font-size:18px">POGLED · 1:10</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="762" x2="1192" y2="762"/>
 </g>
 <g class="nd nd-6">
 <g class="call lamp">
-<circle class="dot" cx="492" cy="737" r="3.5"/>
-<text class="t-call" x="524" y="744" font-weight="700" style="font-size:22px">11</text>
-<text class="t-call" x="582" y="744" style="font-size:22px">Vaša djelatnost</text>
-<text class="t-dim" x="980" y="744" style="font-size:18px">NA UPIT</text>
+<circle class="dot" cx="492" cy="789" r="3.5"/>
+<text class="t-call" x="524" y="796" font-weight="700" style="font-size:22px">12</text>
+<text class="t-call" x="582" y="796" style="font-size:22px">Vaša djelatnost</text>
+<text class="t-dim" x="980" y="796" style="font-size:18px">NA UPIT</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -71,7 +75,7 @@
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
 <text class="t-tb" x="744" y="857" style="font-size:18px;letter-spacing:.02em">DJELATNOSTI</text>
-<text class="t-tb" x="1054" y="857" style="font-size:18px;letter-spacing:.02em">LIST 00/10</text>
+<text class="t-tb" x="1054" y="857" style="font-size:18px;letter-spacing:.02em">LIST 00/11</text>
 <text class="t-tb-b" x="744" y="894">Djelatnosti</text>
 <text class="t-tb" x="744" y="914" style="font-size:18px;letter-spacing:.02em">KAZALO KOMPLETA</text>
 <text class="t-tb" x="744" y="943" style="font-size:18px;letter-spacing:.02em">WEB · STRANICA ZA SVAKU DJELATNOST</text>

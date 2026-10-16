@@ -62,6 +62,7 @@ function zaec_registry_services() {
 					array( 'Niste na karti', 'Za lokalne usluge Google prvo pokaže kartu s tri tvrtke. Bez uređenog profila tamo vas nema.' ),
 					array( 'Web ne uvjerava', 'Posjetitelj u pet sekundi ne shvati što radite i gdje — i vrati se na pretragu.' ),
 					array( 'Nitko ne mjeri', 'Ne znate koliko je poziva došlo s weba, pa ne znate što popraviti ni gdje ulagati.' ),
+					array( 'Preporuka bez potvrde', 'Preporuka otvori vrata, a web treba otvoriti razgovor. Tko vas potraži nakon preporuke, mora odmah vidjeti da ste pravi izbor.' ),
 				),
 			),
 			// prirucnik/README: najčešći put klijenta (provjera → mali posao → web ili lokalni SEO → održavanje)
@@ -194,7 +195,7 @@ function zaec_registry_services() {
 		'faq'          => array(
 			zaec_faq_price(),
 			array( 'Koliko traje izrada?', 'Web na predlošku obično 2–4 tjedna izrade, web po nacrtu 4–8 tjedana. Rok teče od dana kad je sadržaj kompletan, pa najviše vremena uštedi pripremljen sadržaj. Točan rok piše u ponudi prije početka.' ),
-			array( 'Netko radi web za 300 €. Zašto biste vi bili skuplji?', 'Za tu cijenu obično dobijete stranice. Kod nas dobijete nacrt, stranicu za svaku uslugu, mjerenje upita i sve pristupe na svoje ime, uz pisanu ponudu prije početka. Usporedite popis, ne samo iznos.' ),
+			array( 'Kako usporediti ponude za web?', 'Po popisu, ne samo po iznosu. Pitajte ulazi li nacrt, stranica za svaku uslugu, mjerenje upita i jesu li svi pristupi na vaše ime. Sve to piše u našoj ponudi prije početka.' ),
 			array( 'Radite li na WordPressu?', 'Da. WordPress omogućuje da sami mijenjate tekstove, slike i radove, a dobro složen ostaje brz. Pri primopredaji pokažemo sve što trebate.' ),
 			array( 'Što ako mi se dizajn ne svidi?', 'Zato prvo ide nacrt i vizualni smjer, uz dogovoreni broj krugova korekcija prije razvoja (obično dva). Dizajn ne radimo „naslijepo” pa ga onda mijenjamo iz temelja.' ),
 			array( 'Pišete li i tekstove?', 'Pomažemo složiti strukturu i poruku, a pisanje cijelih tekstova može ući u opseg. Vi date znanje o poslu, mi ga pretvorimo u jasnu stranicu.' ),

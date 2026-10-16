@@ -6,7 +6,7 @@
 
 export const W = 1200;
 export const H = 1000;
-export const TOTAL = 10; // listova u kompletu
+export const TOTAL = 11; // listova u kompletu
 export const READ_X = 508; // zona čitanja: od ovog x tekst se vidi na svakoj desktop širini
 /**
  * Prag kadra za element lijevo od zone čitanja: list je desno poravnat (xMaxYMid slice), pa se vidi od

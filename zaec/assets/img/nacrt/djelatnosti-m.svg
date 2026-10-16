@@ -3,7 +3,7 @@
 <rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid00m)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="504" y1="172" x2="1192" y2="172"/>
-<line class="cut-w" pathLength="1" x1="504" y1="546" x2="1192" y2="546"/>
+<line class="cut-w" pathLength="1" x1="504" y1="580" x2="1192" y2="580"/>
 </g>
 <g class="nd nd-2">
 <text class="t-call" x="504" y="156" font-weight="700">KAZALO LISTOVA</text>
@@ -24,11 +24,11 @@
 <text class="t-call" x="524" y="333" font-weight="700">05</text>
 <text class="t-call" x="582" y="333">Građevina i adaptacije</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="342" x2="1192" y2="342"/>
-</g>
-<g class="nd nd-4">
 <text class="t-call" x="524" y="367" font-weight="700">06</text>
 <text class="t-call" x="582" y="367">Ugostiteljstvo i smještaj</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="376" x2="1192" y2="376"/>
+</g>
+<g class="nd nd-4">
 <text class="t-call" x="524" y="401" font-weight="700">07</text>
 <text class="t-call" x="582" y="401">Trgovine i webshop</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="410" x2="1192" y2="410"/>
@@ -41,12 +41,15 @@
 <text class="t-call" x="524" y="503" font-weight="700">10</text>
 <text class="t-call" x="582" y="503">Ustanove i udruge</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="512" x2="1192" y2="512"/>
+<text class="t-call" x="524" y="537" font-weight="700">11</text>
+<text class="t-call" x="582" y="537">Stolarija i interijeri</text>
+<line class="ln-frame" pathLength="1" x1="504" y1="546" x2="1192" y2="546"/>
 </g>
 <g class="nd nd-6">
 <g class="call lamp">
-<circle class="dot" cx="492" cy="530" r="3.5"/>
-<text class="t-call" x="524" y="537" font-weight="700">11</text>
-<text class="t-call" x="582" y="537">Vaša djelatnost</text>
+<circle class="dot" cx="492" cy="564" r="3.5"/>
+<text class="t-call" x="524" y="571" font-weight="700">12</text>
+<text class="t-call" x="582" y="571">Vaša djelatnost</text>
 </g>
 </g>
 </svg>
