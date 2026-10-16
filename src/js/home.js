@@ -2,7 +2,7 @@ import '../css/home.css';
 // Naslovnica: kino-uvod (world3), put posjetitelja, slojevi, usporedba, usluge, radovi, proces, progresivna forma.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { splitWords, track } from './site.js';
+import { track } from './site.js';
 import { GATES, conversion } from './world3/gates.js';
 
 const root = document.documentElement;
@@ -10,20 +10,7 @@ const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 const motionOK = () => root.classList.contains('motion-ok') && !reduceMQ.matches;
 let world = null;
 
-/* ───────── hero ───────── */
-const title = document.querySelector('.hero-title');
-splitWords(title);
-const heroIn = document.querySelectorAll('[data-hero-in]');
-if (motionOK()) {
-  const tl = gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.2 });
-  tl.to(heroIn[0], { opacity: 1, y: 0, duration: 1 })
-    .add(() => title.classList.add('is-in'), 0.15)
-    .to([...heroIn].slice(1), { opacity: 1, y: 0, duration: 1.2, stagger: 0.09 }, 0.6);
-} else title.classList.add('is-in');
-setTimeout(() => {
-  title.classList.add('is-in');
-  heroIn.forEach((el) => { el.style.opacity = '1'; el.style.transform = 'none'; });
-}, 3000);
+/* ───────── hero: ulaz vodi CSS (home.css), naslov je razdvojen na riječi već u HTML-u ───────── */
 
 /* ───────── put do upita (5 vrata) ───────── */
 const pathEl = document.querySelector('[data-path]');
@@ -327,10 +314,18 @@ if (gform) {
 }
 
 /* ───────── 3D svijet (lijeno) ───────── */
+// Softversko crtanje (SwiftShader, llvmpipe, WARP): bez grafičke kartice grad ide nekoliko sličica u sekundi
+// i drži glavnu nit zauzetom, pa stranica slabo reagira. Tada je poster bolji doživljaj od 3D-a.
+const SOFT_GL = /swiftshader|llvmpipe|softpipe|lavapipe|software|basic render|mesa offscreen/i;
 function webglOK() {
   try {
-    const c = document.createElement('canvas');
-    return !!(window.WebGL2RenderingContext && c.getContext('webgl2'));
+    if (!window.WebGL2RenderingContext) return false;
+    const gl = document.createElement('canvas').getContext('webgl2', { failIfMajorPerformanceCaveat: true });
+    if (!gl) return false;
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    const gpu = String(gl.getParameter(dbg ? dbg.UNMASKED_RENDERER_WEBGL : gl.RENDERER) || '');
+    gl.getExtension('WEBGL_lose_context')?.loseContext(); // probni kontekst se odmah oslobađa
+    return !SOFT_GL.test(gpu);
   } catch (e) { return false; }
 }
 async function bootWorld() {
@@ -344,7 +339,7 @@ async function bootWorld() {
     const cfg = window.ZAEC_CFG || {};
     const T = (cfg.theme || '') + '/assets/';
     const v = '?v=' + (cfg.ver || '1');
-    world = createWorld3({
+    world = await createWorld3({
       canvas,
       labelsRoot: document.querySelector('[data-stage-labels]'),
       assets: { land: T + 'img/world/land.png' + v, landEu: T + 'img/world/land-eu.png' + v, lights: T + 'img/world/lights.webp' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v },

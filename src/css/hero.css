@@ -100,8 +100,15 @@
 .sh-izrada.is-live .sh-hint { display: inline-flex; left: auto; right: var(--gutter); }
 .sh-izrada.is-building .sh-hint { color: #f6dcb1; }
 .sh-izrada.is-building .sh-hint span { animation: none; background: var(--amber); }
-.sh-izrada.is-live .sh-plan { opacity: 0; transition: opacity 1.1s var(--ease-out); }
-.sh-izrada.is-live.is-in .sh-plan { opacity: 1; }
+/* prije skripte (s kretanjem): početno stanje špice — nacrt i obrisi riječi, sagrađeni sloj skriven — kakvo ga
+   postavi izrada.js, pa skripta preuzima bez treptaja (prije: gotova zgrada, pa nacrt, pa gradnja). Nacrt se pojavi
+   kad se učita (img.hero-fade). Ako skripta ne stigne za 4 s, pokaže se sagrađena zgrada (i izrada.js je ne vraća
+   u nacrt kad stigne kasnije). */
+html.motion-ok .sh-izrada:not(.is-live) .sh-real { clip-path: inset(100% 0 0 0); animation: sh-wait-real 0.8s var(--ease-out) 4s forwards; }
+html.motion-ok .sh-izrada:not(.is-live) .it-out { clip-path: none; animation: sh-wait-out 0.8s 4s forwards; }
+html.motion-ok .sh-izrada:not(.is-live) .it-ink { opacity: 0; animation: hero-late 0.8s 4s forwards; }
+@keyframes sh-wait-real { to { clip-path: inset(0 0 0 0); } }
+@keyframes sh-wait-out { to { opacity: 0; } }
 @media (min-width: 761px) and (min-aspect-ratio: 4/5) and (max-aspect-ratio: 5/4) {
   /* uski ekran sa širokim kadrom: lijevo od kule nema mjesta za uvod, pa ide ispod pozornice */
   .it-copy { position: relative; height: auto; min-height: 0; padding-block: 40px 8px; }
@@ -145,6 +152,15 @@
 /* stupac: putanja, uvod, ploča s formom, izravni kontakti */
 .kt-col { position: relative; z-index: 4; display: grid; justify-items: end; align-items: center; padding-block: calc(var(--header-h) + 20px) 28px; }
 .kt-main { width: min(600px, calc(100vw - 480px)); display: grid; align-content: start; gap: 16px; }
+/* stupac je centriran: dok parser ne stigne do kraja (izravni kontakti), ne iscrtava se, inače ga ostatak forme gurne gore */
+.kt-main:not(:has(> .kt-direct)) { visibility: hidden; }
+/* špica: kadar je već tu, uvod i ploča ulaze mirno — u CSS-u od prvog iscrtavanja (prije u kontakt.js, s treptajem) */
+html.motion-ok .kt-main > * { animation: hero-rise 1.1s var(--ease-out) 0.2s backwards; }
+html.motion-ok .kt-main > :nth-child(2) { animation-delay: 0.27s; }
+html.motion-ok .kt-main > :nth-child(3) { animation-delay: 0.34s; }
+html.motion-ok .kt-main > :nth-child(4) { animation-delay: 0.41s; }
+html.motion-ok .kt-main > :nth-child(n + 5) { animation-delay: 0.48s; }
+@media (prefers-reduced-motion: reduce) { html.motion-ok .kt-main > * { animation: none; } }
 .kt-lead { margin: 0; max-width: 54ch; font-size: 1rem; line-height: 1.5; color: #c8cee2; }
 .kt-panel {
   scroll-margin-top: calc(var(--header-h) + 12px);
@@ -234,8 +250,12 @@
   --wl: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
   --edge: 43vw;
   position: relative; isolation: isolate; background: var(--paper); overflow: clip;
-  padding: calc(var(--header-h) + clamp(18px, 2.4vw, 34px)) 0 clamp(36px, 4.5vw, 64px);
+  padding: calc(var(--header-h) + clamp(18px, 2.4vw, 34px)) 0 132px;
 }
+/* Sjena kadra (.eh-frame, 0 60px 120px −60px) pada do ~120 px ispod njega; .eh ima overflow: clip (kadar izlazi
+   preko desnog ruba), pa je razmak ispod kadra u samom heroju, a sekcija odmah ispod ne dodaje svoj gornji.
+   Obojene sekcije (paper-2, ink) zadržavaju gornji razmak da sadržaj ne sjedne na rub boje. */
+.eh + :is(.block, .section):not(.block--paper2):not(.block--ink) { padding-top: 0; }
 .eh::before {
   content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
@@ -244,6 +264,10 @@
 }
 .eh-stage { position: relative; min-height: clamp(520px, calc(100svh - var(--header-h) - 90px), 860px); display: grid; align-items: center; }
 .eh-copy { display: grid; gap: 22px; align-content: center; padding-block: clamp(16px, 3vw, 48px); }
+/* Dok parser ne stigne do teksta (veliki nacrt, sporiji uređaj), preglednik zna iscrtati samo putokaz i kicker,
+   centrirane u praznoj pozornici, a tekst ih kad stigne gurne gore (CLS ~0,19 na desktopu). Kopija se zato ne
+   iscrtava dok ne postoji .eh-body; preglednici bez :has() ostaju kao prije. */
+.eh-copy:not(:has(.eh-body)) { visibility: hidden; }
 .eh-head { display: grid; gap: 16px; max-width: calc(var(--edge) - var(--wl) - 2vw); }
 .eh-frame {
   position: absolute; z-index: 0; top: 0; bottom: 0; right: 0; left: var(--edge); margin: 0;
@@ -333,6 +357,37 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 @keyframes nd-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
 @keyframes nd-lamp { from { opacity: 0; transform: scale(0.2); } }
 @media (prefers-reduced-motion: reduce) { html.motion-ok .nacrt :is(.nd, .nd [pathLength], .halo, .lamp-fill, .lamp-ln, text) { animation: none; } }
+
+/* ── Ulaz heroja: CSS od prvog iscrtavanja, ne čeka skriptu ──
+   Prije je ulaz pokretala skripta (GSAP): hero se iscrtao gotov, pa ga je skripta kad stigne (na sporijem mobitelu
+   0,3–2 s kasnije) sakrila i pustila ulaz ponovno — treptaj. Sada je početno stanje već u prvom iscrtavanju.
+   Animacije drže početno stanje samo do početka (fill: backwards), pa skripte poslije slobodno mijenjaju ista
+   svojstva (paralaksa slike, gašenje oznake kadra pri scrollu). Bez kretanja (motion-ok nema) sve je odmah tu.
+   Ulazi počinju od opacity 0.01, ne 0: Chrome element s opacity 0 ne broji kao iscrtan, pa bi LCP (Core Web
+   Vitals) naslova i leada pao tek na kraj animacije. Od 0.01 LCP ostaje na prvom iscrtavanju, a oku je isto. */
+@keyframes hero-rise { from { opacity: 0.01; transform: translateY(18px); } }
+@keyframes hero-fade { from { opacity: 0.01; } }
+@keyframes hero-late { to { opacity: 1; } }
+@keyframes eh-open-x { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0); } }
+@keyframes eh-open-y { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
+@keyframes eh-settle { from { opacity: 0.01; scale: 1.16; } }
+html.motion-ok .eh-frame { animation: eh-open-x 1.1s var(--ease-out) backwards; }
+html.motion-ok :is(.eh-head, .eh-title, .eh-body) { animation: hero-rise 0.9s var(--ease-out) backwards; }
+html.motion-ok .eh-title { animation-delay: 0.06s; }
+html.motion-ok .eh-body { animation-delay: 0.12s; }
+html.motion-ok .eh-slate { animation: hero-fade 0.8s var(--ease-out) 0.8s backwards; }
+html.motion-ok .eh-sheet-list li { animation: hero-rise 0.8s var(--ease-out) backwards; animation-delay: calc(0.4s + var(--i, 0) * 50ms); }
+/* slike kadra (urednički i potpisni heroji): skrivene dok se ne učitaju (onload doda .is-in), pa se mirno pojave;
+   nikad prazan okvir koji se puni odozgo. Ako se slika ne učita za 3 s (spora mreža, blokiran inline handler),
+   pokaže se kakva jest; onload tada dodaje .is-late umjesto .is-in, da se već vidljiva slika ne gasi i pali ponovno. */
+html.motion-ok img.hero-fade:not(.is-in) { opacity: 0; animation: hero-late 0.6s ease 3s forwards; }
+html.motion-ok img.hero-fade.is-in { animation: hero-fade 0.9s var(--ease-out) backwards; }
+html.motion-ok .eh-img { scale: 1.08; } /* rezerva za paralaksu (editorial.js); scale je odvojen od transforma */
+html.motion-ok img.eh-img.is-in { animation: eh-settle 1.6s var(--ease-out) backwards; }
+@media (prefers-reduced-motion: reduce) {
+  html.motion-ok :is(.eh-frame, .eh-head, .eh-title, .eh-body, .eh-slate, .eh-sheet-list li) { animation: none; }
+  html.motion-ok img.hero-fade:is(.is-in, :not(.is-in)) { animation: none; opacity: 1; }
+}
 @media (max-width: 1100px) and (min-width: 761px) and (min-aspect-ratio: 1001/1000) {
   .nacrt svg.d text { font-size: 17px; }
   .nacrt svg.d .t-tb-b { font-size: 26px; }
@@ -420,7 +475,8 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .est { container: est / inline-size; }
 .est-types { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
 @container est (min-width: 342px) { .est-types { display: flex; } }
-.est-types[hidden] { display: none; }
+.est-types:not(.is-live) { visibility: hidden; } /* mjesto je čuvano dok ih configurator.js ne uključi: kartica ne skoči */
+html:not(.js) .est-types { display: none; } /* bez skripte gumbi ne rade, pa ih nema */
 .est-type {
   min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--abyss-line-2); background: transparent;
   color: #c9cfe4; font: 600 0.88rem/1 var(--font-sans); cursor: pointer; transition: border-color 0.25s, background 0.25s, color 0.25s;
@@ -445,14 +501,14 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh--dark .phero-trust .icon { color: var(--abyss-muted); }
 
 /* hubovi: kontaktni arak — kadrovi stranica ispod */
-.eh-sheet { position: relative; margin-top: clamp(22px, 3vw, 40px); }
+.eh-sheet { --sheet-w: clamp(150px, 12.5vw, 196px); position: relative; margin-top: clamp(22px, 3vw, 40px); }
 /* .eh-sheet: ol[role='list'] iz global.css (0,1,1) inače poništava padding, pa arak počinje na rubu prozora */
 .eh-sheet .eh-sheet-list {
   list-style: none; margin: 0; padding: 4px var(--wl) 14px; display: flex; gap: 14px;
   overflow-x: auto; scroll-snap-type: x proximity; scroll-padding-inline: var(--wl); scrollbar-width: none;
 }
 .eh-sheet-list::-webkit-scrollbar { display: none; }
-.eh-sheet-list li { flex: none; width: clamp(150px, 12.5vw, 196px); scroll-snap-align: start; }
+.eh-sheet-list li { flex: none; width: var(--sheet-w); scroll-snap-align: start; }
 .eh-sheet-list a { display: grid; grid-template-columns: auto 1fr; gap: 8px 10px; align-items: baseline; text-decoration: none; color: var(--ink); }
 .eh-sheet-img { grid-column: 1 / -1; display: block; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; background: var(--night); box-shadow: 0 0 0 1px var(--line); }
 .eh-sheet-img img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease-out), filter 0.5s var(--ease-out); filter: saturate(0.85) brightness(0.92); }
@@ -464,6 +520,34 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
 .eh-sheet-img--nacrt { background: #0d1631; }
 .eh-sheet-img--nacrt img { filter: none; }
 .eh-sheet-list a:hover .eh-sheet-img--nacrt img, .eh-sheet-list a:focus-visible .eh-sheet-img--nacrt img { transform: scale(1.03); }
+/* arak kao slider (sub.js, initSheets): rub koji skriva još kadrova blijedi; strelice i povlačenje samo za miš.
+   Bez JS-a (i na dodir) arak je običan vodoravni skrol. */
+.eh-sheet.is-scrollable .eh-sheet-list {
+  --fade-l: 0px; --fade-r: 0px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+}
+.eh-sheet.is-scrollable:not(.is-start) .eh-sheet-list { --fade-l: min(64px, var(--wl)); }
+.eh-sheet.is-scrollable:not(.is-end) .eh-sheet-list { --fade-r: min(96px, 8vw); }
+.eh-sheet-nav { position: absolute; z-index: 2; inset: 0 0 auto; height: 0; pointer-events: none; }
+.eh-sheet-nav[hidden] { display: none; }
+.eh-sheet-btn {
+  position: absolute; top: calc(4px + var(--sheet-w) * 0.375); translate: 0 -50%;
+  width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  background: var(--paper); color: var(--ink); box-shadow: 0 0 0 1px var(--line-2), 0 6px 18px rgba(4, 6, 12, 0.18);
+  pointer-events: auto; transition: opacity 0.3s var(--ease-out), scale 0.3s var(--ease-out), background 0.25s, color 0.25s;
+}
+.eh-sheet-btn[data-dir='-1'] { left: max(8px, calc(var(--wl) - 22px)); }
+.eh-sheet-btn[data-dir='1'] { right: max(8px, calc(var(--wl) - 22px)); }
+.eh-sheet-btn:hover { background: var(--ink); color: var(--paper); }
+.eh-sheet-btn:active { scale: 0.94; }
+.eh-sheet-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.eh-sheet-btn:disabled { opacity: 0; pointer-events: none; }
+/* povlačenje mišem: bez snapa dok se vuče (inače arak trza natrag na kadar), bez odabira teksta i slika */
+.eh-sheet.is-drag .eh-sheet-list { cursor: grab; }
+.eh-sheet.is-dragging .eh-sheet-list { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+.eh-sheet.is-drag .eh-sheet-list img { -webkit-user-drag: none; }
+.eh-sheet.is-dragging .eh-sheet-list a { pointer-events: none; }
 .eh--hub .eh-stage { min-height: clamp(440px, calc(100svh - var(--header-h) - 300px), 760px); }
 /* nacrt na desktopu: kadar visok barem 760 px, pa 16 u teksta u crtežu ostaje ≥ 12 px i kad je stupac s naslovom
    kratak (O nama); tablet ima svoj prag (712 px, ispod), složeni raspored svoj omjer */
@@ -489,13 +573,14 @@ html.motion-ok .nacrt .lamp text { animation: nd-in 0.4s var(--ease-out) 1.6s bo
   .eh-head { max-width: none; gap: 10px; }
   .eh .crumbs { display: none; }
   .eh-frame { position: relative; inset: auto; width: 100vw; margin-left: calc(var(--gutter) * -1); aspect-ratio: 4 / 3.3; border-radius: 0; }
+  html.motion-ok .eh-frame { animation-name: eh-open-y; }
   .eh-slate { top: 14px; bottom: auto; left: var(--gutter); right: var(--gutter); }
   .eh-slate span { -webkit-line-clamp: 1; }
   .eh-frame::after { background: linear-gradient(180deg, rgba(4, 6, 12, 0.55), rgba(4, 6, 12, 0) 30%), linear-gradient(0deg, rgba(4, 6, 12, 0.82), rgba(4, 6, 12, 0.5) 14%, rgba(4, 6, 12, 0) 34%); }
   /* 8,6 em: prvi redak (u kadru) kratak, pa naglašena riječ ostaje na papiru i na 768–1100 px (design/09, A) */
   .eh-title { max-width: 8.6em; font-size: min(var(--fs-d2), 10vw); margin-top: -1.22em; }
   .eh-body { max-width: none; }
-  .eh-sheet-list li { width: 148px; }
+  .eh-sheet { --sheet-w: 148px; }
   /* Cijene: kartica u kadru od ruba do ruba; ispod nje mjesto za prvi redak naslova */
   .eh-frame--est { aspect-ratio: auto; justify-items: center; padding: 20px var(--gutter) calc(1.4 * min(var(--fs-d2), 10vw) + 12px); }
   .est { gap: 12px; padding: 18px; }

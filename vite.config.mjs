@@ -13,7 +13,7 @@ export default defineConfig({
     sourcemap: false,
     chunkSizeWarningLimit: 900,
     rollupOptions: {
-      input: { app: 'src/js/app.js', home: 'src/js/home.js' },
+      input: { app: 'src/js/app.js', home: 'src/js/home.js', pages: 'src/css/pages.css' },
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: 'chunks/[name]-[hash].js',

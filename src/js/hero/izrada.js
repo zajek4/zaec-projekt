@@ -14,6 +14,8 @@ export default function izrada(sec) {
   const scene = sec.querySelector('.sh-scene');
   const real = sec.querySelector('.sh-real');
   const svgs = { d: sec.querySelector('.it-type--d'), m: sec.querySelector('.it-type--m') };
+  // skripta je stigla nakon 4 s: CSS je već pokazao sagrađenu zgradu (hero.css, sh-wait-real), pa je ne vraćamo u nacrt
+  if (real.getAnimations?.().some((a) => a.animationName === 'sh-wait-real' && a.currentTime > 4000)) return;
   sec.classList.add('is-live');
 
   let comp = 'd', M = meta.d, start = 100, end = 0, sceneTop = 0, sceneH = 1, built = 0, cut = 100;

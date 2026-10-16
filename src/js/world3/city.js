@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
-import { glowPoints, seeded } from './lib.js';
+import { glowPoints, seeded, yieldMain, pacer } from './lib.js';
 import { buildCathedral } from './cathedral.js';
 import { buildLightMap, cityUniforms, buildingMaterial, groundMaterials, surfaceMaterial, waterMaterial, LM_R, LM_SPLIT, LM_WIDE } from './city-look.js';
 
@@ -330,11 +330,9 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     const mat = cathMaterial();
     const mesh = new THREE.Mesh(geo, mat);
     mesh.renderOrder = 1;
-    // rubovi za crtež i morph (iz stvarne geometrije modela)
-    const lines = lazyLines ? null : new THREE.EdgesGeometry(geo, isFallback ? 22 : 30);
     const swap = () => {
       // zakašnjeli rezervni model nikad ne zamjenjuje pravi
-      if (seq !== cathSeq) { geo.dispose(); mat.dispose(); lines?.dispose(); haloGeo?.dispose(); return; }
+      if (seq !== cathSeq) { geo.dispose(); mat.dispose(); haloGeo?.dispose(); return; }
       clearTimeout(fallbackLines?.timer);
       fallbackLines = null;
       if (cath) { group.remove(cath); cath.geometry.dispose(); cathMat.dispose(); cathLines?.dispose(); }
@@ -346,10 +344,18 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       for (let i = 1; i < p.count; i++) if (p.getY(i) > p.getY(top)) top = i;
       spire.set(p.getX(top), p.getY(top), p.getZ(top));
       anchors.cath.set(spire.x - 4, spire.y * 1.06, spire.z);
-      cath = mesh; cathMat = mat; cathLines = lines;
+      cath = mesh; cathMat = mat; cathLines = null;
       group.add(mesh);
-      if (lines) onLines?.(lines, isFallback);
-      else {
+      if (!lazyLines) {
+        // rubovi za crtež i morph (iz stvarne geometrije modela): ~150 ms na sporom mobitelu, pa u mirnom
+        // trenutku nakon pokretanja (ne odgađa prvu sliku); crtež treba tek u poglavlju nacrta
+        const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
+        idle(() => {
+          if (disposed || seq !== cathSeq || cathLines) return;
+          cathLines = new THREE.EdgesGeometry(geo, isFallback ? 22 : 30);
+          onLines?.(cathLines, isFallback);
+        }, { timeout: 3000 });
+      } else {
         const run = () => { if (seq !== cathSeq || cathLines) return; cathLines = new THREE.EdgesGeometry(geo, 22); onLines?.(cathLines, true); };
         fallbackLines = { run, timer: setTimeout(run, 6000) };
       }
@@ -359,14 +365,19 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     if (prepare) prepare(mesh).then(swap, swap);
     else swap();
   }
-  {
-    // rezervni model: proceduralni (jedinice ~6 m, toranj na −x) → metri, toranj na istoku
+  // rezervni model: proceduralni (jedinice ~6 m, toranj na −x) → metri, toranj na istoku. Gradi se u zasebnom
+  // zadatku (~75 ms na sporom mobitelu, izvan pripreme svijeta); ako pravi model stigne prije, ne gradi se
+  let realModel = false, modelFailed = false;
+  const buildFallback = () => {
+    if (disposed || realModel) return;
     const g = buildCathedral();
     g.scale(-7, 7, 7);
     g.translate(2, 0, -3.8);
     g.deleteAttribute('normal');
-    setCathedral(g, true, null, !!modelUrl);
-  }
+    setCathedral(g, true, null, !!modelUrl && !modelFailed);
+  };
+  if (modelUrl) yieldMain().then(buildFallback);
+  else buildFallback();
   if (modelUrl) {
     const loader = new GLTFLoader();
     loader.setMeshoptDecoder(MeshoptDecoder);
@@ -407,8 +418,9 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       let haloGeo = null;
       if (glow) { haloGeo = toFloat(glow.geometry, false); haloGeo.applyMatrix4(glow.matrixWorld); }
       gltf.scene.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose?.(); } });
+      realModel = true;
       setCathedral(geo, false, haloGeo);
-    }, undefined, (err) => { console.warn('[ZAEC] model konkatedrale nije učitan, koristi se rezervni', err); fallbackLines?.run(); });
+    }, undefined, (err) => { console.warn('[ZAEC] model konkatedrale nije učitan, koristi se rezervni', err); modelFailed = true; fallbackLines?.run(); });
   }
   // reflektor: svjetlo je stalno u sceni (dodaje ga engine u korijen), samo mu se mijenja jačina —
   // promjena broja svjetala inače prisiljava ponovno prevođenje svih osvijetljenih shadera usred scrolla
@@ -453,6 +465,10 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
   const lineSegs = [];
   async function load() {
     const buf = await (await fetch(dataUrl)).arrayBuffer();
+    if (disposed) return;
+    // gradnja grada je ~400 ms na sporom mobitelu: nit se ustupa svakih ~24 ms (redoslijed i slučajni brojevi isti)
+    const pace = pacer();
+    const breathe = async () => { await pace.pause(); return disposed; };
     const d = parse(buf);
     const G = new GeoBuf(1 << 18);
     const DEG = Math.PI / 180;
@@ -534,6 +550,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     //  · gradski blokovi do ~22 m: četverostrešno krovište (pomak tlocrta prema unutra) ili mansarda
     //  · visoke, stambene i poslovne zgrade, industrija: ravni krov s atikom i ponekom strojarnicom
     for (const b of d.buildings) {
+      if (pace.due() && await breathe()) return;
       const r = b.r;
       const n = r.length / 2;
       const [cx, cy] = centroid(r);
@@ -662,6 +679,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       if (dist < R_EDGE) for (const q of [r, ...holes]) for (let i = 0, m = q.length / 2; i < m; i++) { const j = (i + 1) % m; lineSegs.push(q[i * 2], h, -q[i * 2 + 1], q[j * 2], h, -q[j * 2 + 1]); }
     }
 
+    if (await breathe()) return;
     // Drava (vanjski prsten + otoci kao rupe): vodostaj ispod razine grada, obala kao kosina (nasip/kamena obala)
     const WL = -2.4, BANK = 9;
     const wpos = [];
@@ -694,6 +712,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
         G.triUp(a, ob, oa, k, 5);
       }
     }
+    if (pace.due() && await breathe()) return;
     // mostovi: samo ondje gdje stvarna cesta ili pješačka staza prelazi rijeku (OSM), s blagim lukom
     const decks = [];
     for (const rd of [...d.roads].sort((p, q) => p.h[0] - q.h[0])) {
@@ -740,6 +759,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       }
     }
 
+    if (await breathe()) return;
     buildingsMesh = new THREE.Mesh(track(G.geometry()), cityMat);
     group.add(buildingsMesh);
     const eg = track(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(lineSegs, 3)));
@@ -748,6 +768,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     let bestD = 1e9;
     for (const o of outers) for (let i = 0; i < o.r.length; i += 2) { const dd = Math.hypot(o.r[i] - 60, o.r[i + 1] - 420); if (dd < bestD) { bestD = dd; anchors.drava.set(o.r[i], 4, -o.r[i + 1] - 40); } }
 
+    if (await breathe()) return;
     // trg, parkovi, travnjaci
     const apos = [], acol = [];
     const AC = { 0: [0.085, 0.09, 0.12], 1: [0.03, 0.075, 0.06], 2: [0.035, 0.068, 0.058], 3: [0.13, 0.13, 0.15] };
@@ -770,6 +791,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     ag.setAttribute('aCol', new THREE.Float32BufferAttribute(acol, 3));
     group.add(new THREE.Mesh(ag, areaMat));
 
+    if (pace.due() && await breathe()) return;
     // ceste i staze uz samu obalu (šetnica uz Dravu): svjetla se ogledaju u rijeci
     for (const rd of d.roads) {
       const r = rd.r, m = (r.length / 4) | 0;
@@ -783,6 +805,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     const TINT = [0.9, 0.8, 0.15, 0.1, 0.65, 0.5];
     const KC = [1, 0.9, 0.7, 0.45, 0.95, 0.4];
     const lamp = [], lampSize = [], lampK = [], lampT = [];
+    if (pace.due() && await breathe()) return;
     for (const rd of lit) {
       const c = rd.h[0];
       const sp = SP[c];
@@ -825,6 +848,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     group.add(lampPts.points);
     track(lampPts.geometry); track(lampPts.material);
 
+    if (await breathe()) return;
     // karta svjetla: ulice, lokve svjetiljki, trgovi i izlozi → tlo, pročelja i odsjaji u Dravi
     const squares = d.areas.filter((a) => a.h[0] === 0 || a.h[0] === 3).map((a) => a.r);
     // crta se izvan glavne niti; do tada tlo i pročelja koriste praznu kartu (grad je iza papira ili daleko)

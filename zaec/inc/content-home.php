@@ -311,12 +311,12 @@ function zaec_home_faq() {
 	return array(
 		array( 'Koliko košta izrada web stranice?', 'Ovisi o opsegu: broju stranica, funkcijama i tome imate li sadržaj. Zato ne objavljujemo „od” cijene koje ništa ne znače. Nakon kratkog razgovora dobivate pisanu ponudu s fiksnom cijenom i rokom, bez obveze. Okvirni opseg i rok možete odmah složiti u procjeni projekta.' ),
 		array( 'Koliko traje izrada?', 'Landing stranica je najbrža, webshop i integracije traju najdulje. Okvirni rok vidite u procjeni projekta, a točan rok piše u ponudi prije početka.' ),
-		array( 'Garantirate li prvo mjesto na Googleu?', 'Ne — i bježite od svakoga tko to garantira. Garantiramo ispravno postavljene temelje (brzina, struktura, schema, Google profil, mjerenje) i brojke koje pokazuju napredak.' ),
+		array( 'Garantirate li prvo mjesto na Googleu?', 'Ne — i bježite od svakoga tko to garantira. Garantiramo ispravno postavljene temelje (brzina, struktura, schema, Google profil, mjerenje) i brojke koje pokazuju što se mijenja.' ),
 		array( 'Što ako mi se dizajn ne svidi?', 'Zato prvo ide nacrt i vizualni smjer, uz dogovoreni broj korekcija prije razvoja. Ne gradimo naslijepo pa onda mijenjamo iz temelja.' ),
 		array( 'Imam web — trebam li novi?', 'Ne nužno. Napravimo besplatnu provjeru vidljivosti i iskreno kažemo isplati li se popravak ili nova izrada.' ),
 		array( 'Tko je vlasnik weba?', 'Vi. Domena, hosting, pristupi i sadržaj registrirani su na vas. Možete otići kad god želite — bez otkupa i ucjene.' ),
 		array( 'Hoću li moći sam uređivati sadržaj?', 'Da. Web je na WordPressu, a pri primopredaji pokažemo kako mijenjate tekstove, slike, radove i cijene.' ),
-		array( 'Što je s ChatGPT-om i AI pretragom?', 'Postavljamo ono što AI asistenti koriste: jasan sadržaj s odgovorima, schema markup, dosljedne podatke o tvrtki i recenzije. Preporuku ne može garantirati nitko, ali šanse možemo bitno povećati — i mjeriti.' ),
+		array( 'Što je s ChatGPT-om i AI pretragom?', 'Postavljamo ono što AI asistenti koriste: jasan sadržaj s odgovorima, schema markup, dosljedne podatke o tvrtki i recenzije. Preporuku ne može garantirati nitko, ali šanse možemo povećati i redovito provjeravati.' ),
 		array( 'Radite li webshop i praćenje prodaje?', 'Da: WooCommerce, kartično plaćanje za hrvatsko tržište i GA4 e-commerce praćenje (od pregleda proizvoda do kupnje), uz Consent Mode v2.' ),
 		array( 'Radite li samo u Osijeku?', 'Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom.' ),
 	);

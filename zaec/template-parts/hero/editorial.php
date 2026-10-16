@@ -60,13 +60,14 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 			<?php elseif ( $img ) : ?>
 				<figure class="eh-frame">
 					<?php $zaec_srcset = zaec_img_srcset( $img ); ?>
-					<img class="eh-img" src="<?php echo esc_url( zaec_img( $img ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-aspect-ratio: 4/5) 100vw, (max-width: 760px) 100vw, (max-width: 1100px) and (max-aspect-ratio: 1/1) 100vw, 58vw"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
+					<img class="eh-img hero-fade" <?php echo zaec_hero_fade_onload(); // phpcs:ignore -- stalni atribut ?> src="<?php echo esc_url( zaec_img( $img ) ); ?>"<?php if ( $zaec_srcset ) : ?> srcset="<?php echo esc_attr( $zaec_srcset ); ?>" sizes="(max-aspect-ratio: 4/5) 100vw, (max-width: 760px) 100vw, (max-width: 1100px) and (max-aspect-ratio: 1/1) 100vw, 58vw"<?php endif; ?> alt="<?php echo esc_attr( $l['image_alt'] ?? '' ); ?>" width="1400" height="1050" fetchpriority="high" decoding="async">
 					<?php if ( ! empty( $l['image_alt'] ) ) : ?>
 						<figcaption class="eh-slate mono" aria-hidden="true"><?php if ( $code ) : ?><b><?php echo esc_html( $code ); ?></b><?php endif; ?><span><?php echo esc_html( $l['image_alt'] ); ?></span></figcaption>
 					<?php endif; ?>
 				</figure>
 			<?php endif; ?>
 			<h1 class="h1 eh-title" id="eh-title"><?php echo zaec_kses_title( $title ); // phpcs:ignore ?></h1>
+			<?php zaec_hero_em_fit(); ?>
 			<div class="eh-body">
 				<?php if ( ! empty( $l['lead'] ) ) : ?><p class="lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
 				<?php zaec_hero_ctas( $cta, $href ); ?>
@@ -86,14 +87,20 @@ if ( in_array( $l['type'] ?? '', array( 'hub', 'hub-industries' ), true ) && ! e
 		</div>
 	</div>
 	<?php if ( $sheet ) : ?>
-		<nav class="eh-sheet" aria-label="<?php echo esc_attr( $l['title'] ); ?>">
-			<ol class="eh-sheet-list" role="list">
+		<nav class="eh-sheet" aria-label="<?php echo esc_attr( $l['title'] ); ?>" data-sheet>
+			<?php // gumbi za miš (bez njih arak na desktopu nema kako se pomaknuti); JS ih prikaže samo kad arak ne stane ?>
+			<div class="eh-sheet-nav" hidden>
+				<button class="eh-sheet-btn" type="button" data-dir="-1" aria-controls="eh-sheet-list" aria-label="Prethodne stranice"><?php zaec_the_icon( 'alt-arrow-left', 20 ); ?></button>
+				<button class="eh-sheet-btn" type="button" data-dir="1" aria-controls="eh-sheet-list" aria-label="Sljedeće stranice"><?php zaec_the_icon( 'alt-arrow-right', 20 ); ?></button>
+			</div>
+			<?php // data-lenis-prevent-horizontal: vodoravni potez trackpada ide arku, a ne glatkom skrolu stranice ?>
+			<ol class="eh-sheet-list" id="eh-sheet-list" role="list" data-lenis-prevent-horizontal>
 				<?php
 				$zaec_i = 0;
 				foreach ( $sheet as $zaec_k => $zaec_r ) :
 					$zaec_i++;
 					?>
-					<li>
+					<li style="--i: <?php echo (int) $zaec_i; ?>">
 						<a href="<?php echo esc_url( zaec_url( $zaec_k ) ); ?>">
 							<?php if ( $zaec_r['thumb'] ) : ?>
 								<span class="eh-sheet-img eh-sheet-img--nacrt"><img src="<?php echo esc_url( $zaec_r['thumb'] ); ?>" alt="" width="800" height="600" loading="lazy" decoding="async"></span>

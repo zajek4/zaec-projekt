@@ -1,0 +1,52 @@
+/* Hrvatska slova iz malih podskupova (tools/build-fonts.py). Deklarirano nakon fontsource pravila,
+   pa za ove znakove imaju prednost: stranica ne učitava cijeli latin-ext (−95 kB fontova). */
+@font-face {
+  font-family: 'Archivo Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('../fonts/archivo-hr-standard-normal.woff2') format('woff2-variations');
+  unicode-range: U+0106-0107, U+010C-010D, U+0110-0111, U+0160-0161, U+017D-017E;
+}
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url('../fonts/jetbrains-mono-hr-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0106-0107, U+010C-010D, U+0110-0111, U+0160-0161, U+017D-017E;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url('../fonts/instrument-serif-hr-400-italic.woff2') format('woff2');
+  unicode-range: U+0106-0107, U+010C-010D, U+0110-0111, U+0160-0161, U+017D-017E;
+}
+
+/* Zamjenski kurziv s mjerama Instrument Serifa (size-adjust prema širini teksta, tools/build-fonts.py ne treba):
+   dok pravi font ne stigne, istaknuta riječ zauzima isto mjesto, pa se naslov ne prelomi drugačije kad font stigne
+   (pomak rasporeda na podstranicama, do 0,09 CLS). Times New Roman / Liberation Serif (Windows, Apple, Linux): 89 %;
+   Noto Serif (Android): 78 %. Ako lokalnog fonta nema, obitelj se preskače. */
+@font-face {
+  font-family: 'Instrument Serif Fallback';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Times New Roman Italic'), local('TimesNewRomanPS-ItalicMT'), local('Liberation Serif Italic'), local('LiberationSerif-Italic'), local('Tinos Italic'), local('Tinos-Italic');
+  size-adjust: 89%;
+  ascent-override: 111%;
+  descent-override: 35%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Instrument Serif Fallback Noto';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Noto Serif Italic'), local('NotoSerif-Italic');
+  size-adjust: 78%;
+  ascent-override: 127%;
+  descent-override: 40%;
+  line-gap-override: 0%;
+}
