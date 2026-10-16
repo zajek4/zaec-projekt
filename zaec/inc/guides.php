@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const ZAEC_GUIDES_VERSION = '2.0.0';
+const ZAEC_GUIDES_VERSION = '2.1.0';
 
 function zaec_guides_manifest() {
 	$file = ZAEC_THEME_DIR . '/inc/seed/guides/guides.json';

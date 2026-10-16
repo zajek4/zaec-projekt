@@ -1,4 +1,4 @@
-// LIST 09 · Stručne usluge — ured na katu noću (tools/art/nacrt/izlog.mjs). Modernistička katnica iz tridesetih:
+// LIST 06 · Stručne usluge — ured na katu noću (tools/art/nacrt/izlog.mjs). Modernistička katnica iz tridesetih:
 // ravni krov s tankom pločom i cijevnom ogradom terase, stubišni toranj s prozorom od staklene opeke i nadstrešnicom
 // nad ulazom, prizemlje obloženo kamenim pločama i tamno. Na katu svijetli trakasti prozor ureda: police s
 // registratorima, stol sa stolnom svjetiljkom i dvije stolice, uokvirena ovlaštenja i biljka. Uz ulaz ploča sa
@@ -7,7 +7,7 @@ import { G, street, shop, marker, legend, glowDefs, sash, sideChair } from './iz
 
 export const meta = {
   slug: 'strucne-usluge',
-  list: '09',
+  list: '06',
   name: 'Stručne usluge',
   head: 'DJELATNOSTI · IZLOZI',
   view: 'UREDI NA KATU NOĆU',

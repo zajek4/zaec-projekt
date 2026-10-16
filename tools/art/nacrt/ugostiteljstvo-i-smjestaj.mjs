@@ -1,4 +1,4 @@
-// LIST 06 · Ugostiteljstvo i smještaj — kuća s apartmanima noću (tools/art/nacrt/izlog.mjs). Klasicistička jednokatnica
+// LIST 09 · Ugostiteljstvo i smještaj — kuća s apartmanima noću (tools/art/nacrt/izlog.mjs). Klasicistička jednokatnica
 // sa šest osi i krovom na četiri vode; lijevo kolni ulaz u dvorište, do njega prozor s rešetkom. U prizemlju svijetle
 // recepcija (pult, zvonce, ploča s ključevima), ulazna vrata sa stubištem prema sobama i blagovaonica za doručak.
 // Natpis na tri jezika, na katu tamni prozori soba s griljama (neke zatvorene). Svjetlo: ploča s ključevima —
@@ -7,7 +7,7 @@ import { G, street, rustica, shop, marker, legend, glowDefs, sash, shutters, sid
 
 export const meta = {
   slug: 'ugostiteljstvo-i-smjestaj',
-  list: '06',
+  list: '09',
   name: 'Smještaj i vinarije',
   head: 'DJELATNOSTI · IZLOZI',
   view: 'RECEPCIJA APARTMANA NOĆU',

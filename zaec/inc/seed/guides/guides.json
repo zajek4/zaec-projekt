@@ -58,5 +58,15 @@
     "readMin": 6,
     "kicker": "Vodič · Odluka",
     "order": 6
+  },
+  {
+    "slug": "kuca-za-odmor-izravne-rezervacije",
+    "title": "Kuća za odmor i apartmani: kako do više izravnih rezervacija",
+    "short": "Izravne rezervacije — vodič",
+    "description": "Za vlasnike kuća za odmor i apartmana: kako uz Booking i Airbnb dobiti više gostiju koji rezerviraju izravno, bez provizije, i koji se vraćaju.",
+    "date": "2026-10-16",
+    "readMin": 7,
+    "kicker": "Vodič · Smještaj",
+    "order": 7
   }
 ]
