@@ -1,4 +1,4 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntU3d ndU3d"><title id="ntU3d">Oglas i landing stranica s istim naslovom i jednim gumbom</title><desc id="ndU3d">Lijevo je oglas nacrtan kao kostur s oznakom OGLAS i stvarnim naslovom „Servis klime prije ljeta“. Desno je jedna duga stranica: izbornik je uklonjen i nacrtan samo crtkano, na vrhu je isti naslov, a ispod njega jedini gumb, Zatražite termin, na kojem je toplo svjetlo. Znak jednakosti između dvaju naslova označava istu poruku. Ostatak stranice, tri razloga, dokaz i pitanja, nacrtan je samo kao kostur. Oznake povezuju isti naslov s obećanjem iz oglasa, uklonjeni izbornik s jednim gumbom, tri kartice s dijelom Zašto baš vi i citat s dokazom.</desc>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntU3d ndU3d"><title id="ntU3d">Oglas i landing stranica s istim naslovom i jednim gumbom</title><desc id="ndU3d">Lijevo je oglas nacrtan kao kostur s oznakom OGLAS i stvarnim naslovom „Servis klime prije ljeta”. Desno je jedna duga stranica: izbornik je uklonjen i nacrtan samo crtkano, na vrhu je isti naslov, a ispod njega jedini gumb, Zatražite termin, na kojem je toplo svjetlo. Znak jednakosti između dvaju naslova označava istu poruku. Ostatak stranice, tri razloga, dokaz i pitanja, nacrtan je samo kao kostur. Oznake povezuju isti naslov s obećanjem iz oglasa, uklonjeni izbornik s jednim gumbom, tri kartice s dijelom Zašto baš vi i citat s dokazom.</desc>
 <defs><pattern id="gridU3d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
 <rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU3d)"/>
 <g class="nd nd-1">
@@ -88,7 +88,7 @@
 <circle class="dot" cx="995" cy="500" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="995,508 995,567 522,567"/>
 <text class="t-call" x="522" y="535">17:30 · PRVA VRUĆINA</text>
-<text class="t-web" x="522" y="556">„servis klime cijena“</text>
+<text class="t-web" x="522" y="556">„servis klime cijena”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">

@@ -33,7 +33,7 @@ function zaec_home_defaults() {
 		// Hrvatska.
 		'hr_kicker'       => '02 — Odakle radimo',
 		'hr_title'        => 'Iz Osijeka, za tvrtke diljem <em>Hrvatske</em>.',
-		'hr_lead'         => 'Projekte vodimo uživo kad ima smisla, a inače video-pozivom i jasnim pisanim dogovorom. Lokalno tržište poznajemo iznutra: kako ljudi ovdje traže, uspoređuju i odlučuju.',
+		'hr_lead'         => 'Projekte vodimo uživo kad ima smisla, a inače videopozivom i jasnim pisanim dogovorom. Lokalno tržište poznajemo iznutra: kako ljudi ovdje traže, uspoređuju i odlučuju.',
 		'hr_title_2'      => 'Malo tržište ne nagrađuje <em>glasnoću</em>.',
 		'hr_lead_2'       => 'Nagrađuje jasnoću. Tko prvi jasno odgovori na pitanje kupca — što, gdje, koliko brzo i zašto baš vi — dobiva poziv.',
 		// Slavonija (svjetla naselja).
@@ -60,7 +60,7 @@ function zaec_home_defaults() {
 		'path_kicker'     => '06 — Put do upita',
 		'path_title'      => 'Ista stranica. Drugačija <em>struktura</em>.',
 		'path_lead'       => 'Posjetitelji dolaze s Googlea, preporuke, mreža, oglasa i AI pretrage. Na stranici prolaze kroz pet vrata i na svakima dio njih odustane. Popravite vrata jedna po jedna i gledajte što se događa.',
-		'path_note'       => 'Ilustrativni model, ne obećanje. Omjeri su pojednostavljeni kako bi pokazali princip: male razlike na svakim vratima se množe. Stvarne brojke ovise o djelatnosti, ponudi i prometu — zato ih mjerimo na vašem webu.',
+		'path_note'       => 'Ilustrativni model, ne obećanje. Omjeri su pojednostavljeni kako bi pokazali princip: male se razlike na svakim vratima množe. Stvarne brojke ovise o djelatnosti, ponudi i prometu — zato ih mjerimo na vašem webu.',
 		// Sustav.
 		'sys_kicker'      => '07 — Ispod površine',
 		'sys_title'       => 'Sedam slojeva između pretrage i <em>poziva</em>.',
@@ -72,9 +72,9 @@ function zaec_home_defaults() {
 		'recog_title'     => 'Svako svjetlo je nečiji posao. <em>Naš</em> je da se vaš vidi.',
 		'recog_lead'      => 'Za tvrtke kojima web mora donositi posao: od stručnih usluga i ustanova do izvođača, proizvodnje i specijaliziranih trgovina. Svaki projekt počinje nacrtom, a završava mjerenjem.',
 		'recog_cta'       => 'Recite nam što želite postići',
-		'recog_start'     => 'Prvi korak: razgovor od dvadesetak minuta i pisana procjena, bez obveze.',
+		'recog_start'     => 'Prvi korak: razgovor od dvadesetak minuta i pisana ponuda, bez obveze.',
 		// Lijepo vs učinkovito.
-		'cmp_kicker'      => 'Lijepo vs učinkovito',
+		'cmp_kicker'      => 'Lijepo ili učinkovito',
 		'cmp_title'       => 'Obje su lijepe. Samo jedna <em>radi</em>.',
 		'cmp_lead'        => 'Povucite razdjelnik. Isti obrt, iste fotografije, isti budžet — drugačije odluke o tome što posjetitelj vidi prvo.',
 		// Usluge.
@@ -99,7 +99,7 @@ function zaec_home_defaults() {
 		'invest_lead'     => 'Već ste se jednom opekli? Rok probijen, cijena narasla, pristupi ostali kod agencije. Zato opseg, rok i cijenu dobivate na papiru prije početka, a sve je na vaše ime. „Od” cijene ne objavljujemo jer ništa ne znače: web za obrt i webshop s integracijama nisu isti posao. Ponuda je bez obveze.',
 		// FAQ.
 		'faq_kicker'      => 'Pitanja',
-		'faq_title'       => 'Prije nego <em>pitate</em>.',
+		'faq_title'       => 'Prije nego što <em>pitate</em>.',
 		// Završni upit.
 		'final_kicker'    => 'Upit',
 		'final_title'     => 'Ne morate znati što vam tehnički treba. <em>Recite nam što želite postići.</em>',
@@ -248,7 +248,7 @@ function zaec_home_steps() {
 /** Četiri koraka (za landing stranice — blocks.php). */
 function zaec_home_process() {
 	return array(
-		array( 'K.01', 'Besplatan razgovor', 'Saznamo kako radite, tko su vam kupci i gdje gubite upite. Ako vam ne trebamo — reći ćemo.', '20 minuta · bez obveze' ),
+		array( 'K.01', 'Besplatan razgovor', 'Saznajemo kako radite, tko su vam kupci i gdje gubite upite. Ako vam ne trebamo — reći ćemo.', '20 minuta · bez obveze' ),
 		array( 'K.02', 'Nacrt i pisana ponuda', 'Struktura stranica, sadržaj, funkcije i mjerenje — na papiru, uz cijenu i rok.', 'opseg potvrđen pisano' ),
 		array( 'K.03', 'Izrada i testiranje', 'Dizajn, tekstovi i razvoj prema nacrtu. Na stvarnim mobitelima testiramo brzinu i svaki obrazac.', 'pregled u tijeku rada' ),
 		array( 'K.04', 'Objava, mjerenje, rast', 'Objava, Search Console, GA4 i povezan Google profil. Pristupi, edukacija i 14 dana jamstva.', 'brojke od prvog dana' ),
@@ -310,14 +310,14 @@ function zaec_home_faq() {
 	}
 	return array(
 		array( 'Koliko košta izrada web stranice?', 'Ovisi o opsegu: broju stranica, funkcijama i tome imate li sadržaj. Zato ne objavljujemo „od” cijene koje ništa ne znače. Nakon kratkog razgovora dobivate pisanu ponudu s cijenom i rokom, bez obveze. Okvirni opseg i rok možete odmah složiti u procjeni projekta.' ),
-		array( 'Koliko traje izrada?', 'Web na predlošku obično 2–4 tjedna izrade, web po nacrtu 4–8 tjedana, a landing je najbrži. Rok teče od dana kad je sadržaj kompletan. Točan rok piše u ponudi prije početka.' ),
+		array( 'Koliko traje izrada?', 'Web na predlošku obično traje 2–4 tjedna, web po nacrtu 4–8 tjedana, a landing je najbrži. Rok teče od dana kad je sadržaj kompletan. Točan rok piše u ponudi prije početka.' ),
 		array( 'Garantirate li prvo mjesto na Googleu?', 'Ne — i bježite od svakoga tko to garantira. Garantiramo ispravno postavljene temelje (brzina, struktura, schema, Google profil, mjerenje) i brojke koje pokazuju što se mijenja.' ),
 		array( 'Što ako mi se dizajn ne svidi?', 'Zato prvo ide nacrt i vizualni smjer, uz dogovoreni broj korekcija prije razvoja. Ne gradimo naslijepo pa onda mijenjamo iz temelja.' ),
-		array( 'Imam web — trebam li novi?', 'Ne nužno. Napravimo besplatnu provjeru vidljivosti i iskreno kažemo isplati li se popravak ili nova izrada.' ),
+		array( 'Imam web — trebam li novi?', 'Ne nužno. Napravit ćemo besplatnu provjeru vidljivosti i iskreno reći isplati li se popravak ili nova izrada.' ),
 		array( 'Tko je vlasnik weba?', 'Vi. Domena, hosting, pristupi i sadržaj registrirani su na vas. Možete otići kad god želite — bez otkupa i ucjene.' ),
-		array( 'Hoću li moći sam uređivati sadržaj?', 'Da. Web je na WordPressu, a pri primopredaji pokažemo kako mijenjate tekstove, slike, radove i cijene.' ),
-		array( 'Što je s ChatGPT-om i AI pretragom?', 'Postavljamo ono što AI asistenti koriste: jasan sadržaj s odgovorima, schema markup, dosljedne podatke o tvrtki i recenzije. Preporuku ne može garantirati nitko, ali šanse možemo povećati i redovito provjeravati.' ),
+		array( 'Hoću li moći sam uređivati sadržaj?', 'Da. Web je na WordPressu, a pri primopredaji pokazat ćemo vam kako mijenjate tekstove, slike, radove i cijene.' ),
+		array( 'Što je s ChatGPT-om i AI pretragom?', 'Postavljamo ono što AI asistenti koriste: jasan sadržaj s odgovorima, schema markup, dosljedne podatke o tvrtki i recenzije. Preporuku ne može garantirati nitko, ali izglede možemo povećati, a odgovore redovito provjeravati.' ),
 		array( 'Radite li webshop i praćenje prodaje?', 'Da: WooCommerce, kartično plaćanje za hrvatsko tržište i GA4 e-commerce praćenje (od pregleda proizvoda do kupnje), uz Consent Mode v2.' ),
-		array( 'Radite li samo u Osijeku?', 'Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače video-pozivom i jasnim pisanim dogovorom.' ),
+		array( 'Radite li samo u Osijeku?', 'Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače videopozivom i jasnim pisanim dogovorom.' ),
 	);
 }

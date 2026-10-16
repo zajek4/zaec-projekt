@@ -148,7 +148,7 @@
 <circle class="dot" cx="565" cy="694" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="565,686 565,451 512,451"/>
 <text class="t-call" x="512" y="419">22:15 · S KAUČA</text>
-<text class="t-web" x="512" y="440">„naziv proizvoda + kupiti“</text>
+<text class="t-web" x="512" y="440">„naziv proizvoda + kupiti”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -158,7 +158,7 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
 <text class="t-tb" x="744" y="857">DJELATNOSTI · IZLOZI</text>
 <text class="t-tb" x="1054" y="857">LIST 07/11</text>
-<text class="t-tb-b" x="744" y="894">Trgovine i webshop</text>
+<text class="t-tb-b" x="744" y="894">Specijalizirane trgovine</text>
 <text class="t-tb" x="744" y="914">IZLOG TRGOVINE NOĆU</text>
 <text class="t-tb" x="744" y="943">WEB · KATALOG · PLAĆANJE · DOSTAVA</text>
 </g>

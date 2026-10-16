@@ -8,7 +8,7 @@ export const meta = {
   list: 'U3',
   name: 'Landing stranice',
   title: 'Oglas i landing stranica s istim naslovom i jednim gumbom',
-  desc: 'Lijevo je oglas nacrtan kao kostur s oznakom OGLAS i stvarnim naslovom „Servis klime prije ljeta“. Desno je jedna duga stranica: izbornik je uklonjen i nacrtan samo crtkano, na vrhu je isti naslov, a ispod njega jedini gumb, Zatražite termin, na kojem je toplo svjetlo. Znak jednakosti između dvaju naslova označava istu poruku. Ostatak stranice, tri razloga, dokaz i pitanja, nacrtan je samo kao kostur. Oznake povezuju isti naslov s obećanjem iz oglasa, uklonjeni izbornik s jednim gumbom, tri kartice s dijelom Zašto baš vi i citat s dokazom.',
+  desc: 'Lijevo je oglas nacrtan kao kostur s oznakom OGLAS i stvarnim naslovom „Servis klime prije ljeta”. Desno je jedna duga stranica: izbornik je uklonjen i nacrtan samo crtkano, na vrhu je isti naslov, a ispod njega jedini gumb, Zatražite termin, na kojem je toplo svjetlo. Znak jednakosti između dvaju naslova označava istu poruku. Ostatak stranice, tri razloga, dokaz i pitanja, nacrtan je samo kao kostur. Oznake povezuju isti naslov s obećanjem iz oglasa, uklonjeni izbornik s jednim gumbom, tri kartice s dijelom Zašto baš vi i citat s dokazom.',
   lamp: { time: '17:30 · PRVA VRUĆINA', search: 'servis klime cijena' },
   mvb: '494 144 680 562',
   mobileCallout: null,

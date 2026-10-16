@@ -136,7 +136,7 @@ function zaec_process_inquiry( $is_ajax = false ) {
 		array( 'to' => $recipient, 'subject' => $subject, 'message' => implode( "\n", $lines ), 'headers' => $headers, 'from_email' => $from_email, 'from_name' => $from_name )
 	);
 	if ( ! zaec_send_mail( $mail['to'], $mail['subject'], $mail['message'], $mail['headers'], $mail['from_email'], $mail['from_name'] ) ) {
-		$fail( 'Poruka trenutačno nije poslana. Pokušajte ponovno ili nazovite.', 500 );
+		$fail( 'Slanje trenutačno nije uspjelo. Pokušajte ponovno ili nazovite.', 500 );
 	}
 
 	if ( $valid_email && '1' === (string) $o['form_autorespond'] ) {

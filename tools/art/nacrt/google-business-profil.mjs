@@ -11,7 +11,7 @@ export const meta = {
   list: 'U6',
   name: 'Google Business profil',
   title: 'Kartica Google Business profila rastavljena na dijelove, nad kartom Tvrđe u Osijeku',
-  desc: 'Iznad je pruga stvarne karte Osijeka s Dravom i Tvrđom i oznakom obrta. Ispod nje je uvećana kartica profila rastavljena na dijelove kao sklop: zaglavlje, gumbi, podaci, fotografije i recenzije. Dijelovi su nacrtani kao kostur, a stvarni su i osvijetljeni samo naziv „Vaš obrt“, primarna kategorija Vodoinstalater i poveznica na stranicu weba za odčepljenje odvoda. Toplo svjetlo je na primarnoj kategoriji. Oznake povezuju kategoriju s postavljanjem profila, poveznicu s webom, fotografije sa stvarnim radovima i recenzije sa sustavom za recenzije.',
+  desc: 'Iznad je pruga stvarne karte Osijeka s Dravom i Tvrđom i oznakom obrta. Ispod nje je uvećana kartica profila rastavljena na dijelove kao sklop: zaglavlje, gumbi, podaci, fotografije i recenzije. Dijelovi su nacrtani kao kostur, a stvarni su i osvijetljeni samo naziv „Vaš obrt”, primarna kategorija Vodoinstalater i poveznica na stranicu weba za odčepljenje odvoda. Toplo svjetlo je na primarnoj kategoriji. Oznake povezuju kategoriju s postavljanjem profila, poveznicu s webom, fotografije sa stvarnim radovima i recenzije sa sustavom za recenzije.',
   lamp: { time: '07:15 · ZAČEPLJEN ODVOD', search: 'odčepljenje odvoda' },
   mvb: '500 110 680 562',
   mobileCallout: null,

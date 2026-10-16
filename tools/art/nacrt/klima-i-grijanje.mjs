@@ -6,7 +6,7 @@
 export const meta = {
   slug: 'klima-i-grijanje',
   list: '01',
-  name: 'Klima i grijanje',
+  name: 'Klima i dizalice topline',
   view: 'PRESJEK ZIDA A–A · M 1:10',
   web: 'MONTAŽA · SERVIS · TERMIN',
   title: 'Presjek vanjskog zida sa split klima uređajem, mjerilo 1:10',

@@ -5,7 +5,7 @@
 export const meta = {
   slug: 'elektricari',
   list: '03',
-  name: 'Električari',
+  name: 'Električari i solari',
   view: 'JEDNOPOLNA SHEMA R1 · BEZ MJERILA',
   web: 'USLUGE · OVLAŠTENJA · UPIT',
   title: 'Jednopolna shema kućnog razdjelnika s novim krugom punjača',

@@ -10,7 +10,7 @@ export const meta = {
   list: 'U5',
   name: 'Lokalni SEO',
   title: 'Karta središta Osijeka s tri oznake lokalnog rezultata pretrage',
-  desc: 'Stvarna karta središta Osijeka s Dravom, konkatedralom i glavnim ulicama. Tri oznake prikazuju lokalni rezultat pretrage „električar osijek“; naša oznaka svijetli toplim svjetlom, a uz nju je kartica profila s kategorijom i ocjenom. Kota mjeri udaljenost do onoga tko traži. Oznake povezuju kategoriju s relevantnošću, udaljenost s područjem rada i recenzije s istaknutošću.',
+  desc: 'Stvarna karta središta Osijeka s Dravom, konkatedralom i glavnim ulicama. Tri oznake prikazuju lokalni rezultat pretrage „električar osijek”; naša oznaka svijetli toplim svjetlom, a uz nju je kartica profila s kategorijom i ocjenom. Kota mjeri udaljenost do onoga tko traži. Oznake povezuju kategoriju s relevantnošću, udaljenost s područjem rada i recenzije s istaknutošću.',
   lamp: { time: '21:40 · NESTALO STRUJE', search: 'električar osijek' },
   mvb: '500 300 680 562',
   mobileCallout: null,

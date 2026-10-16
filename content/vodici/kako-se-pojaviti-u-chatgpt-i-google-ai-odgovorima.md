@@ -1,14 +1,14 @@
 ---
 title: 'Kako se pojaviti u ChatGPT-u i Google AI odgovorima: vodič za lokalne tvrtke'
 short: 'Kako vas AI asistenti preporučuju'
-description: 'Što ChatGPT, Gemini, Perplexity i Google AI koriste kad preporučuju lokalne tvrtke — i sedam konkretnih koraka da vaša tvrtka bude točno opisana i češće spomenuta.'
+description: 'Što ChatGPT, Gemini, Perplexity i Google AI koriste kad preporučuju lokalne tvrtke — i sedam koraka da vaša tvrtka bude točno opisana i češće spomenuta.'
 date: '2026-10-04'
 readMin: 9
 kicker: 'Vodič · AI vidljivost'
 order: 2
 ---
 
-Sve više ljudi više ne upisuje „vodoinstalater Osijek” u tražilicu, nego pita: *„Tko je dobar vodoinstalater u Osijeku koji dolazi isti dan?”* — ChatGPT-u, Geminiju, Perplexityju ili Googleovim AI odgovorima. Asistent ne vraća deset poveznica, nego dvije ili tri preporuke s kratkim obrazloženjem.
+Sve više ljudi umjesto upisivanja „vodoinstalater Osijek” u tražilicu pita: *„Tko je dobar vodoinstalater u Osijeku koji dolazi isti dan?”* — ChatGPT-u, Geminiju, Perplexityju ili Googleovim AI odgovorima. Asistent ne vraća deset poveznica, nego dvije ili tri preporuke s kratkim obrazloženjem.
 
 Ako vas nema među njima, za tog kupca ne postojite. Dobra vijest: AI asistenti ne izmišljaju preporuke iz ničega. Oslanjaju se na podatke koje možete urediti.
 
@@ -18,7 +18,7 @@ AI asistenti preporučuju tvrtke o kojima na internetu postoje **jasni, dosljedn
 
 ## Što AI zapravo „gleda”
 
-Svaki asistent radi malo drukčije, ali za lokalne preporuke uglavnom kombiniraju:
+Svaki asistent radi malo drukčije, ali za lokalne preporuke asistenti uglavnom kombiniraju:
 
 - **Rezultate pretrage u stvarnom vremenu** — mnogi asistenti pretražuju web dok odgovaraju, pa vrijedi sve što pomaže i klasičnom SEO-u.
 - **Podatke o tvrtki** — naziv, adresu, telefon, kategoriju, radno vrijeme i područje rada, najčešće iz Google profila, imenika i vaše stranice.
@@ -27,7 +27,7 @@ Svaki asistent radi malo drukčije, ali za lokalne preporuke uglavnom kombiniraj
 
 ## 1. Neka podaci o tvrtki budu svugdje isti
 
-Najčešći razlog zašto AI pogrešno opisuje tvrtku su proturječni podaci: stari broj u imeniku, drugačije radno vrijeme na Facebooku, adresa bez kućnog broja na webu. Asistent ne zna kojem izvoru vjerovati.
+Najčešći razlog zbog kojeg AI pogrešno opisuje tvrtku jesu proturječni podaci: stari broj u imeniku, drukčije radno vrijeme na Facebooku, adresa bez kućnog broja na webu. Asistent ne zna kojem izvoru vjerovati.
 
 **Što napraviti:** popišite gdje se tvrtka spominje (web, Google profil, Facebook, imenici, portali) i uskladite naziv, adresu, telefon, radno vrijeme i opis usluga.
 
@@ -43,7 +43,7 @@ AI asistenti vole odlomke koji samostalno odgovaraju na pitanje. Na početku str
 
 ## 4. Odgovorite na pitanja koja kupci stvarno postavljaju
 
-Skupite pitanja koja čujete na telefonu i odgovorite na njih na webu: koliko traje, što ulazi u cijenu, dolazite li vikendom, koja je garancija. FAQ blok s jasnim pitanjima i odgovorima čitaju i ljudi i asistenti — a uz ispravan *schema markup* Google ga lakše razumije.
+Skupite pitanja koja čujete na telefonu i odgovorite na njih na webu: koliko traje, što ulazi u cijenu, dolazite li vikendom, koje je jamstvo. FAQ blok s jasnim pitanjima i odgovorima čitaju i ljudi i asistenti — a uz ispravan *schema markup* Google ga lakše razumije.
 
 ## 5. Dodajte strukturirane podatke (schema)
 
@@ -55,7 +55,7 @@ Nakon posla zamolite klijenta za recenziju i predložite da spomene **uslugu i m
 
 ## 7. Ne blokirajte AI crawlere — i provjeravajte što odgovaraju
 
-Provjerite da vaš `robots.txt` ne blokira pretraživače i asistente koji vas trebaju pronaći. Zatim jednom mjesečno postavite ista pitanja ChatGPT-u, Geminiju i Google AI odgovorima i zapišite spominju li vas i što govore. Tako vidite napredak i hvatate pogrešne podatke.
+Provjerite da vaš `robots.txt` ne blokira pretraživače i asistente koji vas trebaju pronaći. Zatim jednom mjesečno postavite ista pitanja ChatGPT-u, Geminiju i Google AI odgovorima i zapišite spominju li vas i što govore. Tako vidite napredak i na vrijeme uočite pogrešne podatke.
 
 ## Što ne pomaže
 

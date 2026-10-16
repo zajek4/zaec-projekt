@@ -163,10 +163,16 @@ function zaec_breadcrumbs() {
 	if ( is_page() ) {
 		$id  = get_queried_object_id();
 		$anc = array_reverse( get_post_ancestors( $id ) );
+		// naziv iz registra, ne iz WP naslova: stranice kreirane ranijom verzijom registra zadržale bi stari naziv
+		$reg   = zaec_landing_registry();
+		$title = static function ( $pid ) use ( $reg ) {
+			$key = (string) get_post_meta( $pid, '_zaec_landing_key', true );
+			return $reg[ $key ]['title'] ?? get_the_title( $pid );
+		};
 		foreach ( $anc as $a ) {
-			$c[] = array( get_the_title( $a ), get_permalink( $a ) );
+			$c[] = array( $title( $a ), get_permalink( $a ) );
 		}
-		$c[] = array( get_the_title( $id ), get_permalink( $id ) );
+		$c[] = array( $title( $id ), get_permalink( $id ) );
 	} elseif ( is_singular( 'projekti' ) ) {
 		$c[] = array( 'Radovi', get_post_type_archive_link( 'projekti' ) );
 		$c[] = array( get_the_title(), get_permalink() );
@@ -258,7 +264,7 @@ function zaec_service_blurb( $key ) {
 		'usluge/landing-stranice'          => 'Jedna ponuda, jedan gumb — za oglase i kampanje.',
 		'usluge/seo'                       => 'Tehnika, sadržaj i struktura koje Google nagrađuje.',
 		'usluge/lokalni-seo'               => 'Da vas nađu ljudi iz vašeg grada kad vas trebaju.',
-		'usluge/google-business-profil'    => 'Profil koji vas stavlja na kartu — i recenzije.',
+		'usluge/google-business-profil'    => 'Profil koji vas stavlja na kartu i skuplja recenzije.',
 		'usluge/ai-vidljivost'             => 'Da vas ChatGPT i Google AI točno opisuju i preporučuju.',
 		'usluge/ga4-i-pracenje-konverzija' => 'GA4, GTM i e-commerce praćenje — znajte što donosi posao.',
 		'usluge/brzina-web-stranice'       => 'Core Web Vitals i brzina na mobitelu.',

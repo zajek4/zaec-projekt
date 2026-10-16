@@ -10,13 +10,13 @@
 </g>
 <g class="nd nd-3">
 <text class="t-call" x="524" y="197" font-weight="700">01</text>
-<text class="t-call" x="582" y="197">Klima i grijanje</text>
+<text class="t-call" x="582" y="197">Klima i dizalice topline</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="206" x2="1192" y2="206"/>
 <text class="t-call" x="524" y="231" font-weight="700">02</text>
 <text class="t-call" x="582" y="231">Vodoinstalateri</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="240" x2="1192" y2="240"/>
 <text class="t-call" x="524" y="265" font-weight="700">03</text>
-<text class="t-call" x="582" y="265">Električari</text>
+<text class="t-call" x="582" y="265">Električari i solari</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="274" x2="1192" y2="274"/>
 <text class="t-call" x="524" y="299" font-weight="700">04</text>
 <text class="t-call" x="582" y="299">Krovopokrivači</text>
@@ -25,12 +25,12 @@
 <text class="t-call" x="582" y="333">Građevina i adaptacije</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="342" x2="1192" y2="342"/>
 <text class="t-call" x="524" y="367" font-weight="700">06</text>
-<text class="t-call" x="582" y="367">Ugostiteljstvo i smještaj</text>
+<text class="t-call" x="582" y="367">Smještaj i vinarije</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="376" x2="1192" y2="376"/>
 </g>
 <g class="nd nd-4">
 <text class="t-call" x="524" y="401" font-weight="700">07</text>
-<text class="t-call" x="582" y="401">Trgovine i webshop</text>
+<text class="t-call" x="582" y="401">Specijalizirane trgovine</text>
 <line class="ln-frame" pathLength="1" x1="504" y1="410" x2="1192" y2="410"/>
 <text class="t-call" x="524" y="435" font-weight="700">08</text>
 <text class="t-call" x="582" y="435">Saloni ljepote</text>

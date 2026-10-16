@@ -8,7 +8,7 @@ import { G, street, shop, marker, legend, glowDefs, sash } from './izlog.mjs';
 export const meta = {
   slug: 'trgovine-i-webshop',
   list: '07',
-  name: 'Trgovine i webshop',
+  name: 'Specijalizirane trgovine',
   head: 'DJELATNOSTI · IZLOZI',
   view: 'IZLOG TRGOVINE NOĆU',
   web: 'KATALOG · PLAĆANJE · DOSTAVA',

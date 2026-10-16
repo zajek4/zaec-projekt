@@ -93,7 +93,7 @@ $step   = static function ( $n, $q, $ans, $help = '' ) use ( $cid ) {
 		</fieldset>
 
 		<fieldset class="cfg-step" data-step="trade" aria-describedby="<?php echo esc_attr( $cid ); ?>-h-trade">
-			<?php $step( '02', 'Čime se bavite?', 'trade', 'Odaberite najbliže. Pojedinosti dogovorimo u razgovoru.' ); ?>
+			<?php $step( '02', 'Čime se bavite?', 'trade', 'Odaberite najbliže. Pojedinosti ćemo dogovoriti u razgovoru.' ); ?>
 			<div class="cfg-chips cfg-chips--sectors">
 				<?php foreach ( zaec_sectors() as $key => $sec ) : ?>
 					<label class="cfg-chip"><input type="radio" name="trade" value="<?php echo esc_attr( $key ); ?>" data-name="<?php echo esc_attr( $sec['name'] ); ?>" data-short="<?php echo esc_attr( $sec['short'] ); ?>"><span><?php echo esc_html( $sec['short'] ); ?></span></label>
@@ -101,7 +101,7 @@ $step   = static function ( $n, $q, $ans, $help = '' ) use ( $cid ) {
 				<label class="cfg-chip"><input type="radio" name="trade" value="<?php echo esc_attr( ZAEC_SECTOR_OTHER['key'] ); ?>" data-name="<?php echo esc_attr( ZAEC_SECTOR_OTHER['name'] ); ?>" data-short="<?php echo esc_attr( ZAEC_SECTOR_OTHER['short'] ); ?>"><span><?php echo esc_html( ZAEC_SECTOR_OTHER['short'] ); ?></span></label>
 			</div>
 			<div class="cfg-other" data-other hidden>
-				<label for="<?php echo esc_attr( $cid ); ?>-other">Čime točno? <span class="opt">(opcionalno)</span></label>
+				<label for="<?php echo esc_attr( $cid ); ?>-other">Čime točno? <span class="opt">(po želji)</span></label>
 				<input class="input" id="<?php echo esc_attr( $cid ); ?>-other" name="trade_other" type="text" maxlength="60" autocomplete="off" placeholder="npr. autoservis, fizioterapija, prijevoz">
 			</div>
 		</fieldset>

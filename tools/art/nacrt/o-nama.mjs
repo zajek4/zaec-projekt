@@ -169,7 +169,7 @@ export function draw(b) {
     b.circle(cx, cy, 3.5, 'dot');
     b.poly([[cx - 22, cy], [lx, cy]], 'ln-lead');
     b.text(lx, cy + 24 * k, '{sati}', 't-call');
-    b.text(lx, cy + 44 * k, `„${q}“`, 't-web');
+    b.text(lx, cy + 44 * k, `„${q}”`, 't-web');
     b.P('</g>');
   });
 }

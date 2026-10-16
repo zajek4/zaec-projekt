@@ -106,7 +106,7 @@ $zaec_direct = static function () use ( $o ) {
 				<?php zaec_render_breadcrumbs(); ?>
 				<?php if ( ! empty( $l['lead'] ) ) : ?><p class="kt-lead"><?php echo esc_html( $l['lead'] ); ?></p><?php endif; ?>
 				<div class="kt-panel" id="upit">
-					<p class="kt-how">Svako polje pali jedan kat. Dva su obavezna.</p>
+					<p class="kt-how">Svako polje pali jedan kat. Dva su obvezna.</p>
 					<?php get_template_part( 'template-parts/contact-form', null, array( 'id' => 'upit-forma-kontakt', 'theme' => 'dark', 'rows' => 6, 'inline' => true ) ); ?>
 				</div>
 				<?php $zaec_direct(); ?>

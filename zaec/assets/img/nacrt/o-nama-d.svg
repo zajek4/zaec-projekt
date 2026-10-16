@@ -117,7 +117,7 @@
 <circle class="dot" cx="900" cy="418" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="878,418 528,418"/>
 <text class="t-call" x="528" y="444">{sati}</text>
-<text class="t-web" x="528" y="465">„izrada web stranica Osijek“</text>
+<text class="t-web" x="528" y="465">„izrada web stranica Osijek”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">

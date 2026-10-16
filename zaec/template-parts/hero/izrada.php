@@ -97,7 +97,7 @@ $style = $md && $mm ? sprintf(
 				</div>
 			</div>
 			<div class="sh-scan" aria-hidden="true"></div>
-			<p class="sh-hint mono" aria-hidden="true"><span></span><b>Skrolajte — gradimo od ulaza prema vrhu</b></p>
+			<p class="sh-hint mono" aria-hidden="true"><span></span><b>Pomičite stranicu — gradimo od ulaza prema vrhu</b></p>
 		</div>
 		<div class="it-run" aria-hidden="true"></div>
 	</div>

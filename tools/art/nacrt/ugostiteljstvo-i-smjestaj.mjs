@@ -8,7 +8,7 @@ import { G, street, rustica, shop, marker, legend, glowDefs, sash, shutters, sid
 export const meta = {
   slug: 'ugostiteljstvo-i-smjestaj',
   list: '06',
-  name: 'Ugostiteljstvo i smještaj',
+  name: 'Smještaj i vinarije',
   head: 'DJELATNOSTI · IZLOZI',
   view: 'RECEPCIJA APARTMANA NOĆU',
   web: 'SMJEŠTAJ · GALERIJA · UPIT',

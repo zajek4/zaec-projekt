@@ -193,7 +193,7 @@ export function builder(meta, view, tvb = meta.tvb) {
         // mobilni izrez je tijesan i oznaka često sjedi na crtežu (prozori, kapci): tamna podloga ispod teksta
         if (view === 'm') b.rect(lx - 6, ty - 20 * k - 20, w + 12, 20 * k + 28, 'lamp-bg');
         b.text(lx, ty - 20 * k, time, 't-call');
-        b.text(lx, ty, `„${q}“`, 't-web');
+        b.text(lx, ty, `„${q}”`, 't-web');
       }
       o.push('</g>');
     },

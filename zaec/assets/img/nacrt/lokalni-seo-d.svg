@@ -1,4 +1,4 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntU5d ndU5d"><title id="ntU5d">Karta središta Osijeka s tri oznake lokalnog rezultata pretrage</title><desc id="ndU5d">Stvarna karta središta Osijeka s Dravom, konkatedralom i glavnim ulicama. Tri oznake prikazuju lokalni rezultat pretrage „električar osijek“; naša oznaka svijetli toplim svjetlom, a uz nju je kartica profila s kategorijom i ocjenom. Kota mjeri udaljenost do onoga tko traži. Oznake povezuju kategoriju s relevantnošću, udaljenost s područjem rada i recenzije s istaknutošću.</desc>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntU5d ndU5d"><title id="ntU5d">Karta središta Osijeka s tri oznake lokalnog rezultata pretrage</title><desc id="ndU5d">Stvarna karta središta Osijeka s Dravom, konkatedralom i glavnim ulicama. Tri oznake prikazuju lokalni rezultat pretrage „električar osijek”; naša oznaka svijetli toplim svjetlom, a uz nju je kartica profila s kategorijom i ocjenom. Kota mjeri udaljenost do onoga tko traži. Oznake povezuju kategoriju s relevantnošću, udaljenost s područjem rada i recenzije s istaknutošću.</desc>
 <defs><pattern id="gridU5d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
 <rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU5d)"/>
 <g class="nd nd-1">
@@ -67,7 +67,7 @@
 <circle class="dot" cx="700" cy="426" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="700,418 700,371 520,371"/>
 <text class="t-call" x="520" y="339">21:40 · NESTALO STRUJE</text>
-<text class="t-web" x="520" y="360">„električar osijek“</text>
+<text class="t-web" x="520" y="360">„električar osijek”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">

@@ -8,11 +8,11 @@ kicker: 'Vodič · Odluka'
 order: 6
 ---
 
-„Trebam li custom web ili je predložak dovoljan?” jedno je od najčešćih pitanja koje čujemo. Iskren odgovor je: **ovisi o tome što web mora napraviti** — a ne o tome koliko želite potrošiti.
+„Trebam li custom web ili je predložak dovoljan?” jedno je od najčešćih pitanja koja čujemo. Iskren odgovor je: **ovisi o tome što web mora napraviti** — a ne o tome koliko želite potrošiti.
 
 ## Što je zapravo „predložak”
 
-Pod predloškom ovdje ne mislimo na besplatnu temu skinutu s interneta i ispunjenu tekstom. Mislimo na **provjerenu strukturu i dizajn sustav** koji je već dokazao da vodi posjetitelja do upita, a prilagođava se vašem brandu, sadržaju i djelatnosti.
+Pod predloškom ovdje ne mislimo na besplatnu temu skinutu s interneta i ispunjenu tekstom. Mislimo na **provjerenu strukturu i dizajnerski sustav** koji je već dokazao da vodi posjetitelja do upita, a prilagođava se vašem brandu, sadržaju i djelatnosti.
 
 Web **po mjeri** (po nacrtu) znači da se struktura, korisničko iskustvo i vizualni sustav crtaju od nule, za vaš konkretan posao.
 
@@ -53,4 +53,4 @@ U oba slučaja web može biti brz, prilagođen mobitelu i dobro postavljen za Go
 
 ## Naš pristup
 
-U ZAEC-u radimo oboje i iskreno kažemo što ima smisla. Ako predložak rješava vaš problem, nema razloga plaćati crtanje od nule. Ako ga ne rješava, predložak je skupa ušteda. Okvirni opseg i rok za oba pristupa možete odmah vidjeti u [procjeni projekta](page:cijene), a više o načinu izrade na stranici [izrada web stranica](page:usluge/izrada-web-stranica).
+Radimo oboje i iskreno kažemo što ima smisla. Ako predložak rješava vaš problem, nema razloga plaćati crtanje od nule. Ako ga ne rješava, predložak je skupa ušteda. Okvirni opseg i rok za oba pristupa možete odmah vidjeti u [procjeni projekta](page:cijene), a više o načinu izrade na stranici [izrada web stranica](page:usluge/izrada-web-stranica).

@@ -11,7 +11,7 @@ export const meta = {
   list: 'U9',
   name: 'Brzina web stranice',
   title: 'Filmska traka učitavanja mobilne stranice s pragom LCP od 2,5 sekunde',
-  desc: 'Kadrovi mobilne stranice dok se učitava, poredani na osi vremena u razmacima od pola sekunde. Prvi kadrovi su prazni jer se čeka server, u sljedećem je raspored bez teksta jer se čeka font, zatim tekst bez slike. U posljednjem kadru pojavljuje se najveći element, naslovna slika s bojlerom, uz natpis „Curi bojler?“, i on je osvijetljen toplim svjetlom. Okomita crta na 2,5 sekunde označava Googleov prag za dobar LCP. Oznake povezuju prazan kadar s hostingom i cacheom, skriveni tekst s fontovima i prazan okvir sa slikama.',
+  desc: 'Kadrovi mobilne stranice dok se učitava, poredani na osi vremena u razmacima od pola sekunde. Prvi kadrovi su prazni jer se čeka server, u sljedećem je raspored bez teksta jer se čeka font, zatim tekst bez slike. U posljednjem kadru pojavljuje se najveći element, naslovna slika s bojlerom, uz natpis „Curi bojler?”, i on je osvijetljen toplim svjetlom. Okomita crta na 2,5 sekunde označava Googleov prag za dobar LCP. Oznake povezuju prazan kadar s hostingom i cacheom, skriveni tekst s fontovima i prazan okvir sa slikama.',
   lamp: { time: '07:50 · SLAB SIGNAL', search: 'curi bojler' },
   mvb: '510 112 680 562',
   mobileCallout: null,
@@ -114,7 +114,7 @@ export function draw(b) {
     const k = b.v === 'm' ? 23 / 16 : 17 / 16;
     const rot = (x, t, cls) => b.P(`<text class="${cls}" text-anchor="end" transform="translate(${x} ${FY - 16}) rotate(-90)">${t}</text>`);
     rot(LIM + 12 + Math.round(17 * k), 'LCP DO 2,5 s', 't-call');
-    rot(LIM + 12 + Math.round(37 * k), 'prag „dobro“ (Google)', 't-web');
+    rot(LIM + 12 + Math.round(37 * k), 'prag „dobro” (Google)', 't-web');
     const y = AX + 96;
     b.callout('01', [X(0.5) + 44, FY + FH - 70], [[X(0.5) + 44, y], [X(0.5) + 56, y]], 'PRAZNO', '→ Hosting i cache');
     b.callout('02', [X(1) + 44, IY + IH + 39], [[X(1) + 44, y], [X(1) + 56, y]], 'ČEKA FONT', '→ Fontovi');

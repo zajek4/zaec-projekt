@@ -19,7 +19,7 @@ function zaec_org_id() {
 /** Opis trenutne stranice. */
 function zaec_meta_description() {
 	if ( is_front_page() ) {
-		return 'Web studio iz Osijeka: web stranice, webshopovi i SEO koji donose upite, uz mjerenje poziva i upita. Pisana ponuda prije početka, za tvrtke diljem Hrvatske.';
+		return 'Web studio iz Osijeka: web stranice, webshopovi i SEO koji donose upite, uz mjerenje poziva i prodaje. Pisana ponuda prije početka, za tvrtke diljem Hrvatske.';
 	}
 	$l = zaec_get_landing();
 	if ( $l && ! empty( $l['description'] ) ) {
@@ -412,7 +412,7 @@ function zaec_document_titles( $title ) {
 		return 'Izrada web stranica Osijek — web koji donosi upite | ZAEC';
 	}
 	if ( is_post_type_archive( 'projekti' ) ) {
-		return 'Radovi — stvarni projekti ZAEC web studija | ZAEC';
+		return 'Radovi — stvarni projekti web studija iz Osijeka | ZAEC';
 	}
 	if ( is_home() ) {
 		return 'Vodiči: web, SEO, AI vidljivost i GA4 za obrtnike | ZAEC';

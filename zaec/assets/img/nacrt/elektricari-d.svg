@@ -138,7 +138,7 @@
 <circle class="dot" cx="1000" cy="686" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="992,686 689,686"/>
 <text class="t-call" x="689" y="654">19:30 · AUTO U GARAŽI</text>
-<text class="t-web" x="689" y="675">„ugradnja punjača za auto“</text>
+<text class="t-web" x="689" y="675">„ugradnja punjača za auto”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -148,7 +148,7 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
 <text class="t-tb" x="744" y="857">NACRT DJELATNOSTI</text>
 <text class="t-tb" x="1054" y="857">LIST 03/11</text>
-<text class="t-tb-b" x="744" y="894">Električari</text>
+<text class="t-tb-b" x="744" y="894">Električari i solari</text>
 <text class="t-tb" x="744" y="914">JEDNOPOLNA SHEMA R1 · BEZ MJERILA</text>
 <text class="t-tb" x="744" y="943">WEB · USLUGE · OVLAŠTENJA · UPIT</text>
 </g>
