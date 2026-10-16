@@ -156,6 +156,10 @@ body::after {
   background-image: url('./img/grain.png');
   background-size: 160px;
 }
+/* tekstura se pokaže tek kad je cijela učitana (skripta u <head> doda .grain-ok): djelomično preuzet uzorak bi se
+   ponovio u svakoj pločici od 160 px i preko stranice nacrtao vodoravne pruge */
+body::after { transition: opacity 0.5s ease; }
+html.js:not(.grain-ok) body::after { opacity: 0; }
 
 /* ───────── layout ───────── */
 .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }

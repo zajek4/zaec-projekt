@@ -1,4 +1,4 @@
-// LIST 10 · Ustanove i udruge — ulaz ustanove noću (tools/art/nacrt/izlog.mjs). Barokna jednokatnica kao u Tvrđi:
+// LIST 07 · Ustanove i udruge — ulaz ustanove noću (tools/art/nacrt/izlog.mjs). Barokna jednokatnica kao u Tvrđi:
 // visoki krov s krovnim prozorima, srednji rizalit s lezenama, trokutnim zabatom i natpisom u frizu, prozori s uškama.
 // Svijetli predvorje: kroz lijevi prozor oglasna ploča s pribodenim listovima, kroz kameni portal s lukom fenjer i
 // unutarnja staklena vrata, kroz desni prozor info pult. Pred portalom podest i dvije stube, uz njih rampa s
@@ -7,9 +7,9 @@ import { G, street, shop, marker, legend, glowDefs } from './izlog.mjs';
 
 export const meta = {
   slug: 'ustanove-i-udruge',
-  list: '10',
+  list: '07',
   name: 'Ustanove i udruge',
-  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  head: 'DJELATNOSTI · IZLOZI',
   view: 'ULAZ USTANOVE NOĆU',
   web: 'NOVOSTI · DOKUMENTI · UPIT',
   title: 'Ulaz ustanove noću u baroknoj zgradi',

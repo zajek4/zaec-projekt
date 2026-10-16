@@ -89,7 +89,7 @@
 <circle class="dot" cx="852" cy="222" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="844,222 609,222"/>
 <text class="t-call" x="609" y="190">18:05 · KVAR KLIME</text>
-<text class="t-web" x="609" y="211">„servis klime“</text>
+<text class="t-web" x="609" y="211">„servis klime”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -97,7 +97,7 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857">ZAEC · PROVJERA</text>
+<text class="t-tb" x="744" y="857">PROVJERA</text>
 <text class="t-tb" x="1054" y="857">P.01</text>
 <text class="t-tb-b" x="744" y="894">Provjera vidljivosti</text>
 <text class="t-tb" x="744" y="914">IZVJEŠĆE PROVJERE</text>

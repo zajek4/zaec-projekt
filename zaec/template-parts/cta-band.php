@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 $title = $args['title'] ?? 'Spremni za web koji <em>zove</em>?';
-$text  = $args['text'] ?? 'Kratko opišite posao. Javljamo se u radno vrijeme sa smjerom, a nakon razgovora šaljemo pisanu ponudu s opsegom, rokom i fiksnom cijenom.';
+$text  = $args['text'] ?? 'Kratko opišite posao. Javljamo se u radno vrijeme sa smjerom, a nakon razgovora šaljemo pisanu ponudu s opsegom, rokom i cijenom.';
 $label = $args['label'] ?? 'Pošaljite upit';
 $href  = $args['href'] ?? zaec_inquiry_url();
 ?>

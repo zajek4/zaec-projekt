@@ -1,14 +1,14 @@
 ---
 title: 'GA4 e-commerce praćenje: vodič za webshopove (WooCommerce)'
 short: 'GA4 e-commerce praćenje'
-description: 'Kako ispravno postaviti GA4 e-commerce praćenje za webshop: ključni događaji, dataLayer, Google Tag Manager, Consent Mode v2, provjera podataka i najčešće greške koje kvare izvještaje.'
+description: 'Kako ispravno postaviti GA4 e-commerce praćenje za webshop: ključni događaji, dataLayer, GTM, Consent Mode v2, provjera podataka i najčešće greške.'
 date: '2026-10-04'
 readMin: 10
 kicker: 'Vodič · Analitika'
 order: 3
 ---
 
-Webshop bez ispravnog praćenja je kao trgovina bez blagajničkog izvještaja: znate da nešto prodajete, ali ne znate što, kome ni zašto. Google Analytics 4 može odgovoriti na ta pitanja — ali samo ako su e-commerce podaci postavljeni ispravno.
+Webshop bez ispravnog praćenja nalik je trgovini bez blagajničkog izvještaja: znate da nešto prodajete, ali ne znate što, kome ni zašto. Google Analytics 4 može odgovoriti na ta pitanja — ali samo ako su e-commerce podaci postavljeni ispravno.
 
 ## Kratki odgovor
 
@@ -27,7 +27,7 @@ Google preporučuje standardni skup e-commerce događaja. Za većinu webshopova 
 | `add_shipping_info` / `add_payment_info` | Odabir dostave i plaćanja | Problemi s dostavom ili plaćanjem |
 | `purchase` | Uspješna narudžba | Prihod, porez, dostava, artikli |
 
-Važno je da **`purchase` ima jedinstveni `transaction_id`**, vrijednost i valutu (`EUR`), te popis artikala. Bez toga izvještaji o prihodu nisu pouzdani.
+Važno je da **`purchase` ima jedinstveni `transaction_id`**, vrijednost, valutu (`EUR`) i popis artikala. Bez toga izvještaji o prihodu nisu pouzdani.
 
 ## Kako postaviti — korak po korak
 
@@ -53,7 +53,7 @@ U GA4 **DebugViewu** prođite cijeli put kupnje: pregled proizvoda, košarica, n
 
 ### 6. Konverzije za oglase
 
-Ako oglašavate, označite `purchase` kao ključni događaj i proslijedite ga Google Ads i Meta (preko GTM-a ili integracija). Kampanje tada optimiziraju za kupnje, a ne za klikove.
+Ako oglašavate, označite `purchase` kao ključni događaj i proslijedite ga u Google Ads i Metu (preko GTM-a ili integracija). Kampanje tada optimiziraju za kupnje, a ne za klikove.
 
 ## Najčešće greške
 
@@ -62,11 +62,11 @@ Ako oglašavate, označite `purchase` kao ključni događaj i proslijedite ga Go
 3. **Kriva ili nedostajuća valuta** — vrijednosti bez `currency` GA4 ne zbraja ispravno.
 4. **Interni promet u podacima** — vaše testne narudžbe kvare brojke. Filtrirajte interni promet.
 5. **Nema privole ili je pogrešno postavljena** — pravni rizik i gubitak podataka za oglase.
-6. **Nikad provjereno** — postavljeno jednom i zaboravljeno. Promjena teme ili dodatka tiho prekine praćenje.
+6. **Nikad provjereno** — postavljeno jednom i zaboravljeno. Promjena teme ili dodatka može tiho prekinuti praćenje.
 
 ## Što dobivate kad je ispravno
 
-- Prihod po kanalu: Google, oglasi, društvene mreže, e-mail.
+- Prihod po kanalu: Google, oglasi, društvene mreže, email.
 - Najprodavaniji proizvodi i kategorije — i oni koji se gledaju, a ne kupuju.
 - Točan korak u kojem kupci odustaju (dostava? plaćanje?).
 - Oglasne kampanje koje optimiziraju za stvarne kupnje.

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="620 379 480 360" preserveAspectRatio="xMidYMid slice"><style>svg{--sheet:#0d1631;--l:#e3e9ff;--lamp:#ffcf8a}
+.sheet{fill:var(--sheet)}.ln-grid{stroke:rgba(227,233,255,.05);stroke-width:2}
+.ln-con{stroke:var(--l);stroke-opacity:.16;stroke-width:1.5;stroke-dasharray:14 6 2 6;fill:none}
+.cut{stroke:var(--l);stroke-width:4}.cut-w{stroke:var(--l);stroke-width:4.4;fill:none}
+.ln-h{stroke:var(--l);stroke-opacity:.5;stroke-width:1.6;fill:none}.wool{stroke:none;opacity:.55}
+.ln-2{stroke:var(--l);stroke-opacity:.8;stroke-width:2.4;fill:none}
+.ln-3{stroke:var(--l);stroke-opacity:.6;stroke-width:1.6;stroke-dasharray:6 4;fill:none}
+.ln-beyond{stroke:var(--l);stroke-opacity:.45;stroke-width:2;stroke-dasharray:8 6;fill:none}
+.tile{stroke:var(--l);stroke-width:3.2;fill:var(--sheet)}
+.lamp-fill{stroke:var(--lamp);stroke-width:3.6;fill:rgba(255,207,138,.22)}.lamp-ln{stroke:var(--lamp);stroke-width:4;fill:none}
+.ln-dim,.ln-lead,.ln-frame,.ln-sec{stroke:var(--l);stroke-opacity:.7;stroke-width:1.6;fill:none}.nib{fill:var(--l);opacity:.8}
+.water{fill:rgba(227,233,255,.08);stroke:none}.mask{fill:var(--sheet);stroke:none}.ln-tile{stroke:var(--l);stroke-opacity:.1;stroke-width:1.6}.wall{fill:var(--l);fill-opacity:.4;stroke:var(--l);stroke-width:2.4}.halo{fill:var(--lamp);opacity:.12}.dot{fill:var(--lamp)}
+.sk,.sk-b{stroke:var(--l);stroke-opacity:.2;stroke-width:8;stroke-linecap:round;fill:none}.sk-b{stroke-width:13;stroke-opacity:.28}
+.lit{fill:rgba(255,207,138,.06);stroke:var(--lamp);stroke-opacity:.45;stroke-width:2.4}.lit-ln{stroke:var(--lamp);stroke-opacity:.7;stroke-width:2.8;fill:none}.lit-star{fill:var(--lamp);fill-opacity:.85;stroke:none}
+.map-w{fill:rgba(227,233,255,.07);stroke:var(--l);stroke-opacity:.45;stroke-width:2}.map-0,.map-1,.map-2{stroke:var(--l);fill:none;stroke-linejoin:round}.map-0{stroke-opacity:.55;stroke-width:3.6}.map-1{stroke-opacity:.4;stroke-width:2.6}.map-2{stroke-opacity:.16;stroke-width:1.6}
+.win{fill:var(--sheet);stroke:var(--l);stroke-opacity:.55;stroke-width:2.2}.glow{stroke:none}.spill{fill:var(--lamp);fill-opacity:.14;stroke:none}.ln-glass{stroke:var(--l);stroke-opacity:.5;stroke-width:2.4}
+.sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
+.say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
+.dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
+<defs><pattern id="grid03t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid03t)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M756 156L756 757M492 457L1020 457"/>
+</g>
+<g class="nd nd-2">
+<rect class="ln-h" x="521" y="185" width="469" height="528"/>
+<rect class="cut-w" pathLength="1" x="536" y="200" width="440" height="513"/>
+<rect class="ln-2" pathLength="1" x="562" y="226" width="389" height="462"/>
+<rect class="ln-2" pathLength="1" x="743" y="226" width="26" height="462"/>
+<rect class="ln-2" pathLength="1" x="507" y="713" width="499" height="14.7"/>
+<line class="ln-h" x1="507" y1="732" x2="1005" y2="732"/>
+</g>
+<g class="nd nd-3">
+<rect class="cut-w" pathLength="1" x="562" y="226" width="182" height="462"/>
+<rect class="ln-2" pathLength="1" x="591" y="255" width="123" height="403"/>
+<rect class="ln-h" x="587" y="251" width="132" height="412"/>
+<rect class="cut-w" pathLength="1" x="769" y="226" width="182" height="462"/>
+<rect class="ln-2" pathLength="1" x="798" y="255" width="123" height="403"/>
+<rect class="ln-h" x="794" y="251" width="132" height="412"/>
+</g>
+<g class="nd nd-4">
+<polyline class="ln-3" points="591,255 714,457 591,658"/>
+<polyline class="ln-3" points="921,255 798,457 921,658"/>
+<polyline class="ln-3" points="798,658 860,255 921,658"/>
+<rect class="ln-2" pathLength="1" x="728" y="442" width="8.8" height="29"/>
+<line class="ln-2" pathLength="1" x1="732" y1="457" x2="732" y2="512"/>
+<rect class="ln-2" pathLength="1" x="775" y="442" width="8.8" height="29"/>
+<line class="ln-2" pathLength="1" x1="780" y1="457" x2="780" y2="512"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<text class="t-dim" text-anchor="middle" transform="translate(756 135) rotate(0)">1200</text>
+</g>
+<g class="dim">
+<text class="t-dim" text-anchor="middle" transform="translate(646 162) rotate(0)">600</text>
+</g>
+<g class="dim">
+<text class="t-dim" text-anchor="middle" transform="translate(866 162) rotate(0)">600</text>
+</g>
+<g class="dim">
+<text class="t-dim" text-anchor="middle" transform="translate(486 457) rotate(-90)">1400</text>
+</g>
+<text class="t-small" x="653" y="646" text-anchor="middle">OKRETNO</text>
+<text class="t-small" x="859" y="646" text-anchor="middle">OKR.-NAGIBNO</text>
+</g>
+<g class="nd nd-6">
+<rect class="lamp-fill" pathLength="1" x="798" y="255" width="123" height="403" style="fill:rgba(255,207,138,.09)"/>
+<g class="call lamp">
+<circle class="halo" cx="860" cy="559" r="30"/>
+<circle class="dot" cx="860" cy="559" r="3.5"/>
+</g>
+</g>
+</svg>

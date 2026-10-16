@@ -93,7 +93,7 @@ $step   = static function ( $n, $q, $ans, $help = '' ) use ( $cid ) {
 		</fieldset>
 
 		<fieldset class="cfg-step" data-step="trade" aria-describedby="<?php echo esc_attr( $cid ); ?>-h-trade">
-			<?php $step( '02', 'Čime se bavite?', 'trade', 'Odaberite najbliže. Pojedinosti dogovorimo u razgovoru.' ); ?>
+			<?php $step( '02', 'Čime se bavite?', 'trade', 'Odaberite najbliže. Pojedinosti ćemo dogovoriti u razgovoru.' ); ?>
 			<div class="cfg-chips cfg-chips--sectors">
 				<?php foreach ( zaec_sectors() as $key => $sec ) : ?>
 					<label class="cfg-chip"><input type="radio" name="trade" value="<?php echo esc_attr( $key ); ?>" data-name="<?php echo esc_attr( $sec['name'] ); ?>" data-short="<?php echo esc_attr( $sec['short'] ); ?>"><span><?php echo esc_html( $sec['short'] ); ?></span></label>
@@ -101,7 +101,7 @@ $step   = static function ( $n, $q, $ans, $help = '' ) use ( $cid ) {
 				<label class="cfg-chip"><input type="radio" name="trade" value="<?php echo esc_attr( ZAEC_SECTOR_OTHER['key'] ); ?>" data-name="<?php echo esc_attr( ZAEC_SECTOR_OTHER['name'] ); ?>" data-short="<?php echo esc_attr( ZAEC_SECTOR_OTHER['short'] ); ?>"><span><?php echo esc_html( ZAEC_SECTOR_OTHER['short'] ); ?></span></label>
 			</div>
 			<div class="cfg-other" data-other hidden>
-				<label for="<?php echo esc_attr( $cid ); ?>-other">Čime točno? <span class="opt">(opcionalno)</span></label>
+				<label for="<?php echo esc_attr( $cid ); ?>-other">Čime točno? <span class="opt">(po želji)</span></label>
 				<input class="input" id="<?php echo esc_attr( $cid ); ?>-other" name="trade_other" type="text" maxlength="60" autocomplete="off" placeholder="npr. autoservis, fizioterapija, prijevoz">
 			</div>
 		</fieldset>
@@ -176,8 +176,9 @@ $step   = static function ( $n, $q, $ans, $help = '' ) use ( $cid ) {
 			</div>
 			<ul class="cfg-sum" data-summary role="list"></ul>
 			<p class="cfg-urgent" data-urgent hidden><?php zaec_the_icon( 'clock-circle', 16 ); ?> Hitni rok ovisi o slobodnom terminu, pa ga potvrđujemo u ponudi.</p>
-			<button type="button" class="btn btn--signal cfg-send" data-cfg-send data-magnetic>Zatražite fiksnu ponudu <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?></button>
-			<p class="cfg-why"><b>Zašto ovdje nema cijene?</b> Cijena bez opsega ne znači ništa. Za ovu konfiguraciju šaljemo pisanu ponudu s fiksnom cijenom i rokom, bez obveze i bez „sitnih izmjena” poslije.</p>
+			<button type="button" class="btn btn--signal cfg-send" data-cfg-send data-magnetic>Zatražite ponudu <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?></button>
+			<p class="cfg-why"><b>Kad počinje rok?</b> Rok izrade teče od dana kad je vaš sadržaj kompletan. Tekstove i fotografije zato dogovaramo na početku.</p>
+			<p class="cfg-why"><b>Zašto ovdje nema cijene?</b> Cijena bez opsega ne znači ništa. Za ovu konfiguraciju šaljemo pisanu ponudu s cijenom i rokom, bez obveze i bez „sitnih izmjena” poslije.</p>
 		</div>
 	</aside>
 

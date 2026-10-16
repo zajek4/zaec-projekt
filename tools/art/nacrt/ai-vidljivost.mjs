@@ -13,7 +13,7 @@ export const meta = {
   lamp: { time: '22:10 · CURI BOJLER', search: 'tko je dobar vodoinstalater u Osijeku', searchShort: 'vodoinstalater u Osijeku' },
   mvb: '500 40 680 562',
   mobileCallout: null,
-  tb: ['ZAEC · USLUGE', 'U.07', 'AI vidljivost', 'ODGOVOR AI-JA', 'WEB · SCHEMA · PODACI · RECENZIJE'],
+  tb: ['USLUGE', 'U.07', 'AI vidljivost', 'ODGOVOR AI-JA', 'WEB · SCHEMA · PODACI · RECENZIJE'],
 };
 
 const X0 = 560; // stupac odgovora

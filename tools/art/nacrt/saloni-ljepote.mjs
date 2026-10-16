@@ -1,4 +1,4 @@
-// LIST 08 · Saloni ljepote — izlog salona noću (tools/art/nacrt/izlog.mjs). Secesijska kuća s jednim katom i atikom;
+// LIST 12 · Saloni ljepote — izlog salona noću (tools/art/nacrt/izlog.mjs). Secesijska kuća s jednim katom i atikom;
 // prizemlje je salon: natpis, dva izloga i staklena vrata s pločicom OTVORENO. Kroz staklo: ogledala, stolice, haube
 // sušila i polica s proizvodima u siluetama. Lijevo susjed sa spuštenom roletom, desno rub sljedeće kuće.
 // Svjetlo: jedno radno mjesto (ogledalo i stolica) — „frizer + grad“, utorak u 17:30, kao na prijašnjem listu.
@@ -6,9 +6,9 @@ import { G, street, rustica, window, shop, marker, legend, glowDefs } from './iz
 
 export const meta = {
   slug: 'saloni-ljepote',
-  list: '08',
+  list: '12',
   name: 'Saloni ljepote',
-  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  head: 'DJELATNOSTI · IZLOZI',
   view: 'IZLOG SALONA NOĆU',
   web: 'CJENIK · TERMINI · RECENZIJE',
   title: 'Izlog frizerskog salona noću u osječkoj ulici',

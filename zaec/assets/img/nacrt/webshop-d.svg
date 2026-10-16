@@ -148,7 +148,7 @@
 <circle class="dot" cx="771" cy="404" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="771,412 771,505 1060,505"/>
 <text class="t-call" x="787" y="473">22:40 · NAKON SMJENE</text>
-<text class="t-web" x="787" y="494">„webshop dostava Hrvatska“</text>
+<text class="t-web" x="787" y="494">„webshop dostava Hrvatska”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -156,7 +156,7 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857">ZAEC · USLUGE</text>
+<text class="t-tb" x="744" y="857">USLUGE</text>
 <text class="t-tb" x="1054" y="857">U.02</text>
 <text class="t-tb-b" x="744" y="894">Webshop</text>
 <text class="t-tb" x="744" y="914">KATALOG KAO POLICE</text>

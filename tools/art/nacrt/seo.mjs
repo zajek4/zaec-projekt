@@ -8,12 +8,12 @@ export const meta = {
   list: 'U4',
   name: 'SEO',
   title: 'Rezultat pretrage za vodoinstalatera u Osijeku, uvećan kao detalj tehničkog crteža',
-  desc: 'Uvećan rezultat Google pretrage „hitni vodoinstalater“. Rezultati iznad i ispod nacrtani su samo kao kostur, a jedan je stvaran i osvijetljen: naziv obrta, adresa stranice, naslov, opis, ocjena i gumb Nazovi. Oznake povezuju naslov sa sadržajem, adresu sa strukturom i ocjenu sa schema podacima; toplo svjetlo je na gumbu Nazovi.',
+  desc: 'Uvećan rezultat Google pretrage „hitni vodoinstalater”. Rezultati iznad i ispod nacrtani su samo kao kostur, a jedan je stvaran i osvijetljen: naziv obrta, adresa stranice, naslov, opis, ocjena i gumb Nazovi. Oznake povezuju naslov sa sadržajem, adresu sa strukturom i ocjenu sa schema podacima; toplo svjetlo je na gumbu Nazovi.',
   lamp: { time: '08:12 · POZIV', search: 'hitni vodoinstalater' },
   mvb: '520 362 680 562',
   mobileCallout: null,
   index: 'REZULTAT GOOGLA', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.04', 'SEO', 'REZULTAT PRETRAGE · UVEĆANO', 'WEB · SADRŽAJ · STRUKTURA · SCHEMA'],
+  tb: ['USLUGE', 'U.04', 'SEO', 'REZULTAT PRETRAGE · UVEĆANO', 'WEB · SADRŽAJ · STRUKTURA · SCHEMA'],
 };
 
 const X0 = 560; // lijevi rub stupca rezultata (stvaran tekst je cijeli u zoni čitanja, x ≥ 508)

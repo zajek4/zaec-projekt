@@ -1,7 +1,7 @@
 ---
 title: 'Što pripremiti prije izrade web stranice: checklista za obrtnike'
 short: 'Što pripremiti prije izrade weba'
-description: 'Praktična checklista prije izrade web stranice: domena, tekstovi, fotografije, usluge, područje rada, pristupi i pravni podaci. Uštedite tjedne i novac pripremom unaprijed.'
+description: 'Praktična checklista prije izrade web stranice: domena, tekstovi, fotografije, usluge, područje rada, pristupi i pravni podaci. Pripremom unaprijed štedite tjedne.'
 date: '2026-10-04'
 readMin: 7
 kicker: 'Vodič · Priprema'
@@ -39,7 +39,7 @@ Stvarne fotografije prodaju bolje od bilo koje stock slike. Pripremite:
 
 - **radove** — po mogućnosti prije i poslije, s nekoliko riječi o svakom poslu,
 - **sebe ili ekipu** — ljudi žele znati tko im dolazi u kuću,
-- **vozilo, radionicu, alat** — sve što pokazuje da ste ozbiljna firma,
+- **vozilo, radionicu, alat** — sve što pokazuje da ste ozbiljna tvrtka,
 - **logo** u što većoj kvaliteti (idealno vektorski: SVG, PDF ili AI).
 
 Fotografije mobitelom su dovoljne ako su oštre, svijetle i snimljene vodoravno. Pošaljite originale, ne slike iz WhatsAppa — one su jako komprimirane.
@@ -53,11 +53,11 @@ Fotografije mobitelom su dovoljne ako su oštre, svijetle i snimljene vodoravno.
 
 ## 6. Domena i hosting
 
-- Imate li već domenu (npr. *vasafirma.hr*)? Na čije ime je registrirana i tko ima pristup?
+- Imate li već domenu (npr. *vasafirma.hr*)? Na čije je ime registrirana i tko ima pristup?
 - Imate li hosting ili postojeći web? Pristupni podaci štede dane dopisivanja.
 - Ako nemate ništa: domenu i hosting najbolje je registrirati **na sebe**, kako bi vlasništvo ostalo vaše bez obzira s kim radite.
 
-## 7. Kontakt podaci i pravni podaci
+## 7. Kontaktni i pravni podaci
 
 - telefon na koji se stvarno javljate (i radno vrijeme),
 - email za primanje upita,
@@ -66,7 +66,7 @@ Fotografije mobitelom su dovoljne ako su oštre, svijetle i snimljene vodoravno.
 
 ## 8. Primjeri koji vam se sviđaju (i ne sviđaju)
 
-Pošaljite dvije ili tri web stranice koje vam se sviđaju — ne nužno iz vaše djelatnosti — i napišite **zašto**. Jednako je korisno poslati i one koje vam se ne sviđaju. To uštedi puno nagađanja oko stila.
+Pošaljite dvije ili tri web stranice koje vam se sviđaju — ne nužno iz vaše djelatnosti — i napišite **zašto**. Jednako je korisno poslati i one koje vam se ne sviđaju. To štedi mnogo nagađanja oko stila.
 
 ## 9. Konkurencija
 

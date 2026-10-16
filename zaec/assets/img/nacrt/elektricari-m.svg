@@ -1,6 +1,6 @@
 <svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="520 380 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-<defs><pattern id="grid03m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid03m)"/>
+<defs><pattern id="grid02m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid02m)"/>
 <g class="nd nd-1">
 <path class="ln-con" d="M420 380L1180 380M420 591L1180 591"/>
 <rect class="ln-beyond" x="470" y="148" width="670" height="322"/>
@@ -78,7 +78,7 @@
 <polyline class="ln-lead" pathLength="1" points="1000,694 1000,784 590,784"/>
 <rect class="lamp-bg" x="584" y="721" width="382" height="57"/>
 <text class="t-call" x="590" y="741">19:30 · AUTO U GARAŽI</text>
-<text class="t-web" x="590" y="770">„ugradnja punjača za auto“</text>
+<text class="t-web" x="590" y="770">„ugradnja punjača za auto”</text>
 </g>
 </g>
 </svg>

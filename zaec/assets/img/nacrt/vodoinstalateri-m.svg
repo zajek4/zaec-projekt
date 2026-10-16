@@ -1,6 +1,6 @@
 <svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="420 262 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-<defs><pattern id="grid02m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid02m)"/>
+<defs><pattern id="grid10m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid10m)"/>
 <g class="nd nd-1">
 <path class="ln-tile" d="M380 796L1180 796M380 712L1180 712M380 628L1180 628M380 544L1180 544M380 460L1180 460M380 376L1180 376M380 292L1180 292M548 152L548 880M716 152L716 880M884 152L884 880M1052 152L1052 880"/>
 <path class="ln-con" d="M910 522L910 910M663 232L663 910"/>
@@ -54,7 +54,7 @@
 <polyline class="ln-lead" pathLength="1" points="686,526 686,484 954,484"/>
 <rect class="lamp-bg" x="744" y="421" width="216" height="57"/>
 <text class="t-call" x="750" y="441">02:40 · HITNO</text>
-<text class="t-web" x="750" y="470">„curi bojler“</text>
+<text class="t-web" x="750" y="470">„curi bojler”</text>
 </g>
 </g>
 </svg>

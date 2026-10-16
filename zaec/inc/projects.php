@@ -260,7 +260,7 @@ function zaec_default_project_seed_data() {
 		array(
 			'code' => 'EKO.02', 'title' => 'Eurokontrola', 'service' => 'Web stranica · B2B', 'location' => 'Osijek',
 			'technologies' => 'UX · usluge · sadržajna struktura', 'website_url' => 'https://eurokontrola.hr/', 'image' => 'assets/img/projects/eurokontrola.png',
-			'result' => 'Ozbiljan identitet i jasnije objašnjeno što Eurokontrola radi.',
+			'result' => 'Ozbiljan identitet i jasnije objašnjenje onoga što Eurokontrola radi.',
 			'challenge' => 'Stručne usluge kontrole kvalitete i laboratorijskih analiza moraju biti razumljive i kupcu koji nije stručnjak.',
 			'approach' => 'Razdvojiti usluge u razumljive cjeline i skratiti put od dolaska na web do prave usluge i kontakta.',
 			'solution' => 'Struktura usluga kontrole kvalitete i laboratorijskih analiza, ozbiljan vizualni identitet i jasan put prema kontaktu.',

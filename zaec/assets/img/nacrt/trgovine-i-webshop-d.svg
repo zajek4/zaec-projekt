@@ -1,6 +1,6 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt07d nd07d"><title id="nt07d">Izlog trgovine noću u osječkoj ulici</title><desc id="nd07d">Crtež pročelja prizemne kuće sa zabatom prema ulici noću: široki izlog s policama punim robe u siluetama (staklenke, složeni tekstil, košare, kutije, stolna svjetiljka i boce) i jednim proizvodom na postolju pod reflektorom, staklena vrata s pločicom Zatvoreno i paketima spremnima za dostavu. Iznad izloga je natpis Trgovina. Legenda povezuje police s katalogom, postolje sa stranicom proizvoda, a pakete s dostavom i plaćanjem. Proizvod na postolju označen je toplim svjetlom.</desc>
-<defs><pattern id="grid07d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl07d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid07d)"/>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt11d nd11d"><title id="nt11d">Izlog trgovine noću u osječkoj ulici</title><desc id="nd11d">Crtež pročelja prizemne kuće sa zabatom prema ulici noću: široki izlog s policama punim robe u siluetama (staklenke, složeni tekstil, košare, kutije, stolna svjetiljka i boce) i jednim proizvodom na postolju pod reflektorom, staklena vrata s pločicom Zatvoreno i paketima spremnima za dostavu. Iznad izloga je natpis Trgovina. Legenda povezuje police s katalogom, postolje sa stranicom proizvoda, a pakete s dostavom i plaćanjem. Proizvod na postolju označen je toplim svjetlom.</desc>
+<defs><pattern id="grid11d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl11d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid11d)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
 <line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
@@ -51,7 +51,7 @@
 <g class="nd nd-3">
 <rect class="lit" x="500" y="504" width="546" height="46"/>
 <text class="t-real t-b t-sign" x="763" y="539" style="--fs:30px" text-anchor="middle">TRGOVINA</text>
-<path class="glow" d="M500 576Q700 576 900 576V776H500Z" fill="url(#gl07d)"/>
+<path class="glow" d="M500 576Q700 576 900 576V776H500Z" fill="url(#gl11d)"/>
 <line class="sil-ln" x1="565" y1="616" x2="565" y2="624"/>
 <path class="sil" d="M557 624H573L577 640H553Z"/>
 <rect class="sil" x="538" y="712" width="54" height="64"/>
@@ -104,7 +104,7 @@
 <line class="ln-glass" x1="500" y1="616" x2="900" y2="616"/>
 <line class="cut-w" pathLength="1" x1="630" y1="576" x2="630" y2="776"/>
 <line class="cut-w" pathLength="1" x1="770" y1="576" x2="770" y2="776"/>
-<path class="glow" d="M936 566Q991 566 1046 566V800H936Z" fill="url(#gl07d)"/>
+<path class="glow" d="M936 566Q991 566 1046 566V800H936Z" fill="url(#gl11d)"/>
 <rect class="plate" x="940" y="668" width="102" height="32" rx="3"/>
 <text class="t-plate" x="991" y="690" style="--fs:17px" text-anchor="middle">ZATVORENO</text>
 <path class="sil-ln" d="M962 668L991 648M1020 668L991 648"/>
@@ -148,7 +148,7 @@
 <circle class="dot" cx="565" cy="694" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="565,686 565,451 512,451"/>
 <text class="t-call" x="512" y="419">22:15 · S KAUČA</text>
-<text class="t-web" x="512" y="440">„naziv proizvoda + kupiti“</text>
+<text class="t-web" x="512" y="440">„naziv proizvoda + kupiti”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -156,9 +156,9 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857">ZAEC · DJELATNOSTI · IZLOZI</text>
-<text class="t-tb" x="1054" y="857">LIST 07/10</text>
-<text class="t-tb-b" x="744" y="894">Trgovine i webshop</text>
+<text class="t-tb" x="744" y="857">DJELATNOSTI · IZLOZI</text>
+<text class="t-tb" x="1054" y="857">LIST 11/12</text>
+<text class="t-tb-b" x="744" y="894">Specijalizirane trgovine</text>
 <text class="t-tb" x="744" y="914">IZLOG TRGOVINE NOĆU</text>
 <text class="t-tb" x="744" y="943">WEB · KATALOG · PLAĆANJE · DOSTAVA</text>
 </g>

@@ -555,7 +555,7 @@ $zaec_pset = static function ( $n ) {
 			<div class="faq-side">
 				<p class="kicker"><?php echo esc_html( $h( 'faq_kicker' ) ); ?></p>
 				<?php zaec_heading( $h( 'faq_title' ), 'h2', 'h2', true, 'faq-title' ); ?>
-				<p class="muted" data-reveal>Nema odgovora koji tražite? <a href="#kontakt">Pitajte nas u upitu</a> — javljamo se u radno vrijeme.</p>
+				<p class="muted" data-reveal>Nema odgovora koji tražite? <a href="#kontakt">Pošaljite nam pitanje</a> — javljamo se u radno vrijeme.</p>
 			</div>
 			<div class="faq-list" data-reveal>
 				<?php foreach ( zaec_home_faq() as $i => $f ) : ?>

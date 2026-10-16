@@ -1,11 +1,11 @@
-// LIST 03 · Električari — jednopolna shema kućnog razdjelnika R1, bez mjerila (simboli prema IEC 60617).
+// LIST 02 · Električari — jednopolna shema kućnog razdjelnika R1, bez mjerila (simboli prema IEC 60617).
 // Izvori gore: mreža preko dvosmjernog brojila i glavne sklopke (lijevo), FN elektrana preko izmjenjivača (desno).
 // Potrošači dolje: skupina strujnih krugova iza zajedničke zaštitne strujne sklopke (FID) i novi krug punjača
 // s vlastitom FID i trofaznim prekidačem. Svjetlo: novi krug punjača — "ugradnja punjača za auto".
 export const meta = {
   slug: 'elektricari',
-  list: '03',
-  name: 'Električari',
+  list: '02',
+  name: 'Električari i solari',
   view: 'JEDNOPOLNA SHEMA R1 · BEZ MJERILA',
   web: 'USLUGE · OVLAŠTENJA · UPIT',
   title: 'Jednopolna shema kućnog razdjelnika s novim krugom punjača',

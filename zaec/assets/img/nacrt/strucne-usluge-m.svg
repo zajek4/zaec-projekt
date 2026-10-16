@@ -1,6 +1,6 @@
 <svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="480 300 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-<defs><pattern id="grid09m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl09m" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid09m)"/>
+<defs><pattern id="grid06m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl06m" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid06m)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
 <line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
@@ -52,81 +52,81 @@
 <line class="ln-2" pathLength="1" x1="1182" y1="756" x2="1274" y2="756"/>
 </g>
 <g class="nd nd-3">
-<path class="glow" d="M600 420Q855 420 1110 420V574H600Z" fill="url(#gl09m)"/>
+<path class="glow" d="M600 420Q855 420 1110 420V574H600Z" fill="url(#gl06m)"/>
 <path class="sil-ln" d="M608 468L608 574M694 468L694 574"/>
 <path class="sil" d="M608 500h86v4h-86zM613 472h10v28h-10z"/>
-<circle class="glow" cx="618" cy="481" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="618" cy="481" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="625" y="476" width="10" height="24"/>
-<circle class="glow" cx="630" cy="485" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="630" cy="485" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="637" y="472" width="10" height="28"/>
-<circle class="glow" cx="642" cy="481" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="642" cy="481" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="649" y="472" width="10" height="28"/>
-<circle class="glow" cx="654" cy="481" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="654" cy="481" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="661" y="476" width="10" height="24"/>
-<circle class="glow" cx="666" cy="485" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="666" cy="485" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="673" y="472" width="10" height="28"/>
-<circle class="glow" cx="678" cy="481" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="678" cy="481" r="2.4" fill="url(#gl06m)"/>
 <path class="sil" d="M608 537h86v4h-86zM613 513h10v24h-10z"/>
-<circle class="glow" cx="618" cy="522" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="618" cy="522" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="625" y="509" width="10" height="28"/>
-<circle class="glow" cx="630" cy="518" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="630" cy="518" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="637" y="509" width="10" height="28"/>
-<circle class="glow" cx="642" cy="518" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="642" cy="518" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="649" y="513" width="10" height="24"/>
-<circle class="glow" cx="654" cy="522" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="654" cy="522" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="661" y="509" width="10" height="28"/>
-<circle class="glow" cx="666" cy="518" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="666" cy="518" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="673" y="509" width="10" height="28"/>
-<circle class="glow" cx="678" cy="518" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="678" cy="518" r="2.4" fill="url(#gl06m)"/>
 <path class="sil" d="M608 571h86v4h-86zM613 543h10v28h-10z"/>
-<circle class="glow" cx="618" cy="552" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="618" cy="552" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="625" y="543" width="10" height="28"/>
-<circle class="glow" cx="630" cy="552" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="630" cy="552" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="637" y="547" width="10" height="24"/>
-<circle class="glow" cx="642" cy="556" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="642" cy="556" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="649" y="543" width="10" height="28"/>
-<circle class="glow" cx="654" cy="552" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="654" cy="552" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="661" y="543" width="10" height="28"/>
-<circle class="glow" cx="666" cy="552" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="666" cy="552" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="673" y="547" width="10" height="24"/>
-<circle class="glow" cx="678" cy="556" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="678" cy="556" r="2.4" fill="url(#gl06m)"/>
 <path class="sil-ln" d="M1016 468L1016 574M1102 468L1102 574"/>
 <path class="sil" d="M1016 500h86v4h-86zM1021 472h10v28h-10z"/>
-<circle class="glow" cx="1026" cy="481" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1026" cy="481" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1033" y="476" width="10" height="24"/>
-<circle class="glow" cx="1038" cy="485" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1038" cy="485" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1045" y="472" width="10" height="28"/>
-<circle class="glow" cx="1050" cy="481" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1050" cy="481" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1057" y="472" width="10" height="28"/>
-<circle class="glow" cx="1062" cy="481" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1062" cy="481" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1069" y="476" width="10" height="24"/>
-<circle class="glow" cx="1074" cy="485" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1074" cy="485" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1081" y="472" width="10" height="28"/>
-<circle class="glow" cx="1086" cy="481" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1086" cy="481" r="2.4" fill="url(#gl06m)"/>
 <path class="sil" d="M1016 537h86v4h-86zM1021 513h10v24h-10z"/>
-<circle class="glow" cx="1026" cy="522" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1026" cy="522" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1033" y="509" width="10" height="28"/>
-<circle class="glow" cx="1038" cy="518" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1038" cy="518" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1045" y="509" width="10" height="28"/>
-<circle class="glow" cx="1050" cy="518" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1050" cy="518" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1057" y="513" width="10" height="24"/>
-<circle class="glow" cx="1062" cy="522" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1062" cy="522" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1069" y="509" width="10" height="28"/>
-<circle class="glow" cx="1074" cy="518" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1074" cy="518" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1081" y="509" width="10" height="28"/>
-<circle class="glow" cx="1086" cy="518" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1086" cy="518" r="2.4" fill="url(#gl06m)"/>
 <path class="sil" d="M1016 571h86v4h-86zM1021 543h10v28h-10z"/>
-<circle class="glow" cx="1026" cy="552" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1026" cy="552" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1033" y="543" width="10" height="28"/>
-<circle class="glow" cx="1038" cy="552" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1038" cy="552" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1045" y="547" width="10" height="24"/>
-<circle class="glow" cx="1050" cy="556" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1050" cy="556" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1057" y="543" width="10" height="28"/>
-<circle class="glow" cx="1062" cy="552" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1062" cy="552" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1069" y="543" width="10" height="28"/>
-<circle class="glow" cx="1074" cy="552" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1074" cy="552" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="1081" y="547" width="10" height="24"/>
-<circle class="glow" cx="1086" cy="556" r="2.4" fill="url(#gl09m)"/>
+<circle class="glow" cx="1086" cy="556" r="2.4" fill="url(#gl06m)"/>
 <rect class="sil" x="732" y="502" width="132" height="6"/>
 <line class="sil-ln" x1="740" y1="508" x2="740" y2="574"/>
 <path class="sil" d="M820 508h40v66h-40zM756 496h16v6h-16z"/>
@@ -163,7 +163,7 @@
 <polyline class="ln-lead" pathLength="1" points="790,478 790,396 592,396"/>
 <rect class="lamp-bg" x="586" y="333" width="339" height="57"/>
 <text class="t-call" x="592" y="353">SIJEČANJ · 17:15</text>
-<text class="t-web" x="592" y="382">„knjigovodstvo za obrt“</text>
+<text class="t-web" x="592" y="382">„knjigovodstvo za obrt”</text>
 </g>
 </g>
 </svg>

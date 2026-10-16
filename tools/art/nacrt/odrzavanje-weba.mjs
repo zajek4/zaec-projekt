@@ -15,7 +15,7 @@ export const meta = {
   mvb: '500 130 680 562',
   mobileCallout: null,
   index: 'DNEVNIK RADOVA', // stupac u kazalu usluga (≤ 15 znakova)
-  tb: ['ZAEC · USLUGE', 'U.10', 'Održavanje weba', 'DNEVNIK ODRŽAVANJA', 'WEB · AŽURIRANJA · KOPIJE · FORMA'],
+  tb: ['USLUGE', 'U.10', 'Održavanje weba', 'DNEVNIK ODRŽAVANJA', 'WEB · AŽURIRANJA · KOPIJE · FORMA'],
 };
 
 const R = 860; // lijevi rub stupca provjera; ovaj tjedan je stupac [R − CW, R]

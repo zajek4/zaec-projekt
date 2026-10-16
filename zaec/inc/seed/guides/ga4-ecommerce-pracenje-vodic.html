@@ -1,4 +1,4 @@
-<p>Webshop bez ispravnog praćenja je kao trgovina bez blagajničkog izvještaja: znate da nešto prodajete, ali ne znate što, kome ni zašto. Google Analytics 4 može odgovoriti na ta pitanja — ali samo ako su e-commerce podaci postavljeni ispravno.</p>
+<p>Webshop bez ispravnog praćenja nalik je trgovini bez blagajničkog izvještaja: znate da nešto prodajete, ali ne znate što, kome ni zašto. Google Analytics 4 može odgovoriti na ta pitanja — ali samo ako su e-commerce podaci postavljeni ispravno.</p>
 <h2 id="kratki-odgovor">Kratki odgovor</h2>
 <p>GA4 e-commerce praćenje bilježi ključne korake kupnje kao standardne događaje (<code>view_item</code>, <code>add_to_cart</code>, <code>begin_checkout</code>, <code>purchase</code>) s podacima o proizvodima, vrijednosti i valuti. Najpouzdanije se postavlja preko <strong>dataLayera</strong> iz webshopa i <strong>Google Tag Managera</strong>, uz <strong>Consent Mode v2</strong> zbog privole i provjeru u DebugViewu prije objave.</p>
 <h2 id="koje-dogadaje-pratiti">Koje događaje pratiti</h2>
@@ -42,7 +42,7 @@
 <td>Prihod, porez, dostava, artikli</td>
 </tr>
 </tbody></table>
-<p>Važno je da <strong><code>purchase</code> ima jedinstveni <code>transaction_id</code></strong>, vrijednost i valutu (<code>EUR</code>), te popis artikala. Bez toga izvještaji o prihodu nisu pouzdani.</p>
+<p>Važno je da <strong><code>purchase</code> ima jedinstveni <code>transaction_id</code></strong>, vrijednost, valutu (<code>EUR</code>) i popis artikala. Bez toga izvještaji o prihodu nisu pouzdani.</p>
 <h2 id="kako-postaviti-korak-po-korak">Kako postaviti — korak po korak</h2>
 <h3 id="1-plan-mjerenja">1. Plan mjerenja</h3>
 <p>Prije bilo kakvog koda zapišite što želite znati: prihod po kanalu, najprodavanije proizvode, gdje kupci odustaju, koliko vrijedi kupac iz oglasa. Plan određuje koje događaje i parametre trebate.</p>
@@ -55,7 +55,7 @@
 <h3 id="5-provjera-prije-objave">5. Provjera prije objave</h3>
 <p>U GA4 <strong>DebugViewu</strong> prođite cijeli put kupnje: pregled proizvoda, košarica, naplata, kupnja. Provjerite da se svaki događaj pojavi jednom, s ispravnim vrijednostima. Zatim usporedite nekoliko dana podataka s narudžbama u webshopu.</p>
 <h3 id="6-konverzije-za-oglase">6. Konverzije za oglase</h3>
-<p>Ako oglašavate, označite <code>purchase</code> kao ključni događaj i proslijedite ga Google Ads i Meta (preko GTM-a ili integracija). Kampanje tada optimiziraju za kupnje, a ne za klikove.</p>
+<p>Ako oglašavate, označite <code>purchase</code> kao ključni događaj i proslijedite ga u Google Ads i Metu (preko GTM-a ili integracija). Kampanje tada optimiziraju za kupnje, a ne za klikove.</p>
 <h2 id="najcesce-greske">Najčešće greške</h2>
 <ol>
 <li><strong>Duplirane kupnje</strong> — stranica zahvale se ponovno učita i <code>purchase</code> se pošalje dvaput. Rješenje: jedinstveni <code>transaction_id</code> i zaštita od ponovnog slanja.</li>
@@ -63,11 +63,11 @@
 <li><strong>Kriva ili nedostajuća valuta</strong> — vrijednosti bez <code>currency</code> GA4 ne zbraja ispravno.</li>
 <li><strong>Interni promet u podacima</strong> — vaše testne narudžbe kvare brojke. Filtrirajte interni promet.</li>
 <li><strong>Nema privole ili je pogrešno postavljena</strong> — pravni rizik i gubitak podataka za oglase.</li>
-<li><strong>Nikad provjereno</strong> — postavljeno jednom i zaboravljeno. Promjena teme ili dodatka tiho prekine praćenje.</li>
+<li><strong>Nikad provjereno</strong> — postavljeno jednom i zaboravljeno. Promjena teme ili dodatka može tiho prekinuti praćenje.</li>
 </ol>
 <h2 id="sto-dobivate-kad-je-ispravno">Što dobivate kad je ispravno</h2>
 <ul>
-<li>Prihod po kanalu: Google, oglasi, društvene mreže, e-mail.</li>
+<li>Prihod po kanalu: Google, oglasi, društvene mreže, email.</li>
 <li>Najprodavaniji proizvodi i kategorije — i oni koji se gledaju, a ne kupuju.</li>
 <li>Točan korak u kojem kupci odustaju (dostava? plaćanje?).</li>
 <li>Oglasne kampanje koje optimiziraju za stvarne kupnje.</li>

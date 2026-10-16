@@ -1,13 +1,13 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt02d nd02d"><title id="nt02d">Pogled na zid kupaonice s vodoinstalacijom, mjerilo 1:20</title><desc id="nd02d">Tehnički crtež zida kupaonice: vertikala odvoda i uspon vode u kutu, zaporni ventil iza revizijskog otvora, bojler sa sigurnosnim ventilom, umivaonik s kutnim ventilima i sifonom te odvod s padom prema vertikali. Oznake 01–04 povezuju dijelove instalacije s dijelovima weba vodoinstalatera. Spoj tople vode na bojleru, s kapi, označen je toplim svjetlom.</desc>
-<defs><pattern id="hz02d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid02d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid02d)"/>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt10d nd10d"><title id="nt10d">Pogled na zid kupaonice s vodoinstalacijom, mjerilo 1:20</title><desc id="nd10d">Tehnički crtež zida kupaonice: vertikala odvoda i uspon vode u kutu, zaporni ventil iza revizijskog otvora, bojler sa sigurnosnim ventilom, umivaonik s kutnim ventilima i sifonom te odvod s padom prema vertikali. Oznake 01–04 povezuju dijelove instalacije s dijelovima weba vodoinstalatera. Spoj tople vode na bojleru, s kapi, označen je toplim svjetlom.</desc>
+<defs><pattern id="hz10d" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid10d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid10d)"/>
 <g class="nd nd-1">
 <path class="ln-tile" d="M380 796L1180 796M380 712L1180 712M380 628L1180 628M380 544L1180 544M380 460L1180 460M380 376L1180 376M380 292L1180 292M380 208L1180 208M548 152L548 880M716 152L716 880M884 152L884 880M1052 152L1052 880"/>
 <path class="ln-con" d="M910 522L910 910M663 232L663 910"/>
 </g>
 <g class="nd nd-2">
 <line class="ln-2" pathLength="1" x1="380" y1="152" x2="1180" y2="152"/>
-<rect class="cut" pathLength="1" x="380" y="880" width="800" height="44" fill="url(#hz02d)"/>
+<rect class="cut" pathLength="1" x="380" y="880" width="800" height="44" fill="url(#hz10d)"/>
 <polyline class="ln-2" pathLength="1" points="380,142 380,508 374,513 386,519 380,524 380,890"/>
 <path class="ln-3" d="M1068 152L1068 880M1099 152L1099 880"/>
 <line class="cut-w" pathLength="1" x1="1135" y1="152" x2="1135" y2="880"/>
@@ -94,7 +94,7 @@
 <circle class="dot" cx="686" cy="534" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="686,526 686,481 911,481"/>
 <text class="t-call" x="760" y="449">02:40 · HITNO</text>
-<text class="t-web" x="760" y="470">„curi bojler“</text>
+<text class="t-web" x="760" y="470">„curi bojler”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -102,8 +102,8 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857">ZAEC · NACRT DJELATNOSTI</text>
-<text class="t-tb" x="1054" y="857">LIST 02/10</text>
+<text class="t-tb" x="744" y="857">NACRT DJELATNOSTI</text>
+<text class="t-tb" x="1054" y="857">LIST 10/12</text>
 <text class="t-tb-b" x="744" y="894">Vodoinstalateri</text>
 <text class="t-tb" x="744" y="914">POGLED NA ZID KUPAONICE A · M 1:20</text>
 <text class="t-tb" x="744" y="943">WEB · HITNO · INTERVENCIJE · UPIT</text>

@@ -13,7 +13,7 @@ export const meta = {
   mvb: '480 378 680 562',
   mobileCallout: null,
   short: 'GA4 i konverzije', // naziv u kazalu usluga (puni naziv je preširok za stupac)
-  tb: ['ZAEC · USLUGE', 'U.08', 'GA4 i praćenje konverzija', 'SHEMA MJERENJA', 'WEB · GTM · PRIVOLA · GA4'],
+  tb: ['USLUGE', 'U.08', 'GA4 i praćenje konverzija', 'SHEMA MJERENJA', 'WEB · GTM · PRIVOLA · GA4'],
 };
 
 const SX = 820; // glavni vod

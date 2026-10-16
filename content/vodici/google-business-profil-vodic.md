@@ -1,7 +1,7 @@
 ---
 title: 'Google Business profil: vodič za obrtnike i male tvrtke'
 short: 'Google Business profil — vodič'
-description: 'Kako urediti Google Business profil da vas lokalni klijenti nađu i nazovu: kategorije, usluge, područje rada, fotografije, recenzije i najčešće greške. Praktični vodič na hrvatskom.'
+description: 'Kako urediti Google Business profil da vas lokalni klijenti nađu i nazovu: kategorije, usluge, područje rada, fotografije, recenzije i najčešće greške.'
 date: '2026-10-04'
 readMin: 9
 kicker: 'Vodič · Lokalni SEO'
@@ -28,14 +28,14 @@ Na udaljenost ne možete utjecati. Na relevantnost i istaknutost — itekako.
 
 Potražite naziv svoje tvrtke na Google Kartama. Ako profil već postoji (ponekad ga Google ili netko drugi otvori), zatražite vlasništvo. Ako ne postoji, otvorite novi na business.google.com. Google će tražiti potvrdu — najčešće videozapisom lokacije ili alata, ponekad pozivom ili poštom.
 
-**Savjet:** profil otvorite na Google račun tvrtke kojemu imate trajni pristup, ne na osobni email zaposlenika ili bivšeg web dizajnera.
+**Savjet:** profil otvorite na Google račun tvrtke kojem imate trajni pristup, ne na osobni email zaposlenika ili bivšeg web dizajnera.
 
 ## Korak 2: Naziv, kategorija i usluge
 
 - **Naziv** neka bude stvarni naziv tvrtke, onakav kakav koristite na tabli, računima i webu. Dodavanje ključnih riječi u naziv („Ivić Vodoinstalater Osijek Hitno 0–24”) krši pravila i može dovesti do suspenzije profila.
 - **Primarna kategorija** je najvažnija postavka profila. Odaberite onu koja najtočnije opisuje glavnu uslugu — npr. *Vodoinstalater*, a ne općenito *Izvođač radova*.
 - **Dodatne kategorije** dodajte samo za usluge koje stvarno radite.
-- **Usluge**: dodajte svaku uslugu posebno, s kratkim opisom. Ovdje možete biti konkretni: „Odčepljenje odvoda”, „Zamjena bojlera”, „Hitne intervencije”.
+- **Usluge**: dodajte svaku uslugu posebno, s kratkim opisom. Ovdje možete biti konkretni: „Odčepljivanje odvoda”, „Zamjena bojlera”, „Hitne intervencije”.
 
 ## Korak 3: Područje rada i adresa
 
@@ -45,7 +45,7 @@ Nemojte navoditi pola Hrvatske ako stvarno radite u krugu od 40 km. Preširoko p
 
 ## Korak 4: Radno vrijeme i kontakt
 
-- Upišite točno radno vrijeme i ažurirajte ga za praznike. Profil koji kaže „otvoreno”, a nitko se ne javlja, gubi povjerenje brzo.
+- Upišite točno radno vrijeme i ažurirajte ga za praznike. Profil koji kaže „otvoreno”, a nitko se ne javlja, brzo gubi povjerenje.
 - Telefon neka bude broj na koji se stvarno javljate.
 - Poveznica na web neka vodi na stranicu koja odgovara profilu — za tvrtke s više usluga ponekad je to stranica usluge, ne naslovnica.
 
@@ -55,7 +55,7 @@ Nemojte navoditi pola Hrvatske ako stvarno radite u krugu od 40 km. Preširoko p
 
 Profili sa stvarnim fotografijama izgledaju živo i ozbiljno. Dodajte:
 
-- fotografije izvedenih radova (prije i poslije djeluje odlično),
+- fotografije izvedenih radova (usporedba prije i poslije djeluje odlično),
 - vozilo, alat ili radionicu,
 - sebe ili ekipu na poslu,
 - logo i naslovnu fotografiju.
@@ -64,15 +64,15 @@ Fotografije mobitelom su sasvim u redu — važnije je da su stvarne, oštre i d
 
 ## Korak 6: Recenzije
 
-Recenzije su istovremeno signal Googleu i najjači argument budućim klijentima.
+Recenzije su istodobno signal Googleu i najjači argument budućim klijentima.
 
 - **Tražite ih sustavno:** nakon dovršenog posla pošaljite klijentu kratku poruku s izravnom poveznicom za recenziju (nalazi se u profilu pod „Zatraži recenzije”).
 - **Odgovarajte na sve recenzije**, posebno na loše. Smiren, konkretan odgovor na lošu recenziju često uvjeri više ljudi od deset pohvala.
-- **Nikad ne kupujte recenzije** i ne pišite ih sami. Osim što krši pravila platforme, lažne recenzije mogu biti i protivne propisima o zaštiti potrošača.
+- **Nikad ne kupujte recenzije** i ne pišite ih sami. Osim što to krši pravila platforme, lažne recenzije mogu biti i protivne propisima o zaštiti potrošača.
 
 ## Korak 7: Objave i pitanja
 
-Profil omogućuje kratke objave — novi rad, sezonsku akciju, obavijest o radnom vremenu. Nije čarobni štapić, ali aktivan profil djeluje ozbiljnije. Provjerite i odjeljak „Pitanja i odgovori”: ponekad ljudi tamo pitaju nešto, a nitko ne odgovara.
+Profil omogućuje kratke objave — novi rad, sezonsku akciju, obavijest o radnom vremenu. Nije čarobni štapić, ali aktivan profil djeluje ozbiljnije. Ako vaš profil još prikazuje pitanja posjetitelja, provjerite ih: ponekad ljudi tamo pitaju nešto, a nitko ne odgovara.
 
 ## Najčešće greške
 
@@ -92,7 +92,7 @@ Profil omogućuje kratke objave — novi rad, sezonsku akciju, obavijest o radno
 - [ ] Područje rada odgovara stvarnosti.
 - [ ] Radno vrijeme je točno, uključujući praznike.
 - [ ] Barem 10 stvarnih fotografija.
-- [ ] Telefon i adresa isti su na profilu, webu i imenicima.
+- [ ] Telefon i adresa isti su na profilu, webu i u imenicima.
 - [ ] Odgovoreno je na sve recenzije.
 - [ ] Poveznica vodi na odgovarajuću stranicu weba.
 - [ ] Imate pristup profilu preko računa tvrtke.

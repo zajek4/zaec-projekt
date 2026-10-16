@@ -26,7 +26,7 @@ $zaec_night_top = $zaec_dark_header || ( $zaec_landing && in_array( zaec_hero_ki
 <?php if ( zaec_option( 'gtm_id' ) ) : ?>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?php echo esc_attr( zaec_option( 'gtm_id' ) ); ?>" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <?php endif; ?>
-<a class="skip-link" href="#sadrzaj">Preskoči na sadržaj</a>
+<a class="skip-link" href="#sadrzaj">Preskočite na sadržaj</a>
 
 <header class="site-header<?php echo $zaec_night_top ? ' is-night' : ''; ?>" data-header data-theme-default="<?php echo $zaec_dark_header ? 'night' : 'light'; ?>">
 	<div class="wrap header-inner">

@@ -22,7 +22,7 @@ $err   = static fn( $f ) => esc_attr( $fid . '-' . $f . '-err' );
 		<div class="cform-config" data-config-chip hidden>
 			<?php zaec_the_icon( 'clipboard-check', 18 ); ?>
 			<div><b>Konfiguracija je priložena</b><span data-config-text></span></div>
-			<button type="button" class="cform-x" data-config-clear aria-label="Ukloni priloženu konfiguraciju"><?php zaec_the_icon( 'close', 16 ); ?></button>
+			<button type="button" class="cform-x" data-config-clear aria-label="Uklonite priloženu konfiguraciju"><?php zaec_the_icon( 'close', 16 ); ?></button>
 		</div>
 		<input type="hidden" name="konfiguracija" value="" data-config-field>
 	<?php endif; ?>
@@ -63,7 +63,7 @@ $err   = static fn( $f ) => esc_attr( $fid . '-' . $f . '-err' );
 		</div>
 		<?php if ( ! $audit ) : ?>
 			<div class="field">
-				<label for="<?php echo esc_attr( $fid ); ?>-djelatnost">Djelatnost <span class="opt">(opcionalno)</span></label>
+				<label for="<?php echo esc_attr( $fid ); ?>-djelatnost">Djelatnost <span class="opt">(po želji)</span></label>
 				<select class="select" id="<?php echo esc_attr( $fid ); ?>-djelatnost" name="djelatnost">
 					<option value="">Odaberite…</option>
 					<?php foreach ( zaec_sectors() as $key => $sec ) : ?>
@@ -73,7 +73,7 @@ $err   = static fn( $f ) => esc_attr( $fid . '-' . $f . '-err' );
 				</select>
 			</div>
 			<div class="field">
-				<label for="<?php echo esc_attr( $fid ); ?>-usluga">Što trebate? <span class="opt">(opcionalno)</span></label>
+				<label for="<?php echo esc_attr( $fid ); ?>-usluga">Što trebate? <span class="opt">(po želji)</span></label>
 				<select class="select" id="<?php echo esc_attr( $fid ); ?>-usluga" name="usluga">
 					<option value="">Još ne znam</option>
 					<option>Web stranica</option>
@@ -89,7 +89,7 @@ $err   = static fn( $f ) => esc_attr( $fid . '-' . $f . '-err' );
 			</div>
 		<?php endif; ?>
 		<div class="field field--full">
-			<label for="<?php echo esc_attr( $fid ); ?>-poruka"><?php echo $audit ? 'Što vas najviše zanima?' : 'Kratko o poslu'; ?> <span class="opt">(opcionalno)</span></label>
+			<label for="<?php echo esc_attr( $fid ); ?>-poruka"><?php echo $audit ? 'Što vas najviše zanima?' : 'Kratko o poslu'; ?> <span class="opt">(po želji)</span></label>
 			<textarea class="textarea" id="<?php echo esc_attr( $fid ); ?>-poruka" name="poruka" rows="<?php echo esc_attr( (string) $rows ); ?>" maxlength="3000" placeholder="<?php echo esc_attr( $audit ? 'npr. zašto nas nema na karti, koliko zaostajemo za konkurencijom…' : 'npr. čime se bavite, za koga i što želite da web radi bolje' ); ?>"></textarea>
 			<p class="field-error" id="<?php echo $err( 'poruka' ); // phpcs:ignore ?>">Poruka smije imati najviše tri poveznice.</p>
 		</div>
@@ -98,7 +98,7 @@ $err   = static fn( $f ) => esc_attr( $fid . '-' . $f . '-err' );
 	<div class="cform-foot">
 		<button class="btn btn--signal cform-submit" type="submit" data-magnetic>
 			<span class="btn-spin" aria-hidden="true"></span>
-			<?php echo $audit ? 'Pošaljite za besplatnu provjeru' : 'Pošaljite upit'; ?> <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?>
+			<?php echo $audit ? 'Zatražite besplatnu provjeru' : 'Pošaljite upit'; ?> <?php zaec_the_icon( 'arrow-right', 18, 'icon-arrow' ); ?>
 		</button>
 		<p class="cform-privacy">Podatke koristimo samo za odgovor. Bez newslettera i ustupanja trećima. <a href="<?php echo esc_url( zaec_url( 'privatnost' ) ); ?>">Privatnost</a></p>
 	</div>

@@ -1,0 +1,63 @@
+<svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="420 180 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+<defs><pattern id="hz08m" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="ln-h"/></pattern><pattern id="grid08m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid08m)"/>
+<g class="nd nd-1">
+<path class="ln-con" d="M490 430L1020 430M700 220L700 640"/>
+<circle class="ln-con" cx="700" cy="430" r="140"/>
+<path class="ln-con" d="M926 290L1004 290M926 570L1004 570"/>
+</g>
+<g class="nd nd-2">
+<circle class="cut-w" pathLength="1" cx="700" cy="430" r="170"/>
+<circle class="ln-h" cx="700" cy="430" r="160"/>
+<circle class="ln-2" pathLength="1" cx="700" cy="430" r="70"/>
+<circle class="ln-h" cx="700" cy="430" r="78"/>
+</g>
+<g class="nd nd-3">
+<circle class="ln-2" pathLength="1" cx="821" cy="500" r="16"/>
+<circle class="ln-2" pathLength="1" cx="700" cy="570" r="16"/>
+<circle class="ln-2" pathLength="1" cx="579" cy="500" r="16"/>
+<circle class="ln-2" pathLength="1" cx="579" cy="360" r="16"/>
+<circle class="ln-2" pathLength="1" cx="700" cy="290" r="16"/>
+<circle class="ln-2" pathLength="1" cx="821" cy="360" r="16"/>
+</g>
+<g class="nd nd-4">
+<rect class="cut" pathLength="1" x="940" y="260" width="50" height="100" fill="url(#hz08m)"/>
+<rect class="cut" pathLength="1" x="940" y="500" width="50" height="100" fill="url(#hz08m)"/>
+<path class="ln-3" d="M940 274L990 274M940 306L990 306M940 554L990 554M940 586L990 586"/>
+</g>
+<g class="nd nd-5">
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="530" y1="410" x2="530" y2="226"/>
+<line class="ln-dim" pathLength="1" x1="870" y1="410" x2="870" y2="226"/>
+<line class="ln-dim" pathLength="1" x1="530" y1="236" x2="870" y2="236"/>
+<line class="ln-dim" pathLength="1" x1="526" y1="232" x2="534" y2="240"/>
+<line class="ln-dim" pathLength="1" x1="866" y1="232" x2="874" y2="240"/>
+<text class="t-dim" text-anchor="middle" transform="translate(700 226) rotate(0)">Ø 340</text>
+</g>
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="630" y1="456" x2="770" y2="456"/>
+<line class="ln-dim" pathLength="1" x1="626" y1="452" x2="634" y2="460"/>
+<line class="ln-dim" pathLength="1" x1="766" y1="452" x2="774" y2="460"/>
+<text class="t-dim" text-anchor="middle" transform="translate(700 474) rotate(0)">Ø 140</text>
+</g>
+<g class="dim">
+<line class="ln-dim" pathLength="1" x1="940" y1="604" x2="940" y2="638"/>
+<line class="ln-dim" pathLength="1" x1="990" y1="604" x2="990" y2="638"/>
+<line class="ln-dim" pathLength="1" x1="940" y1="628" x2="990" y2="628"/>
+<line class="ln-dim" pathLength="1" x1="936" y1="624" x2="944" y2="632"/>
+<line class="ln-dim" pathLength="1" x1="986" y1="624" x2="994" y2="632"/>
+<text class="t-dim" text-anchor="middle" transform="translate(965 646) rotate(0)">50</text>
+</g>
+</g>
+<g class="nd nd-6">
+<circle class="lamp-fill" pathLength="1" cx="579" cy="500" r="16"/>
+<g class="call lamp">
+<circle class="halo" cx="579" cy="500" r="30"/>
+<circle class="dot" cx="579" cy="500" r="3.5"/>
+<polyline class="ln-lead" pathLength="1" points="579,492 579,264 440,264"/>
+<rect class="lamp-bg" x="434" y="201" width="419" height="57"/>
+<text class="t-call" x="440" y="221">PON 07:30 · NABAVNA SLUŽBA</text>
+<text class="t-web" x="440" y="250">„CNC obrada”</text>
+</g>
+</g>
+</svg>

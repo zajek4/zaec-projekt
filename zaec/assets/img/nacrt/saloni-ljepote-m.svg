@@ -1,6 +1,6 @@
 <svg class="m" xmlns="http://www.w3.org/2000/svg" viewBox="420 380 680 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-<defs><pattern id="grid08m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl08m" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid08m)"/>
+<defs><pattern id="grid12m" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl12m" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid12m)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
 <line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
@@ -51,7 +51,7 @@
 <path class="ln-h" d="M1102 578L1130 578M1102 600L1130 600M1102 622L1130 622M1102 644L1130 644M1102 666L1130 666M1102 688L1130 688M1102 710L1130 710M1102 732L1130 732M1102 754L1130 754M1102 776L1130 776"/>
 <rect class="lit" x="470" y="566" width="620" height="40"/>
 <text class="t-real t-b t-sign" x="780" y="598" style="--fs:34px" text-anchor="middle">S A L O N</text>
-<path class="glow" d="M472 634Q580 606 688 634V780H472Z" fill="url(#gl08m)"/>
+<path class="glow" d="M472 634Q580 606 688 634V780H472Z" fill="url(#gl12m)"/>
 <circle class="mirror" cx="526" cy="676" r="26"/>
 <rect class="sil" x="492" y="712" width="68" height="8"/>
 <path class="sil" d="M508 780V760H504V732Q504 722 514 722H538Q548 722 548 732V760H544V780Z"/>
@@ -62,13 +62,13 @@
 <path class="sil" d="M566 658A14 12 0 0 1 594 658Z"/>
 <path class="cut-w" pathLength="1" d="M472 634Q580 606 688 634V780H472Z"/>
 <line class="ln-glass" x1="472" y1="660" x2="688" y2="660"/>
-<path class="glow" d="M724 616Q775 616 826 616V800H724Z" fill="url(#gl08m)"/>
+<path class="glow" d="M724 616Q775 616 826 616V800H724Z" fill="url(#gl12m)"/>
 <rect class="plate" x="729" y="684" width="92" height="32" rx="3"/>
 <path class="sil-ln" d="M748 684L775 664M802 684L775 664"/>
 <path class="cut-w" pathLength="1" d="M724 616Q775 616 826 616V800H724Z"/>
 <line class="ln-glass" x1="724" y1="656" x2="826" y2="656"/>
 <line class="cut-w" pathLength="1" x1="812" y1="720" x2="812" y2="770"/>
-<path class="glow" d="M862 634Q975 606 1088 634V780H862Z" fill="url(#gl08m)"/>
+<path class="glow" d="M862 634Q975 606 1088 634V780H862Z" fill="url(#gl12m)"/>
 <path class="sil" d="M902 694A34 26 0 0 1 970 694Z"/>
 <line class="sil-ln" x1="936" y1="694" x2="936" y2="780"/>
 <path class="sil" d="M912 780V760H908V734Q908 726 916 726H956Q964 726 964 734V760H960V780Z"/>
@@ -94,7 +94,7 @@
 <polyline class="ln-lead" pathLength="1" points="634,692 634,534 452,534"/>
 <rect class="lamp-bg" x="446" y="471" width="231" height="57"/>
 <text class="t-call" x="452" y="491">UTORAK · 17:30</text>
-<text class="t-web" x="452" y="520">„frizer + grad“</text>
+<text class="t-web" x="452" y="520">„frizer + grad”</text>
 </g>
 </g>
 </svg>

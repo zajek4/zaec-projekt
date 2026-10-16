@@ -25,7 +25,7 @@ $state = isset( $_GET['zaec_form'] ) ? sanitize_key( wp_unslash( $_GET['zaec_for
 
 	<fieldset class="gform-step gform-step--goals" data-gstep="1">
 		<legend class="gform-legend"><span class="mono">1 / 2</span> Što želite postići?</legend>
-		<p class="gform-hint">Odaberite jedno ili više. Tehničke detalje složimo mi.</p>
+		<p class="gform-hint">Odaberite jedno ili više. Tehničke detalje složit ćemo mi.</p>
 		<div class="goals">
 			<?php foreach ( zaec_home_goals() as $i => $g ) : ?>
 				<label class="goal"><input type="checkbox" name="ciljevi[]" value="<?php echo esc_attr( $g ); ?>"><span><?php echo esc_html( $g ); ?></span></label>
@@ -42,11 +42,11 @@ $state = isset( $_GET['zaec_form'] ) ? sanitize_key( wp_unslash( $_GET['zaec_for
 		<div class="cform-config" data-config-chip hidden>
 			<?php zaec_the_icon( 'clipboard-check', 18 ); ?>
 			<div><b>Konfiguracija je priložena</b><span data-config-text></span></div>
-			<button type="button" class="cform-x" data-config-clear aria-label="Ukloni priloženu konfiguraciju"><?php zaec_the_icon( 'close', 16 ); ?></button>
+			<button type="button" class="cform-x" data-config-clear aria-label="Uklonite priloženu konfiguraciju"><?php zaec_the_icon( 'close', 16 ); ?></button>
 		</div>
 		<div class="cform-grid">
 			<div class="field field--full">
-				<label for="<?php echo esc_attr( $fid ); ?>-tvrtka">Tvrtka ili obrt <span class="opt">(opcionalno)</span></label>
+				<label for="<?php echo esc_attr( $fid ); ?>-tvrtka">Tvrtka ili obrt <span class="opt">(po želji)</span></label>
 				<input class="input" id="<?php echo esc_attr( $fid ); ?>-tvrtka" name="tvrtka" type="text" autocomplete="organization" maxlength="120" data-you-input>
 			</div>
 			<div class="field">
@@ -60,7 +60,7 @@ $state = isset( $_GET['zaec_form'] ) ? sanitize_key( wp_unslash( $_GET['zaec_for
 				<p class="field-error">Trebamo broj telefona ili email za odgovor.</p>
 			</div>
 			<div class="field field--full">
-				<label for="<?php echo esc_attr( $fid ); ?>-poruka">Kratko o poslu <span class="opt">(opcionalno)</span></label>
+				<label for="<?php echo esc_attr( $fid ); ?>-poruka">Kratko o poslu <span class="opt">(po želji)</span></label>
 				<textarea class="textarea" id="<?php echo esc_attr( $fid ); ?>-poruka" name="poruka" rows="3" maxlength="3000" placeholder="npr. servis klima u Osijeku i okolici, želimo više upita za montažu…"></textarea>
 			</div>
 		</div>

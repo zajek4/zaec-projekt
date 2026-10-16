@@ -1,5 +1,5 @@
-// LIST 00 · Djelatnosti (hub) — naslovni list kompleta: kazalo deset listova istog standarda.
-// Nema toplog svjetla na crtežu; jedino toplo je red 11 "Vaša djelatnost", poziv za posao koji nije na popisu.
+// LIST 00 · Djelatnosti (hub) — naslovni list kompleta: kazalo dvanaest listova istog standarda.
+// Nema toplog svjetla na crtežu; jedino toplo je red 13 "Vaša djelatnost", poziv za posao koji nije na popisu.
 import { kazalo } from './kazalo-tab.mjs';
 import * as klima from './klima-i-grijanje.mjs';
 import * as vodo from './vodoinstalateri.mjs';
@@ -11,14 +11,17 @@ import * as trgovine from './trgovine-i-webshop.mjs';
 import * as saloni from './saloni-ljepote.mjs';
 import * as struka from './strucne-usluge.mjs';
 import * as ustanove from './ustanove-i-udruge.mjs';
+import * as stolarija from './stolarija-kuhinje-i-interijeri.mjs';
+import * as proizvodnja from './proizvodnja-i-industrija.mjs';
 
-const sheets = [klima, vodo, elektro, krov, gradnja, smjestaj, trgovine, saloni, struka, ustanove].map((s) => s.meta);
+// redoslijed: koliko je vjerojatno da djelatnosti treba web (istraživanje tržišta); broj lista prati redoslijed
+const sheets = [klima, elektro, stolarija, krov, gradnja, struka, ustanove, proizvodnja, smjestaj, vodo, trgovine, saloni].map((s) => s.meta);
 
 export const meta = {
   slug: 'djelatnosti',
   list: '00',
   name: 'Djelatnosti',
-  head: 'ZAEC · DJELATNOSTI', // komplet su nacrti zanata i izlozi noću
+  head: 'DJELATNOSTI', // komplet su nacrti zanata i izlozi noću
   view: 'KAZALO KOMPLETA',
   web: 'STRANICA ZA SVAKU DJELATNOST',
   title: 'Kazalo listova djelatnosti',
@@ -40,6 +43,6 @@ export function draw(b) {
   };
   kazalo(b, sheets.map((s) => ({ n: s.list, name: s.name, view: view(s.view, s.head) })), {
     head: ['LIST', 'DJELATNOST', 'POGLED · MJERILO'],
-    last: { n: '11', name: 'Vaša djelatnost', view: 'NA UPIT' },
+    last: { n: '13', name: 'Vaša djelatnost', view: 'NA UPIT' },
   });
 }

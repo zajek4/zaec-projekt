@@ -1,6 +1,6 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt06d nd06d"><title id="nt06d">Kuća s apartmanima noću u osječkoj ulici</title><desc id="nd06d">Crtež pročelja klasicističke jednokatnice noću. U prizemlju su osvijetljeni recepcija s pultom, zvoncem i pločom s ključevima, staklena ulazna vrata sa stubištem prema sobama i blagovaonica sa stolom, stolicama i švedskim stolom. Iznad recepcije je natpis Apartmani na tri jezika, na katu su tamni prozori soba s griljama, a lijevo kolni ulaz u dvorište. Legenda povezuje sobe sa smještajem i galerijom, recepciju s upitom i rezervacijom, a natpis s više jezika. Ploča s ključevima označena je toplim svjetlom.</desc>
-<defs><pattern id="grid06d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl06d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid06d)"/>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="nt09d nd09d"><title id="nt09d">Kuća s apartmanima noću u osječkoj ulici</title><desc id="nd09d">Crtež pročelja klasicističke jednokatnice noću. U prizemlju su osvijetljeni recepcija s pultom, zvoncem i pločom s ključevima, staklena ulazna vrata sa stubištem prema sobama i blagovaonica sa stolom, stolicama i švedskim stolom. Iznad recepcije je natpis Apartmani na tri jezika, na katu su tamni prozori soba s griljama, a lijevo kolni ulaz u dvorište. Legenda povezuje sobe sa smještajem i galerijom, recepciju s upitom i rezervacijom, a natpis s više jezika. Ploča s ključevima označena je toplim svjetlom.</desc>
+<defs><pattern id="grid09d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl09d" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid09d)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
 <line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
@@ -132,7 +132,7 @@
 <rect class="lit" x="540" y="538" width="276" height="60"/>
 <text class="t-real t-b t-sign" x="678" y="568" style="--fs:28px" text-anchor="middle">APARTMANI</text>
 <text class="t-real t-sign" x="678" y="593" style="--fs:18px" text-anchor="middle">ZIMMER · ROOMS</text>
-<path class="glow" d="M544 626Q600 626 656 626V776H544Z" fill="url(#gl06d)"/>
+<path class="glow" d="M544 626Q600 626 656 626V776H544Z" fill="url(#gl09d)"/>
 <rect class="sil-ln" x="572" y="676" width="60" height="42"/>
 <circle class="sil" cx="584" cy="684" r="2.6"/>
 <rect class="sil" x="582" y="686" width="5" height="9"/>
@@ -152,13 +152,13 @@
 <circle class="sil" cx="630" cy="714" r="2.5"/>
 <path class="cut-w" pathLength="1" d="M544 626Q600 626 656 626V776H544Z"/>
 <line class="ln-glass" x1="544" y1="666" x2="656" y2="666"/>
-<path class="glow" d="M710 614Q760 614 810 614V800H710Z" fill="url(#gl06d)"/>
+<path class="glow" d="M710 614Q760 614 810 614V800H710Z" fill="url(#gl09d)"/>
 <path class="sil" d="M710 800 L710 786 L723 786 L723 772 L736 772 L736 758 L749 758 L749 744 L762 744 L762 730 L775 730 L775 716 L788 716 L788 702 L801 702 L810 702 L810 716 L728 800 Z"/>
 <line class="sil-ln" x1="712" y1="744" x2="800" y2="650"/>
 <path class="cut-w" pathLength="1" d="M710 614Q760 614 810 614V800H710Z"/>
 <line class="ln-glass" x1="710" y1="654" x2="810" y2="654"/>
 <line class="cut-w" pathLength="1" x1="726" y1="682" x2="726" y2="722"/>
-<path class="glow" d="M864 626Q920 626 976 626V776H864Z" fill="url(#gl06d)"/>
+<path class="glow" d="M864 626Q920 626 976 626V776H864Z" fill="url(#gl09d)"/>
 <path class="sil-ln" d="M920 626V648"/>
 <path class="sil" d="M906 660A14 12 0 0 1 934 660Z"/>
 <rect class="sil" x="890" y="706" width="60" height="6"/>
@@ -176,7 +176,7 @@
 <path class="sil-ln" d="M964 690H957V714H964"/>
 <path class="cut-w" pathLength="1" d="M864 626Q920 626 976 626V776H864Z"/>
 <line class="ln-glass" x1="864" y1="666" x2="976" y2="666"/>
-<path class="glow" d="M1024 626Q1080 626 1136 626V776H1024Z" fill="url(#gl06d)"/>
+<path class="glow" d="M1024 626Q1080 626 1136 626V776H1024Z" fill="url(#gl09d)"/>
 <path class="sil-ln" d="M1080 626V648"/>
 <path class="sil" d="M1066 660A14 12 0 0 1 1094 660Z"/>
 <path class="sil" d="M1040 690h82v4h-82zM1046 674h28v2.5h-28zM1046 678h28v2.5h-28zM1046 682h28v2.5h-28zM1046 686h28v2.5h-28zM1086 677h11v13h-11z"/>
@@ -218,7 +218,7 @@
 <circle class="dot" cx="602" cy="697" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="602,705 602,903 518,903"/>
 <text class="t-call" x="518" y="871">22:10 · NA PUTU</text>
-<text class="t-web" x="518" y="892">„apartmani + mjesto“</text>
+<text class="t-web" x="518" y="892">„apartmani + mjesto”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -226,9 +226,9 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857">ZAEC · DJELATNOSTI · IZLOZI</text>
-<text class="t-tb" x="1054" y="857">LIST 06/10</text>
-<text class="t-tb-b" x="744" y="894">Ugostiteljstvo i smještaj</text>
+<text class="t-tb" x="744" y="857">DJELATNOSTI · IZLOZI</text>
+<text class="t-tb" x="1054" y="857">LIST 09/12</text>
+<text class="t-tb-b" x="744" y="894">Smještaj i vinarije</text>
 <text class="t-tb" x="744" y="914">RECEPCIJA APARTMANA NOĆU</text>
 <text class="t-tb" x="744" y="943">WEB · SMJEŠTAJ · GALERIJA · UPIT</text>
 </g>

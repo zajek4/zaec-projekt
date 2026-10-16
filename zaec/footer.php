@@ -48,6 +48,7 @@ $posts_page = (int) get_option( 'page_for_posts' );
 					<li><a href="<?php echo esc_url( zaec_url( 'cijene' ) ); ?>">Cijene i procjena</a></li>
 					<li><a href="<?php echo esc_url( $posts_page ? get_permalink( $posts_page ) : home_url( '/vodici/' ) ); ?>">Vodiči</a></li>
 					<li><a href="<?php echo esc_url( zaec_url( 'o-nama' ) ); ?>">O nama</a></li>
+					<li><a href="<?php echo esc_url( zaec_url( 'kontakt' ) ); ?>">Kontakt</a></li>
 					<li><a href="<?php echo esc_url( zaec_url( 'izrada-web-stranica-osijek' ) ); ?>">Web stranice u Osijeku</a></li>
 				</ul>
 			</nav>

@@ -8,7 +8,7 @@ kicker: 'Vodič · Konverzija'
 order: 1
 ---
 
-Web stranica koja ne donosi upite gotovo nikad nema jedan veliki problem. Obično ima pet ili šest malih, koji zajedno tjeraju posjetitelja natrag na Google — ravno konkurenciji. Dobra vijest: većina ih se može popraviti bez izrade novog weba.
+Web stranica koja ne donosi upite gotovo nikad nema jedan veliki problem. Obično ima pet ili šest malih koji zajedno tjeraju posjetitelja natrag na Google — ravno konkurenciji. Dobra vijest: većina ih se može popraviti bez izrade novog weba.
 
 Razlozi su poredani otprilike po tome koliko često ih viđamo i koliko upita koštaju.
 
@@ -20,13 +20,13 @@ Naslov „Dobrodošli na našu web stranicu” ili „Kvaliteta i pouzdanost od 
 
 ## 2. Broj telefona se ne može kliknuti
 
-Na mobitelu je to najčešća i najskuplja greška. Broj napisan kao slika, broj u footeru koji treba tražiti ili broj bez `tel:` poveznice znači da klijent mora pamtiti i prepisivati znamenke. Mnogi to neće napraviti.
+Na mobitelu je to najčešća i najskuplja greška. Broj napisan kao slika, broj u podnožju koji treba tražiti ili broj bez `tel:` poveznice znači da klijent mora pamtiti i prepisivati znamenke. Mnogi to neće napraviti.
 
 **Što popraviti:** broj kao poveznica na svakom ekranu, a na mobitelu gumb „Nazovite” prikovan za dno ekrana.
 
 ## 3. Stranica je spora na mobitelu
 
-Većina lokalnih pretraga događa se s mobitela, često na terenu i na slabijem signalu. Ako se stranica učitava dugo, dio posjetitelja odustane prije nego vidi ijednu riječ. Najčešći krivci su ogromne fotografije, previše dodataka (pluginova) i skripte koje se učitavaju na svakoj stranici.
+Većina lokalnih pretraga događa se s mobitela, često na terenu i na slabijem signalu. Ako se stranica učitava dugo, dio posjetitelja odustane prije nego što vidi ijednu riječ. Najčešći krivci su ogromne fotografije, previše dodataka (pluginova) i skripte koje se učitavaju na svakoj stranici.
 
 **Što popraviti:** optimizirati fotografije (moderni formati, prave dimenzije), ukloniti nepotrebne dodatke i provjeriti stranicu alatom PageSpeed Insights — na mobilnom prikazu, ne samo na računalu.
 
@@ -40,7 +40,7 @@ Svako dodatno polje smanjuje broj poslanih formi. Ime, telefon ili email i kratk
 
 Ljudi kupuju od ljudi kojima vjeruju. Web bez fotografija stvarnih radova, bez recenzija i bez imena ljudi izgleda kao da iza njega nitko ne stoji — ili kao predložak koji nitko nije dovršio.
 
-**Što popraviti:** dodajte stvarne fotografije radova s kratkim opisom, poveznicu na Google recenzije i barem jednu fotografiju sebe ili ekipe. Izmišljene recenzije nemojte nikad — ljudi to prepoznaju, a i krši pravila platformi.
+**Što popraviti:** dodajte stvarne fotografije radova s kratkim opisom, poveznicu na Google recenzije i barem jednu fotografiju sebe ili ekipe. Izmišljene recenzije nikad nemojte objavljivati — ljudi ih prepoznaju, a to krši i pravila platformi.
 
 ## 6. Područje rada nije navedeno
 
@@ -50,7 +50,7 @@ Ljudi kupuju od ljudi kojima vjeruju. Web bez fotografija stvarnih radova, bez r
 
 ## 7. Sve usluge su na jednoj stranici
 
-Ako ste električar koji radi kvarove, nove instalacije i solare, a sve piše u jednom odlomku, Google teško zna za što vas prikazati — a posjetitelj teško nađe ono što ga zanima.
+Ako ste električar koji radi kvarove, nove instalacije i solarne sustave, a sve piše u jednom odlomku, Google teško zna za što vas prikazati — a posjetitelj teško nađe ono što ga zanima.
 
 **Što popraviti:** posebna stranica za svaku uslugu koju želite više prodavati, s vlastitim naslovom, opisom i pozivom na akciju.
 

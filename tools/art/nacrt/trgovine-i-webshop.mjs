@@ -1,4 +1,4 @@
-// LIST 07 · Trgovine i webshop — izlog trgovine noću (tools/art/nacrt/izlog.mjs). Prizemna kuća u Donjem gradu sa
+// LIST 11 · Trgovine i webshop — izlog trgovine noću (tools/art/nacrt/izlog.mjs). Prizemna kuća u Donjem gradu sa
 // zabatom prema ulici; lijevo dvorišni zid s kapijom. Široki izlog u tri polja: postolje s jednim proizvodom
 // (čajnik pod reflektorom) i police pune robe u siluetama (staklenke, složeni tekstil, košare, kutije, stolna
 // svjetiljka, boce). Na staklenim vratima pločica ZATVORENO, iza njih paketi spremni za dostavu: trgovina je zatvorena,
@@ -7,9 +7,9 @@ import { G, street, shop, marker, legend, glowDefs, sash } from './izlog.mjs';
 
 export const meta = {
   slug: 'trgovine-i-webshop',
-  list: '07',
-  name: 'Trgovine i webshop',
-  head: 'ZAEC · DJELATNOSTI · IZLOZI',
+  list: '11',
+  name: 'Specijalizirane trgovine',
+  head: 'DJELATNOSTI · IZLOZI',
   view: 'IZLOG TRGOVINE NOĆU',
   web: 'KATALOG · PLAĆANJE · DOSTAVA',
   title: 'Izlog trgovine noću u osječkoj ulici',

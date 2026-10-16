@@ -59,7 +59,14 @@ function zaec_head_early() {
 		'theme'  => ZAEC_THEME_URI,
 		'ver'    => ZAEC_VERSION,
 	);
-	echo "<script>(function(){var d=document.documentElement;d.classList.remove('no-js');d.classList.add('js');if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion-ok');})();window.ZAEC_CFG=" . wp_json_encode( $cfg ) . ";</script>\n"; // phpcs:ignore
+	// grain: tekstura papira (body::after) pokaže se tek kad je cijela učitana, bez pruga djelomičnog uzorka;
+	// eh-go: ulaz heroja podstranica kreće kad stignu fontovi naslova a najkasnije 2,4 s nakon početka (hero.css)
+	$grain = glob( ZAEC_THEME_DIR . '/assets/build/assets/grain-*.png' );
+	$grain = $grain ? zaec_build_url( 'assets/' . basename( $grain[0] ) ) : '';
+	echo "<script>(function(){var d=document.documentElement;d.classList.remove('no-js');d.classList.add('js');if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion-ok');"
+		. "var g=" . wp_json_encode( $grain ) . ";if(g){var i=new Image();i.onload=i.onerror=function(){d.classList.add('grain-ok');};i.src=g;}else d.classList.add('grain-ok');"
+		. "var go=function(){d.classList.add('eh-go');};setTimeout(go,2400);document.addEventListener('DOMContentLoaded',function(){var f=document.fonts;if(!f||!f.load){go();return;}Promise.all([f.load('700 64px \"Archivo Variable\"'),f.load('italic 400 64px \"Instrument Serif\"')]).then(function(){requestAnimationFrame(function(){requestAnimationFrame(go);});},go);});"
+		. "})();window.ZAEC_CFG=" . wp_json_encode( $cfg ) . ";</script>\n"; // phpcs:ignore
 	$font = glob( ZAEC_THEME_DIR . '/assets/build/assets/archivo-latin-standard-normal-*.woff2' );
 	if ( $font ) {
 		printf( '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n", esc_url( zaec_build_url( 'assets/' . basename( $font[0] ) ) ) );

@@ -1,4 +1,4 @@
-<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntU4d ndU4d"><title id="ntU4d">Rezultat pretrage za vodoinstalatera u Osijeku, uvećan kao detalj tehničkog crteža</title><desc id="ndU4d">Uvećan rezultat Google pretrage „hitni vodoinstalater“. Rezultati iznad i ispod nacrtani su samo kao kostur, a jedan je stvaran i osvijetljen: naziv obrta, adresa stranice, naslov, opis, ocjena i gumb Nazovi. Oznake povezuju naslov sa sadržajem, adresu sa strukturom i ocjenu sa schema podacima; toplo svjetlo je na gumbu Nazovi.</desc>
+<svg class="d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" preserveAspectRatio="xMaxYMid slice" role="img" aria-labelledby="ntU4d ndU4d"><title id="ntU4d">Rezultat pretrage za vodoinstalatera u Osijeku, uvećan kao detalj tehničkog crteža</title><desc id="ndU4d">Uvećan rezultat Google pretrage „hitni vodoinstalater”. Rezultati iznad i ispod nacrtani su samo kao kostur, a jedan je stvaran i osvijetljen: naziv obrta, adresa stranice, naslov, opis, ocjena i gumb Nazovi. Oznake povezuju naslov sa sadržajem, adresu sa strukturom i ocjenu sa schema podacima; toplo svjetlo je na gumbu Nazovi.</desc>
 <defs><pattern id="gridU4d" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern></defs>
 <rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#gridU4d)"/>
 <g class="nd nd-1">
@@ -71,7 +71,7 @@
 <circle class="dot" cx="975" cy="683" r="3.5"/>
 <polyline class="ln-lead" pathLength="1" points="975,691 975,773 717,773"/>
 <text class="t-call" x="717" y="741">08:12 · POZIV</text>
-<text class="t-web" x="717" y="762">„hitni vodoinstalater“</text>
+<text class="t-web" x="717" y="762">„hitni vodoinstalater”</text>
 </g>
 </g>
 <g class="nd nd-6 tb">
@@ -79,7 +79,7 @@
 <line class="ln-frame" pathLength="1" x1="732" y1="866" x2="1172" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="1042" y1="836" x2="1042" y2="866"/>
 <line class="ln-frame" pathLength="1" x1="732" y1="922" x2="1172" y2="922"/>
-<text class="t-tb" x="744" y="857">ZAEC · USLUGE</text>
+<text class="t-tb" x="744" y="857">USLUGE</text>
 <text class="t-tb" x="1054" y="857">U.04</text>
 <text class="t-tb-b" x="744" y="894">SEO</text>
 <text class="t-tb" x="744" y="914">REZULTAT PRETRAGE · UVEĆANO</text>

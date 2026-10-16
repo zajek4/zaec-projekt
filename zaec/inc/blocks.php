@@ -65,7 +65,7 @@ function zaec_block_problems( $b, $l, $alt ) {
 
 function zaec_block_deliver( $b, $l, $alt ) {
 	zaec_block_open( $alt );
-	zaec_block_head( $b['title'] ?? 'Što <em>dobivate</em>.', $b['lead'] ?? '', 'Rješenje' );
+	zaec_block_head( $b['title'] ?? 'Što <em>dobivate</em>.', $b['lead'] ?? '', $b['kicker'] ?? 'Rješenje' );
 	$cols = (int) ( $b['cols'] ?? 4 );
 	echo '<ul class="feat-grid feat-grid--' . (int) $cols . '" role="list" data-stagger="0.05">';
 	foreach ( $b['items'] as $i => $it ) {
@@ -213,9 +213,9 @@ function zaec_block_anatomy_tower( $b, $parts ) {
 
 function zaec_block_process( $b, $l, $alt ) {
 	echo '<section class="block block--ink" data-header-theme="night"><div class="wrap">';
-	zaec_block_head( $b['title'] ?? 'Četiri koraka, <em>bez</em> iznenađenja.', $b['lead'] ?? 'Cijenu i opseg znate prije prvog retka koda. Sve izvan dogovora prvo dobiva procjenu — tek onda rad.', 'Proces' );
+	zaec_block_head( $b['title'] ?? 'Četiri koraka, <em>bez</em> iznenađenja.', $b['lead'] ?? 'Cijenu i opseg znate prije prvog retka koda. Sve izvan dogovora prvo dobiva procjenu — tek onda rad.', $b['kicker'] ?? 'Proces' );
 	echo '<ol class="steps-row steps-row--ink" role="list" data-stagger="0.08">';
-	foreach ( zaec_home_process() as $s ) {
+	foreach ( $b['items'] ?? zaec_home_process() as $s ) { // items: vlastiti koraci (npr. put klijenta na Uslugama)
 		printf( '<li data-reveal><span class="code-tag">%s</span><h3>%s</h3><p>%s</p><span class="mono meta">%s</span></li>', esc_html( $s[0] ), esc_html( $s[1] ), esc_html( $s[2] ), esc_html( $s[3] ) );
 	}
 	echo '</ol></div></section>';
@@ -277,7 +277,7 @@ function zaec_block_projects( $b, $l, $alt ) {
 		return;
 	}
 	zaec_block_open( $alt );
-	zaec_block_head( $b['title'] ?? 'Radovi koje možete <em>otvoriti</em>.', $b['lead'] ?? 'Stvarni projekti — bez izmišljenih klijenata i brojki.', 'Radovi' );
+	zaec_block_head( $b['title'] ?? 'Izbor <em>radova</em>.', $b['lead'] ?? 'Stvarni projekti, bez izmišljenih klijenata i brojki.', 'Radovi' );
 	echo '<div class="pgrid' . ( 1 === count( $projects ) ? ' pgrid--one' : '' ) . '">';
 	foreach ( $projects as $p ) {
 		get_template_part( 'template-parts/project-card', null, array( 'p' => $p ) );
@@ -354,7 +354,7 @@ function zaec_block_checklist( $b, $l, $alt ) {
 
 function zaec_block_fit( $b, $l, $alt ) {
 	zaec_block_open( $alt );
-	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Je li ovo za vas?' );
+	zaec_block_head( $b['title'], $b['lead'] ?? '', $b['kicker'] ?? 'Je li ovo za vas?' );
 	echo '<ul class="fit" role="list" data-stagger="0.07">';
 	foreach ( $b['items'] as $i => $it ) {
 		printf( '<li data-reveal><span class="n">%s</span><div><h3>%s</h3><p>%s</p></div></li>', esc_html( zaec_pad( $i + 1 ) ), esc_html( $it[0] ), esc_html( $it[1] ) );
@@ -365,15 +365,20 @@ function zaec_block_fit( $b, $l, $alt ) {
 
 function zaec_block_scope( $b, $l, $alt ) {
 	zaec_block_open( $alt );
-	echo '<div class="two-col"><div class="stack" style="--stack:18px"><p class="kicker">Opseg</p>';
+	echo '<div class="two-col"><div class="stack" style="--stack:18px"><p class="kicker">' . esc_html( $b['kicker'] ?? 'Opseg' ) . '</p>';
 	zaec_heading( $b['title'] );
+	if ( ! empty( $b['lead'] ) ) {
+		echo '<p class="lead" data-reveal>' . esc_html( $b['lead'] ) . '</p>';
+	}
 	echo '</div><div class="scope" data-reveal><div class="yes"><h3>' . zaec_icon( 'check-circle', 22 ) . ' ' . esc_html( $b['yes_title'] ?? 'Uključeno' ) . '</h3><ul class="checklist" role="list">'; // phpcs:ignore
 	foreach ( $b['yes'] as $it ) {
 		echo '<li>' . zaec_icon( 'check-circle', 18 ) . '<span>' . esc_html( $it ) . '</span></li>'; // phpcs:ignore
 	}
-	echo '</ul></div><div class="no"><h3>' . zaec_icon( 'info-circle', 22 ) . ' ' . esc_html( $b['no_title'] ?? 'Posebno' ) . '</h3><ul class="checklist" role="list">'; // phpcs:ignore
+	// no_icon: 'add-circle' (po dogovoru), 'close-circle' (ne radimo) ili 'info-circle' (napomena)
+	$no_icon = $b['no_icon'] ?? 'add-circle';
+	echo '</ul></div><div class="no"><h3>' . zaec_icon( 'close-circle' === $no_icon ? 'close-circle' : 'info-circle', 22 ) . ' ' . esc_html( $b['no_title'] ?? 'Posebno' ) . '</h3><ul class="checklist" role="list">'; // phpcs:ignore
 	foreach ( $b['no'] as $it ) {
-		echo '<li>' . zaec_icon( 'add-circle', 18 ) . '<span>' . esc_html( $it ) . '</span></li>'; // phpcs:ignore
+		echo '<li>' . zaec_icon( $no_icon, 18 ) . '<span>' . esc_html( $it ) . '</span></li>'; // phpcs:ignore
 	}
 	echo '</ul></div></div></div>';
 	zaec_block_close();
@@ -479,8 +484,8 @@ function zaec_block_trades( $b, $l, $alt ) {
 			echo '</div></li>';
 		}
 		echo '<li class="sector sector--other" id="sektor-ostalo" data-reveal><div class="sector-id"><span class="code-tag">S.' . esc_html( zaec_pad( ++$n ) ) . '</span>' . zaec_icon( ZAEC_SECTOR_OTHER['icon'], 22 ) . '</div>'; // phpcs:ignore
-		echo '<div class="sector-name"><h3>Nešto drugo</h3><p class="sector-ex">autoservisi, zdravstvo, prijevoz, IT i sve ostalo</p></div>';
-		echo '<div class="sector-body"><p>Isti pristup radi za svaki posao koji kupci traže i uspoređuju na webu. Strukturu za vaš složimo u razgovoru.</p>';
+		echo '<div class="sector-name"><h3>Nešto drugo</h3><p class="sector-ex">autoservisi, zdravstvo, prijevoz i sve ostalo</p></div>';
+		echo '<div class="sector-body"><p>Isti pristup radi za svaki posao koji kupci traže i uspoređuju na webu. Strukturu za vaš posao složit ćemo u razgovoru.</p>';
 		echo '<a class="sector-cta" href="' . esc_url( zaec_url( 'cijene?djelatnost=ostalo#konfigurator' ) ) . '">Procjena za vaš posao ' . zaec_icon( 'arrow-right', 16 ) . '</a></div></li>'; // phpcs:ignore
 		echo '</ol>';
 	} else {
@@ -512,7 +517,7 @@ function zaec_block_contact( $b, $l, $alt ) {
 	if ( ! empty( $b['title'] ) ) {
 		zaec_block_head( $b['title'], '', 'Upit' );
 	}
-	echo '<div class="contact-grid"><div class="contact-card"><h2 class="h3" style="margin-bottom:6px">Upit</h2><p class="muted" style="margin-bottom:22px">Dva obavezna polja. Ostalo po želji.</p>';
+	echo '<div class="contact-grid"><div class="contact-card"><h2 class="h3" style="margin-bottom:6px">Upit</h2><p class="muted" style="margin-bottom:22px">Dva obvezna polja. Ostalo po želji.</p>';
 	get_template_part( 'template-parts/contact-form', null, array( 'id' => 'upit-forma-' . sanitize_key( $l['key'] ?? 'x' ) ) );
 	echo '</div><div class="contact-aside">';
 	if ( zaec_whatsapp_href() ) {
@@ -521,10 +526,10 @@ function zaec_block_contact( $b, $l, $alt ) {
 	if ( $o['email'] && '1' === (string) $o['show_public_email'] ) {
 		echo '<a class="item" href="mailto:' . esc_attr( $o['email'] ) . '"><span class="ic">' . zaec_icon( 'letter', 20 ) . '</span><div><b>' . esc_html( $o['email'] ) . '</b><span>Email</span></div></a>'; // phpcs:ignore
 	}
-	echo '<a class="item" href="' . esc_url( zaec_maps_href() ) . '" target="_blank" rel="noopener"><span class="ic">' . zaec_icon( 'map-point', 20 ) . '</span><div><b>' . esc_html( $o['address'] ) . '</b><span>' . esc_html( $o['postal_code'] . ' ' . $o['city'] ) . ' · otvori kartu</span></div></a>'; // phpcs:ignore
+	echo '<a class="item" href="' . esc_url( zaec_maps_href() ) . '" target="_blank" rel="noopener"><span class="ic">' . zaec_icon( 'map-point', 20 ) . '</span><div><b>' . esc_html( $o['address'] ) . '</b><span>' . esc_html( $o['postal_code'] . ' ' . $o['city'] ) . ' · otvorite kartu</span></div></a>'; // phpcs:ignore
 	echo '<a class="item" href="' . esc_url( zaec_url( 'kontakt' ) ) . '"><span class="ic">' . zaec_icon( 'phone', 20 ) . '</span><div><b>Telefon i radno vrijeme</b><span>Na stranici Kontakt</span></div></a>'; // phpcs:ignore
 	echo '<div><p class="kicker" style="margin:18px 0 12px">Što se događa nakon upita</p><ol class="anat-notes" role="list">';
-	foreach ( array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i fiksna cijena. Odlučujete bez pritiska.' ) ) as $i => $s ) {
+	foreach ( array( array( 'Javljamo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i cijena. Odlučujete bez pritiska.' ) ) as $i => $s ) {
 		echo '<li><span class="anat-n">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $s[0] ) . '</b><p>' . esc_html( $s[1] ) . '</p></div></li>';
 	}
 	echo '</ol></div></div></div></div></section>';
@@ -535,7 +540,7 @@ function zaec_block_contact( $b, $l, $alt ) {
  * etaže — redom, dok prolaze sredinom ekrana. Izravni kontakti su samo u heroju, ispod forme (ne ponavljaju se ovdje).
  */
 function zaec_block_contact_after() {
-	$steps = array( array( 'Javimo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i fiksna cijena. Odlučujete bez pritiska.' ) );
+	$steps = array( array( 'Javljamo se', 'U radno vrijeme, telefonom ili emailom — kako ste naveli.' ), array( 'Kratak razgovor', 'Oko 20 minuta: kako radite i što vam treba.' ), array( 'Pisana ponuda', 'Opseg, rok i cijena. Odlučujete bez pritiska.' ) );
 	echo '<section class="block kt-after" data-header-theme="night" aria-labelledby="kt-after-h"><div class="wrap kt-after-grid"><div class="kt-after-head"><p class="kicker">Nakon upita</p><h2 class="h2" id="kt-after-h">Što se događa <em>dalje</em>.</h2></div><ol class="kt-steps" role="list">';
 	foreach ( $steps as $i => $st ) {
 		echo '<li class="kt-step"><span class="kt-step-n mono">' . esc_html( zaec_pad( $i + 1 ) ) . '</span><div><b>' . esc_html( $st[0] ) . '</b><p>' . esc_html( $st[1] ) . '</p></div></li>';
@@ -544,7 +549,7 @@ function zaec_block_contact_after() {
 }
 
 function zaec_block_audit( $b, $l, $alt ) {
-	echo '<section class="block' . esc_attr( $alt ) . '" id="upit"><div class="wrap contact-grid"><div class="contact-card"><h2 class="h3" style="margin-bottom:6px">Zatražite besplatnu provjeru</h2><p class="muted" style="margin-bottom:22px">Naziv tvrtke, ime i kontakt su dovoljni. Izvješće šaljemo na kontakt koji ostavite.</p>';
+	echo '<section class="block' . esc_attr( $alt ) . '" id="upit"><div class="wrap contact-grid"><div class="contact-card"><h2 class="h3" style="margin-bottom:6px">Zatražite besplatnu provjeru</h2><p class="muted" style="margin-bottom:22px">Naziv tvrtke, grad i kontakt su dovoljni. Izvješće šaljemo na kontakt koji ostavite.</p>';
 	get_template_part( 'template-parts/contact-form', null, array( 'id' => 'provjera-forma', 'kind' => 'provjera' ) );
 	echo '</div><div class="contact-aside"><p class="kicker">Što dobivate</p>';
 	foreach ( array( array( 'document', 'Kratko izvješće', 'Pregled profila, weba, recenzija i AI odgovora — bez žargona.' ), array( 'users-group-rounded', 'Usporedba s 3 konkurenta', 'Gdje ste ispred, a gdje zaostajete.' ), array( 'checklist', '3 prioritetna koraka', 'Što napraviti prvo — sami ili s nama.' ), array( 'shield-check', 'Bez obveze i bez poziva', 'Javljamo se samo izvješćem. Dalje odlučujete vi.' ) ) as $it ) {
@@ -559,13 +564,13 @@ function zaec_block_about( $b, $l, $alt ) {
 	if ( 'facts' !== $part ) {
 		echo '<section class="block' . esc_attr( $alt ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Zašto ZAEC</p>';
 		zaec_heading( 'Prvo nacrt. Onda <em>sve</em> ostalo.' );
-		echo '</div><div class="prose" data-reveal><p>Previše tvrtki platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>ZAEC radi drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače videopozivom i jasnim pisanim dogovorom.</p></div></div></section>';
+		echo '</div><div class="prose" data-reveal><p>Previše tvrtki platilo je web koji nikad nije zaživio: lijepe slike, nula upita, a nitko ne zna zašto. Ili pretplatu koja traje, a nitko ne zna na što odlazi.</p><p>Mi radimo drukčije. Prvo slušamo kako stvarno radite i tko vas zove. Zatim crtamo nacrt: što kupac mora vidjeti, što ga uvjerava i gdje klikne. Tek onda dizajn i kod — s cijenom i rokom na papiru, i mjerenjem koje pokazuje što radi.</p><p>Sjedište je u Osijeku, a projekte vodimo za klijente diljem Hrvatske — uživo kad ima smisla, inače videopozivom i jasnim pisanim dogovorom.</p></div></div></section>';
 	}
 	if ( 'intro' === $part ) {
 		return;
 	}
 	echo '<section class="block' . esc_attr( 'facts' === $part ? $alt : ' block--paper2' ) . '"><div class="wrap two-col"><div class="stack" style="--stack:18px"><p class="kicker">Podaci</p>';
-	zaec_heading( 'Tko <em>stoji</em> iza ZAEC-a.' ); // pravi naslov bloka, ne fusnota uz tablicu (design/04 §2, O nama)
+	zaec_heading( 'Tko <em>stoji</em> iza studija.' ); // pravi naslov bloka, ne fusnota uz tablicu (design/04 §2, O nama)
 	echo '</div><div class="prose" data-reveal><table><tbody>';
 	$rows = array( 'Naziv' => $o['legal_name'], 'Nositelj' => $o['owner_name'], 'Sjedište' => $o['address'] . ', ' . $o['postal_code'] . ' ' . $o['city'], 'Matični broj' => $o['mb'], 'OIB' => $o['oib'], 'Djelatnost (NKD)' => $o['nkd'] ? $o['nkd'] . ' — računalno programiranje' : '', 'Radno vrijeme' => $o['hours'], 'Iskustvo' => $o['experience'] ? $o['experience'] . ' godina rada na webu' : '' );
 	foreach ( $rows as $k => $v ) {

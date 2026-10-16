@@ -17,8 +17,8 @@
 .sil,.plate{fill:#1b1a26;stroke:none}.sil-ln{stroke:#1b1a26;stroke-width:3;fill:none}.mirror{fill:#fff1d6;fill-opacity:.85;stroke:#1b1a26;stroke-width:5}
 .say-t{stroke:var(--lamp);stroke-opacity:.55;stroke-linecap:round}
 .dim,.call:not(.lamp),.key,.tb,text{display:none}</style>
-<defs><pattern id="grid07t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl07t" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
-<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid07t)"/>
+<defs><pattern id="grid11t" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" class="ln-grid" fill="none"/></pattern><radialGradient id="gl11t" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd79e"/><stop offset=".55" stop-color="#e2b071"/><stop offset="1" stop-color="#9c7448"/></radialGradient></defs>
+<rect class="sheet" x="-200" y="-200" width="1600" height="1400"/><rect x="-200" y="-200" width="1600" height="1400" fill="url(#grid11t)"/>
 <g class="nd nd-1">
 <line class="cut-w" pathLength="1" x1="-200" y1="800" x2="1400" y2="800"/>
 <line class="ln-2" pathLength="1" x1="-200" y1="838" x2="1400" y2="838"/>
@@ -47,7 +47,7 @@
 <g class="nd nd-3">
 <rect class="lit" x="500" y="504" width="546" height="46"/>
 <line class="say-t" x1="703" y1="529" x2="823" y2="529" style="stroke-width:15"/>
-<path class="glow" d="M500 576Q700 576 900 576V776H500Z" fill="url(#gl07t)"/>
+<path class="glow" d="M500 576Q700 576 900 576V776H500Z" fill="url(#gl11t)"/>
 <line class="sil-ln" x1="565" y1="616" x2="565" y2="624"/>
 <path class="sil" d="M557 624H573L577 640H553Z"/>
 <rect class="sil" x="538" y="712" width="54" height="64"/>
@@ -96,7 +96,7 @@
 <line class="ln-glass" x1="500" y1="616" x2="900" y2="616"/>
 <line class="cut-w" pathLength="1" x1="630" y1="576" x2="630" y2="776"/>
 <line class="cut-w" pathLength="1" x1="770" y1="576" x2="770" y2="776"/>
-<path class="glow" d="M936 566Q991 566 1046 566V800H936Z" fill="url(#gl07t)"/>
+<path class="glow" d="M936 566Q991 566 1046 566V800H936Z" fill="url(#gl11t)"/>
 <line class="say-t" x1="953" y1="684" x2="1029" y2="684" style="stroke-width:8.5"/>
 <path class="cut-w" pathLength="1" d="M936 566Q991 566 1046 566V800H936Z"/>
 </g>

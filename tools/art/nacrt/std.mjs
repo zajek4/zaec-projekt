@@ -6,7 +6,7 @@
 
 export const W = 1200;
 export const H = 1000;
-export const TOTAL = 10; // listova u kompletu
+export const TOTAL = 12; // listova u kompletu
 export const READ_X = 508; // zona čitanja: od ovog x tekst se vidi na svakoj desktop širini
 /**
  * Prag kadra za element lijevo od zone čitanja: list je desno poravnat (xMaxYMid slice), pa se vidi od
@@ -193,7 +193,7 @@ export function builder(meta, view, tvb = meta.tvb) {
         // mobilni izrez je tijesan i oznaka često sjedi na crtežu (prozori, kapci): tamna podloga ispod teksta
         if (view === 'm') b.rect(lx - 6, ty - 20 * k - 20, w + 12, 20 * k + 28, 'lamp-bg');
         b.text(lx, ty - 20 * k, time, 't-call');
-        b.text(lx, ty, `„${q}“`, 't-web');
+        b.text(lx, ty, `„${q}”`, 't-web');
       }
       o.push('</g>');
     },
@@ -210,7 +210,7 @@ export function builder(meta, view, tvb = meta.tvb) {
       // tbFs: veći tekst sastavnice gdje je kadar manji (hub); inline stil nadjačava tabletnih 17 u
       const st = meta.tbFs ? ` style="font-size:${meta.tbFs}px;letter-spacing:.02em"` : ''; // uži razmak: retci ostaju u okviru 440 u
       // list izvan kompleta (O nama) ima svoje retke sastavnice: [zaglavlje, broj lista, naziv, pogled, donji red]
-      const [head, no, name, sub, foot] = meta.tb || [meta.head || 'ZAEC · NACRT DJELATNOSTI', `LIST ${meta.list}/${String(TOTAL).padStart(2, '0')}`, meta.name, meta.view, `WEB · ${meta.web}`];
+      const [head, no, name, sub, foot] = meta.tb || [meta.head || 'NACRT DJELATNOSTI', `LIST ${meta.list}/${String(TOTAL).padStart(2, '0')}`, meta.name, meta.view, `WEB · ${meta.web}`];
       b.text(bx + 12, by + 21, head, 't-tb', st);
       b.text(bx + 322, by + 21, no, 't-tb', st);
       b.text(bx + 12, by + 58, name, 't-tb-b');
