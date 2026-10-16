@@ -152,6 +152,7 @@ export function createSky({ lite, texUrl, starsUrl }) {
         band.geometry.dispose();
         band.geometry = new THREE.SphereGeometry(R, lite ? 48 : 72, 6, 0, Math.PI * 2, Math.PI / 2 - lat, lat * 2);
         const nReal = dv.getUint32(4, true);
+        if (8 + nReal * 6 > buf.byteLength) throw new Error('sky-stars.bin: neočekivan format');
         const put = (j, lon, la, o) => {
           const c = Math.cos(la);
           pos.set([Math.cos(lon) * c * R, Math.sin(la) * R, Math.sin(lon) * c * R], j * 3);
@@ -178,7 +179,7 @@ export function createSky({ lite, texUrl, starsUrl }) {
         g.setDrawRange(0, j);
         bandReady = true;
       })
-      .catch(() => {}); // bez podataka ostaje samo slabo polje zvijezda
+      .catch((err) => console.warn('[ZAEC] nebo nije učitano:', err)); // ostaje samo slabo polje zvijezda
   }
 
   return {
