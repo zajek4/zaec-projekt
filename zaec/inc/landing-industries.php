@@ -603,6 +603,7 @@ function zaec_registry_special() {
 			array( 'Zašto na webu nema cjenika?', 'Jer cijena bez opsega ne znači ništa — dvije „web stranice” mogu se razlikovati po trudu nekoliko puta. Umjesto „od” iznosa koji navodi na krivi zaključak, dobivate pisanu ponudu s fiksnom cijenom za točno ono što trebate.' ),
 			array( 'Je li procjena obvezujuća?', 'Ne. Procjena vam pomaže razumjeti opseg i rok, a ni ponuda koju dobijete ne obvezuje vas ni na što.' ),
 			array( 'Kako se plaća?', 'Standardno 50 % za rezervaciju termina i početak rada, 50 % prije objave. Veći projekti mogu se podijeliti u faze.' ),
+			array( 'Kada počinje teći rok?', 'Od dana kad je sadržaj kompletan: tekstovi, fotografije i podaci za svaku stranicu. Rok u procjeni je rok izrade, bez čekanja na sadržaj. Ako trebate pomoć s tekstovima, to je već uračunato.' ),
 			array( 'Može li se cijena promijeniti tijekom rada?', 'Cijena iz ponude vrijedi za dogovoreni opseg. Sve izvan njega prvo dobiva zasebnu procjenu i ide u rad tek uz vašu potvrdu.' ),
 			array( 'Jesu li domena i hosting uključeni?', 'Registriraju se na vas i plaćate ih izravno pružatelju; mi odradimo tehničko postavljanje. Tako vlasništvo i trošak ostaju transparentni.' ),
 		),
@@ -643,7 +644,10 @@ function zaec_registry_special() {
 		'faq'         => array(
 			array( 'Zašto je besplatno?', 'Jer je to najbolji način da vidite kako radimo. Ako se odlučite za suradnju — odlično. Ako ne, izvješće ostaje vaše.' ),
 			array( 'Hoćete li me zvati i nagovarati?', 'Ne. Pošaljemo izvješće na kontakt koji ostavite. Ako imate pitanja, javite se vi.' ),
-			array( 'Koliko traje?', 'Provjeru radimo ručno, obično u roku od nekoliko radnih dana, ovisno o broju zahtjeva.' ),
+			array( 'Koliko traje?', 'Obično do pet radnih dana od upita. Provjeru radimo ručno i samo nekoliko tjedno, pa vam, ako je tjedan popunjen, javimo datum.' ),
+			array( 'Trebate li moje lozinke ili pristupe?', 'Ne. Provjera koristi samo ono što vidi i vaš kupac: pretragu, kartu, profil, web i AI odgovore.' ),
+			array( 'Mogu li tri koraka napraviti sam?', 'Da. Barem jedan korak uvijek je napisan tako da ga možete napraviti sami, danas i besplatno.' ),
+			array( 'Je li to potpuni SEO audit?', 'Ne. Provjera pokazuje najveće rupe. Cijeli tehnički pregled weba je SEO audit, koji radimo kao zasebnu uslugu.' ),
 		),
 	);
 

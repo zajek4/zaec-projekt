@@ -65,7 +65,7 @@ function zaec_block_problems( $b, $l, $alt ) {
 
 function zaec_block_deliver( $b, $l, $alt ) {
 	zaec_block_open( $alt );
-	zaec_block_head( $b['title'] ?? 'Što <em>dobivate</em>.', $b['lead'] ?? '', 'Rješenje' );
+	zaec_block_head( $b['title'] ?? 'Što <em>dobivate</em>.', $b['lead'] ?? '', $b['kicker'] ?? 'Rješenje' );
 	$cols = (int) ( $b['cols'] ?? 4 );
 	echo '<ul class="feat-grid feat-grid--' . (int) $cols . '" role="list" data-stagger="0.05">';
 	foreach ( $b['items'] as $i => $it ) {
@@ -213,9 +213,9 @@ function zaec_block_anatomy_tower( $b, $parts ) {
 
 function zaec_block_process( $b, $l, $alt ) {
 	echo '<section class="block block--ink" data-header-theme="night"><div class="wrap">';
-	zaec_block_head( $b['title'] ?? 'Četiri koraka, <em>bez</em> iznenađenja.', $b['lead'] ?? 'Cijenu i opseg znate prije prvog retka koda. Sve izvan dogovora prvo dobiva procjenu — tek onda rad.', 'Proces' );
+	zaec_block_head( $b['title'] ?? 'Četiri koraka, <em>bez</em> iznenađenja.', $b['lead'] ?? 'Cijenu i opseg znate prije prvog retka koda. Sve izvan dogovora prvo dobiva procjenu — tek onda rad.', $b['kicker'] ?? 'Proces' );
 	echo '<ol class="steps-row steps-row--ink" role="list" data-stagger="0.08">';
-	foreach ( zaec_home_process() as $s ) {
+	foreach ( $b['items'] ?? zaec_home_process() as $s ) { // items: vlastiti koraci (npr. put klijenta na Uslugama)
 		printf( '<li data-reveal><span class="code-tag">%s</span><h3>%s</h3><p>%s</p><span class="mono meta">%s</span></li>', esc_html( $s[0] ), esc_html( $s[1] ), esc_html( $s[2] ), esc_html( $s[3] ) );
 	}
 	echo '</ol></div></section>';
@@ -354,7 +354,7 @@ function zaec_block_checklist( $b, $l, $alt ) {
 
 function zaec_block_fit( $b, $l, $alt ) {
 	zaec_block_open( $alt );
-	zaec_block_head( $b['title'], $b['lead'] ?? '', 'Je li ovo za vas?' );
+	zaec_block_head( $b['title'], $b['lead'] ?? '', $b['kicker'] ?? 'Je li ovo za vas?' );
 	echo '<ul class="fit" role="list" data-stagger="0.07">';
 	foreach ( $b['items'] as $i => $it ) {
 		printf( '<li data-reveal><span class="n">%s</span><div><h3>%s</h3><p>%s</p></div></li>', esc_html( zaec_pad( $i + 1 ) ), esc_html( $it[0] ), esc_html( $it[1] ) );
@@ -365,15 +365,20 @@ function zaec_block_fit( $b, $l, $alt ) {
 
 function zaec_block_scope( $b, $l, $alt ) {
 	zaec_block_open( $alt );
-	echo '<div class="two-col"><div class="stack" style="--stack:18px"><p class="kicker">Opseg</p>';
+	echo '<div class="two-col"><div class="stack" style="--stack:18px"><p class="kicker">' . esc_html( $b['kicker'] ?? 'Opseg' ) . '</p>';
 	zaec_heading( $b['title'] );
+	if ( ! empty( $b['lead'] ) ) {
+		echo '<p class="lead" data-reveal>' . esc_html( $b['lead'] ) . '</p>';
+	}
 	echo '</div><div class="scope" data-reveal><div class="yes"><h3>' . zaec_icon( 'check-circle', 22 ) . ' ' . esc_html( $b['yes_title'] ?? 'Uključeno' ) . '</h3><ul class="checklist" role="list">'; // phpcs:ignore
 	foreach ( $b['yes'] as $it ) {
 		echo '<li>' . zaec_icon( 'check-circle', 18 ) . '<span>' . esc_html( $it ) . '</span></li>'; // phpcs:ignore
 	}
-	echo '</ul></div><div class="no"><h3>' . zaec_icon( 'info-circle', 22 ) . ' ' . esc_html( $b['no_title'] ?? 'Posebno' ) . '</h3><ul class="checklist" role="list">'; // phpcs:ignore
+	// no_icon: 'add-circle' (po dogovoru), 'close-circle' (ne radimo) ili 'info-circle' (napomena)
+	$no_icon = $b['no_icon'] ?? 'add-circle';
+	echo '</ul></div><div class="no"><h3>' . zaec_icon( 'close-circle' === $no_icon ? 'close-circle' : 'info-circle', 22 ) . ' ' . esc_html( $b['no_title'] ?? 'Posebno' ) . '</h3><ul class="checklist" role="list">'; // phpcs:ignore
 	foreach ( $b['no'] as $it ) {
-		echo '<li>' . zaec_icon( 'add-circle', 18 ) . '<span>' . esc_html( $it ) . '</span></li>'; // phpcs:ignore
+		echo '<li>' . zaec_icon( $no_icon, 18 ) . '<span>' . esc_html( $it ) . '</span></li>'; // phpcs:ignore
 	}
 	echo '</ul></div></div></div>';
 	zaec_block_close();
