@@ -31,9 +31,9 @@ function zaec_home_defaults() {
 		'net_lead'        => 'Na Googleu, na karti, u preporuci prijatelja, na društvenim mrežama i sve češće u ChatGPT-u. Svaka pretraga je nit u mreži odluka — i svaka završava na nečijoj web stranici.',
 		'net_note'        => 'Pitanje nije postoji li potražnja. Pitanje je gdje završava.',
 		// Hrvatska.
-		'hr_kicker'       => '02 — Odakle radimo',
-		'hr_title'        => 'Iz Osijeka, za tvrtke diljem <em>Hrvatske</em>.',
-		'hr_lead'         => 'Projekte vodimo uživo kad ima smisla, a inače videopozivom i jasnim pisanim dogovorom. Lokalno tržište poznajemo iznutra: kako ljudi ovdje traže, uspoređuju i odlučuju.',
+		'hr_kicker'       => '02 — Vaš kupac',
+		'hr_title'        => 'Odluka pada <em>prije</em> prvog poziva.',
+		'hr_lead'         => 'Kupac koji traži vašu uslugu ili proizvod otvori dva ili tri rezultata, pogleda radove, recenzije i kontakt, pa nazove jednoga. Taj izbor napravi sam, na mobitelu, u nekoliko minuta. Mi radimo na tome da u tim minutama baš vi budete najjasniji odgovor.',
 		'hr_title_2'      => 'Malo tržište ne nagrađuje <em>glasnoću</em>.',
 		'hr_lead_2'       => 'Nagrađuje jasnoću. Tko prvi jasno odgovori na pitanje kupca — što, gdje, koliko brzo i zašto baš vi — dobiva poziv.',
 		// Slavonija (svjetla naselja).
