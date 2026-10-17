@@ -170,7 +170,7 @@ export function cityUniforms() {
     uLM: { value: emptyLightMap() },
     uLMW: { value: emptyLightMap() },
     uFog: { value: new THREE.Vector2(1e5, 0) },
-    uFogCol: { value: new THREE.Vector3(0.0027, 0.004, 0.0085) },
+    uFogCol: { value: new THREE.Vector3(0.0105, 0.0075, 0.0068) }, // blago topla izmaglica (sjaj grada u zraku)
     uCamL: { value: new THREE.Vector3() },
     uLamp: { value: 0 },
     uMoon: { value: new THREE.Vector3(-40, 60, 34).normalize() },
@@ -215,7 +215,7 @@ export function buildingMaterial(C, { lite }) {
         vec3 moon = vec3(0.05, 0.063, 0.105) * max(dot(n, uMoon), 0.0) * (1.0 + 0.5 * (1.0 - wall));
         float L = lmAt(vL.xz + n.xz * 4.0) * uLamp;
         float low = exp(-max(vL.y, 0.0) / 6.0);
-        vec3 bounce = lampTone(L) * (wall * (0.05 + 0.5 * low) + (1.0 - wall) * 0.03);
+        vec3 bounce = lampTone(L) * (wall * (0.06 + 0.6 * low) + (1.0 - wall) * 0.035);
         vec3 col = alb * (amb + moon + bounce);
         // crijep i škriljevac: redovi pokrova (sjena preklopa), nestaju prije nego što bi treperili
         if (ty > 0.5 && ty < 2.5) {
@@ -251,18 +251,18 @@ export function buildingMaterial(C, { lite }) {
           float h0 = ch(vec3(unit, seed * 517.0 + 9.0));
           // poneki stan se s vremena na vrijeme upali ili ugasi (grad živi), bez treperenja
           float ep = floor(uTime / 140.0 + h0 * 9.0) * step(0.88, fract(h0 * 31.7));
-          float pOcc = clamp(P.z * act * 1.1, 0.0, 0.9);
+          float pOcc = clamp(P.z * act * 1.6, 0.0, 0.92);
           float occ = step(ch(vec3(unit + ep * 3.1, seed * 517.0 + 4.1)), pOcc);
           float h1 = ch(vec3(c, seed * 517.0 + 1.7));
           float lit = occ * step(h1, 0.62);
           // vrsta svjetla: prigušeno (zastor, dublja soba), toplo unutarnje, hladno (ekran, ured, stubište)
           float hk = fract(h1 * 53.3 + seed * 7.0);
           float hi = fract(h1 * 91.7);
-          float coolP = prof > 2.5 ? 0.2 : 0.07;
-          vec3 wc = mix(vec3(1.0, 0.6, 0.3), vec3(1.0, 0.76, 0.5), fract(h1 * 13.1));
-          float wi = 0.42 + 0.5 * hi;
+          float coolP = prof > 2.5 ? 0.12 : 0.04;
+          vec3 wc = mix(vec3(1.0, 0.56, 0.26), vec3(1.0, 0.72, 0.44), fract(h1 * 13.1));
+          float wi = 0.5 + 0.5 * hi;
           if (hk < coolP) { wc = vec3(0.52, 0.64, 1.0); wi = 0.12 + 0.16 * hi; }
-          else if (hk < coolP + 0.36) { wc = vec3(1.0, 0.52, 0.24); wi = 0.05 + 0.11 * hi; }
+          else if (hk < coolP + 0.28) { wc = vec3(1.0, 0.52, 0.24); wi = 0.05 + 0.11 * hi; }
           wi *= uWinI;
           vec3 glass = vec3(0.0012, 0.0016, 0.003) + vec3(0.01, 0.013, 0.022) * pow(1.0 - abs(dot(n, V)), 3.0);
           vec3 wcol = mix(glass, wc * wi, lit);
@@ -270,7 +270,7 @@ export function buildingMaterial(C, { lite }) {
           float band = row * step(0.0, gq.y) * step(vL.y, vWin.y - 0.6);
           // izdaleka: očekivani sjaj baš ove zgrade (ne jednolika traka), s razlikom po katovima dok se katovi još vide
           float pLit = pOcc * 0.62;
-          float meanI = coolP * 0.2 + 0.36 * 0.1 + (0.64 - coolP) * 0.67;
+          float meanI = coolP * 0.2 + 0.28 * 0.1 + (0.72 - coolP) * 0.75;
           float fk = mix(1.0, mix(0.25, 1.75, ch(vec3(c.y, 5.0, seed * 517.0))), 1.0 - smoothstep(0.35, 0.9, fw.y));
           vec3 avg = mix(col, vec3(1.0, 0.62, 0.32) * meanI * uWinI * pLit * fk + glass * (1.0 - pLit), 0.24 * band);
           col = mix(mix(col, wcol, win), avg, lod);

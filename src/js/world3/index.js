@@ -591,7 +591,7 @@ export async function createWorld3({ canvas, labelsRoot, assets = {}, onReady, o
 
     /* zvijezde prate kameru (noću nad Slavonijom ponovno se naziru) */
     // pojas se vidi u orbiti i noću nad gradom; iza Europe/karte gasi se zajedno sa zvijezdama
-    sky.update({ camera, opacity: st.stars * (1 - smooth(0.6, 1.0, Z)) + st.stars * SKY_NIGHT * smooth(1.5, 2, Z), band: SKY_BAND * (1 - smooth(0.6, 1.0, Z)) + SKY_BAND_NIGHT * smooth(1.5, 2, Z), city: Z > 1.25, pr: dpr, time, dt, reduce });
+    sky.update({ camera, opacity: st.stars * (1 - smooth(0.6, 1.0, Z)) + st.stars * SKY_NIGHT * smooth(1.5, 2, Z), band: SKY_BAND * (1 - smooth(0.6, 1.0, Z)) + SKY_BAND_NIGHT * smooth(1.5, 2, Z), city: Z > 1.25, hz: smooth(1.5, 2, Z), pr: dpr, time, dt, reduce });
 
     scene.updateMatrixWorld();
     ctx.camPos.copy(camera.position);
