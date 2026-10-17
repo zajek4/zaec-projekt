@@ -478,8 +478,23 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     const nearWater = (x, y, m = 45) => inWater(x + m, y) || inWater(x - m, y) || inWater(x, y + m) || inWater(x, y - m);
     const riverside = [];
 
+    // sjeverna obala Drave po 50 m istoka (najsjevernija točka rijeke): preko Drave je noću tamnije (Baranja, polja)
+    const BANK0 = -8000, BANK_DX = 50, bank = new Float32Array(320).fill(NaN);
+    for (const o of outers) for (let i = 0; i < o.r.length; i += 2) {
+      const b = Math.round((o.r[i] - BANK0) / BANK_DX);
+      if (b >= 0 && b < bank.length && Math.abs(o.r[i + 1]) < 4000 && !(o.r[i + 1] <= bank[b])) bank[b] = o.r[i + 1];
+    }
+    for (let i = 0, last = NaN; i < bank.length; i++) { if (Number.isNaN(bank[i])) bank[i] = last; else last = bank[i]; }
+    for (let i = bank.length - 1, last = NaN; i >= 0; i--) { if (Number.isNaN(bank[i])) bank[i] = last; else last = bank[i]; }
+    const across = (x, y) => {
+      const b = bank[Math.min(bank.length - 1, Math.max(0, Math.round((x - BANK0) / BANK_DX)))];
+      if (Number.isNaN(b)) return 0;
+      const t = Math.min(1, Math.max(0, (y - b - 30) / 250));
+      return t * t * (3 - 2 * t);
+    };
+    const hash = (x, y) => { const v = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453; return v - Math.floor(v); };
     // gradska središta (Gornji grad oko konkatedrale, Tvrđa): ondje je više izloga, svjetla i prometa
-    const zone = (x, y) => 0.45 + 0.55 * Math.exp(-Math.hypot(x - 112, y - 53) / 900) + 0.4 * Math.exp(-Math.hypot(x - 1550, y - 20) / 420);
+    const zone = (x, y) => (0.45 + 0.55 * Math.exp(-Math.hypot(x - 112, y - 53) / 900) + 0.4 * Math.exp(-Math.hypot(x - 1550, y - 20) / 420)) * (1 - 0.7 * across(x, y));
     const centreK = (x, y) => Math.min(Math.hypot(x - 112, y - 53) / 900, Math.hypot(x - 1550, y - 20) / 450);
 
     // palete (linearni albedo): žbuka gradskih pročelja, novija gradnja, industrija; crijep, škriljevac/lim, ravni krovovi
@@ -586,6 +601,8 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
       else if (kind === 2) prof = 2;
       else if (kind === 1) prof = h > 10 ? 2 : 1;
       else prof = centreK(cx, cy) < 1 && h >= 7.5 ? 3 : h > 11 ? 2 : 1;
+      // preko Drave većina kuća spava (tamni prozori), uz rijeku je dio još budan
+      if (prof && hash(cx, cy) < 0.65 * across(cx, cy)) prof = 0;
       if (prof === 3) shops.push(r);
       // pročelja uz rijeku: njihovi prozori se ogledaju u Dravi
       if (prof && dist < 2600 && nearWater(cx, cy, 70)) riverside.push(r);
@@ -837,7 +854,7 @@ export function createCity({ lite, dataUrl, modelUrl, onLines, onModel, onLoaded
     // svaka lampa ima svoj prag paljenja: središte grada prvo, zatim prema rubu, uz slučajni raspored
     for (let i = 0; i < lampSize.length; i++) {
       lampPts.size[i] = lampSize[i];
-      lampPts.alpha[i] = (0.5 + rand() * 0.4) * Math.min(1.15, 0.55 + 0.5 * lampK[i]);
+      lampPts.alpha[i] = (0.5 + rand() * 0.4) * Math.min(1.15, 0.55 + 0.5 * lampK[i]) * (1 - 0.6 * across(lamp[i * 3], -lamp[i * 3 + 2]));
       lampPts.wake[i] = 0.1 + rand() * 0.6 + 0.28 * Math.min(1, Math.hypot(lamp[i * 3], lamp[i * 3 + 2]) / 2600);
     }
     lampPts.uniforms.uMin.value = 1.3;

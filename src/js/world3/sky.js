@@ -15,18 +15,27 @@ const REP = 2;
 // naslova. Grad: pojas se pruža nebom iznad konkatedrale (jezgra lijevo izvan kadra). Nebo se okreće dok je potpuno
 // ugašeno (karta Europe … Slavonija, 1 < Z < 1,5), pa se okret nikad ne vidi.
 const ORIENT = new THREE.Quaternion().setFromEuler(new THREE.Euler(-0.5975, 1.5535, -0.0235, 'YXZ'));
-const ORIENT_CITY = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.3112, 2.6347, 0.4225, 'YXZ'));
+// nad gradom (uHz → 1): nebo se gasi prema obzoru (0° … ~3°), ispod obzora nema zvijezda
+const HZ_GLSL = /* glsl */ `#define HORIZON(e) mix(1.0, smoothstep(0.0, 0.055, e), uHz)`;
+// jačina toplog sjaja grada nisko nad obzorom
+const GLOW = 1;
+// grad: jezgra nisko nad obzorom lijevo od tornja, pojas se diže pod ~70° prema gore desno (luk, ne pada u grad)
+const ORIENT_CITY = new THREE.Quaternion(-0.2254, -0.5594, 0.7875, -0.1269);
 
 export function createSky({ lite, texUrl, starsUrl }) {
+  // group prati kameru (bez okreta, osi svijeta: y gore, −z sjever); nebo je u okrenutom podskupu
   const group = new THREE.Group();
-  group.quaternion.copy(ORIENT);
   group.renderOrder = -20;
+  const sky = new THREE.Group();
+  sky.quaternion.copy(ORIENT);
+  group.add(sky);
 
   /* ── pojas ── */
   const bandU = {
     uTex: { value: null },
     uLat: { value: 0.45 }, // polovica visine trake u radijanima (iz zaglavlja podataka)
     uAmt: { value: 0 },
+    uHz: { value: 0 },
   };
   // samo traka kugle unutar ±uLat (gradi se kad stignu podaci): sjena se računa jedino na pikselima pojasa,
   // a u/v dolaze iz vrhova (bez trigonometrije po pikselu). SphereGeometry: x = −cos φ·sin θ, z = sin φ·sin θ,
@@ -41,15 +50,17 @@ export function createSky({ lite, texUrl, starsUrl }) {
       transparent: true,
       blending: THREE.AdditiveBlending,
       vertexShader: /* glsl */ `
-        varying vec2 vUv;
+        ${HZ_GLSL}
+        uniform float uHz; varying vec2 vUv; varying float vHz;
         void main(){
           vUv = vec2(${REP.toFixed(1)} * (0.5 - uv.x) + 0.5, uv.y); // v: 0…1 preko trake (thetaStart…thetaLength)
+          vHz = HORIZON(normalize(mat3(modelMatrix) * position).y);
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }`,
       fragmentShader: /* glsl */ `
-        uniform sampler2D uTex; uniform float uAmt; varying vec2 vUv;
+        uniform sampler2D uTex; uniform float uAmt; varying vec2 vUv; varying float vHz;
         void main(){
-          vec3 c = texture2D(uTex, vUv).rgb * uAmt;
+          vec3 c = texture2D(uTex, vUv).rgb * uAmt * vHz;
           // dither: sjaj je na granici crne, bez njega se vide stepenice
           c += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
           gl_FragColor = vec4(max(c, 0.0), 1.0);
@@ -59,7 +70,7 @@ export function createSky({ lite, texUrl, starsUrl }) {
   band.renderOrder = -20;
   band.frustumCulled = false;
   band.visible = false;
-  group.add(band);
+  sky.add(band);
 
   /* ── zvijezde u jednoj geometriji: slabo polje (odmah, nasumično) + prave zvijezde iz kataloga (zviježđa)
      + zvijezde pojasa iz slike; prave i pojas stižu s podacima ── */
@@ -85,7 +96,7 @@ export function createSky({ lite, texUrl, starsUrl }) {
   g.setAttribute('aTmp', new THREE.BufferAttribute(tmp, 1));
   g.setAttribute('aPh', new THREE.BufferAttribute(ph, 1));
   g.setDrawRange(0, FIELD);
-  const starU = { uPR: { value: 1 }, uOpacity: { value: 0 }, uTime: { value: 0 }, uTw: { value: 1 } };
+  const starU = { uPR: { value: 1 }, uOpacity: { value: 0 }, uTime: { value: 0 }, uTw: { value: 1 }, uHz: { value: 0 } };
   const stars = new THREE.Points(
     g,
     new THREE.ShaderMaterial({
@@ -95,14 +106,15 @@ export function createSky({ lite, texUrl, starsUrl }) {
       transparent: true,
       blending: THREE.AdditiveBlending,
       vertexShader: /* glsl */ `
+        ${HZ_GLSL}
         attribute float aMag; attribute float aTmp; attribute float aPh;
-        uniform float uPR; uniform float uTime; uniform float uTw;
+        uniform float uPR; uniform float uTime; uniform float uTw; uniform float uHz;
         varying float vA; varying vec3 vC; varying float vPx;
         void main(){
           // titranje: sporo i plitko, jače kod slabijih zvijezda; bez pokreta (reduced motion) uTw = 0
           float tw = 1.0 - uTw * (0.22 + 0.2 * (1.0 - aMag)) * (0.5 + 0.5 * sin(uTime * (0.6 + fract(aPh * 3.7) * 1.4) + aPh));
           float px = (1.0 + aMag * aMag * 3.2) * uPR;
-          vA = (0.3 + aMag * 0.7) * tw;
+          vA = (0.3 + aMag * 0.7) * tw * HORIZON(normalize(mat3(modelMatrix) * position).y);
           // ispod 1,5 px točka gubi svjetlinu razmjerno površini, ne treperi kao piksel
           if (px < 1.5 * uPR) { vA *= px / (1.5 * uPR); px = 1.5 * uPR; }
           vC = mix(vec3(1.0, 0.76, 0.52), vec3(0.62, 0.74, 1.0), aTmp);
@@ -123,7 +135,42 @@ export function createSky({ lite, texUrl, starsUrl }) {
   );
   stars.renderOrder = -19;
   stars.frustumCulled = false;
-  group.add(stars);
+  sky.add(stars);
+
+  /* ── nad gradom: horizont. Zvijezde i pojas gase se prema obzoru (gušći zrak), a nisko nad gradom stoji
+     topli sjaj gradskih svjetala; prema sjeveru, preko Drave (Baranja, polja), nebo ostaje tamno ── */
+  const glowU = { uAmt: { value: 0 } };
+  const glow = new THREE.Mesh(
+    // od −4° do +20° visine: samo pojas uz obzor
+    new THREE.SphereGeometry(R * 0.98, lite ? 32 : 48, 4, 0, Math.PI * 2, Math.PI / 2 - 0.35, 0.42),
+    new THREE.ShaderMaterial({
+      uniforms: glowU,
+      side: THREE.BackSide,
+      depthTest: false,
+      depthWrite: false,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      vertexShader: /* glsl */ `
+        varying vec3 vD;
+        void main(){ vD = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+      fragmentShader: /* glsl */ `
+        uniform float uAmt; varying vec3 vD;
+        void main(){
+          vec3 d = normalize(vD);
+          // jug (+z) i strane: grad; sjever (−z): preko Drave tamno
+          float town = mix(0.45, 1.0, smoothstep(-0.6, 0.3, d.z));
+          float e = d.y;
+          float k = (exp(-max(e, 0.0) / 0.035) * 0.75 + exp(-max(e, 0.0) / 0.12) * 0.25) * smoothstep(-0.06, 0.0, e);
+          vec3 c = mix(vec3(0.09, 0.1, 0.15), vec3(0.6, 0.36, 0.18), (town - 0.45) / 0.55) * k * town * uAmt;
+          c += (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;
+          gl_FragColor = vec4(max(c, 0.0), 1.0);
+        }`,
+    })
+  );
+  glow.renderOrder = -18;
+  glow.frustumCulled = false;
+  glow.visible = false;
+  group.add(glow);
 
   /* ── lijeno učitavanje pojasa i zvijezda ── */
   let bandIn = 0; // 0…1 dolazak pojasa (meko, bez skoka)
@@ -152,6 +199,7 @@ export function createSky({ lite, texUrl, starsUrl }) {
         band.geometry.dispose();
         band.geometry = new THREE.SphereGeometry(R, lite ? 48 : 72, 6, 0, Math.PI * 2, Math.PI / 2 - lat, lat * 2);
         const nReal = dv.getUint32(4, true);
+        if (8 + nReal * 6 > buf.byteLength) throw new Error('sky-stars.bin: neočekivan format');
         const put = (j, lon, la, o) => {
           const c = Math.cos(la);
           pos.set([Math.cos(lon) * c * R, Math.sin(la) * R, Math.sin(lon) * c * R], j * 3);
@@ -178,16 +226,19 @@ export function createSky({ lite, texUrl, starsUrl }) {
         g.setDrawRange(0, j);
         bandReady = true;
       })
-      .catch(() => {}); // bez podataka ostaje samo slabo polje zvijezda
+      .catch((err) => console.warn('[ZAEC] nebo nije učitano:', err)); // ostaje samo slabo polje zvijezda
   }
 
   return {
     group,
     load,
     /** opacity: kanal zvijezda iz knjige snimanja; band: koliko se pojas vidi (0…1); city: nebo nad gradom */
-    update({ camera, opacity, band: bandK, city, pr, time, dt, reduce }) {
+    update({ camera, opacity, band: bandK, city, hz = 0, pr, time, dt, reduce }) {
       group.position.copy(camera.position);
-      group.quaternion.copy(city ? ORIENT_CITY : ORIENT);
+      sky.quaternion.copy(city ? ORIENT_CITY : ORIENT);
+      starU.uHz.value = bandU.uHz.value = hz;
+      glowU.uAmt.value = hz * GLOW;
+      glow.visible = glowU.uAmt.value > 0.002;
       if (bandReady && bandIn < 1) bandIn = reduce ? 1 : Math.min(1, bandIn + dt / 1.2);
       starU.uPR.value = pr;
       starU.uOpacity.value = opacity;
@@ -203,6 +254,8 @@ export function createSky({ lite, texUrl, starsUrl }) {
       stars.material.dispose();
       band.geometry.dispose();
       band.material.dispose();
+      glow.geometry.dispose();
+      glow.material.dispose();
       bandU.uTex.value?.dispose();
     },
   };

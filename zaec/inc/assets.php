@@ -59,6 +59,15 @@ function zaec_head_early() {
 		'theme'  => ZAEC_THEME_URI,
 		'ver'    => ZAEC_VERSION,
 	);
+	if ( is_front_page() ) {
+		// datoteke 3D svijeta: verzija iz vremena izmjene, pa nova inačica s istim imenom ne ostaje u predmemoriji
+		// (npr. sky-stars.bin novog formata uz stari iz predmemorije: nebo se ne bi prikazalo)
+		$cfg['world'] = array();
+		foreach ( array( 'img/world/land.png', 'img/world/land-eu.png', 'img/world/lights.webp', 'data/osijek-city.bin', 'models/konkatedrala.glb', 'img/world/sky-mw.webp', 'data/sky-stars.bin' ) as $f ) {
+			$path               = ZAEC_THEME_DIR . '/assets/' . $f;
+			$cfg['world'][ $f ] = file_exists( $path ) ? base_convert( (string) filemtime( $path ), 10, 36 ) : ZAEC_VERSION;
+		}
+	}
 	// grain: tekstura papira (body::after) pokaže se tek kad je cijela učitana, bez pruga djelomičnog uzorka;
 	// eh-go: ulaz heroja podstranica kreće kad stignu fontovi naslova a najkasnije 2,4 s nakon početka (hero.css)
 	$grain = glob( ZAEC_THEME_DIR . '/assets/build/assets/grain-*.png' );

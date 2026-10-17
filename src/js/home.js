@@ -338,11 +338,12 @@ async function bootWorld() {
     const { createWorld3 } = await import('./world3/index.js');
     const cfg = window.ZAEC_CFG || {};
     const T = (cfg.theme || '') + '/assets/';
-    const v = '?v=' + (cfg.ver || '1');
+    const W = cfg.world || {};
+    const u = (f) => T + f + '?v=' + (W[f] || cfg.ver || '1');
     world = await createWorld3({
       canvas,
       labelsRoot: document.querySelector('[data-stage-labels]'),
-      assets: { land: T + 'img/world/land.png' + v, landEu: T + 'img/world/land-eu.png' + v, lights: T + 'img/world/lights.webp' + v, city: T + 'data/osijek-city.bin' + v, model: T + 'models/konkatedrala.glb' + v, skyTex: T + 'img/world/sky-mw.webp' + v, skyStars: T + 'data/sky-stars.bin' + v },
+      assets: { land: u('img/world/land.png'), landEu: u('img/world/land-eu.png'), lights: u('img/world/lights.webp'), city: u('data/osijek-city.bin'), model: u('models/konkatedrala.glb'), skyTex: u('img/world/sky-mw.webp'), skyStars: u('data/sky-stars.bin') },
       onReady: () => root.classList.add('stage-ready'),
     });
     world.setGates(gates);
